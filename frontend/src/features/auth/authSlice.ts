@@ -9,10 +9,32 @@ interface AuthState {
   error: string | null;
 }
 
+// Helper function to safely access localStorage
+const getFromLocalStorage = (key: string): string | null => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(key);
+  }
+  return null;
+};
+
+// Helper function to safely set localStorage
+const setToLocalStorage = (key: string, value: string): void => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(key, value);
+  }
+};
+
+// Helper function to safely remove from localStorage
+const removeFromLocalStorage = (key: string): void => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(key);
+  }
+};
+
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem("token"),
-  isAuthenticated: !!localStorage.getItem("token"),
+  token: getFromLocalStorage("token"),
+  isAuthenticated: !!getFromLocalStorage("token"),
   isLoading: false,
   error: null,
 };
@@ -34,7 +56,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.error = null;
-      localStorage.setItem("token", action.payload.token);
+      setToLocalStorage("token", action.payload.token);
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
@@ -45,7 +67,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      localStorage.removeItem("token");
+      removeFromLocalStorage("token");
     },
     clearError: (state) => {
       state.error = null;
