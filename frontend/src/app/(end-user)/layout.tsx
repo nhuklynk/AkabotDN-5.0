@@ -34,10 +34,10 @@ export default function EndUserLayout({
       lang="vi"
       className={`${inter.variable} ${playfair.variable} antialiased`}
     >
-      <body className="font-sans">
-        <div className="min-h-screen">
+      <body className="font-sans bg-white">
+        <div className="min-h-screen bg-gradient-to-b from-[#F2E6EE] via-[#977DFF] to-[#0033FF]">
           <Header />
-          <main>{children}</main>
+          <main className="bg-white/95 backdrop-blur-sm">{children}</main>
           <Footer />
         </div>
       </body>

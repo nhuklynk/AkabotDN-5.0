@@ -4,27 +4,27 @@ import { ExternalLink, FileText, Users, Building } from "lucide-react";
 
 export default function MemberRegistrationPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-[#0033FF] mb-2">
             ĐĂNG KÝ HỘI VIÊN
           </h1>
-          <div className="w-20 h-1 bg-emerald-600"></div>
+          <div className="w-20 h-1 bg-gradient-to-r from-[#977DFF] to-[#0033FF]"></div>
         </div>
 
         {/* Navigation Tabs */}
         <div className="flex gap-4 mb-8">
           <Button
             variant="outline"
-            className="flex items-center gap-2 bg-transparent"
+            className="flex items-center gap-2 bg-transparent border-[#977DFF] text-[#0600AF] hover:bg-[#FFCCF2]/10 hover:border-[#0033FF]"
           >
             <Users className="w-4 h-4" />
             Hội viên cá nhân
           </Button>
           <Button
             variant="default"
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700"
+            className="flex items-center gap-2 bg-[#0033FF] hover:bg-[#0600AF] text-white border-0"
           >
             <Building className="w-4 h-4" />
             Hội viên tổ chức
@@ -33,9 +33,9 @@ export default function MemberRegistrationPage() {
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Association Information */}
-          <Card>
-            <CardHeader className="bg-red-50 border-b">
-              <CardTitle className="text-xl font-semibold text-red-700">
+          <Card className="border-[#FFCCF2] bg-white">
+            <CardHeader className="bg-gradient-to-r from-[#FFCCF2]/20 to-[#977DFF]/20 border-b border-[#FFCCF2]/30">
+              <CardTitle className="text-xl font-semibold text-[#0033FF]">
                 THÔNG TIN HIỆP HỘI
               </CardTitle>
             </CardHeader>
@@ -43,18 +43,18 @@ export default function MemberRegistrationPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="font-medium text-gray-900">Người nhận</p>
-                    <p className="text-gray-600">Trương T.Phương Thảo</p>
+                    <p className="font-medium text-[#0600AF]">Người nhận</p>
+                    <p className="text-[#0600AF]/80">Trương T.Phương Thảo</p>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">SĐT</p>
-                    <p className="text-gray-600">0931.399.883</p>
+                    <p className="font-medium text-[#0600AF]">SĐT</p>
+                    <p className="text-[#0600AF]/80">0931.399.883</p>
                   </div>
                 </div>
 
                 <div>
-                  <p className="font-medium text-gray-900">Địa chỉ</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-[#0600AF]">Địa chỉ</p>
+                  <p className="text-[#0600AF]/80">
                     Cung thanh niên, 37 Trần Bình Trọng,
                     <br />
                     Nguyễn Du, Hai Bà Trưng, Hà Nội
@@ -62,10 +62,10 @@ export default function MemberRegistrationPage() {
                 </div>
 
                 <div>
-                  <p className="font-medium text-gray-900">Email</p>
+                  <p className="font-medium text-[#0600AF]">Email</p>
                   <div className="space-y-1">
-                    <p className="text-gray-600">vanphongNDA@nda.org.vn</p>
-                    <p className="text-gray-600">thaottp@nda.org.vn</p>
+                    <p className="text-[#0600AF]/80">vanphongNDA@nda.org.vn</p>
+                    <p className="text-[#0600AF]/80">thaottp@nda.org.vn</p>
                   </div>
                 </div>
               </div>
@@ -73,21 +73,21 @@ export default function MemberRegistrationPage() {
           </Card>
 
           {/* Registration Form */}
-          <Card>
-            <CardHeader className="bg-red-50 border-b">
-              <CardTitle className="text-xl font-semibold text-red-700">
+          <Card className="border-[#FFCCF2] bg-white">
+            <CardHeader className="bg-gradient-to-r from-[#FFCCF2]/20 to-[#977DFF]/20 border-b border-[#FFCCF2]/30">
+              <CardTitle className="text-xl font-semibold text-[#0033FF]">
                 ĐĂNG KÝ TỔ CHỨC
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
+                  <h3 className="font-semibold text-[#0600AF] mb-3">
                     1. Mẫu đơn đăng ký:
                   </h3>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-blue-600 hover:text-blue-700 bg-transparent"
+                    className="w-full justify-start text-[#0033FF] hover:text-[#0600AF] bg-transparent border-[#0033FF] hover:bg-[#FFCCF2]/10"
                     asChild
                   >
                     <a
@@ -104,25 +104,25 @@ export default function MemberRegistrationPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
+                  <h3 className="font-semibold text-[#0600AF] mb-2">
                     2. ĐKKD - bản công chứng có hiệu lực trong 6 tháng gần nhất
                   </h3>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
+                  <h3 className="font-semibold text-[#0600AF] mb-2">
                     3. CCCD của người đại diện thay mặt DN tham gia HH (có thể
                     kê phải là người đại diện pháp luật)
                   </h3>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
+                  <h3 className="font-semibold text-[#0600AF] mb-3">
                     4. Điền link online:
                   </h3>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-blue-600 hover:text-blue-700 bg-transparent"
+                    className="w-full justify-start text-[#0033FF] hover:text-[#0600AF] bg-transparent border-[#0033FF] hover:bg-[#FFCCF2]/10"
                     asChild
                   >
                     <a
@@ -138,8 +138,8 @@ export default function MemberRegistrationPage() {
                   </Button>
                 </div>
 
-                <div className="mt-8 p-4 bg-emerald-50 rounded-lg">
-                  <p className="text-sm text-emerald-800">
+                <div className="mt-8 p-4 bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/20 rounded-lg border border-[#FFCCF2]/30">
+                  <p className="text-sm text-[#0033FF]">
                     <strong>Lưu ý:</strong> Vui lòng chuẩn bị đầy đủ các giấy tờ
                     theo yêu cầu và điền form online để hoàn tất quá trình đăng
                     ký hội viên.

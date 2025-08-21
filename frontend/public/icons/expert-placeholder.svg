@@ -1,0 +1,51 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F2E6EE;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="person" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="80" fill="url(#bg)"/>
+  
+  <!-- Person Icon -->
+  <circle cx="100" cy="70" r="25" fill="url(#person)"/>
+  <circle cx="100" cy="70" r="15" fill="white" opacity="0.3"/>
+  
+  <!-- Body -->
+  <path d="M 60 110 Q 100 140 140 110" fill="url(#person)"/>
+  <rect x="75" y="110" width="50" height="60" fill="url(#person)" rx="25"/>
+  
+  <!-- Expertise Icons -->
+  <circle cx="60" cy="50" r="8" fill="#FFCCF2" opacity="0.8"/>
+  <text x="60" y="54" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="6" font-weight="bold">AI</text>
+  
+  <circle cx="140" cy="50" r="8" fill="#FFCCF2" opacity="0.8"/>
+  <text x="140" y="54" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="6" font-weight="bold">ML</text>
+  
+  <circle cx="60" cy="150" r="8" fill="#977DFF" opacity="0.8"/>
+  <text x="60" y="154" text-anchor="middle" fill="white" font-family="Arial" font-size="6" font-weight="bold">Data</text>
+  
+  <circle cx="140" cy="150" r="8" fill="#977DFF" opacity="0.8"/>
+  <text x="140" y="154" text-anchor="middle" fill="white" font-family="Arial" font-size="6" font-weight="bold">Cloud</text>
+  
+  <!-- Connection Lines -->
+  <line x1="68" y1="50" x2="85" y2="65" stroke="#FFCCF2" stroke-width="1.5" opacity="0.6"/>
+  <line x1="132" y1="50" x2="115" y2="65" stroke="#FFCCF2" stroke-width="1.5" opacity="0.6"/>
+  <line x1="68" y1="150" x2="85" y2="135" stroke="#977DFF" stroke-width="1.5" opacity="0.6"/>
+  <line x1="132" y1="150" x2="115" y2="135" stroke="#977DFF" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Floating Elements -->
+  <circle cx="40" cy="40" r="4" fill="#977DFF" opacity="0.6"/>
+  <circle cx="160" cy="40" r="4" fill="#977DFF" opacity="0.6"/>
+  <circle cx="40" cy="160" r="4" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="160" cy="160" r="4" fill="#FFCCF2" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="100" y="25" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="12" font-weight="bold">Chuyên gia</text>
+</svg>

@@ -1,26 +1,21 @@
-"use client";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
-import { usePathname } from "next/navigation";
-import { Provider } from "@/components/provider";
+import AppProviders from "@/app/providers";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "App",
   description: "Application",
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="vi">
-      <body>
-        <AppProviders>{children}</AppProviders>
-      </body>
+      <body>{children}</body>
     </html>
-  )
+  );
 }
-
-

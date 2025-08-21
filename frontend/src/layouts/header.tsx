@@ -15,19 +15,19 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-[#977DFF]/20 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded bg-primary"></div>
+              <div className="h-8 w-8 rounded bg-gradient-to-br from-[#977DFF] to-[#0033FF]"></div>
               <div className="hidden sm:block">
                 <Link href="/">
-                  <h1 className="text-lg font-bold text-foreground hover:text-primary transition-colors cursor-pointer">
+                  <h1 className="text-lg font-bold text-[#0033FF] hover:text-[#0600AF] transition-colors cursor-pointer">
                     HIỆP HỘI DỮ LIỆU QUỐC GIA
                   </h1>
-                  <p className="text-xs text-muted-foreground">VIỆT NAM</p>
+                  <p className="text-xs text-[#977DFF]">VIỆT NAM</p>
                 </Link>
               </div>
             </div>
@@ -37,35 +37,35 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/about-us"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               GIỚI THIỆU
             </Link>
 
             <Link
               href="/activities"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               HOẠT ĐỘNG CỦA HIỆP HỘI
             </Link>
 
             <Link
               href="/documents"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               TƯ LIỆU
             </Link>
             <Link
               href="/digital-product"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               SẢN PHẨM SỐ
             </Link>
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors">
+              <DropdownMenuTrigger className="flex items-center text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors">
                 HỘI VIÊN <ChevronDown className="ml-1 h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent className="bg-white border-[#977DFF]/20">
                 <DropdownMenuItem asChild>
                   <Link href="/members/lists">Danh sách hội viên</Link>
                 </DropdownMenuItem>
@@ -76,7 +76,7 @@ export function Header() {
             </DropdownMenu>
             <Link
               href="/contact"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               LIÊN HỆ
             </Link>
@@ -86,7 +86,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden"
+            className="md:hidden text-[#0033FF] hover:text-[#0600AF] hover:bg-[#FFCCF2]/10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -99,47 +99,47 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t bg-background py-4">
+          <div className="md:hidden border-t border-[#977DFF]/20 bg-white/95 py-4">
             <nav className="flex flex-col space-y-4">
               <Link
                 href="#"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 GIỚI THIỆU
               </Link>
               <Link
                 href="#"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 HOẠT ĐỘNG
               </Link>
               <Link
                 href="/bai-dang"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 BÀI ĐĂNG
               </Link>
               <Link
                 href="#"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 VĂN BẢN HIỆP HỘI
               </Link>
               <Link
                 href="#"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 SẢN PHẨM SỐ
               </Link>
               <Link
                 href="#"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 HỘI VIÊN
               </Link>
               <Link
                 href="#"
-                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
               >
                 LIÊN HỆ
               </Link>
