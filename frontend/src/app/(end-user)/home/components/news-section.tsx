@@ -1,6 +1,9 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight, ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 export function NewsSection() {
   const news = [
@@ -10,7 +13,7 @@ export function NewsSection() {
         "Bộ Công an khai trương Trung tâm dữ liệu quốc gia số 1: Bước tiến mới trong hành trình chuyển đổi số quốc gia",
       date: "18/08/2025",
       category: "Sự kiện",
-      image: "/vietnam-data-center-opening.png",
+      image: "/placeholder-news.svg",
     },
     {
       title: "Phiên họp Ban Chấp hành Hiệp hội Dữ liệu quốc gia",
@@ -18,7 +21,7 @@ export function NewsSection() {
         "Chuẩn bị diễn ra Phiên họp Ban Chấp hành Hiệp hội Dữ liệu quốc gia với nhiều nội dung quan trọng",
       date: "15/08/2025",
       category: "Hoạt động",
-      image: "/vietnam-data-association-meeting.png",
+      image: "/placeholder-news.svg",
     },
     {
       title: "AI thực chiến - Cuộc thi về trí tuệ nhân tạo",
@@ -26,7 +29,7 @@ export function NewsSection() {
         "Cuộc thi về trí tuệ nhân tạo đầu tiên trên sóng truyền hình với sự tham gia của các chuyên gia hàng đầu",
       date: "12/08/2025",
       category: "Công nghệ",
-      image: "/ai-competition-vietnam-tv.png",
+      image: "/placeholder-news.svg",
     },
   ];
 
@@ -50,10 +53,21 @@ export function NewsSection() {
               className="group hover:shadow-lg transition-all duration-300"
             >
               <div className="aspect-video overflow-hidden rounded-t-lg">
-                <img
-                  src={item.image || "/placeholder.svg"}
+                <Image
+                  src={item.image}
                   alt={item.title}
+                  width={400}
+                  height={225}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    console.log(`News image failed to load: ${item.image}`, e);
+                    const img = e.target as HTMLImageElement;
+                    img.src = "/placeholder-news.png"; // Try placeholder first
+                    img.onerror = () => {
+                      img.src = "/placeholder-news.png"; // Final fallback
+                    };
+                  }}
+                  onLoad={() => console.log(`News image loaded: ${item.image}`)}
                 />
               </div>
               <CardHeader className="pb-3">

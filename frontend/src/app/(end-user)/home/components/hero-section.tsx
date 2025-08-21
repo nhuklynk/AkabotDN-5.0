@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Building2, Award, TrendingUp } from "lucide-react";
+import Image from "next/image";
 
 export function HeroSection() {
   return (
@@ -70,10 +73,18 @@ export function HeroSection() {
           {/* Image */}
           <div className="relative">
             <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 p-8">
-              <img
-                src="/vietnam-data-center.png"
+              <Image
+                src="/hero-image.png"
                 alt="Trung tâm dữ liệu Việt Nam"
-                className="w-full h-full object-cover rounded-xl"
+                width={400}
+                height={400}
+                className="w-full h-full object-contain rounded-xl"
+                onError={(e) => {
+                  console.log("Hero image failed to load:", e);
+                  const img = e.target as HTMLImageElement;
+                  img.src = "/hero-image.png"; // Fallback image
+                }}
+                onLoad={() => console.log("Hero image loaded successfully")}
               />
             </div>
           </div>

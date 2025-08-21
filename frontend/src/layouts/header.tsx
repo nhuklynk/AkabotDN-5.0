@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,22 +23,24 @@ export function Header() {
             <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded bg-primary"></div>
               <div className="hidden sm:block">
-                <h1 className="text-lg font-bold text-foreground">
-                  HIỆP HỘI DỮ LIỆU QUỐC GIA
-                </h1>
-                <p className="text-xs text-muted-foreground">VIỆT NAM</p>
+                <Link href="/">
+                  <h1 className="text-lg font-bold text-foreground hover:text-primary transition-colors cursor-pointer">
+                    HIỆP HỘI DỮ LIỆU QUỐC GIA
+                  </h1>
+                  <p className="text-xs text-muted-foreground">VIỆT NAM</p>
+                </Link>
               </div>
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a
+            <Link
               href="#"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               GIỚI THIỆU
-            </a>
+            </Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors">
@@ -47,33 +50,36 @@ export function Header() {
                 <DropdownMenuItem>Hoạt động của Hiệp hội</DropdownMenuItem>
                 <DropdownMenuItem>Hoạt động của Hội viên</DropdownMenuItem>
                 <DropdownMenuItem>Sự kiện</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/bai-dang">Bài đăng</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <a
+            <Link
               href="#"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               VĂN BẢN HIỆP HỘI
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               SẢN PHẨM SỐ
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               HỘI VIÊN
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               LIÊN HỆ
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -95,42 +101,48 @@ export function Header() {
         {isMenuOpen && (
           <div className="md:hidden border-t bg-background py-4">
             <nav className="flex flex-col space-y-4">
-              <a
+              <Link
                 href="#"
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 GIỚI THIỆU
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 HOẠT ĐỘNG
-              </a>
-              <a
+              </Link>
+              <Link
+                href="/bai-dang"
+                className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              >
+                BÀI ĐĂNG
+              </Link>
+              <Link
                 href="#"
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 VĂN BẢN HIỆP HỘI
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 SẢN PHẨM SỐ
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 HỘI VIÊN
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#"
                 className="text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 LIÊN HỆ
-              </a>
+              </Link>
             </nav>
           </div>
         )}

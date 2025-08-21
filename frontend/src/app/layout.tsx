@@ -2,7 +2,7 @@
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import { usePathname } from "next/navigation";
-import { Provider } from "@/components/Provider";
+import { Provider } from "@/components/provider";
 
 const robotoCondensed = Roboto_Condensed({
   subsets: ["latin"],
