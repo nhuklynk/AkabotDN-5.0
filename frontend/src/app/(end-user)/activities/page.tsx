@@ -25,7 +25,7 @@ const events = [
     description:
       "Công bố ra mắt Nền tảng dữ liệu du lịch quốc gia Việt Nam - Visit Vietnam",
     status: "Đã diễn ra",
-    image: "/vietnam-tourism-platform.png",
+    image: "/icons/activities-placeholder.svg",
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const events = [
     description:
       "Giới thiệu những nền tảng công nghệ cốt lõi của hệ sinh thái kinh tế số Việt Nam",
     status: "Đã diễn ra",
-    image: "/vietnam-data-exhibition.png",
+    image: "/icons/activities-placeholder.svg",
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ const events = [
     description:
       "Sơ kết công tác 6 tháng đầu năm và xây dựng phương hướng công tác 6 tháng cuối năm 2025",
     status: "Sắp diễn ra",
-    image: "/vietnam-data-meeting.png",
+    image: "/icons/activities-placeholder.svg",
   },
 ];
 
@@ -56,7 +56,7 @@ const experts = [
     title: "Thứ trưởng Bộ Công an, Phó Chủ tịch Thường trực Hiệp hội",
     expertise: "An ninh mạng, Quản trị dữ liệu",
     country: "Việt Nam",
-    image: "/expert-nguyen-van-long.png",
+    image: "/icons/expert-placeholder.svg",
   },
   {
     id: 2,
@@ -64,7 +64,7 @@ const experts = [
     title: "Chuyên gia Blockchain và AI",
     expertise: "Blockchain, Trí tuệ nhân tạo, Dữ liệu lớn",
     country: "Singapore",
-    image: "/expert-michael-chen.png",
+    image: "/icons/expert-placeholder.svg",
   },
   {
     id: 3,
@@ -72,7 +72,7 @@ const experts = [
     title: "Giám đốc Nghiên cứu Dữ liệu, MIT",
     expertise: "Khoa học dữ liệu, Machine Learning",
     country: "Hoa Kỳ",
-    image: "/expert-sarah-johnson.png",
+    image: "/icons/expert-placeholder.svg",
   },
 ];
 
@@ -174,36 +174,51 @@ const cooperations = [
 
 export default function HoatDongPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-emerald-600 to-emerald-800 text-white py-16">
+      <section className="bg-gradient-to-r from-[#FFCCF2] via-[#977DFF] to-[#0033FF] text-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Hoạt động của Hiệp hội
             </h1>
-            <p className="text-xl text-emerald-100 mb-8">
+            <p className="text-xl text-white mb-8">
               Khám phá các hoạt động đa dạng của Hiệp hội Dữ liệu Quốc gia Việt
               Nam
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Badge variant="secondary" className="text-lg px-4 py-2">
+              <Badge
+                variant="secondary"
+                className="text-lg px-4 py-2 bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0 hover:from-[#977DFF] hover:to-[#0033FF] transition-all duration-300"
+              >
                 <Calendar className="w-5 h-5 mr-2" />
                 Sự kiện
               </Badge>
-              <Badge variant="secondary" className="text-lg px-4 py-2">
+              <Badge
+                variant="secondary"
+                className="text-lg px-4 py-2 bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0 hover:from-[#FFCCF2] hover:to-[#977DFF] transition-all duration-300"
+              >
                 <Users className="w-5 h-5 mr-2" />
                 Chuyên gia
               </Badge>
-              <Badge variant="secondary" className="text-lg px-4 py-2">
+              <Badge
+                variant="secondary"
+                className="text-lg px-4 py-2 bg-gradient-to-r from-[#0033FF] to-[#0600AF] text-white border-0 hover:from-[#977DFF] hover:to-[#FFCCF2] transition-all duration-300"
+              >
                 <GraduationCap className="w-5 h-5 mr-2" />
                 Đào tạo
               </Badge>
-              <Badge variant="secondary" className="text-lg px-4 py-2">
+              <Badge
+                variant="secondary"
+                className="text-lg px-4 py-2 bg-gradient-to-r from-[#FFCCF2] to-[#0033FF] text-white border-0 hover:from-[#977DFF] hover:to-[#0600AF] transition-all duration-300"
+              >
                 <FileText className="w-5 h-5 mr-2" />
                 Chính sách
               </Badge>
-              <Badge variant="secondary" className="text-lg px-4 py-2">
+              <Badge
+                variant="secondary"
+                className="text-lg px-4 py-2 bg-gradient-to-r from-[#977DFF] to-[#FFCCF2] text-white border-0 hover:from-[#0033FF] hover:to-[#977DFF] transition-all duration-300"
+              >
                 <Globe className="w-5 h-5 mr-2" />
                 Hợp tác
               </Badge>
@@ -216,18 +231,20 @@ export default function HoatDongPage() {
         {/* Sự kiện */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <Calendar className="w-8 h-8 text-emerald-600 mr-3" />
-            <h2 className="text-3xl font-bold text-gray-900">Sự kiện</h2>
+            <div className="w-8 h-8 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-lg flex items-center justify-center mr-3">
+              <Calendar className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#0033FF]">Sự kiện</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+            {events.map((event, index) => (
               <Card
                 key={event.id}
-                className="hover:shadow-lg transition-shadow"
+                className="hover:shadow-lg transition-shadow bg-white border-[#FFCCF2]/30 hover:border-[#977DFF]/50"
               >
-                <div className="aspect-video bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-t-lg flex items-center justify-center">
+                <div className="aspect-video bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-t-lg flex items-center justify-center">
                   <img
-                    src={event.image || "/placeholder.svg"}
+                    src={event.image || "/icons/activities-placeholder.svg"}
                     alt={event.title}
                     className="w-full h-full object-cover rounded-t-lg"
                   />
@@ -238,19 +255,31 @@ export default function HoatDongPage() {
                       variant={
                         event.status === "Đã diễn ra" ? "secondary" : "default"
                       }
+                      className={
+                        event.status === "Đã diễn ra"
+                          ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0"
+                          : "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0"
+                      }
                     >
                       {event.status}
                     </Badge>
-                    <span className="text-sm text-gray-500">{event.date}</span>
+                    <span className="text-sm text-[#0033FF] font-semibold">
+                      {event.date}
+                    </span>
                   </div>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                  <CardDescription className="text-emerald-600 font-medium">
+                  <CardTitle className="text-lg text-[#0033FF]">
+                    {event.title}
+                  </CardTitle>
+                  <CardDescription className="text-[#0600AF] font-medium">
                     📍 {event.location}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">{event.description}</p>
-                  <Button variant="outline" className="w-full bg-transparent">
+                  <p className="text-[#0033FF]/90 mb-4">{event.description}</p>
+                  <Button
+                    variant="outline"
+                    className="w-full bg-transparent border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                  >
                     Xem chi tiết
                   </Button>
                 </CardContent>
@@ -262,41 +291,50 @@ export default function HoatDongPage() {
         {/* Chuyên gia Toàn cầu */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <Users className="w-8 h-8 text-emerald-600 mr-3" />
-            <h2 className="text-3xl font-bold text-gray-900">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#977DFF] to-[#0033FF] rounded-lg flex items-center justify-center mr-3">
+              <Users className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#0033FF]">
               Chuyên gia Toàn cầu
             </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {experts.map((expert) => (
+            {experts.map((expert, index) => (
               <Card
                 key={expert.id}
-                className="hover:shadow-lg transition-shadow"
+                className="hover:shadow-lg transition-shadow bg-white border-[#977DFF]/30 hover:border-[#0033FF]/50"
               >
                 <CardHeader className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center">
+                  <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-full flex items-center justify-center border border-[#FFCCF2]/40">
                     <img
-                      src={expert.image || "/placeholder.svg"}
+                      src={expert.image || "/icons/expert-placeholder.svg"}
                       alt={expert.name}
                       className="w-full h-full object-cover rounded-full"
                     />
                   </div>
-                  <CardTitle className="text-xl">{expert.name}</CardTitle>
-                  <CardDescription className="text-emerald-600 font-medium">
+                  <CardTitle className="text-xl text-[#0033FF]">
+                    {expert.name}
+                  </CardTitle>
+                  <CardDescription className="text-[#0600AF] font-medium">
                     {expert.title}
                   </CardDescription>
-                  <Badge variant="outline" className="w-fit mx-auto mt-2">
+                  <Badge
+                    variant="outline"
+                    className="w-fit mx-auto mt-2 border-[#FFCCF2] text-[#0033FF] bg-gradient-to-r from-[#FFCCF2]/20 to-[#F2E6EE]"
+                  >
                     🌍 {expert.country}
                   </Badge>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <h4 className="font-semibold text-gray-900">Chuyên môn:</h4>
-                    <p className="text-gray-600">{expert.expertise}</p>
+                    <h4 className="font-semibold text-[#0033FF]">
+                      Chuyên môn:
+                    </h4>
+                    <p className="text-[#0033FF]/90">{expert.expertise}</p>
                   </div>
                   <Button
                     variant="outline"
-                    className="w-full mt-4 bg-transparent"
+                    className="w-full mt-4 bg-transparent border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
                   >
                     Xem hồ sơ
                   </Button>
@@ -309,35 +347,46 @@ export default function HoatDongPage() {
         {/* Đào tạo */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <GraduationCap className="w-8 h-8 text-emerald-600 mr-3" />
-            <h2 className="text-3xl font-bold text-gray-900">Đào tạo</h2>
+            <div className="w-8 h-8 bg-gradient-to-br from-[#0033FF] to-[#0600AF] rounded-lg flex items-center justify-center mr-3">
+              <GraduationCap className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#0033FF]">Đào tạo</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trainings.map((training) => (
+            {trainings.map((training, index) => (
               <Card
                 key={training.id}
-                className="hover:shadow-lg transition-shadow"
+                className="hover:shadow-lg transition-shadow bg-white border-[#0033FF]/30 hover:border-[#0600AF]/50"
               >
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
-                    <Badge variant="outline">{training.level}</Badge>
-                    <span className="text-sm text-emerald-600 font-medium">
+                    <Badge
+                      variant="outline"
+                      className="border-[#FFCCF2] text-[#0033FF] bg-gradient-to-r from-[#FFCCF2]/20 to-[#F2E6EE]"
+                    >
+                      {training.level}
+                    </Badge>
+                    <span className="text-sm text-[#0600AF] font-semibold">
                       {training.duration}
                     </span>
                   </div>
-                  <CardTitle className="text-xl">{training.title}</CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardTitle className="text-xl text-[#0033FF]">
+                    {training.title}
+                  </CardTitle>
+                  <CardDescription className="text-[#0600AF]/90">
                     📚 {training.format}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">{training.description}</p>
-                  <div className="bg-emerald-50 p-3 rounded-lg mb-4">
-                    <p className="text-sm text-emerald-700">
+                  <p className="text-[#0033FF]/90 mb-4">
+                    {training.description}
+                  </p>
+                  <div className="bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/30 p-3 rounded-lg mb-4 border border-[#FFCCF2]/40">
+                    <p className="text-sm text-[#0033FF] font-semibold">
                       <strong>Khóa tiếp theo:</strong> {training.nextSession}
                     </p>
                   </div>
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+                  <Button className="w-full bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0 transition-all duration-300">
                     Đăng ký ngay
                   </Button>
                 </CardContent>
@@ -349,45 +398,65 @@ export default function HoatDongPage() {
         {/* Chính sách - Pháp luật */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <FileText className="w-8 h-8 text-emerald-600 mr-3" />
-            <h2 className="text-3xl font-bold text-gray-900">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#FFCCF2] to-[#0033FF] rounded-lg flex items-center justify-center mr-3">
+              <FileText className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#0033FF]">
               Chính sách - Pháp luật
             </h2>
           </div>
           <div className="space-y-4">
-            {policies.map((policy) => (
+            {policies.map((policy, index) => (
               <Card
                 key={policy.id}
-                className="hover:shadow-lg transition-shadow"
+                className="hover:shadow-lg transition-shadow bg-white border-[#FFCCF2]/30 hover:border-[#0033FF]/50"
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <Badge variant="outline">{policy.type}</Badge>
+                        <Badge
+                          variant="outline"
+                          className="border-[#F2E6EE] text-[#0033FF] bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/20"
+                        >
+                          {policy.type}
+                        </Badge>
                         <Badge
                           variant={
                             policy.status === "Có hiệu lực"
                               ? "default"
                               : "secondary"
                           }
+                          className={
+                            policy.status === "Có hiệu lực"
+                              ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0"
+                              : "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0"
+                          }
                         >
                           {policy.status}
                         </Badge>
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-[#0033FF]/90 font-semibold">
                           {policy.date}
                         </span>
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h3 className="text-xl font-semibold text-[#0033FF] mb-2">
                         {policy.title}
                       </h3>
-                      <p className="text-gray-600">{policy.description}</p>
+                      <p className="text-[#0033FF]/90">{policy.description}</p>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                      >
                         Xem chi tiết
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-[#977DFF] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#977DFF] hover:to-[#0033FF] hover:text-white hover:border-0 transition-all duration-300"
+                      >
                         Tải về
                       </Button>
                     </div>
@@ -401,50 +470,70 @@ export default function HoatDongPage() {
         {/* Hợp tác Quốc tế */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <Globe className="w-8 h-8 text-emerald-600 mr-3" />
-            <h2 className="text-3xl font-bold text-gray-900">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#977DFF] to-[#FFCCF2] rounded-lg flex items-center justify-center mr-3">
+              <Globe className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#0033FF]">
               Hợp tác Quốc tế
             </h2>
           </div>
           <div className="space-y-6">
-            {cooperations.map((cooperation) => (
+            {cooperations.map((cooperation, index) => (
               <Card
                 key={cooperation.id}
-                className="hover:shadow-lg transition-shadow"
+                className="hover:shadow-lg transition-shadow bg-white border-[#977DFF]/30 hover:border-[#FFCCF2]/50"
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
-                        <Badge variant="outline">{cooperation.type}</Badge>
+                        <Badge
+                          variant="outline"
+                          className="border-[#F2E6EE] text-[#0033FF] bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/20"
+                        >
+                          {cooperation.type}
+                        </Badge>
                         <Badge
                           variant={
                             cooperation.status === "Đang thực hiện"
                               ? "default"
                               : "secondary"
                           }
+                          className={
+                            cooperation.status === "Đang thực hiện"
+                              ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0"
+                              : "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0"
+                          }
                         >
                           {cooperation.status}
                         </Badge>
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h3 className="text-xl font-semibold text-[#0033FF] mb-2">
                         {cooperation.title}
                       </h3>
-                      <p className="text-emerald-600 font-medium mb-2">
+                      <p className="text-[#0600AF] font-medium mb-2">
                         🤝 {cooperation.partner}
                       </p>
-                      <p className="text-gray-600 mb-3">
+                      <p className="text-[#0033FF]/90 mb-3">
                         {cooperation.description}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-[#0033FF]/80 font-medium">
                         <strong>Bắt đầu:</strong> {cooperation.startDate}
                       </p>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                      >
                         Xem chi tiết
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-[#977DFF] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#977DFF] hover:to-[#0033FF] hover:text-white hover:border-0 transition-all duration-300"
+                      >
                         Báo cáo tiến độ
                       </Button>
                     </div>

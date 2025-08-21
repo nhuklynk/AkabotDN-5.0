@@ -10,3 +10,5 @@ build/
 .next/
 .vscode/
 .idea/
+.vs/
+.vs/slnx.sqlite

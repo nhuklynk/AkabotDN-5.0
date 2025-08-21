@@ -25,15 +25,15 @@ export default function GioiThieuPage() {
   const [activeTab, setActiveTab] = useState("about");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b border-[#FFCCF2]/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-emerald-900 mb-4">
+            <h1 className="text-4xl font-bold text-[#0033FF] mb-4">
               Giới thiệu Hiệp hội Dữ liệu Quốc gia Việt Nam
             </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-[#0600AF] max-w-3xl mx-auto">
               Tìm hiểu về sứ mệnh, tầm nhìn và cơ cấu tổ chức của Hiệp hội Dữ
               liệu Quốc gia Việt Nam
             </p>
@@ -53,8 +53,8 @@ export default function GioiThieuPage() {
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center gap-2 px-6 py-3 ${
                   activeTab === item.id
-                    ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                    : "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                    ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0"
+                    : "border-[#FFCCF2]/40 text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2]/20 hover:to-[#F2E6EE] hover:border-[#977DFF]/50 transition-all duration-300"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -71,17 +71,17 @@ export default function GioiThieuPage() {
             <div className="space-y-8 animate-in fade-in duration-500">
               {/* Mission & Vision */}
               <div className="grid md:grid-cols-2 gap-8">
-                <Card className="border-emerald-200 shadow-lg">
+                <Card className="border-[#FFCCF2]/40 shadow-lg bg-white hover:border-[#977DFF]/50 transition-all duration-300">
                   <CardContent className="p-8">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <Target className="w-6 h-6 text-emerald-600" />
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center">
+                        <Target className="w-6 h-6 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold text-emerald-900">
+                      <h3 className="text-2xl font-bold text-[#0033FF]">
                         Sứ mệnh
                       </h3>
                     </div>
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-[#0600AF]/90 leading-relaxed">
                       Kết nối các cơ quan quản lý, doanh nghiệp, tổ chức trong
                       lĩnh vực dữ liệu và khoa học công nghệ. Xây dựng các hoạt
                       động thiết thực nhằm lan tỏa tri thức, kết nối cộng đồng,
@@ -91,17 +91,17 @@ export default function GioiThieuPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-emerald-200 shadow-lg">
+                <Card className="border-[#977DFF]/40 shadow-lg bg-white hover:border-[#FFCCF2]/50 transition-all duration-300">
                   <CardContent className="p-8">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Target className="w-6 h-6 text-blue-600" />
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#977DFF] to-[#0033FF] rounded-full flex items-center justify-center">
+                        <Target className="w-6 h-6 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold text-emerald-900">
+                      <h3 className="text-2xl font-bold text-[#0033FF]">
                         Tầm nhìn
                       </h3>
                     </div>
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-[#0600AF]/90 leading-relaxed">
                       Trở thành tổ chức hàng đầu trong việc kiến thiết hệ sinh
                       thái dữ liệu Việt Nam, góp phần xây dựng nền kinh tế số
                       phát triển bền vững và nâng cao năng lực cạnh tranh quốc
@@ -112,55 +112,51 @@ export default function GioiThieuPage() {
               </div>
 
               {/* Core Values */}
-              <Card className="border-emerald-200 shadow-lg">
+              <Card className="border-[#FFCCF2]/40 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                      <Heart className="w-6 h-6 text-red-600" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] rounded-full flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-[#977DFF]" />
                     </div>
-                    <h3 className="text-2xl font-bold text-emerald-900">
+                    <h3 className="text-2xl font-bold text-[#0033FF]">
                       Giá trị cốt lõi
                     </h3>
                   </div>
                   <div className="grid md:grid-cols-3 gap-6">
-                    <div className="text-center p-6 bg-emerald-50 rounded-lg">
-                      <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-emerald-600">
-                          1
-                        </span>
+                    <div className="text-center p-6 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-lg border border-[#FFCCF2]/40 hover:from-[#FFCCF2]/40 hover:to-[#F2E6EE] transition-all duration-300">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl font-bold text-white">1</span>
                       </div>
-                      <h4 className="font-semibold text-emerald-900 mb-2">
+                      <h4 className="font-semibold text-[#0033FF] mb-2">
                         Minh bạch
                       </h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-[#0600AF]/90">
                         Đảm bảo tính minh bạch trong mọi hoạt động và quy trình
                         xử lý dữ liệu
                       </p>
                     </div>
-                    <div className="text-center p-6 bg-blue-50 rounded-lg">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-blue-600">
-                          2
-                        </span>
+                    <div className="text-center p-6 bg-gradient-to-br from-[#FFCCF2]/30 to-[#F2E6EE] rounded-lg border border-[#FFCCF2]/40 hover:from-[#F2E6EE] hover:to-[#FFCCF2]/40 transition-all duration-300">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#977DFF] to-[#0033FF] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl font-bold text-white">2</span>
                       </div>
-                      <h4 className="font-semibold text-emerald-900 mb-2">
+                      <h4 className="font-semibold text-[#0033FF] mb-2">
                         Đổi mới
                       </h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-[#0600AF]/90">
                         Tiên phong trong việc ứng dụng công nghệ và phương pháp
                         mới
                       </p>
                     </div>
-                    <div className="text-center p-6 bg-purple-50 rounded-lg">
-                      <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-purple-600">
+                    <div className="text-center p-6 bg-gradient-to-br from-[#F2E6EE] to-[#977DFF]/30 rounded-lg border border-[#977DFF]/40 hover:from-[#977DFF]/40 hover:to-[#F2E6EE] transition-all duration-300">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl font-bold text-[#977DFF]">
                           3
                         </span>
                       </div>
-                      <h4 className="font-semibold text-emerald-900 mb-2">
+                      <h4 className="font-semibold text-[#0033FF] mb-2">
                         Hợp tác
                       </h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-[#0600AF]/90">
                         Xây dựng mối quan hệ đối tác bền vững và hiệu quả
                       </p>
                     </div>
@@ -169,28 +165,28 @@ export default function GioiThieuPage() {
               </Card>
 
               {/* Formation History */}
-              <Card className="border-emerald-200 shadow-lg">
+              <Card className="border-[#977DFF]/40 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
-                      <History className="w-6 h-6 text-amber-600" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center">
+                      <History className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-emerald-900">
+                    <h3 className="text-2xl font-bold text-[#0033FF]">
                       Lịch sử hình thành
                     </h3>
                   </div>
                   <div className="space-y-6">
                     <div className="flex gap-4">
                       <div className="flex-shrink-0">
-                        <Badge className="bg-emerald-100 text-emerald-800 px-3 py-1">
+                        <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#F2E6EE] text-[#0033FF] px-3 py-1 border-0 font-semibold">
                           2024
                         </Badge>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-emerald-900 mb-2">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
                           Thành lập Hiệp hội
                         </h4>
-                        <p className="text-gray-700">
+                        <p className="text-[#0600AF]/90">
                           Hiệp hội Dữ liệu Quốc gia Việt Nam được thành lập với
                           sự tham gia của các cơ quan, tổ chức hàng đầu trong
                           lĩnh vực dữ liệu và công nghệ thông tin.
@@ -199,15 +195,15 @@ export default function GioiThieuPage() {
                     </div>
                     <div className="flex gap-4">
                       <div className="flex-shrink-0">
-                        <Badge className="bg-blue-100 text-blue-800 px-3 py-1">
+                        <Badge className="bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-3 py-1 border-0 font-semibold">
                           2025
                         </Badge>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-emerald-900 mb-2">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
                           Mở rộng hoạt động
                         </h4>
-                        <p className="text-gray-700">
+                        <p className="text-[#0600AF]/90">
                           Triển khai các chương trình hợp tác quốc tế, xây dựng
                           các sản phẩm dữ liệu tiên phong và tổ chức các sự kiện
                           chuyên ngành quy mô lớn.
@@ -223,16 +219,16 @@ export default function GioiThieuPage() {
           {/* Ban Chấp hành Section */}
           {activeTab === "executive" && (
             <div className="animate-in fade-in duration-500">
-              <Card className="border-emerald-200 shadow-lg">
+              <Card className="border-[#FFCCF2]/40 shadow-lg bg-white">
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-emerald-900 mb-6 text-center">
+                  <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     Sơ đồ tổ chức Ban Chấp hành
                   </h3>
-                  <div className="bg-gradient-to-br from-emerald-50 to-blue-50 p-8 rounded-lg">
+                  <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-8 rounded-lg border border-[#FFCCF2]/40">
                     <div className="text-center space-y-8">
                       {/* Chủ tịch */}
                       <div className="flex justify-center">
-                        <div className="bg-emerald-600 text-white px-6 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] text-white px-6 py-4 rounded-lg shadow-lg">
                           <div className="font-bold text-lg">
                             CHỦ TỊCH HIỆP HỘI
                           </div>
@@ -244,11 +240,11 @@ export default function GioiThieuPage() {
 
                       {/* Phó Chủ tịch */}
                       <div className="flex justify-center gap-8">
-                        <div className="bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#977DFF] to-[#0033FF] text-white px-6 py-4 rounded-lg shadow-lg">
                           <div className="font-bold">PHÓ CHỦ TỊCH</div>
                           <div className="text-sm opacity-90">Thường trực</div>
                         </div>
-                        <div className="bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-6 py-4 rounded-lg shadow-lg border border-[#FFCCF2]/40">
                           <div className="font-bold">PHÓ CHỦ TỊCH</div>
                           <div className="text-sm opacity-90">Kiêm nhiệm</div>
                         </div>
@@ -256,15 +252,15 @@ export default function GioiThieuPage() {
 
                       {/* Các ban chuyên môn */}
                       <div className="grid md:grid-cols-3 gap-4">
-                        <div className="bg-purple-500 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
                           <div className="font-semibold">Ban Nghiên cứu</div>
                           <div className="text-sm opacity-90">& Phát triển</div>
                         </div>
-                        <div className="bg-purple-500 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
                           <div className="font-semibold">Ban Hợp tác</div>
                           <div className="text-sm opacity-90">Quốc tế</div>
                         </div>
-                        <div className="bg-purple-500 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
                           <div className="font-semibold">Ban Truyền thông</div>
                           <div className="text-sm opacity-90">& Sự kiện</div>
                         </div>
@@ -272,7 +268,7 @@ export default function GioiThieuPage() {
 
                       {/* Văn phòng */}
                       <div className="flex justify-center">
-                        <div className="bg-gray-600 text-white px-6 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#977DFF] to-[#0033FF] text-white px-6 py-4 rounded-lg shadow-lg">
                           <div className="font-bold">VĂN PHÒNG HIỆP HỘI</div>
                           <div className="text-sm opacity-90">
                             Điều hành hoạt động hàng ngày
@@ -289,16 +285,16 @@ export default function GioiThieuPage() {
           {/* Ban Thường vụ Section */}
           {activeTab === "standing" && (
             <div className="animate-in fade-in duration-500">
-              <Card className="border-emerald-200 shadow-lg">
+              <Card className="border-[#977DFF]/40 shadow-lg bg-white">
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-emerald-900 mb-6 text-center">
+                  <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     Sơ đồ tổ chức Ban Thường vụ
                   </h3>
-                  <div className="bg-gradient-to-br from-blue-50 to-emerald-50 p-8 rounded-lg">
+                  <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-8 rounded-lg border border-[#FFCCF2]/40">
                     <div className="text-center space-y-6">
                       {/* Trưởng ban */}
                       <div className="flex justify-center">
-                        <div className="bg-emerald-700 text-white px-8 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] text-white px-8 py-4 rounded-lg shadow-lg">
                           <div className="font-bold text-lg">
                             TRƯỞNG BAN THƯỜNG VỤ
                           </div>
@@ -310,37 +306,37 @@ export default function GioiThieuPage() {
 
                       {/* Các thành viên thường vụ */}
                       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
                           <div className="font-semibold text-sm">
                             Phó Chủ tịch
                           </div>
                           <div className="text-xs opacity-90">Thường trực</div>
                         </div>
-                        <div className="bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
                           <div className="font-semibold text-sm">
                             Tổng Thư ký
                           </div>
                           <div className="text-xs opacity-90">Điều hành</div>
                         </div>
-                        <div className="bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
                           <div className="font-semibold text-sm">
                             Phó Tổng Thư ký
                           </div>
                           <div className="text-xs opacity-90">Hỗ trợ</div>
                         </div>
-                        <div className="bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#977DFF] to-[#FFCCF2] text-white px-4 py-3 rounded-lg shadow">
                           <div className="font-semibold text-sm">Ủy viên</div>
                           <div className="text-xs opacity-90">Thường vụ</div>
                         </div>
                       </div>
 
                       {/* Nhiệm vụ */}
-                      <div className="bg-white p-6 rounded-lg shadow border-2 border-emerald-200">
-                        <h4 className="font-bold text-emerald-900 mb-4">
+                      <div className="bg-white p-6 rounded-lg shadow border-2 border-[#FFCCF2]/40">
+                        <h4 className="font-bold text-[#0033FF] mb-4">
                           Nhiệm vụ chính
                         </h4>
                         <div className="grid md:grid-cols-2 gap-4 text-left">
-                          <ul className="space-y-2 text-sm text-gray-700">
+                          <ul className="space-y-2 text-sm text-[#0600AF]/90">
                             <li>
                               • Điều hành hoạt động hàng ngày của Hiệp hội
                             </li>
@@ -351,7 +347,7 @@ export default function GioiThieuPage() {
                               • Phối hợp với các cơ quan, tổ chức thành viên
                             </li>
                           </ul>
-                          <ul className="space-y-2 text-sm text-gray-700">
+                          <ul className="space-y-2 text-sm text-[#0600AF]/90">
                             <li>• Tổ chức các hoạt động chuyên môn</li>
                             <li>• Quản lý tài chính và nhân sự</li>
                             <li>• Báo cáo định kỳ với Ban Chấp hành</li>
@@ -368,19 +364,19 @@ export default function GioiThieuPage() {
           {/* Điều lệ NDA Section */}
           {activeTab === "charter" && (
             <div className="animate-in fade-in duration-500">
-              <Card className="border-emerald-200 shadow-lg">
+              <Card className="border-[#FFCCF2]/40 shadow-lg bg-white">
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-emerald-900 mb-6 text-center">
+                  <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     Điều lệ Hiệp hội Dữ liệu Quốc gia Việt Nam
                   </h3>
 
                   <div className="grid lg:grid-cols-2 gap-8">
                     {/* Charter Preview */}
                     <div className="space-y-4">
-                      <h4 className="text-lg font-semibold text-emerald-900">
+                      <h4 className="text-lg font-semibold text-[#0033FF]">
                         Trang đầu Điều lệ
                       </h4>
-                      <div className="border-2 border-emerald-200 rounded-lg p-4 bg-gray-50">
+                      <div className="border-2 border-[#FFCCF2]/40 rounded-lg p-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/20">
                         <Image
                           src="/vietnamese-legal-document.png"
                           alt="Điều lệ NDA - Trang 1"
@@ -393,37 +389,47 @@ export default function GioiThieuPage() {
 
                     {/* Charter Information */}
                     <div className="space-y-6">
-                      <div className="bg-emerald-50 p-6 rounded-lg">
-                        <h4 className="text-lg font-semibold text-emerald-900 mb-4">
+                      <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-6 rounded-lg border border-[#FFCCF2]/40">
+                        <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
                           Thông tin Điều lệ
                         </h4>
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between">
-                            <span className="font-medium">Tên tài liệu:</span>
-                            <span>
+                            <span className="font-medium text-[#0033FF]">
+                              Tên tài liệu:
+                            </span>
+                            <span className="text-[#0600AF]/90">
                               Điều lệ Hiệp hội Dữ liệu Quốc gia Việt Nam
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="font-medium">Ngày ban hành:</span>
-                            <span>15/03/2024</span>
+                            <span className="font-medium text-[#0033FF]">
+                              Ngày ban hành:
+                            </span>
+                            <span className="text-[#0600AF]/90">
+                              15/03/2024
+                            </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="font-medium">Số trang:</span>
-                            <span>24 trang</span>
+                            <span className="font-medium text-[#0033FF]">
+                              Số trang:
+                            </span>
+                            <span className="text-[#0600AF]/90">24 trang</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="font-medium">Định dạng:</span>
-                            <span>PDF</span>
+                            <span className="font-medium text-[#0033FF]">
+                              Định dạng:
+                            </span>
+                            <span className="text-[#0600AF]/90">PDF</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="bg-blue-50 p-6 rounded-lg">
-                        <h4 className="text-lg font-semibold text-emerald-900 mb-4">
+                      <div className="bg-gradient-to-br from-[#FFCCF2]/20 to-[#F2E6EE] p-6 rounded-lg border border-[#FFCCF2]/40">
+                        <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
                           Nội dung chính
                         </h4>
-                        <ul className="space-y-2 text-sm text-gray-700">
+                        <ul className="space-y-2 text-sm text-[#0600AF]/90">
                           <li>• Chương I: Những quy định chung</li>
                           <li>• Chương II: Mục tiêu, nhiệm vụ và quyền hạn</li>
                           <li>• Chương III: Thành viên Hiệp hội</li>
@@ -435,11 +441,11 @@ export default function GioiThieuPage() {
                       </div>
 
                       <div className="text-center">
-                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3">
+                        <Button className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-8 py-3 border-0 transition-all duration-300">
                           <Download className="w-5 h-5 mr-2" />
                           Tải xuống Điều lệ đầy đủ (PDF)
                         </Button>
-                        <p className="text-sm text-gray-600 mt-2">
+                        <p className="text-sm text-[#0600AF]/90 mt-2">
                           Kích thước: 2.4 MB • Cập nhật: 15/03/2024
                         </p>
                       </div>

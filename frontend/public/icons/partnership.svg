@@ -1,0 +1,52 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="handshake" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFCCF2;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#977DFF;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="partner1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F2E6EE;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="partner2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Partner 1 -->
+  <circle cx="80" cy="100" r="40" fill="url(#partner1)" stroke="#FFCCF2" stroke-width="3"/>
+  <text x="80" y="105" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="12" font-weight="bold">VN</text>
+  
+  <!-- Partner 2 -->
+  <circle cx="220" cy="100" r="40" fill="url(#partner2)" stroke="#977DFF" stroke-width="3"/>
+  <text x="220" y="105" text-anchor="middle" fill="white" font-family="Arial" font-size="12" font-weight="bold">Partner</text>
+  
+  <!-- Handshake Connection -->
+  <path d="M 120 100 Q 150 80 180 100" stroke="url(#handshake)" stroke-width="4" fill="none" opacity="0.8"/>
+  <path d="M 120 100 Q 150 120 180 100" stroke="url(#handshake)" stroke-width="4" fill="none" opacity="0.8"/>
+  
+  <!-- Connection Nodes -->
+  <circle cx="150" cy="90" r="8" fill="url(#handshake)" opacity="0.8"/>
+  <circle cx="150" cy="110" r="8" fill="url(#handshake)" opacity="0.8"/>
+  
+  <!-- Data Flow -->
+  <path d="M 80 60 Q 150 40 220 60" stroke="#FFCCF2" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="5,3"/>
+  <path d="M 80 140 Q 150 160 220 140" stroke="#977DFF" stroke-width="2" fill="none" opacity="0.6" stroke-dasharray="5,3"/>
+  
+  <!-- Partnership Benefits -->
+  <rect x="130" y="30" width="40" height="20" fill="#FFCCF2" opacity="0.6" rx="4"/>
+  <text x="150" y="43" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8">Win-Win</text>
+  
+  <rect x="130" y="150" width="40" height="20" fill="#977DFF" opacity="0.6" rx="4"/>
+  <text x="150" y="163" text-anchor="middle" fill="white" font-family="Arial" font-size="8">Growth</text>
+  
+  <!-- Floating Elements -->
+  <circle cx="50" cy="50" r="6" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="250" cy="50" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="50" cy="150" r="6" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="250" cy="150" r="6" fill="#977DFF" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="150" y="20" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="14" font-weight="bold">Hợp tác Đối tác</text>
+</svg>
