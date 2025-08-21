@@ -74,7 +74,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left visual panel */}
-      <div className="hidden md:flex flex-col justify-between bg-gradient-primary p-8 text-foreground">
+      <div className="hidden md:flex flex-col justify-between bg-gradient-primary p-8 text-white">
         <div>
           <h2 className="text-3xl font-semibold">Tạo tài khoản mới</h2>
           <p className="text-white/80 mt-2">Tham gia hệ thống CMS cộng đồng.</p>
