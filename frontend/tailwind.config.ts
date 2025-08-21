@@ -8,10 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        "roboto-condensed": ["Roboto Condensed", "sans-serif"],
+        "roboto-condensed-light": ["Roboto Condensed", "sans-serif"],
+        "roboto-condensed-regular": ["Roboto Condensed", "sans-serif"],
+        "roboto-condensed-bold": ["Roboto Condensed", "sans-serif"],
+        sans: ["Roboto Condensed", "sans-serif"],
+        serif: ["Roboto Condensed", "serif"],
+        mono: ["Roboto Mono", "monospace"],
+      },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
