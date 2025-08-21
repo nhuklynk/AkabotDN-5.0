@@ -36,25 +36,18 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
-              href="#"
+              href="/about-us"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               GIỚI THIỆU
             </Link>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors">
-                HOẠT ĐỘNG <ChevronDown className="ml-1 h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Hoạt động của Hiệp hội</DropdownMenuItem>
-                <DropdownMenuItem>Hoạt động của Hội viên</DropdownMenuItem>
-                <DropdownMenuItem>Sự kiện</DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/bai-dang">Bài đăng</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link
+              href="/activities"
+              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+            >
+              HOẠT ĐỘNG CỦA HIỆP HỘI
+            </Link>
 
             <Link
               href="#"
@@ -63,19 +56,26 @@ export function Header() {
               VĂN BẢN HIỆP HỘI
             </Link>
             <Link
-              href="#"
+              href="/digital-product"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               SẢN PHẨM SỐ
             </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center text-sm font-medium text-foreground hover:text-primary transition-colors">
+                HỘI VIÊN <ChevronDown className="ml-1 h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <Link href="/members/lists">Danh sách hội viên</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/members/register">Đăng ký hội viên</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Link
-              href="#"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-            >
-              HỘI VIÊN
-            </Link>
-            <Link
-              href="#"
+              href="/contact"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               LIÊN HỆ
