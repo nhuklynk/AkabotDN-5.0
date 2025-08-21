@@ -49,11 +49,21 @@ export function NewsSection() {
               key={index}
               className="group hover:shadow-lg transition-all duration-300"
             >
-              <div className="aspect-video overflow-hidden rounded-t-lg">
+              <div
+                className={`aspect-video overflow-hidden rounded-t-lg ${
+                  item.image === "/vietnam-data-association-meeting.png"
+                    ? "bg-gradient-accent p-2"
+                    : ""
+                }`}
+              >
                 <img
                   src={item.image || "/placeholder.svg"}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className={`w-full h-full group-hover:scale-105 transition-transform duration-300 ${
+                    item.image === "/vietnam-data-association-meeting.png"
+                      ? "object-contain"
+                      : "object-cover"
+                  }`}
                 />
               </div>
               <CardHeader className="pb-3">
