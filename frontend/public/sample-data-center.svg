@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="dcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#141e30;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#243b55;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="300" fill="url(#dcGrad)"/>
+  
+  <!-- Server racks -->
+  <g fill="#4a90e2" opacity="0.8">
+    <!-- Rack 1 -->
+    <rect x="80" y="120" width="40" height="120" rx="3"/>
+    <rect x="85" y="130" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="85" y="145" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="85" y="160" width="30" height="8" fill="#ffff00" opacity="0.6"/>
+    <rect x="85" y="175" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="85" y="190" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="85" y="205" width="30" height="8" fill="#ff0000" opacity="0.6"/>
+    <rect x="85" y="220" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    
+    <!-- Rack 2 -->
+    <rect x="140" y="120" width="40" height="120" rx="3"/>
+    <rect x="145" y="130" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="145" y="145" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="145" y="160" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="145" y="175" width="30" height="8" fill="#ffff00" opacity="0.6"/>
+    <rect x="145" y="190" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="145" y="205" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="145" y="220" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    
+    <!-- Rack 3 -->
+    <rect x="200" y="120" width="40" height="120" rx="3"/>
+    <rect x="205" y="130" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="205" y="145" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="205" y="160" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="205" y="175" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="205" y="190" width="30" height="8" fill="#ffff00" opacity="0.6"/>
+    <rect x="205" y="205" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="205" y="220" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    
+    <!-- Rack 4 -->
+    <rect x="260" y="120" width="40" height="120" rx="3"/>
+    <rect x="265" y="130" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="265" y="145" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="265" y="160" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="265" y="175" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="265" y="190" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="265" y="205" width="30" height="8" fill="#00ff00" opacity="0.6"/>
+    <rect x="265" y="220" width="30" height="8" fill="#ff0000" opacity="0.6"/>
+  </g>
+  
+  <!-- Network cables -->
+  <g stroke="#00ffff" stroke-width="2" fill="none" opacity="0.7">
+    <path d="M100 250 Q 160 265 160 250"/>
+    <path d="M160 250 Q 220 265 220 250"/>
+    <path d="M220 250 Q 280 265 280 250"/>
+  </g>
+  
+  <!-- Status indicators -->
+  <g fill="#00ff00">
+    <circle cx="320" cy="140" r="3"/>
+    <circle cx="320" cy="160" r="3"/>
+    <circle cx="320" cy="180" r="3"/>
+  </g>
+  <g fill="#ffff00">
+    <circle cx="320" cy="200" r="3"/>
+  </g>
+  <g fill="#ff0000">
+    <circle cx="320" cy="220" r="3"/>
+  </g>
+  
+  <!-- Monitoring display -->
+  <rect x="320" y="100" width="60" height="40" fill="#000000" opacity="0.8" rx="3"/>
+  <text x="350" y="115" text-anchor="middle" fill="#00ff00" font-size="8">CPU: 78%</text>
+  <text x="350" y="125" text-anchor="middle" fill="#00ff00" font-size="8">RAM: 65%</text>
+  <text x="350" y="135" text-anchor="middle" fill="#00ff00" font-size="8">NET: OK</text>
+  
+  <!-- Title -->
+  <rect x="50" y="30" width="300" height="50" fill="#ffffff" opacity="0.9" rx="8"/>
+  <text x="200" y="50" text-anchor="middle" fill="#333" font-size="18" font-weight="bold">Trung tâm Dữ liệu Quốc gia</text>
+  <text x="200" y="70" text-anchor="middle" fill="#666" font-size="12">Hạ tầng công nghệ thông tin hiện đại</text>
+</svg>

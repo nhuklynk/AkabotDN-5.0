@@ -50,10 +50,10 @@ export function Header() {
             </Link>
 
             <Link
-              href="#"
+              href="/documents"
               className="text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
-              VĂN BẢN HIỆP HỘI
+              TƯ LIỆU
             </Link>
             <Link
               href="/digital-product"
