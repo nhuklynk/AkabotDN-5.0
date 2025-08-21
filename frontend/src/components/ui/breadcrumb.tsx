@@ -22,7 +22,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
 }
 
 function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
-  return (
+        return (
     <li
       data-slot="breadcrumb-item"
       className={cn("inline-flex items-center gap-1.5", className)}
@@ -59,7 +59,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       className={cn("text-foreground font-normal", className)}
       {...props}
     />
-  )
+        )
 }
 
 function BreadcrumbSeparator({
