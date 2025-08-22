@@ -24,7 +24,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 const navigation = [
   {
     name: "Bảng điều khiển",
-    href: "/dashboard-admin",
+    href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
