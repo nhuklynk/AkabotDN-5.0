@@ -163,12 +163,13 @@ const partners = [
   },
 ];
 
-export default function DigitalProductPage({
+export default async function DigitalProductPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const product = products[params.slug as keyof typeof products];
+  const { slug } = await params;
+  const product = products[slug as keyof typeof products];
 
   if (!product) {
     notFound();
