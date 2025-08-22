@@ -17,8 +17,8 @@ const mockPosts = [
     date: "2025-08-15",
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Du lịch số",
-    image: "/vietnam-tourism-platform.png",
-    slug: "visit-vietnam-buoc-tien-chien-luoc",
+    image: "/vietnam-tourism-platform.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const mockPosts = [
     date: "2025-08-10",
     author: "Ban Biên tập",
     category: "Công nghiệp dữ liệu",
-    image: "/international-data-conference.png",
+    image: "/international-data-conference.svg",
     slug: "chuyen-gia-quoc-te-hien-ke-phat-trien",
   },
   {
@@ -41,7 +41,7 @@ const mockPosts = [
     date: "2025-08-05",
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Trí tuệ nhân tạo",
-    image: "/vietnam-ai-competition-tv.png",
+    image: "/vietnam-ai-competition-tv.svg",
     slug: "ai-thuc-chien-cuoc-thi-tri-tue-nhan-tao",
   },
   {
@@ -53,7 +53,7 @@ const mockPosts = [
     date: "2025-08-03",
     author: "Ban Chấp hành",
     category: "Tổ chức",
-    image: "/vietnam-data-association-structure.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "thanh-lap-van-phong-ban-chuyen-mon",
   },
   {
@@ -65,7 +65,7 @@ const mockPosts = [
     date: "2025-08-01",
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Pháp luật",
-    image: "/vietnam-data-sharing-meeting.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "hoan-thien-van-ban-quy-pham-phap-luat",
   },
   {
@@ -76,7 +76,7 @@ const mockPosts = [
     date: "2025-07-28",
     author: "Ban Tổ chức",
     category: "Truy xuất nguồn gốc",
-    image: "/vietnam-traceability-panel.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "goc-nhin-da-chieu-hoi-thao-truy-xuat",
   },
   {
@@ -88,7 +88,7 @@ const mockPosts = [
     date: "2025-07-25",
     author: "Phòng Truyền thông",
     category: "Hợp tác",
-    image: "/pharma-partnership-signing.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "ky-ket-hop-tac-pila-eco-pharma",
   },
   {
@@ -100,7 +100,7 @@ const mockPosts = [
     date: "2025-07-20",
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Sản phẩm số",
-    image: "/vietnam-data-exhibition.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "khang-dinh-noi-luc-cong-nghe-viet",
   },
   {
@@ -112,7 +112,7 @@ const mockPosts = [
     date: "2025-07-15",
     author: "Ban Biên tập",
     category: "Hệ sinh thái",
-    image: "/vietnam-data-ecosystem.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "kien-thiet-he-sinh-thai-du-lieu-viet-nam",
   },
   {
@@ -123,7 +123,7 @@ const mockPosts = [
     date: "2025-07-10",
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Kinh tế số",
-    image: "/vietnam-data-mining-economy.png",
+    image: "/vietnam-data-sharing-meeting.svg",
     slug: "khai-pha-du-lieu-mo-duong-kinh-te",
   },
 ];

@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-org" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="president" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF" />
+      <stop offset="100%" style="stop-color:#1E3A8A" />
+    </linearGradient>
+    <linearGradient id="vicepresident" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED" />
+      <stop offset="100%" style="stop-color:#6D28D9" />
+    </linearGradient>
+    <linearGradient id="department" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626" />
+      <stop offset="100%" style="stop-color:#B91C1C" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-org)"/>
+  
+  <!-- Association Structure Title -->
+  <text x="400" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1E40AF">
+    CƠ CẤU TỔ CHỨC HIỆP HỘI DỮ LIỆU QUỐC GIA
+  </text>
+  
+  <!-- President Level -->
+  <g transform="translate(350,80)">
+    <rect x="0" y="0" width="100" height="60" rx="8" fill="url(#president)" opacity="0.9"/>
+    <text x="50" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">CHỦ TỊCH</text>
+    <text x="50" y="40" text-anchor="middle" font-size="10" fill="#FFFFFF">HIỆP HỘI</text>
+    
+    <!-- President Icon -->
+    <circle cx="50" cy="50" r="8" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="50" cy="47" r="3" fill="#1E40AF"/>
+    <path d="M45,52 Q50,57 55,52" stroke="#1E40AF" stroke-width="1" fill="none"/>
+  </g>
+  
+  <!-- Vice Presidents Level -->
+  <g transform="translate(150,180)">
+    <rect x="0" y="0" width="90" height="50" rx="6" fill="url(#vicepresident)" opacity="0.8"/>
+    <text x="45" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">PHÓ CHỦ TỊCH</text>
+    <text x="45" y="35" text-anchor="middle" font-size="9" fill="#FFFFFF">THƯỜNG TRỰC</text>
+    
+    <circle cx="45" cy="42" r="6" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="45" cy="40" r="2" fill="#7C3AED"/>
+  </g>
+  
+  <g transform="translate(560,180)">
+    <rect x="0" y="0" width="90" height="50" rx="6" fill="url(#vicepresident)" opacity="0.8"/>
+    <text x="45" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">PHÓ CHỦ TỊCH</text>
+    <text x="45" y="35" text-anchor="middle" font-size="9" fill="#FFFFFF">CHUYÊN TRÁCH</text>
+    
+    <circle cx="45" cy="42" r="6" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="45" cy="40" r="2" fill="#7C3AED"/>
+  </g>
+  
+  <!-- Organizational Chart Connections -->
+  <g stroke="#4B5563" stroke-width="2" opacity="0.6" fill="none">
+    <!-- From President to Vice Presidents -->
+    <line x1="400" y1="140" x2="400" y2="160"/>
+    <line x1="400" y1="160" x2="195" y2="160"/>
+    <line x1="400" y1="160" x2="605" y2="160"/>
+    <line x1="195" y1="160" x2="195" y2="180"/>
+    <line x1="605" y1="160" x2="605" y2="180"/>
+    
+    <!-- From Vice Presidents to Departments -->
+    <line x1="195" y1="230" x2="195" y2="250"/>
+    <line x1="195" y1="250" x2="400" y2="250"/>
+    <line x1="605" y1="230" x2="605" y2="250"/>
+    
+    <!-- To Department Level -->
+    <line x1="120" y1="250" x2="120" y2="280"/>
+    <line x1="280" y1="250" x2="280" y2="280"/>
+    <line x1="520" y1="250" x2="520" y2="280"/>
+    <line x1="680" y1="250" x2="680" y2="280"/>
+  </g>
+  
+  <!-- Executive Board -->
+  <g transform="translate(325,260)">
+    <rect x="0" y="0" width="150" height="40" rx="6" fill="#059669" opacity="0.8"/>
+    <text x="75" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#FFFFFF">BAN CHẤP HÀNH</text>
+    <text x="75" y="32" text-anchor="middle" font-size="9" fill="#FFFFFF">HIỆP HỘI</text>
+  </g>
+  
+  <!-- Departments Level -->
+  <g transform="translate(50,320)">
+    <rect x="0" y="0" width="80" height="50" rx="5" fill="url(#department)" opacity="0.8"/>
+    <text x="40" y="15" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">VĂN PHÒNG</text>
+    <text x="40" y="28" text-anchor="middle" font-size="8" fill="#FFFFFF">ĐIỀU HÀNH</text>
+    <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">HIỆP HỘI</text>
+  </g>
+  
+  <g transform="translate(200,320)">
+    <rect x="0" y="0" width="80" height="50" rx="5" fill="url(#department)" opacity="0.8"/>
+    <text x="40" y="15" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">BAN NGHIÊN</text>
+    <text x="40" y="28" text-anchor="middle" font-size="8" fill="#FFFFFF">CỨU CHÍNH</text>
+    <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">SÁCH</text>
+  </g>
+  
+  <g transform="translate(350,320)">
+    <rect x="0" y="0" width="80" height="50" rx="5" fill="url(#department)" opacity="0.8"/>
+    <text x="40" y="15" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">BAN CÔNG</text>
+    <text x="40" y="28" text-anchor="middle" font-size="8" fill="#FFFFFF">NGHỆ VÀ</text>
+    <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">ỨNG DỤNG</text>
+  </g>
+  
+  <g transform="translate(500,320)">
+    <rect x="0" y="0" width="80" height="50" rx="5" fill="url(#department)" opacity="0.8"/>
+    <text x="40" y="15" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">BAN QUAN</text>
+    <text x="40" y="28" text-anchor="middle" font-size="8" fill="#FFFFFF">HỆ ĐỐI TÁC</text>
+    <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">& HỢP TÁC</text>
+  </g>
+  
+  <g transform="translate(650,320)">
+    <rect x="0" y="0" width="80" height="50" rx="5" fill="url(#department)" opacity="0.8"/>
+    <text x="40" y="15" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">BAN TRUYỀN</text>
+    <text x="40" y="28" text-anchor="middle" font-size="8" fill="#FFFFFF">THÔNG &</text>
+    <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">SỰ KIỆN</text>
+  </g>
+  
+  <!-- Members Level -->
+  <g transform="translate(100,420)">
+    <rect x="0" y="0" width="600" height="40" rx="6" fill="#10B981" opacity="0.7"/>
+    <text x="300" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">THÀNH VIÊN HIỆP HỘI</text>
+    <text x="300" y="32" text-anchor="middle" font-size="10" fill="#FFFFFF">Doanh nghiệp - Tổ chức - Cá nhân</text>
+  </g>
+  
+  <!-- Member Icons -->
+  <g transform="translate(120,470)">
+    <circle cx="20" cy="15" r="8" fill="#0369A1" opacity="0.8"/>
+    <circle cx="20" cy="10" r="3" fill="#FFFFFF"/>
+    <path d="M14,18 Q20,23 26,18" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    <text x="20" y="35" text-anchor="middle" font-size="8" fill="#0369A1">Doanh nghiệp</text>
+  </g>
+  
+  <g transform="translate(300,470)">
+    <circle cx="20" cy="15" r="8" fill="#7C2D12" opacity="0.8"/>
+    <circle cx="20" cy="10" r="3" fill="#FFFFFF"/>
+    <path d="M14,18 Q20,23 26,18" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    <text x="20" y="35" text-anchor="middle" font-size="8" fill="#7C2D12">Tổ chức</text>
+  </g>
+  
+  <g transform="translate(500,470)">
+    <circle cx="20" cy="15" r="8" fill="#059669" opacity="0.8"/>
+    <circle cx="20" cy="10" r="3" fill="#FFFFFF"/>
+    <path d="M14,18 Q20,23 26,18" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    <text x="20" y="35" text-anchor="middle" font-size="8" fill="#059669">Cá nhân</text>
+  </g>
+  
+  <g transform="translate(650,470)">
+    <circle cx="20" cy="15" r="8" fill="#7C3AED" opacity="0.8"/>
+    <circle cx="20" cy="10" r="3" fill="#FFFFFF"/>
+    <path d="M14,18 Q20,23 26,18" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    <text x="20" y="35" text-anchor="middle" font-size="8" fill="#7C3AED">Chuyên gia</text>
+  </g>
+  
+  <!-- Connection lines to members -->
+  <g stroke="#10B981" stroke-width="2" opacity="0.4" fill="none">
+    <line x1="400" y1="420" x2="400" y2="400"/>
+    <line x1="140" y1="400" x2="140" y2="470"/>
+    <line x1="320" y1="400" x2="320" y2="470"/>
+    <line x1="520" y1="400" x2="520" y2="470"/>
+    <line x1="670" y1="400" x2="670" y2="470"/>
+    <line x1="140" y1="400" x2="670" y2="400"/>
+  </g>
+  
+  <!-- Vietnam Flag Symbol -->
+  <g transform="translate(20,20)">
+    <rect x="0" y="0" width="40" height="25" fill="#DC2626"/>
+    <polygon points="20,5 22,10 27,10 23,13 25,18 20,15 15,18 17,13 13,10 18,10" fill="#FDE047"/>
+  </g>
+  
+  <!-- Document Icon -->
+  <g transform="translate(740,20)">
+    <rect x="0" y="0" width="30" height="40" rx="3" fill="#FFFFFF" stroke="#4B5563" stroke-width="1"/>
+    <line x1="5" y1="10" x2="25" y2="10" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="5" y1="16" x2="25" y2="16" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="5" y1="22" x2="20" y2="22" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="5" y1="28" x2="22" y2="28" stroke="#9CA3AF" stroke-width="1"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1E40AF">
+    Cơ cấu Tổ chức Hiệp hội Dữ liệu Quốc gia Việt Nam
+  </text>
+</svg>
+
+

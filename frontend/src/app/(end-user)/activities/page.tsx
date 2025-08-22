@@ -25,7 +25,7 @@ const events = [
     description:
       "Công bố ra mắt Nền tảng dữ liệu du lịch quốc gia Việt Nam - Visit Vietnam",
     status: "Đã diễn ra",
-    image: "/icons/activities-placeholder.svg",
+    image: "/icons/tourism-conference.svg",
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const events = [
     description:
       "Giới thiệu những nền tảng công nghệ cốt lõi của hệ sinh thái kinh tế số Việt Nam",
     status: "Đã diễn ra",
-    image: "/icons/activities-placeholder.svg",
+    image: "/icons/tourism-conference.svg",
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ const events = [
     description:
       "Sơ kết công tác 6 tháng đầu năm và xây dựng phương hướng công tác 6 tháng cuối năm 2025",
     status: "Sắp diễn ra",
-    image: "/icons/activities-placeholder.svg",
+    image: "/icons/tourism-conference.svg",
   },
 ];
 
@@ -240,7 +240,7 @@ export default function HoatDongPage() {
             {events.map((event, index) => (
               <Card
                 key={event.id}
-                className="hover:shadow-lg transition-shadow bg-white border-[#FFCCF2]/30 hover:border-[#977DFF]/50"
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
               >
                 <div className="aspect-video bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-t-lg flex items-center justify-center">
                   <img
@@ -302,7 +302,7 @@ export default function HoatDongPage() {
             {experts.map((expert, index) => (
               <Card
                 key={expert.id}
-                className="hover:shadow-lg transition-shadow bg-white border-[#977DFF]/30 hover:border-[#0033FF]/50"
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
               >
                 <CardHeader className="text-center">
                   <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-full flex items-center justify-center border border-[#FFCCF2]/40">
@@ -356,7 +356,7 @@ export default function HoatDongPage() {
             {trainings.map((training, index) => (
               <Card
                 key={training.id}
-                className="hover:shadow-lg transition-shadow bg-white border-[#0033FF]/30 hover:border-[#0600AF]/50"
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
               >
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
@@ -409,7 +409,7 @@ export default function HoatDongPage() {
             {policies.map((policy, index) => (
               <Card
                 key={policy.id}
-                className="hover:shadow-lg transition-shadow bg-white border-[#FFCCF2]/30 hover:border-[#0033FF]/50"
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

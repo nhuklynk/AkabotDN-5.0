@@ -27,6 +27,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
+import { Earth } from "./components/Earth";
 
 interface Expert {
   id: number;
@@ -51,7 +54,7 @@ export default function LandingPage() {
       subtitle: "Hiệp hội Dữ liệu Quốc gia Việt Nam",
       description:
         "Nơi kết nối, chia sẻ và phát triển hệ sinh thái dữ liệu vì một Việt Nam số mạnh mẽ và bền vững.",
-      backgroundImage: "/vietnam-data-ecosystem.svg",
+      backgroundImage: "/international-data-conference.svg",
       ctaText: "Khám phá ngay",
       ctaLink: "/digital-product",
     },
@@ -156,13 +159,13 @@ export default function LandingPage() {
         "Xây dựng hệ thống quản lý dữ liệu tập trung, an toàn và hiệu quả",
     },
     {
-      icon: <Shield className="w-8 h-8 text-[#977DFF]" />,
+      icon: <Shield className="w-8 h-8 text-[#0033FF]" />,
       title: "Bảo mật & Tuân thủ",
       description:
         "Đảm bảo an toàn thông tin và tuân thủ các quy định pháp luật",
     },
     {
-      icon: <Globe className="w-8 h-8 text-[#FFCCF2]" />,
+      icon: <Globe className="w-8 h-8 text-[#0033FF]" />,
       title: "Hợp tác Quốc tế",
       description:
         "Kết nối và chia sẻ kinh nghiệm với các tổ chức dữ liệu toàn cầu",
@@ -294,7 +297,7 @@ export default function LandingPage() {
                 <div className="container mx-auto px-4">
                   <div className="max-w-4xl">
                     <div className="space-y-6 animate-fadeInUp">
-                      <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0 px-6 py-3 text-base animate-pulse">
+                      <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-[#0033FF] border-0 px-6 py-3 text-base animate-pulse">
                         <Zap className="w-5 h-5 mr-2" />
                         {slide.subtitle}
                       </Badge>
@@ -333,7 +336,7 @@ export default function LandingPage() {
                           variant="outline"
                           className="border-2 border-[#0033FF] text-[#0033FF] hover:bg-[#0033FF] hover:text-white px-10 py-4 text-xl backdrop-blur-sm bg-white/20"
                         >
-                          Xem demo
+                          Tìm hiểu thêm
                         </Button>
                       </div>
                     </div>
@@ -499,83 +502,21 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                {/* Globe Container */}
-                <div
-                  ref={globeRef}
-                  className="relative w-full h-full bg-gradient-to-br from-[#0033FF] via-[#1a4f8a] to-[#2d1b69] rounded-full shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-1000 hover:scale-105 animate-spin"
-                  style={{
-                    animationDuration: "20s",
-                    animationIterationCount: "infinite",
-                    animationTimingFunction: "linear",
-                  }}
-                  onClick={() => (window.location.href = "/members/lists")}
-                >
-                  {/* Globe Background Pattern */}
-                  <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-8 left-12 w-16 h-16 bg-green-400 rounded-full blur-sm" />
-                    <div className="absolute top-20 right-16 w-12 h-12 bg-yellow-400 rounded-full blur-sm" />
-                    <div className="absolute bottom-16 left-8 w-20 h-20 bg-orange-400 rounded-full blur-sm" />
-                    <div className="absolute bottom-8 right-12 w-14 h-14 bg-red-400 rounded-full blur-sm" />
-                    <div className="absolute top-1/3 left-1/4 w-10 h-10 bg-purple-400 rounded-full blur-sm" />
-                    <div className="absolute top-2/3 right-1/3 w-8 h-8 bg-pink-400 rounded-full blur-sm" />
-                  </div>
-
-                  {/* Grid Lines */}
-                  <div className="absolute inset-0 opacity-20">
-                    <div className="absolute top-1/4 left-0 right-0 h-px bg-white" />
-                    <div className="absolute top-1/2 left-0 right-0 h-px bg-white" />
-                    <div className="absolute top-3/4 left-0 right-0 h-px bg-white" />
-                    <div className="absolute top-0 bottom-0 left-1/4 w-px bg-white" />
-                    <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white" />
-                    <div className="absolute top-0 bottom-0 left-3/4 w-px bg-white" />
-                  </div>
-
-                  {/* Expert Pins */}
-                  {globalExperts.map((expert, index) => (
-                    <div
-                      key={expert.id}
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2 group/pin cursor-pointer"
-                      style={{
-                        left: `${expert.position.x}%`,
-                        top: `${expert.position.y}%`,
-                      }}
-                      onMouseEnter={() => setSelectedExpert(expert)}
-                      onMouseLeave={() => setSelectedExpert(null)}
-                    >
-                      <div className="relative">
-                        <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg group-hover/pin:scale-150 transition-all duration-300 border-2 border-white animate-pulse">
-                          <Image
-                            src={expert.avatar}
-                            alt={expert.name}
-                            width={28}
-                            height={28}
-                            className="rounded-full object-cover"
-                          />
-                        </div>
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-4 h-4 bg-yellow-400 rotate-45 opacity-0 group-hover/pin:opacity-100 transition-all duration-300" />
-
-                        {/* Tooltip */}
-                        {selectedExpert?.id === expert.id && (
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-white rounded-lg shadow-xl p-4 min-w-48 z-50 animate-fadeIn">
-                            <div className="text-center">
-                              <div className="font-bold text-[#0033FF] text-sm">
-                                {expert.name}
-                              </div>
-                              <div className="text-[#0600AF]/70 text-xs">
-                                {expert.country}
-                              </div>
-                              <div className="text-[#977DFF] text-xs font-medium mt-1">
-                                {expert.expertise}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* Hover Effect Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* 3D Earth Canvas */}
+                <div className="relative w-full h-full rounded-2xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-1000 hover:scale-105">
+                  <Canvas camera={{ position: [0, 0, 3], fov: 75 }}>
+                    <ambientLight intensity={0.3} />
+                    <directionalLight position={[5, 5, 5]} intensity={1} />
+                    <Earth />
+                    <OrbitControls
+                      enableZoom={true}
+                      enablePan={true}
+                      enableRotate={true}
+                      autoRotate={true}
+                      autoRotateSpeed={0.5}
+                    />
+                    <Environment preset="night" />
+                  </Canvas>
                 </div>
 
                 {/* Floating Elements - Reduced to avoid clutter with corner texts */}

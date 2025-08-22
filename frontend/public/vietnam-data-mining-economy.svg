@@ -1,0 +1,235 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-mining" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="data-mining" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF" />
+      <stop offset="100%" style="stop-color:#3B82F6" />
+    </linearGradient>
+    <linearGradient id="economy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669" />
+      <stop offset="100%" style="stop-color:#10B981" />
+    </linearGradient>
+    <linearGradient id="growth" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B" />
+      <stop offset="100%" style="stop-color:#F97316" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-mining)"/>
+  
+  <!-- Title Section -->
+  <g transform="translate(200,50)">
+    <rect x="0" y="0" width="400" height="70" rx="10" fill="url(#data-mining)" opacity="0.9"/>
+    <text x="200" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">KHAI PHÁ DỮ LIỆU</text>
+    <text x="200" y="50" text-anchor="middle" font-size="16" fill="#FFFFFF">Mở đường cho Kinh tế Phát triển</text>
+  </g>
+  
+  <!-- Data Mining Process -->
+  <g transform="translate(100,150)">
+    <!-- Raw Data -->
+    <g transform="translate(0,0)">
+      <rect x="0" y="0" width="100" height="80" rx="8" fill="#1E40AF" opacity="0.8"/>
+      <text x="50" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">DỮ LIỆU THÔ</text>
+      
+      <!-- Data symbols -->
+      <circle cx="20" cy="40" r="3" fill="#FFFFFF" opacity="0.8"/>
+      <circle cx="35" cy="35" r="2" fill="#FFFFFF" opacity="0.6"/>
+      <circle cx="50" cy="45" r="4" fill="#FFFFFF" opacity="0.9"/>
+      <circle cx="65" cy="38" r="2" fill="#FFFFFF" opacity="0.7"/>
+      <circle cx="80" cy="42" r="3" fill="#FFFFFF" opacity="0.8"/>
+      
+      <text x="50" y="65" text-anchor="middle" font-size="8" fill="#FFFFFF">Big Data</text>
+    </g>
+    
+    <!-- Processing Arrow -->
+    <path d="M105,40 L145,40" stroke="url(#data-mining)" stroke-width="4" marker-end="url(#arrow-blue)"/>
+    <text x="125" y="30" text-anchor="middle" font-size="8" fill="#1E40AF">Processing</text>
+    
+    <!-- Data Processing -->
+    <g transform="translate(150,0)">
+      <rect x="0" y="0" width="100" height="80" rx="8" fill="#7C3AED" opacity="0.8"/>
+      <text x="50" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">XỬ LÝ & PHÂN TÍCH</text>
+      
+      <!-- Processing gears -->
+      <circle cx="30" cy="40" r="8" fill="none" stroke="#FFFFFF" stroke-width="2">
+        <animateTransform attributeName="transform" type="rotate" values="0 30 40;360 30 40" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="70" cy="40" r="6" fill="none" stroke="#FFFFFF" stroke-width="2">
+        <animateTransform attributeName="transform" type="rotate" values="360 70 40;0 70 40" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      
+      <text x="50" y="65" text-anchor="middle" font-size="8" fill="#FFFFFF">AI & ML</text>
+    </g>
+    
+    <!-- Processing Arrow -->
+    <path d="M255,40 L295,40" stroke="url(#data-mining)" stroke-width="4" marker-end="url(#arrow-blue)"/>
+    <text x="275" y="30" text-anchor="middle" font-size="8" fill="#1E40AF">Mining</text>
+    
+    <!-- Insights -->
+    <g transform="translate(300,0)">
+      <rect x="0" y="0" width="100" height="80" rx="8" fill="url(#economy)" opacity="0.8"/>
+      <text x="50" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">INSIGHTS</text>
+      
+      <!-- Light bulb -->
+      <circle cx="50" cy="40" r="12" fill="#FFFFFF" opacity="0.9"/>
+      <path d="M44,34 Q50,28 56,34" stroke="#059669" stroke-width="2" fill="none"/>
+      <path d="M44,40 Q50,46 56,40" stroke="#059669" stroke-width="2" fill="none"/>
+      <rect x="47" y="48" width="6" height="4" rx="1" fill="#059669"/>
+      
+      <text x="50" y="65" text-anchor="middle" font-size="8" fill="#FFFFFF">Knowledge</text>
+    </g>
+    
+    <!-- Application Arrow -->
+    <path d="M405,40 L445,40" stroke="url(#economy)" stroke-width="4" marker-end="url(#arrow-green)"/>
+    <text x="425" y="30" text-anchor="middle" font-size="8" fill="#059669">Apply</text>
+    
+    <!-- Economic Growth -->
+    <g transform="translate(450,0)">
+      <rect x="0" y="0" width="100" height="80" rx="8" fill="url(#growth)" opacity="0.8"/>
+      <text x="50" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">TĂNG TRƯỞNG</text>
+      
+      <!-- Growth chart -->
+      <polyline points="15,60 25,55 35,45 45,35 55,40 65,30 75,25 85,20" 
+                stroke="#FFFFFF" stroke-width="3" fill="none"/>
+      <circle cx="85" cy="20" r="3" fill="#FFFFFF"/>
+      
+      <text x="50" y="72" text-anchor="middle" font-size="8" fill="#FFFFFF">Economy</text>
+    </g>
+  </g>
+  
+  <!-- Economic Sectors -->
+  <g transform="translate(50,280)">
+    <text x="350" y="0" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E40AF">CÁC LĨNH VỰC ỨNG DỤNG</text>
+    
+    <!-- Banking & Finance -->
+    <g transform="translate(0,20)">
+      <rect x="0" y="0" width="120" height="80" rx="8" fill="#FFFFFF" stroke="#1E40AF" stroke-width="2"/>
+      <circle cx="60" cy="25" r="15" fill="#1E40AF"/>
+      <text x="60" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">$</text>
+      <text x="60" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#1E40AF">NGÂN HÀNG</text>
+      <text x="60" y="65" text-anchor="middle" font-size="8" fill="#6B7280">• Phân tích rủi ro</text>
+      <text x="60" y="75" text-anchor="middle" font-size="8" fill="#6B7280">• Chống gian lận</text>
+    </g>
+    
+    <!-- Healthcare -->
+    <g transform="translate(140,20)">
+      <rect x="0" y="0" width="120" height="80" rx="8" fill="#FFFFFF" stroke="#DC2626" stroke-width="2"/>
+      <rect x="52" y="15" width="16" height="4" fill="#DC2626"/>
+      <rect x="58" y="9" width="4" height="16" fill="#DC2626"/>
+      <text x="60" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#DC2626">Y TẾ</text>
+      <text x="60" y="65" text-anchor="middle" font-size="8" fill="#6B7280">• Chẩn đoán AI</text>
+      <text x="60" y="75" text-anchor="middle" font-size="8" fill="#6B7280">• Dự đoán dịch bệnh</text>
+    </g>
+    
+    <!-- Retail & E-commerce -->
+    <g transform="translate(280,20)">
+      <rect x="0" y="0" width="120" height="80" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+      <rect x="45" y="15" width="30" height="20" rx="3" fill="none" stroke="#F59E0B" stroke-width="2"/>
+      <circle cx="55" cy="30" r="2" fill="#F59E0B"/>
+      <circle cx="65" cy="30" r="2" fill="#F59E0B"/>
+      <text x="60" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#F59E0B">BÁN LẺ</text>
+      <text x="60" y="65" text-anchor="middle" font-size="8" fill="#6B7280">• Gợi ý sản phẩm</text>
+      <text x="60" y="75" text-anchor="middle" font-size="8" fill="#6B7280">• Dự báo nhu cầu</text>
+    </g>
+    
+    <!-- Manufacturing -->
+    <g transform="translate(420,20)">
+      <rect x="0" y="0" width="120" height="80" rx="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+      <rect x="45" y="15" width="30" height="15" rx="3" fill="#7C3AED"/>
+      <circle cx="50" cy="32" r="3" fill="#7C3AED"/>
+      <circle cx="60" cy="32" r="3" fill="#7C3AED"/>
+      <circle cx="70" cy="32" r="3" fill="#7C3AED"/>
+      <text x="60" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#7C3AED">SẢN XUẤT</text>
+      <text x="60" y="65" text-anchor="middle" font-size="8" fill="#6B7280">• Bảo trì dự đoán</text>
+      <text x="60" y="75" text-anchor="middle" font-size="8" fill="#6B7280">• Tối ưu quy trình</text>
+    </g>
+    
+    <!-- Transportation -->
+    <g transform="translate(560,20)">
+      <rect x="0" y="0" width="120" height="80" rx="8" fill="#FFFFFF" stroke="#059669" stroke-width="2"/>
+      <rect x="40" y="20" width="40" height="15" rx="8" fill="#059669"/>
+      <circle cx="47" cy="37" r="4" fill="none" stroke="#059669" stroke-width="2"/>
+      <circle cx="73" cy="37" r="4" fill="none" stroke="#059669" stroke-width="2"/>
+      <text x="60" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#059669">VẬN TÂI</text>
+      <text x="60" y="65" text-anchor="middle" font-size="8" fill="#6B7280">• Tối ưu tuyến đường</text>
+      <text x="60" y="75" text-anchor="middle" font-size="8" fill="#6B7280">• Quản lý đội xe</text>
+    </g>
+  </g>
+  
+  <!-- Vietnam Data Association Role -->
+  <g transform="translate(100,420)">
+    <rect x="0" y="0" width="600" height="100" rx="10" fill="#FFFFFF" stroke="#1E40AF" stroke-width="3"/>
+    <text x="300" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E40AF">VAI TRÒ HIỆP HỘI DỮ LIỆU QUỐC GIA</text>
+    
+    <!-- Role 1 -->
+    <g transform="translate(50,35)">
+      <circle cx="15" cy="15" r="12" fill="#1E40AF"/>
+      <text x="15" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">1</text>
+      <text x="40" y="12" font-size="10" font-weight="bold" fill="#1E40AF">KẾT NỐI</text>
+      <text x="40" y="24" font-size="8" fill="#6B7280">Liên kết các cơ quan, doanh nghiệp, tổ chức</text>
+    </g>
+    
+    <!-- Role 2 -->
+    <g transform="translate(200,35)">
+      <circle cx="15" cy="15" r="12" fill="#059669"/>
+      <text x="15" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">2</text>
+      <text x="40" y="12" font-size="10" font-weight="bold" fill="#059669">HỖ TRỢ</text>
+      <text x="40" y="24" font-size="8" fill="#6B7280">Xây dựng hoạt động thiết thực và hiệu quả</text>
+    </g>
+    
+    <!-- Role 3 -->
+    <g transform="translate(350,35)">
+      <circle cx="15" cy="15" r="12" fill="#F59E0B"/>
+      <text x="15" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">3</text>
+      <text x="40" y="12" font-size="10" font-weight="bold" fill="#F59E0B">PHÁT TRIỂN</text>
+      <text x="40" y="24" font-size="8" fill="#6B7280">Thúc đẩy nghiên cứu và ứng dụng công nghệ</text>
+    </g>
+    
+    <!-- Role 4 -->
+    <g transform="translate(500,35)">
+      <circle cx="15" cy="15" r="12" fill="#DC2626"/>
+      <text x="15" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">4</text>
+      <text x="40" y="12" font-size="10" font-weight="bold" fill="#DC2626">ĐẦU TƯ</text>
+      <text x="40" y="24" font-size="8" fill="#6B7280">Khuyến khích đầu tư vào lĩnh vực dữ liệu</text>
+    </g>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1E40AF" />
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#059669" />
+    </marker>
+  </defs>
+  
+  <!-- Data Flow Animation -->
+  <g opacity="0.6">
+    <circle r="2" fill="#1E40AF">
+      <animateMotion dur="6s" repeatCount="indefinite" 
+                     path="M150,190 Q300,150 450,190 Q600,230 750,190"/>
+    </circle>
+    <circle r="3" fill="#059669">
+      <animateMotion dur="8s" repeatCount="indefinite" 
+                     path="M100,320 Q200,280 300,320 Q400,360 500,320 Q600,280 700,320"/>
+    </circle>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1E40AF">
+    Khai phá Dữ liệu mở đường cho Kinh tế Phát triển
+  </text>
+  <text x="400" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#059669" opacity="0.8">
+    Hiệp hội Dữ liệu Quốc gia - Nỗ lực xây dựng Hoạt động thiết thực
+  </text>
+</svg>
+
+

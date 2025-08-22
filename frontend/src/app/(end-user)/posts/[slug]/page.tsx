@@ -79,7 +79,7 @@ const posts = [
     date: "2025-08-15",
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Du lịch số",
-    image: "/vietnam-tourism-platform.png",
+    image: "/vietnam-tourism-platform.svg",
     readTime: "8 phút đọc",
     tags: [
       "Du lịch số",

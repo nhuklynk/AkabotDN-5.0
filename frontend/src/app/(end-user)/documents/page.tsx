@@ -31,7 +31,7 @@ const imageData = [
   {
     id: 4,
     title: "Hội thảo Blockchain và Dữ liệu",
-    thumbnail: "/sample-technology-1.svg",
+    thumbnail: "/sample-event-1.svg",
     views: "2,760",
     date: "05/11/2024",
   },
@@ -45,7 +45,7 @@ const imageData = [
   {
     id: 6,
     title: "Hệ sinh thái Dữ liệu Việt Nam",
-    thumbnail: "/vietnam-data-ecosystem.png",
+    thumbnail: "/sample-partnership-1.svg",
     views: "4,100",
     date: "01/11/2024",
   },
@@ -63,7 +63,7 @@ const videoData = [
   {
     id: 2,
     title: "Trí tuệ nhân tạo trong kỷ nguyên số",
-    thumbnail: "/sample-technology-1.svg",
+    thumbnail: "/sample-video-1.svg",
     duration: "25:30",
     views: "8,920",
     date: "09/11/2024",
@@ -79,7 +79,7 @@ const videoData = [
   {
     id: 4,
     title: "Nền tảng Du lịch thông minh",
-    thumbnail: "/sample-event-1.svg",
+    thumbnail: "/sample-partnership-1.svg",
     duration: "18:15",
     views: "6,750",
     date: "04/11/2024",
@@ -95,7 +95,7 @@ const videoData = [
   {
     id: 6,
     title: "Định danh số Việt Nam",
-    thumbnail: "/sample-data-center.svg",
+    thumbnail: "/sample-partnership-1.svg",
     duration: "22:10",
     views: "11,230",
     date: "30/10/2024",
