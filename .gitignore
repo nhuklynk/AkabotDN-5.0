@@ -5,6 +5,7 @@ logs
 *.log
 .env
 .env.local
+/.env.*
 dist/
 build/
 .next/
@@ -12,3 +13,5 @@ build/
 .idea/
 .vs/
 .vs/slnx.sqlite
+
+!.env.sample

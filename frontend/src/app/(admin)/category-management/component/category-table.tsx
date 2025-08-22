@@ -39,11 +39,11 @@ export default function CategoryTable({
           <TableRow>
             <TableHead>Danh mục</TableHead>
             <TableHead>Slug</TableHead>
-            <TableHead>Cha</TableHead>
+            <TableHead>Cấp</TableHead>
             <TableHead>Trạng thái</TableHead>
             <TableHead>Bài viết</TableHead>
             <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[70px]">Thao tác</TableHead>
+            <TableHead className="w-[90px] whitespace-nowrap">Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -55,11 +55,7 @@ export default function CategoryTable({
                   <div>
                     <div className="flex items-center gap-2">
                       {category.parentId && <ChevronRight className="h-3 w-3 text-muted-foreground" />}
-                      {category.parentId ? (
-                        <Folder className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <FolderOpen className="h-4 w-4 text-primary" />
-                      )}
+                      <Folder className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">{category.name}</span>
                     </div>
                     {category.description && (
@@ -73,11 +69,11 @@ export default function CategoryTable({
                 {getParentName(category.parentId) ? (
                   <Badge variant="outline">{getParentName(category.parentId)}</Badge>
                 ) : (
-                  <span className="text-muted-foreground">—</span>
+                  <span className="text-muted-foreground">Cấp gốc</span>
                 )}
               </TableCell>
               <TableCell>
-                <Badge className={getStatusColor(category.status)}>{category.status}</Badge>
+                <Badge className={`${getStatusColor(category.status)} capitalize`}>{category.status}</Badge>
               </TableCell>
               <TableCell>
                 <Badge variant="secondary">{category.postCount}</Badge>

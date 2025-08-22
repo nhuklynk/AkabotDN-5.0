@@ -2,7 +2,14 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -25,6 +32,7 @@ type Props = {
 
 export default function UserFormDialog({ open, onOpenChange, formData, setFormData, onSubmit, mode }: Props) {
   const isCreate = mode === "create"
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -38,11 +46,22 @@ export default function UserFormDialog({ open, onOpenChange, formData, setFormDa
         <div className="space-y-4">
           <div>
             <Label htmlFor="name">Họ tên</Label>
-            <Input id="name" value={formData.name} onChange={(e) => setFormData((d) => ({ ...d, name: e.target.value }))} placeholder="Nhập họ tên" />
+            <Input
+              id="name"
+              value={formData.name}
+              onChange={(e) => setFormData((d) => ({ ...d, name: e.target.value }))}
+              placeholder="Nhập họ tên"
+            />
           </div>
           <div>
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={formData.email} onChange={(e) => setFormData((d) => ({ ...d, email: e.target.value }))} placeholder="Nhập địa chỉ email" />
+            <Input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData((d) => ({ ...d, email: e.target.value }))}
+              placeholder="Nhập địa chỉ email"
+            />
           </div>
           <div>
             <Label htmlFor="role">Vai trò</Label>
@@ -75,11 +94,9 @@ export default function UserFormDialog({ open, onOpenChange, formData, setFormDa
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Hủy
           </Button>
-          <Button onClick={onSubmit}>{isCreate ? "Tạo người dùng" : "Cập nhật người dùng"}</Button>
+          <Button onClick={onSubmit}>{isCreate ? "Tạo người dùng" : "Cập nhật"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
-
-

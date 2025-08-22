@@ -39,7 +39,7 @@ export default function UserTable({
             <TableHead>Vai trò</TableHead>
             <TableHead>Trạng thái</TableHead>
             <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[70px]">Thao tác</TableHead>
+            <TableHead className="w-[90px] whitespace-nowrap">Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,10 +48,14 @@ export default function UserTable({
               <TableCell className="font-medium">{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
-                <Badge className={getRoleColor(user.role)}>{user.role}</Badge>
+                <Badge className={`${getRoleColor(user.role)} capitalize`}>
+                  {user.role}
+                </Badge>
               </TableCell>
               <TableCell>
-                <Badge className={getStatusColor(user.status)}>{user.status}</Badge>
+                <Badge className={`${getStatusColor(user.status)} capitalize`}>
+                  {user.status}
+                </Badge>
               </TableCell>
               <TableCell>{user.createdAt}</TableCell>
               <TableCell>

@@ -93,7 +93,7 @@ export default function CategoryFormDialog({
                 <SelectValue placeholder="Chọn danh mục cha" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">Không có (Cấp 1)</SelectItem>
+                <SelectItem value="none">Không có (Cấp gốc)</SelectItem>
                 {parentCategories.map((category) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
                     {category.name}

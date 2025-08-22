@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import ResourceFormDialog from "./component/ResourceFormDialog";
+import ResourceFormDialog from "./component/resource-form-dialog";
 import {
   Card,
   CardContent,
@@ -12,7 +12,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import ResourceTable from "./component/resource-table";
 import {
   Select,
@@ -52,6 +59,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Pagination } from "@/components/pagination-component";
 
 const initialResources = [
   {
@@ -140,6 +148,19 @@ export default function ResourcesPage() {
     const matchesType = filterType === "all" || resource.type === filterType;
     return matchesSearch && matchesType;
   });
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const totalPages = Math.max(1, Math.ceil(filteredResources.length / pageSize));
+  const paginatedResources = filteredResources.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterType]);
 
   const handleCreateResource = () => {
     const newResource: Resource = {
@@ -246,7 +267,7 @@ export default function ResourcesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="p-6 pt-0 pb-0">
           <h1 className="text-3xl font-bold text-foreground">
             Quản lý tài nguyên
           </h1>
@@ -271,13 +292,7 @@ export default function ResourcesPage() {
         />
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Tài nguyên</CardTitle>
-          <CardDescription>
-            Tất cả tài nguyên và tệp trong hệ thống.
-          </CardDescription>
-        </CardHeader>
+      <Card className="border-0 shadow-none">
         <CardContent>
           <div className="flex items-center gap-4 mb-6">
             <div className="relative flex-1 max-w-sm">
@@ -308,12 +323,18 @@ export default function ResourcesPage() {
           </div>
 
           <ResourceTable
-            items={filteredResources}
+            items={paginatedResources}
             getTypeColor={getTypeColor}
             getTypeIcon={getTypeIcon}
             getCategoryColor={getCategoryColor}
             onEdit={handleEditResource}
             onDelete={handleDeleteResource}
+          />
+          <Pagination
+            className="mt-4"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
           />
         </CardContent>
       </Card>

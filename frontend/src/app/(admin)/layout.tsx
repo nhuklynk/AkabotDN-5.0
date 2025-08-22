@@ -1,10 +1,8 @@
 "use client";
 
-import type React from "react";
-
-import { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,16 +13,24 @@ import {
   Menu,
   X,
   LayoutDashboard,
+  ShieldCheck,
   ChevronLeft,
   ChevronRight,
   HelpCircle,
 } from "lucide-react";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const navigation = [
   {
     name: "Bảng điều khiển",
-    href: "/",
+    href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
@@ -52,6 +58,11 @@ const navigation = [
     href: "/faq-management",
     icon: HelpCircle,
   },
+  {
+    name: "Phân quyền",
+    href: "/permission-management",
+    icon: ShieldCheck,
+  },
 ];
 
 export default function AdminLayout({
@@ -62,6 +73,14 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Prefetch admin routes to speed up navigation
+  useEffect(() => {
+    navigation.forEach((n) => {
+      if (typeof n.href === "string") router.prefetch(n.href);
+    });
+  }, [router]);
 
   const nameMap = useMemo(() => {
     const map = new Map<string, string>();
@@ -193,7 +212,27 @@ export default function AdminLayout({
             </Button>
 
             <div className="flex flex-col">
-              <Breadcrumb items={breadcrumbItems} />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  {breadcrumbItems.map((item, idx) => {
+                    const isLast = idx === breadcrumbItems.length - 1;
+                    return (
+                      <React.Fragment key={item.href}>
+                        {idx > 0 && <BreadcrumbSeparator />}
+                        <BreadcrumbItem>
+                          {isLast ? (
+                            <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                          ) : (
+                            <BreadcrumbLink asChild>
+                              <Link href={item.href}>{item.label}</Link>
+                            </BreadcrumbLink>
+                          )}
+                        </BreadcrumbItem>
+                      </React.Fragment>
+                    );
+                  })}
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
           </div>
           <div className="flex items-center gap-4" />
