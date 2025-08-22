@@ -380,7 +380,7 @@ export default function GioiThieuPage() {
                       </h4>
                       <div className="border-2 border-[#FFCCF2]/40 rounded-lg p-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/20">
                         <Image
-                          src="/vietnamese-legal-document.png"
+                          src="/vietnamese-legal-document.svg"
                           alt="Điều lệ NDA - Trang 1"
                           width={600}
                           height={800}
