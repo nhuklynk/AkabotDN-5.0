@@ -2,9 +2,9 @@
 
 import type React from "react";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 const navigation = [
   {
     name: "Bảng điều khiển",
-    href: "/",
+    href: "/dashboard-admin",
     icon: LayoutDashboard,
   },
   {
@@ -62,6 +62,14 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Prefetch admin routes to speed up navigation
+  useEffect(() => {
+    navigation.forEach((n) => {
+      if (typeof n.href === "string") router.prefetch(n.href);
+    });
+  }, [router]);
 
   const nameMap = useMemo(() => {
     const map = new Map<string, string>();
