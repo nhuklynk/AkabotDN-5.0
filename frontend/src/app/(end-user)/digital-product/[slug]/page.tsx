@@ -24,7 +24,7 @@ const products = {
     title: "Sàn giao dịch",
     description:
       "Nền tảng giao dịch số hiện đại với công nghệ blockchain tiên tiến",
-    image: "/placeholder-6a0xs.png",
+    image: "/icons/trading-platform.svg",
     features: [
       "Đầu tiên tại Việt Nam",
       "Minh bạch",
@@ -33,7 +33,7 @@ const products = {
       "Thiết kế, xây dựng và vận hành bởi người Việt",
     ],
     icon: <Globe className="w-8 h-8" />,
-    tag: "ĐỘ LIỆU QUỐC GIA",
+    tag: "SÀN GIAO DỊCH QUỐC GIA",
     longDescription:
       "Sàn giao dịch đầu tiên tại Việt Nam được thiết kế, xây dựng và vận hành hoàn toàn bởi người Việt. Nền tảng này đảm bảo tính minh bạch, an toàn và tuân thủ đầy đủ các quy định pháp lý hiện hành.",
   },
@@ -42,7 +42,7 @@ const products = {
     title: "Nền tảng Chuỗi khối quốc gia",
     description:
       "Hạ tầng blockchain quốc gia đáng tin cậy cho các dịch vụ công",
-    image: "/blockchain-data-center.png",
+    image: "/icons/blockchain-network.svg",
     features: [
       "Tính minh bạch cao",
       "Bảo mật tuyệt đối",
@@ -59,7 +59,7 @@ const products = {
     id: "ung-dung-dinh-danh",
     title: "Ứng dụng định danh phi tập trung Quốc gia",
     description: "Giải pháp định danh số an toàn và bảo mật cho công dân",
-    image: "/digital-identity-biometric.png",
+    image: "/icons/digital-identity-secure.svg",
     features: [
       "Định danh an toàn",
       "Xác thực sinh trắc học",
@@ -71,6 +71,23 @@ const products = {
     tag: "ĐỊNH DANH SỐ",
     longDescription:
       "Ứng dụng định danh phi tập trung quốc gia cung cấp giải pháp định danh số an toàn, sử dụng công nghệ sinh trắc học tiên tiến và đảm bảo bảo vệ dữ liệu cá nhân.",
+  },
+  "tro-ly-ai": {
+    id: "tro-ly-ai",
+    title: "Trợ lý AI Quốc gia",
+    description: "Trợ lý trí tuệ nhân tạo tiếng Việt cho người dân",
+    image: "/icons/ai-assistant-vietnam.svg",
+    features: [
+      "Hỗ trợ tiếng Việt",
+      "Tích hợp đa nền tảng",
+      "Bảo mật dữ liệu",
+      "Học hỏi liên tục",
+      "Phục vụ 24/7",
+    ],
+    icon: <MessageCircle className="w-8 h-8" />,
+    tag: "TRỢ LÝ AI",
+    longDescription:
+      "Trợ lý AI quốc gia được phát triển đặc biệt cho người Việt Nam, hỗ trợ đa ngôn ngữ và tích hợp với các dịch vụ công để phục vụ người dân hiệu quả.",
   },
 };
 
@@ -104,14 +121,17 @@ const relatedNews = [
 // Related products
 const relatedProducts = [
   {
-    id: "san-giao-dich",
-    title: "Sàn giao dịch",
-    image: "/placeholder-6a0xs.png",
+    id: "nen-tang-blockchain",
+    title: "Nền tảng Chuỗi khối quốc gia",
+    image: "/icons/blockchain-network.svg",
+    description:
+      "Hạ tầng blockchain quốc gia đáng tin cậy cho các dịch vụ công",
   },
   {
-    id: "ung-dung-dinh-danh",
-    title: "Ứng dụng định danh phi tập trung Quốc gia",
-    image: "/digital-identity-biometric.png",
+    id: "tro-ly-ai",
+    title: "Trợ lý AI Quốc gia",
+    image: "/icons/ai-assistant-vietnam.svg",
+    description: "Trợ lý trí tuệ nhân tạo tiếng Việt cho người dân",
   },
 ];
 
@@ -121,21 +141,25 @@ const partners = [
     name: "Cục Du lịch quốc gia Việt Nam",
     logo: "/partner-tourism-bureau.png",
     description: "Cơ quan quản lý du lịch quốc gia",
+    category: "Government Partners",
   },
   {
     name: "Tập đoàn Sun Group",
     logo: "/partner-sun-group.png",
     description: "Tập đoàn đầu tư và phát triển du lịch hàng đầu",
+    category: "Corporate Partners",
   },
   {
     name: "Bộ Công an",
     logo: "/partner-ministry-security.png",
     description: "Đối tác công nghệ và bảo mật dữ liệu",
+    category: "Government Partners",
   },
   {
     name: "Trung tâm Dữ liệu Quốc gia",
     logo: "/partner-national-data-center.png",
     description: "Trung tâm quản lý và vận hành dữ liệu quốc gia",
+    category: "Government Partners",
   },
 ];
 
@@ -188,12 +212,84 @@ export default function DigitalProductPage({
 
             {/* Product Details */}
             <div className="space-y-4 mb-8">
-              {product.features.map((feature, index) => (
-                <div key={index} className="text-gray-700">
-                  <span className="font-medium">{feature}</span>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Tính năng nổi bật
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {product.features.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    </div>
+                    <span className="text-gray-700 font-medium">{feature}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-gray-700 leading-relaxed">
+                  {product.longDescription}
+                </p>
+              </div>
+            </div>
+
+            {/* Technology Showcase */}
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Công nghệ sử dụng
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg border border-blue-200">
+                  <div className="w-12 h-12 mb-2">
+                    <img
+                      src="/icons/blockchain-network.svg"
+                      alt="Blockchain"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 text-center">
+                    Blockchain
+                  </span>
                 </div>
-              ))}
-              <p className="text-gray-600 mt-4">{product.longDescription}</p>
+                <div className="flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-emerald-100 rounded-lg border border-green-200">
+                  <div className="w-12 h-12 mb-2">
+                    <img
+                      src="/icons/digital-identity-secure.svg"
+                      alt="Security"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 text-center">
+                    Bảo mật
+                  </span>
+                </div>
+                <div className="flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-violet-100 rounded-lg border border-purple-200">
+                  <div className="w-12 h-12 mb-2">
+                    <img
+                      src="/icons/ai-assistant-vietnam.svg"
+                      alt="AI"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 text-center">
+                    Trí tuệ nhân tạo
+                  </span>
+                </div>
+                <div className="flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-amber-100 rounded-lg border border-orange-200">
+                  <div className="w-12 h-12 mb-2">
+                    <img
+                      src="/icons/data-center-modern.svg"
+                      alt="Infrastructure"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 text-center">
+                    Hạ tầng
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Social Sharing */}
@@ -273,7 +369,7 @@ export default function DigitalProductPage({
                           {relatedProduct.title}
                         </h3>
                         <p className="text-sm text-gray-600 mt-1">
-                          {relatedProduct.title}
+                          {relatedProduct.description}
                         </p>
                       </CardContent>
                     </Card>

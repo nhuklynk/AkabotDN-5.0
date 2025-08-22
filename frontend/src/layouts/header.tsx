@@ -97,9 +97,17 @@ export function Header() {
             </Link>
             <Link
               href="/faq"
-              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+              className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+              onClick={() => setIsMenuOpen(false)}
             >
               FAQ
+            </Link>
+            <Link
+              href="/search"
+              className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              TÌM KIẾM
             </Link>
           </nav>
 
@@ -199,6 +207,14 @@ export function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 FAQ
+              </Link>
+
+              <Link
+                href="/search"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                TÌM KIẾM
               </Link>
             </nav>
           </div>

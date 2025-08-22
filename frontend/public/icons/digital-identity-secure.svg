@@ -1,0 +1,24 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="12" fill="#FEF3F2"/>
+  
+  <!-- Shield background -->
+  <path d="M32 8L48 16V28C48 40 40 48 32 56C24 48 16 40 16 28V16L32 8Z" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2"/>
+  
+  <!-- Shield highlight -->
+  <path d="M32 12L44 18V28C44 37 38 44 32 50C26 44 20 37 20 28V18L32 12Z" fill="#FECACA" stroke="#F87171" stroke-width="1"/>
+  
+  <!-- Fingerprint pattern -->
+  <path d="M24 32C24 28 26 24 30 24C34 24 36 28 36 32C36 36 34 40 30 40C26 40 24 36 24 32Z" fill="#FEF3F2" stroke="#F87171" stroke-width="1"/>
+  
+  <!-- Fingerprint lines -->
+  <path d="M26 30C26 28 27 26 29 26C31 26 32 28 32 30" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M28 34C28 32 29 30 31 30C33 30 34 32 34 34" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M30 38C30 36 31 34 33 34C35 34 36 36 36 38" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Security lock -->
+  <rect x="28" y="42" width="8" height="6" rx="1" fill="#10B981" stroke="#047857" stroke-width="1"/>
+  <circle cx="32" cy="44" r="1" fill="#047857"/>
+  
+  <!-- Checkmark -->
+  <path d="M30 48L34 52L38 44" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

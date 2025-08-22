@@ -30,7 +30,7 @@ const mockPosts = [
     author: "Ban Biên tập",
     category: "Công nghiệp dữ liệu",
     image: "/international-data-conference.svg",
-    slug: "chuyen-gia-quoc-te-hien-ke-phat-trien",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ const mockPosts = [
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Trí tuệ nhân tạo",
     image: "/vietnam-ai-competition-tv.svg",
-    slug: "ai-thuc-chien-cuoc-thi-tri-tue-nhan-tao",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 4,
@@ -54,7 +54,7 @@ const mockPosts = [
     author: "Ban Chấp hành",
     category: "Tổ chức",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "thanh-lap-van-phong-ban-chuyen-mon",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 5,
@@ -66,7 +66,7 @@ const mockPosts = [
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Pháp luật",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "hoan-thien-van-ban-quy-pham-phap-luat",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 6,
@@ -77,7 +77,7 @@ const mockPosts = [
     author: "Ban Tổ chức",
     category: "Truy xuất nguồn gốc",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "goc-nhin-da-chieu-hoi-thao-truy-xuat",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 7,
@@ -89,7 +89,7 @@ const mockPosts = [
     author: "Phòng Truyền thông",
     category: "Hợp tác",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "ky-ket-hop-tac-pila-eco-pharma",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 8,
@@ -101,7 +101,7 @@ const mockPosts = [
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Sản phẩm số",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "khang-dinh-noi-luc-cong-nghe-viet",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 9,
@@ -113,7 +113,7 @@ const mockPosts = [
     author: "Ban Biên tập",
     category: "Hệ sinh thái",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "kien-thiet-he-sinh-thai-du-lieu-viet-nam",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 10,
@@ -124,7 +124,7 @@ const mockPosts = [
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Kinh tế số",
     image: "/vietnam-data-sharing-meeting.svg",
-    slug: "khai-pha-du-lieu-mo-duong-kinh-te",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
 ];
 
@@ -144,7 +144,7 @@ export function PostsGrid() {
         {currentPosts.map((post) => (
           <Card
             key={post.id}
-            className="group hover:shadow-lg transition-shadow duration-300"
+            className="group hover:shadow-lg transition-shadow duration-300 border-none"
           >
             <CardHeader className="p-0">
               <div className="relative overflow-hidden rounded-t-lg">
@@ -162,7 +162,7 @@ export function PostsGrid() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
-                <h3 className="font-serif font-semibold text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                <h3 className="font-semibold text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                   {post.title}
                 </h3>
                 <p className="text-muted-foreground text-sm line-clamp-3">

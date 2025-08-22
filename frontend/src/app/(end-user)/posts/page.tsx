@@ -27,9 +27,7 @@ export default function PostsPage() {
         </Breadcrumb>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-serif font-bold text-foreground mb-4">
-            Bài đăng
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground mb-4">Bài đăng</h1>
           <p className="text-muted-foreground text-lg max-w-2xl">
             Cập nhật những tin tức mới nhất về hoạt động của Hiệp hội Dữ liệu
             Quốc gia Việt Nam và các sự kiện quan trọng trong lĩnh vực dữ liệu.

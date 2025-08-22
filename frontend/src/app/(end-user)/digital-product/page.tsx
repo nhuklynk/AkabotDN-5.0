@@ -319,42 +319,8 @@ export default function DigitalProductsPage() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Partners Section */}
-          <div className="mt-8">
-            <PartnersList partners={partners as any} />
-          </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h4 className="text-2xl font-bold mb-4">
-              Hiệp hội Dữ liệu Việt Nam
-            </h4>
-            <p className="text-gray-400 mb-6">
-              Dẫn đầu trong việc phát triển và ứng dụng công nghệ số tại Việt
-              Nam
-            </p>
-            <div className="flex justify-center space-x-6">
-              <Button variant="ghost" size="sm">
-                Về chúng tôi
-              </Button>
-              <Button variant="ghost" size="sm">
-                Dịch vụ
-              </Button>
-              <Button variant="ghost" size="sm">
-                Tin tức
-              </Button>
-              <Button variant="ghost" size="sm">
-                Liên hệ
-              </Button>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
