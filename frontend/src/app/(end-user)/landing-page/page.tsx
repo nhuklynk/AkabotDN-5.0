@@ -29,8 +29,6 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
-import { Earth } from "./components/Earth";
-import { GlobeSceneWrapper } from "@/app/(end-user)/landing-page/components/GlobeSceneWrapper";
 import { Globe3D } from "@/app/(end-user)/landing-page/components/Globe3D";
 
 interface Expert {
