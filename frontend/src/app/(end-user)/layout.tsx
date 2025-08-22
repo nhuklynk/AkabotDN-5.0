@@ -2,6 +2,8 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "@/app/globals.css";
+import { Header } from "@/layouts/header";
+import { Footer } from "@/layouts/footer";
 
 /* Added Vietnamese-friendly fonts with proper subsets */
 const inter = Inter({
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
   generator: "v0.app",
 };
 
-export default function RootLayout({
+export default function EndUserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -32,7 +34,13 @@ export default function RootLayout({
       lang="vi"
       className={`${inter.variable} ${playfair.variable} antialiased`}
     >
-      <body className="font-sans">{children}</body>
+      <body className="font-sans bg-white">
+        <div className="min-h-screen bg-gradient-to-b from-[#F2E6EE] via-[#977DFF] to-[#0033FF]">
+          <Header />
+          <main className="bg-white/95 backdrop-blur-sm">{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }

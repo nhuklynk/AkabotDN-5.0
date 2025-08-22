@@ -1,0 +1,60 @@
+<svg width="350" height="250" viewBox="0 0 350 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F2E6EE;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="search" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="350" height="250" fill="url(#bg)" rx="12"/>
+  
+  <!-- Search Magnifying Glass -->
+  <circle cx="175" cy="120" r="40" fill="none" stroke="url(#search)" stroke-width="8"/>
+  <line x1="200" y1="145" x2="220" y2="165" stroke="url(#search)" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Search Results -->
+  <rect x="80" y="180" width="60" height="40" fill="url(#search)" opacity="0.6" rx="6"/>
+  <rect x="85" y="185" width="50" height="30" fill="white" opacity="0.1" rx="4"/>
+  <rect x="90" y="190" width="40" height="3" fill="white" opacity="0.8" rx="1.5"/>
+  <rect x="90" y="195" width="30" height="3" fill="white" opacity="0.6" rx="1.5"/>
+  
+  <rect x="150" y="180" width="60" height="40" fill="url(#search)" opacity="0.6" rx="6"/>
+  <rect x="155" y="185" width="50" height="30" fill="white" opacity="0.1" rx="4"/>
+  <rect x="160" y="190" width="40" height="3" fill="white" opacity="0.8" rx="1.5"/>
+  <rect x="160" y="195" width="30" height="3" fill="white" opacity="0.6" rx="1.5"/>
+  
+  <rect x="220" y="180" width="60" height="40" fill="url(#search)" opacity="0.6" rx="6"/>
+  <rect x="225" y="185" width="50" height="30" fill="white" opacity="0.1" rx="4"/>
+  <rect x="230" y="190" width="40" height="3" fill="white" opacity="0.8" rx="1.5"/>
+  <rect x="230" y="195" width="30" height="3" fill="white" opacity="0.6" rx="1.5"/>
+  
+  <!-- Search Categories -->
+  <circle cx="100" cy="60" r="20" fill="#FFCCF2" opacity="0.8"/>
+  <text x="100" y="65" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">News</text>
+  
+  <circle cx="175" cy="40" r="20" fill="#977DFF" opacity="0.8"/>
+  <text x="175" y="45" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">Events</text>
+  
+  <circle cx="250" cy="60" r="20" fill="#FFCCF2" opacity="0.8"/>
+  <text x="250" y="65" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">Docs</text>
+  
+  <!-- Connection Lines -->
+  <line x1="120" y1="60" x2="155" y2="80" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  <line x1="155" y1="80" x2="190" y2="60" stroke="#977DFF" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Floating Elements -->
+  <circle cx="60" cy="40" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="290" cy="40" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="60" cy="210" r="6" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="290" cy="210" r="6" fill="#FFCCF2" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="175" y="25" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="16" font-weight="bold">Tìm kiếm</text>
+  <text x="175" y="235" text-anchor="middle" fill="#0600AF" font-family="Arial" font-size="12">Khám phá thông tin bạn cần</text>
+</svg>
+
