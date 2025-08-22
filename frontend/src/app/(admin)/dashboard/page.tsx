@@ -4,30 +4,30 @@ import { Users, FolderOpen, Tag, FileText } from "lucide-react"
 export default function AdminDashboard() {
   const stats = [
     {
-      title: "Total Users",
+      title: "Tổng người dùng",
       value: "1,234",
-      description: "+12% from last month",
+      description: "+12% so với tháng trước",
       icon: Users,
       color: "text-blue-600",
     },
     {
-      title: "Resources",
+      title: "Tài nguyên",
       value: "856",
-      description: "+8% from last month",
+      description: "+8% so với tháng trước",
       icon: FolderOpen,
       color: "text-green-600",
     },
     {
-      title: "Categories",
+      title: "Danh mục",
       value: "42",
-      description: "+3 new this month",
+      description: "+3 mới tháng này",
       icon: Tag,
       color: "text-purple-600",
     },
     {
-      title: "Posts",
+      title: "Bài viết",
       value: "2,341",
-      description: "+18% from last month",
+      description: "+18% so với tháng trước",
       icon: FileText,
       color: "text-orange-600",
     },
@@ -36,8 +36,8 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h2>
-        <p className="text-muted-foreground">Overview of your admin panel statistics and quick actions.</p>
+        <h2 className="text-3xl font-bold tracking-tight text-foreground">Bảng điều khiển</h2>
+        <p className="text-muted-foreground">Tổng quan số liệu quản trị và thao tác nhanh.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -58,36 +58,36 @@ export default function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest actions performed in the admin panel.</CardDescription>
+            <CardTitle>Hoạt động gần đây</CardTitle>
+            <CardDescription>Các thao tác mới nhất trong bảng quản trị.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">New user registered</p>
-                <p className="text-xs text-muted-foreground">2 minutes ago</p>
+                <p className="text-sm font-medium">Người dùng mới đăng ký</p>
+                <p className="text-xs text-muted-foreground">2 phút trước</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Resource uploaded</p>
-                <p className="text-xs text-muted-foreground">5 minutes ago</p>
+                <p className="text-sm font-medium">Tải lên tài nguyên</p>
+                <p className="text-xs text-muted-foreground">5 phút trước</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Category created</p>
-                <p className="text-xs text-muted-foreground">10 minutes ago</p>
+                <p className="text-sm font-medium">Tạo danh mục</p>
+                <p className="text-xs text-muted-foreground">10 phút trước</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Post published</p>
-                <p className="text-xs text-muted-foreground">15 minutes ago</p>
+                <p className="text-sm font-medium">Xuất bản bài viết</p>
+                <p className="text-xs text-muted-foreground">15 phút trước</p>
               </div>
             </div>
           </CardContent>
@@ -95,21 +95,21 @@ export default function AdminDashboard() {
 
         <Card className="col-span-3">
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks you might want to perform.</CardDescription>
+            <CardTitle>Thao tác nhanh</CardTitle>
+            <CardDescription>Các tác vụ thường dùng.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <button className="w-full text-left p-3 rounded-lg border border-border hover:bg-accent transition-colors">
-              <div className="font-medium">Create New Post</div>
-              <div className="text-sm text-muted-foreground">Add a new blog post</div>
+              <div className="font-medium">Tạo bài viết mới</div>
+              <div className="text-sm text-muted-foreground">Thêm bài viết blog mới</div>
             </button>
             <button className="w-full text-left p-3 rounded-lg border border-border hover:bg-accent transition-colors">
-              <div className="font-medium">Add User</div>
-              <div className="text-sm text-muted-foreground">Create a new user account</div>
+              <div className="font-medium">Thêm người dùng</div>
+              <div className="text-sm text-muted-foreground">Tạo tài khoản người dùng</div>
             </button>
             <button className="w-full text-left p-3 rounded-lg border border-border hover:bg-accent transition-colors">
-              <div className="font-medium">Upload Resource</div>
-              <div className="text-sm text-muted-foreground">Add new files or media</div>
+              <div className="font-medium">Tải lên tài nguyên</div>
+              <div className="text-sm text-muted-foreground">Thêm tệp hoặc media mới</div>
             </button>
           </CardContent>
         </Card>

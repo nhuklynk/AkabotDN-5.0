@@ -1,38 +1,72 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import FaqTable from "./component/faq-table"
-import FaqFormDialog from "./component/faq-form-dialog"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import { Plus, Search, Edit, Trash2, MoreHorizontal } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import FaqTable from "./component/faq-table";
+import FaqFormDialog from "./component/faq-form-dialog";
+import { Plus, Search } from "lucide-react";
+import { Pagination } from "@/components/pagination-component";
 
 type Faq = {
-  id: number
-  question: string
-  answer: string
-  category: string
-  createdAt: string
-}
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+  createdAt: string;
+};
 
 const initialFaqs: Faq[] = [
-  { id: 1, question: "Làm thế nào để tạo tài khoản?", answer: "Nhấn Đăng ký và điền thông tin.", category: "Tài khoản", createdAt: "2024-02-01" },
-  { id: 2, question: "Quên mật khẩu thì sao?", answer: "Dùng chức năng Quên mật khẩu để đặt lại.", category: "Tài khoản", createdAt: "2024-02-05" },
-]
+  {
+    id: 1,
+    question: "Làm thế nào để tạo tài khoản?",
+    answer: "Nhấn Đăng ký và điền thông tin.",
+    category: "Tài khoản",
+    createdAt: "2024-02-01",
+  },
+  {
+    id: 2,
+    question: "Quên mật khẩu thì sao?",
+    answer: "Dùng chức năng Quên mật khẩu để đặt lại.",
+    category: "Tài khoản",
+    createdAt: "2024-02-05",
+  },
+];
 
 export default function FaqManagementPage() {
-  const [faqs, setFaqs] = useState<Faq[]>(initialFaqs)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
-  const [editingFaq, setEditingFaq] = useState<Faq | null>(null)
-  const [formData, setFormData] = useState({ question: "", answer: "", category: "Chung" })
+  const [faqs, setFaqs] = useState<Faq[]>(initialFaqs);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
+  const [formData, setFormData] = useState({
+    question: "",
+    answer: "",
+    category: "Chung",
+  });
 
   const filtered = faqs.filter((f) =>
-    [f.question, f.answer, f.category].some((t) => t.toLowerCase().includes(searchTerm.toLowerCase())),
-  )
+    [f.question, f.answer, f.category].some((t) =>
+      t.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const paginatedFaqs = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   const handleCreate = () => {
     const newFaq: Faq = {
@@ -41,47 +75,61 @@ export default function FaqManagementPage() {
       answer: formData.answer,
       category: formData.category,
       createdAt: new Date().toISOString().split("T")[0],
-    }
-    setFaqs([newFaq, ...faqs])
-    setFormData({ question: "", answer: "", category: "Chung" })
-    setIsCreateOpen(false)
-  }
+    };
+    setFaqs([newFaq, ...faqs]);
+    setFormData({ question: "", answer: "", category: "Chung" });
+    setIsCreateOpen(false);
+  };
 
   const handleEdit = (faq: Faq) => {
-    setEditingFaq(faq)
-    setFormData({ question: faq.question, answer: faq.answer, category: faq.category })
-    setIsEditOpen(true)
-  }
+    setEditingFaq(faq);
+    setFormData({
+      question: faq.question,
+      answer: faq.answer,
+      category: faq.category,
+    });
+    setIsEditOpen(true);
+  };
 
   const handleUpdate = () => {
-    if (!editingFaq) return
+    if (!editingFaq) return;
     setFaqs(
-      faqs.map((f) => (f.id === editingFaq.id ? { ...f, question: formData.question, answer: formData.answer, category: formData.category } : f)),
-    )
-    setIsEditOpen(false)
-    setEditingFaq(null)
-    setFormData({ question: "", answer: "", category: "Chung" })
-  }
+      faqs.map((f) =>
+        f.id === editingFaq.id
+          ? {
+              ...f,
+              question: formData.question,
+              answer: formData.answer,
+              category: formData.category,
+            }
+          : f
+      )
+    );
+    setIsEditOpen(false);
+    setEditingFaq(null);
+    setFormData({ question: "", answer: "", category: "Chung" });
+  };
 
-  const handleDelete = (id: number) => setFaqs(faqs.filter((f) => f.id !== id))
+  const handleDelete = (id: number) => setFaqs(faqs.filter((f) => f.id !== id));
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="p-6 pt-0 pb-0">
           <h1 className="text-3xl font-bold text-foreground">Quản lý FAQ</h1>
-          <p className="text-muted-foreground">Tạo, chỉnh sửa và quản lý các câu hỏi thường gặp.</p>
+          <p className="text-muted-foreground">
+            Tạo, chỉnh sửa và quản lý các câu hỏi thường gặp.
+          </p>
         </div>
-        <Button className="flex items-center gap-2" onClick={() => setIsCreateOpen(true)}>
+        <Button
+          className="flex items-center gap-2"
+          onClick={() => setIsCreateOpen(true)}
+        >
           <Plus className="h-4 w-4" /> Thêm FAQ
         </Button>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Danh sách FAQ</CardTitle>
-          <CardDescription>Các câu hỏi thường gặp của hệ thống.</CardDescription>
-        </CardHeader>
+      <Card className="border-0 shadow-none">
         <CardContent>
           <div className="flex items-center gap-4 mb-6">
             <div className="relative flex-1 max-w-sm">
@@ -93,18 +141,42 @@ export default function FaqManagementPage() {
                 className="pl-10"
               />
             </div>
-            <div className="text-sm text-muted-foreground">{filtered.length} / {faqs.length} mục</div>
+            <div className="text-sm text-muted-foreground">
+              {filtered.length} / {faqs.length} mục
+            </div>
           </div>
 
-          <FaqTable items={filtered} onEdit={handleEdit} onDelete={handleDelete} />
+          <FaqTable
+            items={paginatedFaqs}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+          <Pagination
+            className="mt-4"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </CardContent>
       </Card>
 
-      <FaqFormDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} data={formData} setData={setFormData} onSubmit={handleCreate} mode="create" />
+      <FaqFormDialog
+        open={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        data={formData}
+        setData={setFormData}
+        onSubmit={handleCreate}
+        mode="create"
+      />
 
-      <FaqFormDialog open={isEditOpen} onOpenChange={setIsEditOpen} data={formData} setData={setFormData} onSubmit={handleUpdate} mode="edit" />
+      <FaqFormDialog
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        data={formData}
+        setData={setFormData}
+        onSubmit={handleUpdate}
+        mode="edit"
+      />
     </div>
-  )
+  );
 }
-
-

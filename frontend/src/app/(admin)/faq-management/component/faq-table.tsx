@@ -17,7 +17,7 @@ export default function FaqTable({ items, onEdit, onDelete }: { items: Faq[]; on
             <TableHead>Câu hỏi</TableHead>
             <TableHead>Danh mục</TableHead>
             <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[70px]">Thao tác</TableHead>
+            <TableHead className="w-[90px]">Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -15,11 +13,19 @@ import {
   Menu,
   X,
   LayoutDashboard,
+  ShieldCheck,
   ChevronLeft,
   ChevronRight,
   HelpCircle,
 } from "lucide-react";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const navigation = [
   {
@@ -51,6 +57,11 @@ const navigation = [
     name: "Quản lý FAQ",
     href: "/faq-management",
     icon: HelpCircle,
+  },
+  {
+    name: "Phân quyền",
+    href: "/permission-management",
+    icon: ShieldCheck,
   },
 ];
 
@@ -201,7 +212,27 @@ export default function AdminLayout({
             </Button>
 
             <div className="flex flex-col">
-              <Breadcrumb items={breadcrumbItems} />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  {breadcrumbItems.map((item, idx) => {
+                    const isLast = idx === breadcrumbItems.length - 1;
+                    return (
+                      <React.Fragment key={item.href}>
+                        {idx > 0 && <BreadcrumbSeparator />}
+                        <BreadcrumbItem>
+                          {isLast ? (
+                            <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                          ) : (
+                            <BreadcrumbLink asChild>
+                              <Link href={item.href}>{item.label}</Link>
+                            </BreadcrumbLink>
+                          )}
+                        </BreadcrumbItem>
+                      </React.Fragment>
+                    );
+                  })}
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
           </div>
           <div className="flex items-center gap-4" />

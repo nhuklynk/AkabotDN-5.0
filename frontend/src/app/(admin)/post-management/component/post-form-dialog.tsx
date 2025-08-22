@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 type PostFormData = {
@@ -96,12 +97,10 @@ export default function PostFormDialog({
           </div>
           <div>
             <Label htmlFor="content">Nội dung</Label>
-            <Textarea
-              id="content"
+            <RichTextEditor
               value={formData.content}
-              onChange={(e) => setFormData((d) => ({ ...d, content: e.target.value }))}
-              placeholder="Viết nội dung bài viết..."
-              rows={6}
+              onChange={(html) => setFormData((d) => ({ ...d, content: html }))}
+              className="mt-1"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">

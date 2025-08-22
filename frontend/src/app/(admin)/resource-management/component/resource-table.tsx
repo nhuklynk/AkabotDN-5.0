@@ -1,5 +1,6 @@
 "use client"
 
+import type React from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -17,6 +18,7 @@ type Resource = {
   description: string
   uploadedBy: string
   createdAt: string
+  url: string
 }
 
 export default function ResourceTable({
@@ -29,7 +31,7 @@ export default function ResourceTable({
 }: {
   items: Resource[]
   getTypeColor: (t: string) => string
-  getTypeIcon: (t: string) => JSX.Element
+  getTypeIcon: (t: string) => React.ReactNode
   getCategoryColor: (c: string) => string
   onEdit: (r: Resource) => void
   onDelete: (id: number) => void
@@ -46,7 +48,7 @@ export default function ResourceTable({
             <TableHead>Kích thước</TableHead>
             <TableHead>Tải lên bởi</TableHead>
             <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[70px]">Thao tác</TableHead>
+            <TableHead className="w-[90px]">Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -55,12 +57,12 @@ export default function ResourceTable({
               <TableCell className="font-medium">{resource.name}</TableCell>
               <TableCell className="font-mono text-sm">{resource.filename}</TableCell>
               <TableCell>
-                <Badge className={getTypeColor(resource.type)}>
+                <Badge className={`${getTypeColor(resource.type)} capitalize`}>
                   <div className="flex items-center gap-1">{getTypeIcon(resource.type)}{resource.type}</div>
                 </Badge>
               </TableCell>
               <TableCell>
-                <Badge className={getCategoryColor(resource.category)}>{resource.category}</Badge>
+                <Badge className={`${getCategoryColor(resource.category)} capitalize`}>{resource.category}</Badge>
               </TableCell>
               <TableCell>{resource.size}</TableCell>
               <TableCell>{resource.uploadedBy}</TableCell>

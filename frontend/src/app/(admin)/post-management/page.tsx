@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,40 +10,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import PostTable from "./component/post-table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+
+import PostFilters from "./component/post-filters";
+import { Pagination } from "@/components/pagination-component";
 import { Plus, Search } from "lucide-react";
 import {
   moderateContent,
   findBannedWords,
 } from "@/services/admin/moderationService";
 import { classifyContent } from "@/services/admin/classifierService";
+import PostFormDialog from "./component/post-form-dialog";
 
 // Mock data for posts
 const initialPosts = [
@@ -150,11 +127,11 @@ type Post = {
 
 // Mock categories and authors for dropdowns
 const categories = [
-  { id: 1, name: "Technology" },
-  { id: 2, name: "Web Development" },
-  { id: 3, name: "Mobile Development" },
-  { id: 4, name: "Design" },
-  { id: 5, name: "UI Design" },
+  { id: 1, name: "Công nghệ" },
+  { id: 2, name: "Phát triển web" },
+  { id: 3, name: "Phát triển di động" },
+  { id: 4, name: "Thiết kế" },
+  { id: 5, name: "Thiết kế giao diện" },
 ];
 
 const authors = [
@@ -186,17 +163,6 @@ export default function PostsPage() {
   });
   const [progress, setProgress] = useState(0);
   const [badTitleWords, setBadTitleWords] = useState<string[]>([]);
-  const [badExcerptWords, setBadExcerptWords] = useState<string[]>([]);
-  const [badContentWords, setBadContentWords] = useState<string[]>([]);
-  const simulateProgress = () => {
-    setProgress(0);
-    let current = 0;
-    const timer = setInterval(() => {
-      current = Math.min(100, current + 10);
-      setProgress(current);
-      if (current >= 100) clearInterval(timer);
-    }, 150);
-  };
 
   const filteredPosts = posts.filter((post) => {
     const matchesSearch =
@@ -213,9 +179,26 @@ export default function PostsPage() {
     return matchesSearch && matchesStatus && matchesCategory;
   });
 
-  // Generate slug from title
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const totalPages = Math.max(1, Math.ceil(filteredPosts.length / pageSize));
+  const paginatedPosts = filteredPosts.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterStatus, filterCategory]);
+
+  // Generate URL-safe slug from Vietnamese title (strip diacritics, convert đ, hyphenate)
   const generateSlug = (title: string) => {
     return title
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D")
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
@@ -383,7 +366,7 @@ export default function PostsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="p-6 pt-0 pb-0">
           <h1 className="text-3xl font-bold text-foreground">
             Quản lý bài viết
           </h1>
@@ -398,252 +381,23 @@ export default function PostsPage() {
           <Plus className="h-4 w-4" />
           Tạo bài viết
         </Button>
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Tạo bài viết mới</DialogTitle>
-              <DialogDescription>
-                Viết bài blog hoặc bài viết mới.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="title">Tiêu đề</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => {
-                      const title = e.target.value;
-                      setFormData({
-                        ...formData,
-                        title,
-                        slug: generateSlug(title),
-                      });
+        <PostFormDialog
+          open={isCreateDialogOpen}
+          onOpenChange={setIsCreateDialogOpen}
+          formData={formData}
+          setFormData={setFormData}
+          authors={authors}
+          categories={categories}
+          onSubmit={handleCreatePost}
+          onTitleChange={(title) => {
+            setFormData({ ...formData, title, slug: generateSlug(title) });
                       setBadTitleWords(findBannedWords(title));
                     }}
-                    placeholder="Enter post title"
-                  />
-                  {badTitleWords.length > 0 && (
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      {badTitleWords.map((w) => (
-                        <span
-                          key={w}
-                          className="text-xs rounded bg-red-100 text-red-700 px-2 py-0.5"
-                        >
-                          {w}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="slug">Đường dẫn (slug)</Label>
-                  <Input
-                    id="slug"
-                    value={formData.slug}
-                    onChange={(e) =>
-                      setFormData({ ...formData, slug: e.target.value })
-                    }
-                    placeholder="post-slug"
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="excerpt">Mô tả ngắn</Label>
-                <Textarea
-                  id="excerpt"
-                  value={formData.excerpt}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setFormData({ ...formData, excerpt: v });
-                    setBadExcerptWords(findBannedWords(v));
-                  }}
-                  placeholder="Brief description of the post"
-                  rows={2}
-                />
-                {badExcerptWords.length > 0 && (
-                  <div className="mt-1 flex flex-wrap gap-1">
-                    {badExcerptWords.map((w) => (
-                      <span
-                        key={w}
-                        className="text-xs rounded bg-red-100 text-red-700 px-2 py-0.5"
-                      >
-                        {w}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="content">Nội dung</Label>
-                <Textarea
-                  id="content"
-                  value={formData.content}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setFormData({ ...formData, content: v });
-                    setBadContentWords(findBannedWords(v));
-                  }}
-                  placeholder="Write your post content here..."
-                  rows={6}
-                />
-                {badContentWords.length > 0 && (
-                  <div className="mt-1 flex flex-wrap gap-1">
-                    {badContentWords.map((w) => (
-                      <span
-                        key={w}
-                        className="text-xs rounded bg-red-100 text-red-700 px-2 py-0.5"
-                      >
-                        {w}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="author">Tác giả</Label>
-                  <Select
-                    value={formData.authorId.toString()}
-                    onValueChange={(value) =>
-                      setFormData({
-                        ...formData,
-                        authorId: Number.parseInt(value),
-                      })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Chọn tác giả" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {authors.map((author) => (
-                        <SelectItem
-                          key={author.id}
-                          value={author.id.toString()}
-                        >
-                          {author.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="category">Danh mục</Label>
-                  <Select
-                    value={formData.categoryId.toString()}
-                    onValueChange={(value) =>
-                      setFormData({
-                        ...formData,
-                        categoryId: Number.parseInt(value),
-                      })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Chọn danh mục" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id.toString()}
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="status">Trạng thái</Label>
-                  <Select
-                    value={formData.status}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, status: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Chọn trạng thái" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Bản nháp</SelectItem>
-                      <SelectItem value="published">Đã xuất bản</SelectItem>
-                      <SelectItem value="scheduled">Đã lên lịch</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="publishedAt">Ngày xuất bản</Label>
-                  <Input
-                    id="publishedAt"
-                    type="date"
-                    value={formData.publishedAt}
-                    onChange={(e) =>
-                      setFormData({ ...formData, publishedAt: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="featuredImage">Ảnh đại diện (URL)</Label>
-                <Input
-                  id="featuredImage"
-                  value={formData.featuredImage}
-                  onChange={(e) =>
-                    setFormData({ ...formData, featuredImage: e.target.value })
-                  }
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
-              <div>
-                <Label htmlFor="tags">Thẻ</Label>
-                <div className="flex flex-wrap gap-2">
-                  {formData.tags
-                    .split(",")
-                    .map((t) => t.trim())
-                    .filter(Boolean)
-                    .map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                </div>
-                <Input
-                  id="tags"
-                  value={formData.tags}
-                  onChange={(e) =>
-                    setFormData({ ...formData, tags: e.target.value })
-                  }
-                  placeholder="tag1, tag2, tag3"
-                  className="mt-2"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Ngăn cách thẻ bằng dấu phẩy (multi-select đơn giản)
-                </p>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsCreateDialogOpen(false)}
-              >
-                Hủy
-              </Button>
-              <Button onClick={handleCreatePost}>Tạo bài viết</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          mode="create"
+        />
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Danh sách bài viết</CardTitle>
-          <CardDescription>
-            Quản lý toàn bộ bài viết trong hệ thống.
-          </CardDescription>
-        </CardHeader>
+      <Card className="border-0 shadow-none">
         <CardContent>
           <div className="flex items-center gap-4 mb-6">
             <div className="relative flex-1 max-w-sm">
@@ -655,227 +409,48 @@ export default function PostsPage() {
                 className="pl-10"
               />
             </div>
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
-              <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Trạng thái" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tất cả</SelectItem>
-                <SelectItem value="published">Đã xuất bản</SelectItem>
-                <SelectItem value="draft">Bản nháp</SelectItem>
-                <SelectItem value="scheduled">Đã lên lịch</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={filterCategory} onValueChange={setFilterCategory}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Danh mục" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tất cả danh mục</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id.toString()}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <PostFilters
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
+              categories={categories}
+            />
             <div className="text-sm text-muted-foreground">
-              {filteredPosts.length} of {posts.length} posts
+              {filteredPosts.length} / {posts.length} bài viết
             </div>
           </div>
 
           <PostTable
-            items={filteredPosts}
+            items={paginatedPosts}
             getStatusColor={getStatusColor}
             formatDate={formatDate}
             onEdit={handleEditPost}
             onDelete={handleDeletePost}
           />
+          <Pagination
+            className="mt-4"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </CardContent>
       </Card>
 
       {/* Edit Post Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Edit Post</DialogTitle>
-            <DialogDescription>
-              Update post content and settings.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="edit-title">Title</Label>
-                <Input
-                  id="edit-title"
-                  value={formData.title}
-                  onChange={(e) => {
-                    const title = e.target.value;
-                    setFormData({
-                      ...formData,
-                      title,
-                      slug: generateSlug(title),
-                    });
-                  }}
-                  placeholder="Enter post title"
-                />
-              </div>
-              <div>
-                <Label htmlFor="edit-slug">Slug</Label>
-                <Input
-                  id="edit-slug"
-                  value={formData.slug}
-                  onChange={(e) =>
-                    setFormData({ ...formData, slug: e.target.value })
-                  }
-                  placeholder="post-slug"
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="edit-excerpt">Excerpt</Label>
-              <Textarea
-                id="edit-excerpt"
-                value={formData.excerpt}
-                onChange={(e) =>
-                  setFormData({ ...formData, excerpt: e.target.value })
-                }
-                placeholder="Brief description of the post"
-                rows={2}
-              />
-            </div>
-            <div>
-              <Label htmlFor="edit-content">Content</Label>
-              <Textarea
-                id="edit-content"
-                value={formData.content}
-                onChange={(e) =>
-                  setFormData({ ...formData, content: e.target.value })
-                }
-                placeholder="Write your post content here..."
-                rows={6}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="edit-author">Author</Label>
-                <Select
-                  value={formData.authorId.toString()}
-                  onValueChange={(value) =>
-                    setFormData({
-                      ...formData,
-                      authorId: Number.parseInt(value),
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select author" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {authors.map((author) => (
-                      <SelectItem key={author.id} value={author.id.toString()}>
-                        {author.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="edit-category">Category</Label>
-                <Select
-                  value={formData.categoryId.toString()}
-                  onValueChange={(value) =>
-                    setFormData({
-                      ...formData,
-                      categoryId: Number.parseInt(value),
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem
-                        key={category.id}
-                        value={category.id.toString()}
-                      >
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="edit-status">Status</Label>
-                <Select
-                  value={formData.status}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, status: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="published">Published</SelectItem>
-                    <SelectItem value="scheduled">Scheduled</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="edit-publishedAt">Publish Date</Label>
-                <Input
-                  id="edit-publishedAt"
-                  type="date"
-                  value={formData.publishedAt}
-                  onChange={(e) =>
-                    setFormData({ ...formData, publishedAt: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="edit-featuredImage">Featured Image URL</Label>
-              <Input
-                id="edit-featuredImage"
-                value={formData.featuredImage}
-                onChange={(e) =>
-                  setFormData({ ...formData, featuredImage: e.target.value })
-                }
-                placeholder="https://example.com/image.jpg"
-              />
-            </div>
-            <div>
-              <Label htmlFor="edit-tags">Tags</Label>
-              <Input
-                id="edit-tags"
-                value={formData.tags}
-                onChange={(e) =>
-                  setFormData({ ...formData, tags: e.target.value })
-                }
-                placeholder="tag1, tag2, tag3"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Separate tags with commas
-              </p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsEditDialogOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button onClick={handleUpdatePost}>Update Post</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <PostFormDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        formData={formData}
+        setFormData={setFormData}
+        authors={authors}
+        categories={categories}
+        onSubmit={handleUpdatePost}
+        onTitleChange={(title) =>
+          setFormData({ ...formData, title, slug: generateSlug(title) })
+        }
+        mode="edit"
+      />
     </div>
   );
 }

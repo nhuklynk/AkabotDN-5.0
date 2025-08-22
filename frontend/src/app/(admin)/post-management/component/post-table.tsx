@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Calendar, Edit, Eye, ExternalLink, MoreHorizontal, Trash2, User } from "lucide-react"
+import { Edit, ExternalLink, MoreHorizontal, Trash2 } from "lucide-react"
 import Image from "next/image"
 import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 
@@ -52,7 +52,7 @@ export default function PostTable({
             <TableHead>Trạng thái</TableHead>
             <TableHead>Xuất bản</TableHead>
             <TableHead>Lượt xem</TableHead>
-            <TableHead className="w-[70px]">Thao tác</TableHead>
+            <TableHead className="w-[90px] whitespace-nowrap">Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -73,30 +73,15 @@ export default function PostTable({
                   </div>
                 </div>
               </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  {post.author}
-                </div>
-              </TableCell>
+              <TableCell>{post.author}</TableCell>
               <TableCell>
                 <Badge variant="secondary" className="rounded-full px-3">{post.category}</Badge>
               </TableCell>
               <TableCell>
-                <Badge className={`${getStatusColor(post.status)} uppercase tracking-wide px-3`}>{post.status}</Badge>
+                <Badge className={`${getStatusColor(post.status)} capitalize tracking-wide px-3`}>{post.status}</Badge>
               </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  {formatDate(post.publishedAt)}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                  {post.views.toLocaleString()}
-                </div>
-              </TableCell>
+              <TableCell>{formatDate(post.publishedAt)}</TableCell>
+              <TableCell>{new Intl.NumberFormat("vi-VN").format(post.views)}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -106,7 +91,7 @@ export default function PostTable({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
-                      <Eye className="h-4 w-4 mr-2" /> Xem trước
+                      Xem trước
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <ExternalLink className="h-4 w-4 mr-2" /> Xem trực tiếp
