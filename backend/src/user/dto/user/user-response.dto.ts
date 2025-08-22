@@ -1,0 +1,56 @@
+import { Expose } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+import { UserStatus } from '../../entity/user.entity';
+
+export class UserResponseDto {
+  @Expose()
+  @ApiProperty({
+    description: 'Unique user identifier',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  user_id: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'User email address',
+    example: 'user@example.com'
+  })
+  email: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'User full name',
+    example: 'John Doe'
+  })
+  full_name: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'User creation date',
+    example: '2024-01-01T00:00:00.000Z'
+  })
+  created_at: Date;
+
+  @Expose()
+  @ApiProperty({
+    description: 'User last update date',
+    example: '2024-01-01T00:00:00.000Z'
+  })
+  updated_at: Date;
+
+  @Expose()
+  avatar: string;
+
+  @Expose()
+  phone: string;
+
+  @Expose()
+  status: UserStatus;
+
+  @Expose()
+  roles?: any[];
+
+  constructor(partial: Partial<UserResponseDto>) {
+    Object.assign(this, partial);
+  }
+}
