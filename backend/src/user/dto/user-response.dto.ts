@@ -1,10 +1,17 @@
-import { UserRole } from '../entities/user.entity';
+
 
 export class UserResponseDto {
-  id: string;
-  username: string;
+  userId: string;
   email: string;
-  role: UserRole;
+  fullName: string;
+  avatar?: string;
+  phone?: string;
+  status: string;
+  roles: Array<{
+    roleId: string;
+    roleName: string;
+    description?: string;
+  }>;
   createdAt: Date;
   updatedAt: Date;
 

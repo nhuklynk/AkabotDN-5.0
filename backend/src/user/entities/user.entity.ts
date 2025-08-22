@@ -4,39 +4,63 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Role } from './role.entity';
 
-export enum UserRole {
-  ENDUSER = 'enduser',
-  ADMIN = 'admin',
-  EDITOR = 'editor',
+export enum UserStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  SUSPENDED = 'suspended',
 }
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'UserID' })
+  userId: string;
 
-  @Column({ type: 'varchar', length: 100, unique: true })
-  username: string;
-
-  @Column({ type: 'varchar', length: 255, unique: true })
+  @Column({ name: 'Email', unique: true, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'password_hash' })
+  @Column({ name: 'PasswordHash', nullable: false })
   passwordHash: string;
 
-  @Column({
-    type: 'varchar',
-    length: 50,
-    enum: UserRole,
-    default: UserRole.ENDUSER,
-  })
-  role: UserRole;
+  @Column({ name: 'FullName', nullable: false })
+  fullName: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'Avatar', nullable: true })
+  avatar: string;
+
+  @Column({ name: 'Phone', nullable: true })
+  phone: string;
+
+  @Column({
+    name: 'Status',
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.ACTIVE,
+  })
+  status: UserStatus;
+
+  @CreateDateColumn({ name: 'CreatedAt' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ name: 'UpdatedAt' })
   updatedAt: Date;
+
+  // Many-to-Many relationship with Role (TypeORM sẽ tự tạo bảng user_roles)
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable({
+    name: 'user_roles',
+    joinColumn: {
+      name: 'UserID',
+      referencedColumnName: 'userId',
+    },
+    inverseJoinColumn: {
+      name: 'RoleID',
+      referencedColumnName: 'roleId',
+    },
+  })
+  roles: Role[];
 }

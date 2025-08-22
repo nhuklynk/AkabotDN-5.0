@@ -1,18 +1,18 @@
-import { IsEmail, IsString, MinLength, IsOptional, IsArray } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsOptional, IsArray } from 'class-validator';
 
-export class UpdateUserDto {
-  @IsOptional()
+export class RegisterDto {
+  @IsNotEmpty()
   @IsEmail()
-  email?: string;
+  email: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   @MinLength(6)
-  password?: string;
+  password: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  fullName?: string;
+  fullName: string;
 
   @IsOptional()
   @IsString()

@@ -1,12 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, IsEnum, IsOptional } from 'class-validator';
-import { UserRole } from '../entities/user.entity';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsOptional, IsArray } from 'class-validator';
 
 export class CreateUserDto {
-  @IsNotEmpty()
-  @IsString()
-  @MinLength(3)
-  username: string;
-
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -16,7 +10,19 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 
+  @IsNotEmpty()
+  @IsString()
+  fullName: string;
+
   @IsOptional()
-  @IsEnum(UserRole)
-  role?: UserRole;
+  @IsString()
+  avatar?: string;
+
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsOptional()
+  @IsArray()
+  roleIds?: string[]; // Array of role IDs to assign
 }

@@ -1,36 +1,41 @@
 import {
-  Injectable,
-  NotFoundException,
-  ConflictException,
   BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
-import { CreateUserDto, UpdateUserDto, UserResponseDto } from './dto';
+import { Role } from './entities/role.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    const { username, email, password, role } = createUserDto;
+    const { email, password, fullName, avatar, phone, roleIds } = createUserDto;
 
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
-      where: [{ email }, { username }],
+      where: { email },
     });
 
     if (existingUser) {
-      throw new ConflictException(
-        existingUser.email === email
-          ? 'Email already exists'
-          : 'Username already exists',
-      );
+      throw new ConflictException('Email already exists');
     }
 
     // Hash password
@@ -39,18 +44,27 @@ export class UserService {
 
     // Create new user
     const user = this.userRepository.create({
-      username,
       email,
       passwordHash,
-      role,
+      fullName,
+      avatar,
+      phone,
     });
+
+    // Assign roles if provided
+    if (roleIds && roleIds.length > 0) {
+      const roles = await this.roleRepository.findByIds(roleIds);
+      user.roles = roles;
+    }
 
     const savedUser = await this.userRepository.save(user);
     return this.toResponseDto(savedUser);
   }
 
   async findAll(): Promise<UserResponseDto[]> {
-    const users = await this.userRepository.find();
+    const users = await this.userRepository.find({
+      relations: ['roles'],
+    });
     return users.map((user) => this.toResponseDto(user));
   }
 
@@ -59,19 +73,23 @@ export class UserService {
       throw new BadRequestException('Invalid user ID format');
     }
 
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { userId: id },
+      relations: ['roles'],
+    });
+    
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    
     return this.toResponseDto(user);
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email } });
-  }
-
-  async findByUsername(username: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { username } });
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['roles'],
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserResponseDto> {
@@ -79,21 +97,18 @@ export class UserService {
       throw new BadRequestException('Invalid user ID format');
     }
 
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { userId: id },
+      relations: ['roles'],
+    });
+    
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const { username, email, password, role } = updateUserDto;
+    const { email, password, fullName, avatar, phone, roleIds } = updateUserDto;
 
-    // Check for conflicts if username or email is being updated
-    if (username && username !== user.username) {
-      const existingUser = await this.findByUsername(username);
-      if (existingUser) {
-        throw new ConflictException('Username already exists');
-      }
-    }
-
+    // Check for conflicts if email is being updated
     if (email && email !== user.email) {
       const existingUser = await this.findByEmail(email);
       if (existingUser) {
@@ -102,14 +117,25 @@ export class UserService {
     }
 
     // Update fields
-    if (username) user.username = username;
     if (email) user.email = email;
-    if (role) user.role = role;
+    if (fullName) user.fullName = fullName;
+    if (avatar !== undefined) user.avatar = avatar;
+    if (phone !== undefined) user.phone = phone;
 
     // Hash password if provided
     if (password) {
       const saltRounds = 10;
       user.passwordHash = await bcrypt.hash(password, saltRounds);
+    }
+
+    // Update roles if provided
+    if (roleIds !== undefined) {
+      if (roleIds.length > 0) {
+        const roles = await this.roleRepository.findByIds(roleIds);
+        user.roles = roles;
+      } else {
+        user.roles = [];
+      }
     }
 
     const updatedUser = await this.userRepository.save(user);
@@ -121,7 +147,10 @@ export class UserService {
       throw new BadRequestException('Invalid user ID format');
     }
 
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { userId: id },
+    });
+    
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -135,10 +164,17 @@ export class UserService {
 
   private toResponseDto(user: User): UserResponseDto {
     return new UserResponseDto({
-      id: user.id,
-      username: user.username,
+      userId: user.userId,
       email: user.email,
-      role: user.role,
+      fullName: user.fullName,
+      avatar: user.avatar,
+      phone: user.phone,
+      status: user.status,
+      roles: user.roles?.map(role => ({
+        roleId: role.roleId,
+        roleName: role.roleName,
+        description: role.description,
+      })) || [],
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     });
