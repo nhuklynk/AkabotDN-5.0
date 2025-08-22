@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-tv" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#EC4899;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="tv-screen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1F2937" />
+      <stop offset="100%" style="stop-color:#111827" />
+    </linearGradient>
+    <linearGradient id="ai-brain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6" />
+      <stop offset="100%" style="stop-color:#EC4899" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-tv)"/>
+  
+  <!-- TV Studio Background -->
+  <rect x="0" y="400" width="800" height="200" fill="#1F2937" opacity="0.8"/>
+  <rect x="0" y="450" width="800" height="100" fill="#374151" opacity="0.6"/>
+  
+  <!-- Main TV Screen -->
+  <g transform="translate(200,100)">
+    <!-- TV Frame -->
+    <rect x="0" y="0" width="400" height="250" rx="15" fill="#374151"/>
+    <rect x="15" y="15" width="370" height="220" rx="10" fill="url(#tv-screen)"/>
+    
+    <!-- TV Screen Content -->
+    <!-- AI Competition Logo -->
+    <circle cx="200" cy="80" r="30" fill="url(#ai-brain)">
+      <animate attributeName="r" values="30;35;30" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="200" y="85" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">AI</text>
+    
+    <!-- Competition Title on Screen -->
+    <text x="200" y="130" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">AI THỰC CHIẾN</text>
+    <text x="200" y="150" text-anchor="middle" font-size="12" fill="#F3F4F6">Cuộc thi Trí tuệ Nhân tạo</text>
+    
+    <!-- Live Indicator -->
+    <rect x="320" y="25" width="50" height="20" rx="10" fill="#EF4444"/>
+    <circle cx="330" cy="35" r="3" fill="#FFFFFF">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <text x="345" y="39" font-size="10" fill="#FFFFFF">LIVE</text>
+    
+    <!-- Competition Progress Bar -->
+    <rect x="50" y="180" width="300" height="8" rx="4" fill="#4B5563"/>
+    <rect x="50" y="180" width="180" height="8" rx="4" fill="#EC4899">
+      <animate attributeName="width" values="0;180;200;180" dur="4s" repeatCount="indefinite"/>
+    </rect>
+    <text x="200" y="205" text-anchor="middle" font-size="10" fill="#F3F4F6">Vòng chung kết</text>
+    
+    <!-- Participants on Screen -->
+    <g transform="translate(80,160)">
+      <rect x="0" y="0" width="40" height="15" rx="3" fill="#8B5CF6" opacity="0.8"/>
+      <text x="20" y="11" text-anchor="middle" font-size="8" fill="#FFFFFF">Team A</text>
+    </g>
+    <g transform="translate(280,160)">
+      <rect x="0" y="0" width="40" height="15" rx="3" fill="#EC4899" opacity="0.8"/>
+      <text x="20" y="11" text-anchor="middle" font-size="8" fill="#FFFFFF">Team B</text>
+    </g>
+  </g>
+  
+  <!-- Camera Equipment -->
+  <g transform="translate(100,200)">
+    <!-- Camera 1 -->
+    <rect x="0" y="0" width="60" height="40" rx="5" fill="#374151"/>
+    <circle cx="45" cy="20" r="15" fill="#111827"/>
+    <circle cx="45" cy="20" r="8" fill="#6B7280"/>
+    <rect x="15" y="45" width="6" height="30" fill="#4B5563"/>
+    <rect x="10" y="70" width="16" height="8" rx="4" fill="#6B7280"/>
+    <text x="30" y="90" text-anchor="middle" font-size="8" fill="#6B7280">Camera 1</text>
+  </g>
+  
+  <g transform="translate(640,180)">
+    <!-- Camera 2 -->
+    <rect x="0" y="0" width="60" height="40" rx="5" fill="#374151"/>
+    <circle cx="15" cy="20" r="15" fill="#111827"/>
+    <circle cx="15" cy="20" r="8" fill="#6B7280"/>
+    <rect x="39" y="45" width="6" height="30" fill="#4B5563"/>
+    <rect x="34" y="70" width="16" height="8" rx="4" fill="#6B7280"/>
+    <text x="30" y="90" text-anchor="middle" font-size="8" fill="#6B7280">Camera 2</text>
+  </g>
+  
+  <!-- Studio Lights -->
+  <g transform="translate(150,50)">
+    <ellipse cx="0" cy="0" rx="20" ry="8" fill="#F59E0B" opacity="0.6">
+      <animate attributeName="opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/>
+    </ellipse>
+    <rect x="-15" y="-15" width="30" height="10" rx="5" fill="#374151"/>
+  </g>
+  
+  <g transform="translate(650,70)">
+    <ellipse cx="0" cy="0" rx="25" ry="10" fill="#F59E0B" opacity="0.5">
+      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </ellipse>
+    <rect x="-20" y="-18" width="40" height="12" rx="6" fill="#374151"/>
+  </g>
+  
+  <!-- Audience Silhouettes -->
+  <g transform="translate(50,480)" opacity="0.6">
+    <ellipse cx="20" cy="20" rx="15" ry="25" fill="#1F2937"/>
+    <ellipse cx="50" cy="18" rx="12" ry="22" fill="#1F2937"/>
+    <ellipse cx="80" cy="22" rx="18" ry="28" fill="#1F2937"/>
+    <ellipse cx="110" cy="20" rx="14" ry="24" fill="#1F2937"/>
+    <ellipse cx="140" cy="25" rx="16" ry="26" fill="#1F2937"/>
+  </g>
+  
+  <g transform="translate(600,470)" opacity="0.6">
+    <ellipse cx="20" cy="30" rx="15" ry="25" fill="#1F2937"/>
+    <ellipse cx="50" cy="28" rx="12" ry="22" fill="#1F2937"/>
+    <ellipse cx="80" cy="32" rx="18" ry="28" fill="#1F2937"/>
+    <ellipse cx="110" cy="30" rx="14" ry="24" fill="#1F2937"/>
+  </g>
+  
+  <!-- AI Neural Network Visualization -->
+  <g transform="translate(50,350)" opacity="0.7">
+    <circle cx="20" cy="20" r="4" fill="#8B5CF6">
+      <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="60" cy="10" r="3" fill="#EC4899">
+      <animate attributeName="r" values="3;5;3" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="60" cy="30" r="4" fill="#8B5CF6">
+      <animate attributeName="r" values="4;6;4" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="100" cy="20" r="5" fill="#EC4899">
+      <animate attributeName="r" values="5;7;5" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Neural connections -->
+    <line x1="24" y1="20" x2="56" y2="12" stroke="#8B5CF6" stroke-width="1" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+    </line>
+    <line x1="24" y1="20" x2="56" y2="28" stroke="#EC4899" stroke-width="1" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.2s" repeatCount="indefinite"/>
+    </line>
+    <line x1="64" y1="12" x2="96" y2="18" stroke="#8B5CF6" stroke-width="1" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.8s" repeatCount="indefinite"/>
+    </line>
+    <line x1="64" y1="28" x2="96" y2="22" stroke="#EC4899" stroke-width="1" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </line>
+    
+    <text x="60" y="55" text-anchor="middle" font-size="10" fill="#8B5CF6">AI Processing</text>
+  </g>
+  
+  <!-- Broadcast Signal Waves -->
+  <g transform="translate(700,100)" opacity="0.5">
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#F59E0B" stroke-width="2">
+      <animate attributeName="r" values="20;40;60" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.3;0" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#EC4899" stroke-width="2">
+      <animate attributeName="r" values="30;50;70" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.3;0" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="80" text-anchor="middle" font-size="8" fill="#F59E0B">Broadcasting</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#8B5CF6">
+    AI Thực Chiến TV Show
+  </text>
+  <text x="400" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#EC4899" opacity="0.8">
+    Cuộc thi Trí tuệ Nhân tạo đầu tiên trên Truyền hình
+  </text>
+</svg>
+
+
+

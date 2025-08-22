@@ -32,7 +32,7 @@ export default function DigitalProductsPage() {
       title: "Sàn giao dịch",
       description:
         "Nền tảng giao dịch số hiện đại với công nghệ blockchain tiên tiến",
-      image: "/placeholder-6a0xs.png",
+      image: "/trading-platform.svg",
       features: ["Bảo mật cao", "Giao dịch nhanh", "Phí thấp", "Hỗ trợ 24/7"],
       icon: <Globe className="w-8 h-8" />,
     },
@@ -41,7 +41,7 @@ export default function DigitalProductsPage() {
       title: "Nền tảng Chuỗi khối quốc gia",
       description:
         "Hạ tầng blockchain quốc gia đáng tin cậy cho các dịch vụ công",
-      image: "/blockchain-data-center.png",
+      image: "/blockchain-platform.svg",
       features: [
         "Tính minh bạch",
         "Bảo mật tuyệt đối",
@@ -54,7 +54,7 @@ export default function DigitalProductsPage() {
       id: "ung-dung-dinh-danh",
       title: "Ứng dụng định danh phi tập trung Quốc gia",
       description: "Giải pháp định danh số an toàn và bảo mật cho công dân",
-      image: "/digital-identity-biometric.png",
+      image: "/blockchain-platform.svg",
       features: [
         "Định danh an toàn",
         "Xác thực sinh trắc học",
@@ -67,7 +67,7 @@ export default function DigitalProductsPage() {
       id: "tro-ly-ao",
       title: "Trợ lý ảo quốc gia",
       description: "AI chatbot thông minh hỗ trợ dịch vụ công trực tuyến",
-      image: "/ai-chatbot-interface.png",
+      image: "/blockchain-platform.svg",
       features: [
         "AI thông minh",
         "Đa ngôn ngữ",
@@ -80,7 +80,7 @@ export default function DigitalProductsPage() {
       id: "he-thong-email",
       title: "Hệ thống Thư điện tử quốc gia",
       description: "Hệ thống email bảo mật cao cho các cơ quan nhà nước",
-      image: "/secure-government-email.png",
+      image: "/blockchain-platform.svg",
       features: [
         "Bảo mật cao",
         "Mã hóa đầu cuối",
@@ -116,45 +116,28 @@ export default function DigitalProductsPage() {
   const partners = [
     {
       name: "Cục Du lịch quốc gia Việt Nam",
-      logo: "/partner-tourism-bureau.png",
+      logo: "/partner-tourism-bureau.svg",
       description: "Cơ quan quản lý du lịch quốc gia",
     },
     {
       name: "Tập đoàn Sun Group",
-      logo: "/partner-sun-group.png",
+      logo: "/partner-sun-group.svg",
       description: "Tập đoàn đầu tư và phát triển du lịch hàng đầu",
     },
     {
       name: "Bộ Công an",
-      logo: "/partner-ministry-security.png",
+      logo: "/partner-ministry-security.svg",
       description: "Đối tác công nghệ và bảo mật dữ liệu",
     },
     {
       name: "Trung tâm Dữ liệu Quốc gia",
-      logo: "/partner-national-data-center.png",
+      logo: "/partner-national-data-center.svg",
       description: "Trung tâm quản lý và vận hành dữ liệu quốc gia",
     },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Hiệp hội Dữ liệu Việt Nam
-              </h1>
-              <p className="text-gray-600 mt-1">Vietnam Data Association</p>
-            </div>
-            <Badge variant="secondary" className="text-sm">
-              Chuyển đổi số quốc gia
-            </Badge>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
         <div className="container mx-auto px-4 text-center">
@@ -336,42 +319,8 @@ export default function DigitalProductsPage() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Partners Section */}
-          <div className="mt-8">
-            <PartnersList partners={partners} />
-          </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h4 className="text-2xl font-bold mb-4">
-              Hiệp hội Dữ liệu Việt Nam
-            </h4>
-            <p className="text-gray-400 mb-6">
-              Dẫn đầu trong việc phát triển và ứng dụng công nghệ số tại Việt
-              Nam
-            </p>
-            <div className="flex justify-center space-x-6">
-              <Button variant="ghost" size="sm">
-                Về chúng tôi
-              </Button>
-              <Button variant="ghost" size="sm">
-                Dịch vụ
-              </Button>
-              <Button variant="ghost" size="sm">
-                Tin tức
-              </Button>
-              <Button variant="ghost" size="sm">
-                Liên hệ
-              </Button>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

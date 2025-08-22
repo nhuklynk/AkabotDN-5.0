@@ -79,7 +79,7 @@ const posts = [
     date: "2025-08-15",
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Du lịch số",
-    image: "/vietnam-tourism-platform.png",
+    image: "/vietnam-tourism-platform.svg",
     readTime: "8 phút đọc",
     tags: [
       "Du lịch số",
@@ -96,30 +96,35 @@ const partners = [
     name: "Cục Du lịch quốc gia Việt Nam",
     logo: "/partner-tourism-bureau.png",
     description: "Cơ quan quản lý du lịch quốc gia",
+    category: "Project Partners",
   },
   {
     name: "Tập đoàn Sun Group",
     logo: "/partner-sun-group.png",
     description: "Tập đoàn đầu tư và phát triển du lịch hàng đầu",
+    category: "Project Partners",
   },
   {
     name: "Bộ Công an",
     logo: "/partner-ministry-security.png",
     description: "Đối tác công nghệ và bảo mật dữ liệu",
+    category: "Project Partners",
   },
   {
     name: "Trung tâm Dữ liệu Quốc gia",
     logo: "/partner-national-data-center.png",
     description: "Trung tâm quản lý và vận hành dữ liệu quốc gia",
+    category: "Project Partners",
   },
 ];
 
-export default function PostDetailPage({
+export default async function PostDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const post = posts.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
     notFound();
@@ -200,7 +205,7 @@ export default function PostDetailPage({
               {/* Article Content */}
               <div className="p-6 lg:p-8">
                 <div
-                  className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-headings:font-semibold prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3 prose-p:text-slate-700 prose-p:leading-relaxed prose-ul:text-slate-700 prose-li:my-1"
+                  className="article-content max-w-none"
                   dangerouslySetInnerHTML={{ __html: post.content }}
                 />
               </div>

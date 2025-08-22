@@ -27,6 +27,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
+import { Earth } from "./components/Earth";
+import { GlobeSceneWrapper } from "@/app/(end-user)/landing-page/components/GlobeSceneWrapper";
+import { Globe3D } from "@/app/(end-user)/landing-page/components/Globe3D";
 
 interface Expert {
   id: number;
@@ -51,7 +56,7 @@ export default function LandingPage() {
       subtitle: "Hiệp hội Dữ liệu Quốc gia Việt Nam",
       description:
         "Nơi kết nối, chia sẻ và phát triển hệ sinh thái dữ liệu vì một Việt Nam số mạnh mẽ và bền vững.",
-      backgroundImage: "/vietnam-data-ecosystem.svg",
+      backgroundImage: "/international-data-conference.svg",
       ctaText: "Khám phá ngay",
       ctaLink: "/digital-product",
     },
@@ -156,13 +161,13 @@ export default function LandingPage() {
         "Xây dựng hệ thống quản lý dữ liệu tập trung, an toàn và hiệu quả",
     },
     {
-      icon: <Shield className="w-8 h-8 text-[#977DFF]" />,
+      icon: <Shield className="w-8 h-8 text-[#0033FF]" />,
       title: "Bảo mật & Tuân thủ",
       description:
         "Đảm bảo an toàn thông tin và tuân thủ các quy định pháp luật",
     },
     {
-      icon: <Globe className="w-8 h-8 text-[#FFCCF2]" />,
+      icon: <Globe className="w-8 h-8 text-[#0033FF]" />,
       title: "Hợp tác Quốc tế",
       description:
         "Kết nối và chia sẻ kinh nghiệm với các tổ chức dữ liệu toàn cầu",
@@ -294,7 +299,7 @@ export default function LandingPage() {
                 <div className="container mx-auto px-4">
                   <div className="max-w-4xl">
                     <div className="space-y-6 animate-fadeInUp">
-                      <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0 px-6 py-3 text-base animate-pulse">
+                      <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-[#0033FF] border-0 px-6 py-3 text-base animate-pulse">
                         <Zap className="w-5 h-5 mr-2" />
                         {slide.subtitle}
                       </Badge>
@@ -333,7 +338,7 @@ export default function LandingPage() {
                           variant="outline"
                           className="border-2 border-[#0033FF] text-[#0033FF] hover:bg-[#0033FF] hover:text-white px-10 py-4 text-xl backdrop-blur-sm bg-white/20"
                         >
-                          Xem demo
+                          Tìm hiểu thêm
                         </Button>
                       </div>
                     </div>
@@ -458,135 +463,151 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* Right: Interactive Globe */}
+            {/* Right: Interactive Globe in Space */}
             <div className="relative flex justify-center items-center">
-              <div className="relative w-96 h-96 mx-auto">
-                {/* Corner Texts */}
-                {/* Top Left */}
-                <div className="absolute -top-8 -left-8 text-center animate-float z-20">
-                  <div className="bg-gradient-to-r from-[#0033FF] to-[#4F46E5] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    Kết nối toàn cầu
-                  </div>
-                </div>
-
-                {/* Top Right */}
+              <div className="relative w-[500px] h-[500px] mx-auto">
+                {/* Cosmic Space Background */}
                 <div
-                  className="absolute -top-8 -right-8 text-center animate-float z-20"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  <div className="bg-gradient-to-r from-[#977DFF] to-[#8B5CF6] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    An toàn dữ liệu
-                  </div>
-                </div>
-
-                {/* Bottom Left */}
-                <div
-                  className="absolute -bottom-8 -left-8 text-center animate-float z-20"
-                  style={{ animationDelay: "1s" }}
-                >
-                  <div className="bg-gradient-to-r from-[#FFCCF2] to-[#EC4899] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    Đồng bộ dữ liệu
-                  </div>
-                </div>
-
-                {/* Bottom Right */}
-                <div
-                  className="absolute -bottom-8 -right-8 text-center animate-float z-20"
-                  style={{ animationDelay: "1.5s" }}
-                >
-                  <div className="bg-gradient-to-r from-[#10B981] to-[#059669] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    Trí tuệ nhân tạo
-                  </div>
-                </div>
-
-                {/* Globe Container */}
-                <div
-                  ref={globeRef}
-                  className="relative w-full h-full bg-gradient-to-br from-[#0033FF] via-[#1a4f8a] to-[#2d1b69] rounded-full shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-1000 hover:scale-105 animate-spin"
+                  className="absolute inset-0 rounded-3xl overflow-hidden"
                   style={{
-                    animationDuration: "20s",
-                    animationIterationCount: "infinite",
-                    animationTimingFunction: "linear",
+                    background:
+                      "radial-gradient(ellipse at center, rgba(147, 51, 234, 0.2) 0%, rgba(67, 56, 202, 0.3) 50%, rgba(0, 0, 0, 0.8) 100%)",
                   }}
-                  onClick={() => (window.location.href = "/members/lists")}
                 >
-                  {/* Globe Background Pattern */}
-                  <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-8 left-12 w-16 h-16 bg-green-400 rounded-full blur-sm" />
-                    <div className="absolute top-20 right-16 w-12 h-12 bg-yellow-400 rounded-full blur-sm" />
-                    <div className="absolute bottom-16 left-8 w-20 h-20 bg-orange-400 rounded-full blur-sm" />
-                    <div className="absolute bottom-8 right-12 w-14 h-14 bg-red-400 rounded-full blur-sm" />
-                    <div className="absolute top-1/3 left-1/4 w-10 h-10 bg-purple-400 rounded-full blur-sm" />
-                    <div className="absolute top-2/3 right-1/3 w-8 h-8 bg-pink-400 rounded-full blur-sm" />
+                  {/* Animated Stars Layer 1 - Small stars */}
+                  <div className="absolute inset-0">
+                    {[...Array(40)].map((_, i) => (
+                      <div
+                        key={`star-small-${i}`}
+                        className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-60"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animation: `twinkle ${
+                            2 + Math.random() * 2
+                          }s ease-in-out infinite`,
+                          animationDelay: `${Math.random() * 3}s`,
+                        }}
+                      />
+                    ))}
                   </div>
 
-                  {/* Grid Lines */}
-                  <div className="absolute inset-0 opacity-20">
-                    <div className="absolute top-1/4 left-0 right-0 h-px bg-white" />
-                    <div className="absolute top-1/2 left-0 right-0 h-px bg-white" />
-                    <div className="absolute top-3/4 left-0 right-0 h-px bg-white" />
-                    <div className="absolute top-0 bottom-0 left-1/4 w-px bg-white" />
-                    <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white" />
-                    <div className="absolute top-0 bottom-0 left-3/4 w-px bg-white" />
+                  {/* Animated Stars Layer 2 - Medium stars */}
+                  <div className="absolute inset-0">
+                    {[...Array(20)].map((_, i) => (
+                      <div
+                        key={`star-medium-${i}`}
+                        className="absolute w-1 h-1 bg-white rounded-full opacity-80"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animation: `twinkle ${
+                            3 + Math.random() * 2
+                          }s ease-in-out infinite`,
+                          animationDelay: `${Math.random() * 4}s`,
+                        }}
+                      />
+                    ))}
                   </div>
 
-                  {/* Expert Pins */}
-                  {globalExperts.map((expert, index) => (
-                    <div
-                      key={expert.id}
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2 group/pin cursor-pointer"
-                      style={{
-                        left: `${expert.position.x}%`,
-                        top: `${expert.position.y}%`,
-                      }}
-                      onMouseEnter={() => setSelectedExpert(expert)}
-                      onMouseLeave={() => setSelectedExpert(null)}
-                    >
-                      <div className="relative">
-                        <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg group-hover/pin:scale-150 transition-all duration-300 border-2 border-white animate-pulse">
-                          <Image
-                            src={expert.avatar}
-                            alt={expert.name}
-                            width={28}
-                            height={28}
-                            className="rounded-full object-cover"
-                          />
-                        </div>
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-4 h-4 bg-yellow-400 rotate-45 opacity-0 group-hover/pin:opacity-100 transition-all duration-300" />
+                  {/* Animated Stars Layer 3 - Large stars */}
+                  <div className="absolute inset-0">
+                    {[...Array(8)].map((_, i) => (
+                      <div
+                        key={`star-large-${i}`}
+                        className="absolute w-1.5 h-1.5 bg-white rounded-full opacity-90 shadow-lg shadow-white/50"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animation: `twinkle ${
+                            4 + Math.random() * 2
+                          }s ease-in-out infinite`,
+                          animationDelay: `${Math.random() * 5}s`,
+                        }}
+                      />
+                    ))}
+                  </div>
 
-                        {/* Tooltip */}
-                        {selectedExpert?.id === expert.id && (
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-white rounded-lg shadow-xl p-4 min-w-48 z-50 animate-fadeIn">
-                            <div className="text-center">
-                              <div className="font-bold text-[#0033FF] text-sm">
-                                {expert.name}
-                              </div>
-                              <div className="text-[#0600AF]/70 text-xs">
-                                {expert.country}
-                              </div>
-                              <div className="text-[#977DFF] text-xs font-medium mt-1">
-                                {expert.expertise}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                  {/* Nebula/Cosmic Clouds */}
+                  <div
+                    className="absolute top-10 left-10 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"
+                    style={{
+                      animation: "nebulaDrift 8s ease-in-out infinite",
+                    }}
+                  />
+                  <div
+                    className="absolute bottom-16 right-12 w-24 h-24 bg-blue-400/15 rounded-full blur-2xl"
+                    style={{
+                      animation: "nebulaDrift 8s ease-in-out infinite",
+                      animationDelay: "2s",
+                    }}
+                  />
+                  <div
+                    className="absolute top-1/2 left-8 w-20 h-20 bg-pink-400/10 rounded-full blur-2xl"
+                    style={{
+                      animation: "nebulaDrift 8s ease-in-out infinite",
+                      animationDelay: "4s",
+                    }}
+                  />
+
+                  {/* Cosmic Ring/Halo around Globe area */}
+                  <div
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-white/10 rounded-full"
+                    style={{
+                      animation: "cosmicRing 20s linear infinite",
+                    }}
+                  />
+                  <div
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 border border-blue-400/20 rounded-full"
+                    style={{
+                      animation: "cosmicRing 20s linear infinite reverse",
+                      animationDelay: "1s",
+                    }}
+                  />
+
+                  {/* 3D Earth Canvas - Embedded Mode */}
+                  <div className="absolute inset-8 bg-transparent rounded-2xl">
+                    <Globe3D
+                      mode="embedded"
+                      showBackground={false}
+                      className="rounded-2xl"
+                    />
+                  </div>
+
+                  {/* Floating Info Labels */}
+                  <div className="absolute top-12 left-12 z-20">
+                    <div className="bg-gradient-to-r from-blue-500/80 to-cyan-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold animate-float border border-white/20">
+                      🌐 Kết nối toàn cầu
                     </div>
-                  ))}
+                  </div>
 
-                  {/* Hover Effect Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div
+                    className="absolute top-16 right-12 z-20 animate-float"
+                    style={{ animationDelay: "1s" }}
+                  >
+                    <div className="bg-gradient-to-r from-purple-500/80 to-violet-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
+                      🔒 An toàn dữ liệu
+                    </div>
+                  </div>
+
+                  <div
+                    className="absolute bottom-16 left-16 z-20 animate-float"
+                    style={{ animationDelay: "2s" }}
+                  >
+                    <div className="bg-gradient-to-r from-pink-500/80 to-rose-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
+                      🔄 Đồng bộ dữ liệu
+                    </div>
+                  </div>
+
+                  <div
+                    className="absolute bottom-12 right-16 z-20 animate-float"
+                    style={{ animationDelay: "3s" }}
+                  >
+                    <div className="bg-gradient-to-r from-emerald-500/80 to-green-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
+                      🤖 Trí tuệ nhân tạo
+                    </div>
+                  </div>
                 </div>
-
-                {/* Floating Elements - Reduced to avoid clutter with corner texts */}
-                <div
-                  className="absolute top-1/4 -left-12 w-6 h-6 bg-[#0033FF]/30 rounded-full animate-bounce opacity-40"
-                  style={{ animationDelay: "2s", animationDuration: "3s" }}
-                />
-                <div
-                  className="absolute top-3/4 -right-12 w-8 h-8 bg-[#977DFF]/30 rounded-full animate-bounce opacity-40"
-                  style={{ animationDelay: "2.5s", animationDuration: "3.5s" }}
-                />
               </div>
             </div>
           </div>
@@ -686,6 +707,52 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+
+        {/* CSS Keyframes for Cosmic Animations */}
+        <style jsx>{`
+          @keyframes twinkle {
+            0%,
+            100% {
+              opacity: 0.3;
+              transform: scale(1);
+            }
+            50% {
+              opacity: 1;
+              transform: scale(1.2);
+            }
+          }
+
+          @keyframes nebulaDrift {
+            0%,
+            100% {
+              transform: translate(0, 0) scale(1);
+              opacity: 0.1;
+            }
+            33% {
+              transform: translate(-10px, -10px) scale(1.1);
+              opacity: 0.15;
+            }
+            66% {
+              transform: translate(10px, -5px) scale(0.95);
+              opacity: 0.08;
+            }
+          }
+
+          @keyframes cosmicRing {
+            0% {
+              transform: translate(-50%, -50%) rotate(0deg) scale(1);
+              opacity: 0.1;
+            }
+            50% {
+              transform: translate(-50%, -50%) rotate(180deg) scale(1.05);
+              opacity: 0.2;
+            }
+            100% {
+              transform: translate(-50%, -50%) rotate(360deg) scale(1);
+              opacity: 0.1;
+            }
+          }
+        `}</style>
       </section>
 
       {/* Upcoming Events */}

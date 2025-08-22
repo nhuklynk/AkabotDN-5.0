@@ -335,7 +335,7 @@ export default function GioiThieuPage() {
                         <h4 className="font-bold text-[#0033FF] mb-4">
                           Nhiệm vụ chính
                         </h4>
-                        <div className="grid md:grid-cols-2 gap-4 text-left">
+                        <div className="grid md:grid-cols-3 gap-4 text-left">
                           <ul className="space-y-2 text-sm text-[#0600AF]/90">
                             <li>
                               • Điều hành hoạt động hàng ngày của Hiệp hội
@@ -343,12 +343,14 @@ export default function GioiThieuPage() {
                             <li>
                               • Thực hiện các nghị quyết của Ban Chấp hành
                             </li>
+                          </ul>
+                          <ul className="space-y-2 text-sm text-[#0600AF]/90">
                             <li>
                               • Phối hợp với các cơ quan, tổ chức thành viên
                             </li>
+                            <li>• Tổ chức các hoạt động chuyên môn</li>
                           </ul>
                           <ul className="space-y-2 text-sm text-[#0600AF]/90">
-                            <li>• Tổ chức các hoạt động chuyên môn</li>
                             <li>• Quản lý tài chính và nhân sự</li>
                             <li>• Báo cáo định kỳ với Ban Chấp hành</li>
                           </ul>
@@ -378,7 +380,7 @@ export default function GioiThieuPage() {
                       </h4>
                       <div className="border-2 border-[#FFCCF2]/40 rounded-lg p-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/20">
                         <Image
-                          src="/vietnamese-legal-document.png"
+                          src="/vietnamese-legal-document.svg"
                           alt="Điều lệ NDA - Trang 1"
                           width={600}
                           height={800}
@@ -389,10 +391,10 @@ export default function GioiThieuPage() {
 
                     {/* Charter Information */}
                     <div className="space-y-6">
+                      <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
+                        Thông tin Điều lệ
+                      </h4>
                       <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-6 rounded-lg border border-[#FFCCF2]/40">
-                        <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
-                          Thông tin Điều lệ
-                        </h4>
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between">
                             <span className="font-medium text-[#0033FF]">

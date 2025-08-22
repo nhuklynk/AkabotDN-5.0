@@ -31,7 +31,7 @@ const imageData = [
   {
     id: 4,
     title: "Hội thảo Blockchain và Dữ liệu",
-    thumbnail: "/sample-technology-1.svg",
+    thumbnail: "/sample-event-1.svg",
     views: "2,760",
     date: "05/11/2024",
   },
@@ -45,7 +45,7 @@ const imageData = [
   {
     id: 6,
     title: "Hệ sinh thái Dữ liệu Việt Nam",
-    thumbnail: "/vietnam-data-ecosystem.png",
+    thumbnail: "/sample-partnership-1.svg",
     views: "4,100",
     date: "01/11/2024",
   },
@@ -63,7 +63,7 @@ const videoData = [
   {
     id: 2,
     title: "Trí tuệ nhân tạo trong kỷ nguyên số",
-    thumbnail: "/sample-technology-1.svg",
+    thumbnail: "/sample-video-1.svg",
     duration: "25:30",
     views: "8,920",
     date: "09/11/2024",
@@ -79,7 +79,7 @@ const videoData = [
   {
     id: 4,
     title: "Nền tảng Du lịch thông minh",
-    thumbnail: "/sample-event-1.svg",
+    thumbnail: "/sample-partnership-1.svg",
     duration: "18:15",
     views: "6,750",
     date: "04/11/2024",
@@ -95,7 +95,7 @@ const videoData = [
   {
     id: 6,
     title: "Định danh số Việt Nam",
-    thumbnail: "/sample-data-center.svg",
+    thumbnail: "/sample-partnership-1.svg",
     duration: "22:10",
     views: "11,230",
     date: "30/10/2024",
@@ -115,7 +115,7 @@ export default function TuLieuPage() {
   const data = activeTab === "images" ? imageData : videoData;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] via-[#FFCCF2] to-[#977DFF]">
+    <div className="min-h-screen bg-gradient-to-r bg-[#0033FF]">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -131,15 +131,15 @@ export default function TuLieuPage() {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-[#FFCCF2]/30 to-[#977DFF]/30 backdrop-blur-sm rounded-2xl p-6 text-center min-w-[140px] border border-[#FFCCF2]/40 hover:from-[#FFCCF2]/50 hover:to-[#977DFF]/50 transition-all duration-300"
+                className="bg-gradient-to-br from-white/90 to-blue-100/90 backdrop-blur-sm rounded-2xl p-6 text-center min-w-[140px] border border-white/40 hover:from-white hover:to-cyan-100 hover:shadow-lg transform hover:scale-105 transition-all duration-300"
               >
-                <div className="w-8 h-8 mx-auto mb-3 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 mx-auto mb-3 bg-gradient-to-br from-[#0033FF] to-blue-600 rounded-lg flex items-center justify-center">
                   <stat.icon className="h-5 w-5 text-white" />
                 </div>
-                <div className="text-3xl font-bold mb-1 text-white">
+                <div className="text-3xl font-bold mb-1 text-[#0033FF]">
                   {stat.number}
                 </div>
-                <div className="text-sm text-white font-medium">
+                <div className="text-sm text-[#0033FF] font-medium">
                   {stat.label}
                 </div>
               </div>
@@ -147,13 +147,13 @@ export default function TuLieuPage() {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex justify-center gap-2 bg-gradient-to-r from-[#FFCCF2]/30 to-[#977DFF]/30 backdrop-blur-sm rounded-2xl p-2 max-w-md mx-auto border border-[#FFCCF2]/40">
+          <div className="flex justify-center gap-2 bg-gradient-to-r from-white/20 to-blue-100/20 backdrop-blur-sm rounded-2xl p-2 max-w-md mx-auto border border-white/40">
             <button
               onClick={() => setActiveTab("images")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 activeTab === "images"
-                  ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white shadow-lg"
-                  : "text-white hover:bg-[#FFCCF2]/20"
+                  ? "bg-gradient-to-r from-white to-cyan-100 text-[#0033FF] shadow-lg"
+                  : "text-white hover:bg-white/20"
               }`}
             >
               <ImageIcon className="w-5 h-5" />
@@ -163,8 +163,8 @@ export default function TuLieuPage() {
               onClick={() => setActiveTab("videos")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                 activeTab === "videos"
-                  ? "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white shadow-lg"
-                  : "text-white hover:bg-[#977DFF]/20"
+                  ? "bg-gradient-to-r from-white to-cyan-100 text-[#0033FF] shadow-lg"
+                  : "text-white hover:bg-white/20"
               }`}
             >
               <Play className="w-5 h-5" />

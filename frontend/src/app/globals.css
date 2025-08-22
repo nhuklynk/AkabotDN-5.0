@@ -219,6 +219,13 @@
   background-image: var(--gradient-register);
 }
 
+.bg-gradient-radial {
+  background-image: radial-gradient(
+    ellipse at center,
+    var(--tw-gradient-stops)
+  );
+}
+
 /* Custom Animations for Landing Page */
 @keyframes fadeInUp {
   from {
@@ -370,4 +377,168 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Globe Scene Enhancements */
+@keyframes sphereGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(0, 51, 255, 0.3),
+      0 0 40px rgba(151, 125, 255, 0.2), 0 0 60px rgba(255, 204, 242, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 51, 255, 0.5),
+      0 0 60px rgba(151, 125, 255, 0.3), 0 0 90px rgba(255, 204, 242, 0.2);
+  }
+}
+
+@keyframes pulseScale {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.globe-container {
+  animation: sphereGlow 4s ease-in-out infinite,
+    pulseScale 6s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.globe-container:hover {
+  animation-play-state: paused;
+  transform: scale(1.1);
+}
+
+/* Loading state for globe */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.globe-loading {
+  animation: spin 2s linear infinite;
+}
+
+/* Cosmic Background Animations */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes nebulaDrift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.1;
+  }
+  33% {
+    transform: translate(-10px, -10px) scale(1.1);
+    opacity: 0.15;
+  }
+  66% {
+    transform: translate(10px, -5px) scale(0.95);
+    opacity: 0.08;
+  }
+}
+
+@keyframes cosmicRing {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.05);
+    opacity: 0.2;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.1;
+  }
+}
+
+.cosmic-star {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.cosmic-nebula {
+  animation: nebulaDrift 8s ease-in-out infinite;
+}
+
+.cosmic-ring {
+  animation: cosmicRing 20s linear infinite;
+}
+
+/* Article Content Styling */
+.article-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-content p {
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+.article-content ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.article-content li {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.article-content ul > li {
+  list-style: none;
+}
+
+.article-content ul > li:before {
+  content: "✓";
+  color: #10b981;
+  font-weight: bold;
+  position: absolute;
+  left: -1.2rem;
+}
+
+.article-content strong {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.article-content em {
+  font-style: italic;
+  color: #64748b;
 }

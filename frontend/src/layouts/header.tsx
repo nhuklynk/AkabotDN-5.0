@@ -21,7 +21,15 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded bg-gradient-to-br from-[#977DFF] to-[#0033FF]"></div>
+              <div className="h-8 w-8 rounded  flex items-center justify-center overflow-hidden">
+                <img
+                  src="/icons/logo.png"
+                  alt="Hiệp hội Dữ liệu Quốc gia Việt Nam"
+                  width={32}
+                  height={32}
+                  className="object-contain h-8 w-8"
+                />
+              </div>
               <div className="hidden sm:block">
                 <Link href="/">
                   <h1 className="text-lg font-bold text-[#0033FF] hover:text-[#0600AF] transition-colors cursor-pointer">
@@ -47,6 +55,13 @@ export function Header() {
               className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               HOẠT ĐỘNG CỦA HIỆP HỘI
+            </Link>
+
+            <Link
+              href="/posts"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+            >
+              BÀI ĐĂNG
             </Link>
 
             <Link
@@ -80,6 +95,20 @@ export function Header() {
             >
               LIÊN HỆ
             </Link>
+            <Link
+              href="/faq"
+              className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              FAQ
+            </Link>
+            <Link
+              href="/search"
+              className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              TÌM KIẾM
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -99,49 +128,93 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-[#977DFF]/20 bg-white/95 py-4">
-            <nav className="flex flex-col space-y-4">
+          <div className="md:hidden border-t border-[#977DFF]/20 bg-white/95 py-6">
+            <nav className="flex flex-col space-y-6">
               <Link
-                href="#"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+                href="/about-us"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
               >
                 GIỚI THIỆU
               </Link>
+
               <Link
-                href="#"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+                href="/activities"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
               >
-                HOẠT ĐỘNG
+                HOẠT ĐỘNG CỦA HIỆP HỘI
               </Link>
+
               <Link
-                href="/bai-dang"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+                href="/posts"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
               >
                 BÀI ĐĂNG
               </Link>
+
               <Link
-                href="#"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+                href="/documents"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
               >
-                VĂN BẢN HIỆP HỘI
+                TƯ LIỆU
               </Link>
+
               <Link
-                href="#"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+                href="/digital-product"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
               >
                 SẢN PHẨM SỐ
               </Link>
+
+              {/* Mobile Members Dropdown */}
+              <div className="space-y-3">
+                <div className="text-base font-medium text-[#0600AF] py-2 px-4">
+                  HỘI VIÊN
+                </div>
+                <div className="ml-6 space-y-2">
+                  <Link
+                    href="/members/lists"
+                    className="block text-sm text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Danh sách hội viên
+                  </Link>
+                  <Link
+                    href="/members/register"
+                    className="block text-sm text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Đăng ký hội viên
+                  </Link>
+                </div>
+              </div>
+
               <Link
-                href="#"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
-              >
-                HỘI VIÊN
-              </Link>
-              <Link
-                href="#"
-                className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+                href="/contact"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
               >
                 LIÊN HỆ
+              </Link>
+
+              <Link
+                href="/faq"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                FAQ
+              </Link>
+
+              <Link
+                href="/search"
+                className="text-base font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors py-2 px-4 rounded-lg hover:bg-[#FFCCF2]/10"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                TÌM KIẾM
               </Link>
             </nav>
           </div>

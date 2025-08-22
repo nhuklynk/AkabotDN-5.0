@@ -17,8 +17,8 @@ const mockPosts = [
     date: "2025-08-15",
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Du lịch số",
-    image: "/vietnam-tourism-platform.png",
-    slug: "visit-vietnam-buoc-tien-chien-luoc",
+    image: "/vietnam-tourism-platform.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 2,
@@ -29,8 +29,8 @@ const mockPosts = [
     date: "2025-08-10",
     author: "Ban Biên tập",
     category: "Công nghiệp dữ liệu",
-    image: "/international-data-conference.png",
-    slug: "chuyen-gia-quoc-te-hien-ke-phat-trien",
+    image: "/international-data-conference.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 3,
@@ -41,8 +41,8 @@ const mockPosts = [
     date: "2025-08-05",
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Trí tuệ nhân tạo",
-    image: "/vietnam-ai-competition-tv.png",
-    slug: "ai-thuc-chien-cuoc-thi-tri-tue-nhan-tao",
+    image: "/vietnam-ai-competition-tv.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 4,
@@ -53,8 +53,8 @@ const mockPosts = [
     date: "2025-08-03",
     author: "Ban Chấp hành",
     category: "Tổ chức",
-    image: "/vietnam-data-association-structure.png",
-    slug: "thanh-lap-van-phong-ban-chuyen-mon",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 5,
@@ -65,8 +65,8 @@ const mockPosts = [
     date: "2025-08-01",
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Pháp luật",
-    image: "/vietnam-data-sharing-meeting.png",
-    slug: "hoan-thien-van-ban-quy-pham-phap-luat",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 6,
@@ -76,8 +76,8 @@ const mockPosts = [
     date: "2025-07-28",
     author: "Ban Tổ chức",
     category: "Truy xuất nguồn gốc",
-    image: "/vietnam-traceability-panel.png",
-    slug: "goc-nhin-da-chieu-hoi-thao-truy-xuat",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 7,
@@ -88,8 +88,8 @@ const mockPosts = [
     date: "2025-07-25",
     author: "Phòng Truyền thông",
     category: "Hợp tác",
-    image: "/pharma-partnership-signing.png",
-    slug: "ky-ket-hop-tac-pila-eco-pharma",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 8,
@@ -100,8 +100,8 @@ const mockPosts = [
     date: "2025-07-20",
     author: "Trung tâm Dữ liệu Quốc gia",
     category: "Sản phẩm số",
-    image: "/vietnam-data-exhibition.png",
-    slug: "khang-dinh-noi-luc-cong-nghe-viet",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 9,
@@ -112,8 +112,8 @@ const mockPosts = [
     date: "2025-07-15",
     author: "Ban Biên tập",
     category: "Hệ sinh thái",
-    image: "/vietnam-data-ecosystem.png",
-    slug: "kien-thiet-he-sinh-thai-du-lieu-viet-nam",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
   {
     id: 10,
@@ -123,8 +123,8 @@ const mockPosts = [
     date: "2025-07-10",
     author: "Hiệp hội Dữ liệu Quốc gia",
     category: "Kinh tế số",
-    image: "/vietnam-data-mining-economy.png",
-    slug: "khai-pha-du-lieu-mo-duong-kinh-te",
+    image: "/vietnam-data-sharing-meeting.svg",
+    slug: "visit-vietnam-buoc-tien-chien-luoc-du-lich-so",
   },
 ];
 
@@ -144,7 +144,7 @@ export function PostsGrid() {
         {currentPosts.map((post) => (
           <Card
             key={post.id}
-            className="group hover:shadow-lg transition-shadow duration-300"
+            className="group hover:shadow-lg transition-shadow duration-300 border-none"
           >
             <CardHeader className="p-0">
               <div className="relative overflow-hidden rounded-t-lg">
@@ -162,7 +162,7 @@ export function PostsGrid() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
-                <h3 className="font-serif font-semibold text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                <h3 className="font-semibold text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                   {post.title}
                 </h3>
                 <p className="text-muted-foreground text-sm line-clamp-3">
