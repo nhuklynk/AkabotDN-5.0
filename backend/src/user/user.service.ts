@@ -31,6 +31,8 @@ export class UserService {
     const user = this.userRepository.create({
       ...createUserDto,
       password_hash: hashedPassword,
+      created_by: 'system', // hoặc user ID nếu có authentication
+      modified_by: 'system',
     });
 
     const savedUser = await this.userRepository.save(user);

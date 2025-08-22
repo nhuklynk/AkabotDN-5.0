@@ -29,15 +29,15 @@ export abstract class BaseAuditEntity {
   })
   status: Status;
 
-  @Column()
+  @Column({ nullable: true })
   created_by: string;
 
-  @Column()
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @Column()
+  @Column({ nullable: true })
   modified_by: string;
   
-  @Column()
+  @UpdateDateColumn({ name: 'modified_at' })
   modified_at: Date;
 }

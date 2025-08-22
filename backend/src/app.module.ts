@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,9 +13,14 @@ import { MediaModule } from './media/media.module';
 import { MemberModule } from './member/member.module';
 import { FaqModule } from './faq/faq.module';
 import { PartnerModule } from './partner/partner.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
     TypeOrmModule.forRoot(databaseConfig),
     UserModule,
     PostModule,
@@ -25,6 +31,7 @@ import { PartnerModule } from './partner/partner.module';
     MemberModule,
     FaqModule,
     PartnerModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
