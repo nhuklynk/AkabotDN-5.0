@@ -18,17 +18,6 @@ export class Tag extends BaseAuditEntity {
   @Column({ nullable: true, name: 'description' })
   description?: string;
 
-  @ManyToMany(() => Post)
-  @JoinTable({
-    name: 'content_tags',
-    joinColumn: {
-      name: 'tag_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'post_id',
-      referencedColumnName: 'id',
-    },
-  })
+  @ManyToMany(() => Post, (post) => post.tags)
   posts: Post[];
 }

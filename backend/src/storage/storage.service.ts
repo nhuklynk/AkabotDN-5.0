@@ -1,8 +1,11 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  CreateBucketCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  HeadBucketCommand,
+  HeadObjectCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -24,11 +27,33 @@ export class StorageService {
   ) {}
 
   /**
+   * Ensure bucket exists, create if it doesn't
+   */
+  private async ensureBucketExists(bucketName: string): Promise<void> {
+    try {
+      // Check if bucket exists
+      await this.s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
+    } catch (error) {
+      // Bucket doesn't exist, create it
+      try {
+        await this.s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
+        console.log(`Bucket '${bucketName}' created successfully`);
+      } catch (createError) {
+        console.error(`Failed to create bucket '${bucketName}':`, createError);
+        throw new BadRequestException(`Failed to create bucket '${bucketName}'`);
+      }
+    }
+  }
+
+  /**
    * Get a pre-signed URL for downloading the file with the given ARN
    * Example: s3:knowledge:example.txt
    */
   async getDownloadUrl(arn: string, expiresInSeconds = 5 * 60) {
     const { bucket, objectName } = this.extractArn(arn);
+    
+    // Ensure bucket exists before proceeding
+    await this.ensureBucketExists(bucket);
 
     const key = objectName;
 
@@ -74,7 +99,19 @@ export class StorageService {
       expiresInSeconds?: number;
     } & UploadOptions,
   ) {
+    if (!options) {
+      throw new BadRequestException('Upload options are required');
+    }
+    
     const { bucket, fileName, scope, expiresInSeconds = 60 * 60 } = options;
+    
+    if (!bucket) {
+      throw new BadRequestException('Bucket is required');
+    }
+    
+    // Ensure bucket exists before proceeding
+    await this.ensureBucketExists(bucket);
+    
     const objectName = scope ? `${scope}/${this.generateUuid()}` : this.generateUuid();
 
     const maxSizeInMb = this.storageOptions.maxSizeInMb;
@@ -105,6 +142,22 @@ export class StorageService {
    * @param arnList Array of ARNs of the files to delete
    */
   async deleteFiles(...arnList: string[]) {
+    // Group by bucket to check existence once per bucket
+    const bucketGroups = new Map<string, string[]>();
+    
+    for (const arn of arnList) {
+      const { bucket, objectName } = this.extractArn(arn);
+      if (!bucketGroups.has(bucket)) {
+        bucketGroups.set(bucket, []);
+      }
+      bucketGroups.get(bucket)!.push(objectName);
+    }
+    
+    // Ensure all buckets exist before proceeding
+    for (const bucket of bucketGroups.keys()) {
+      await this.ensureBucketExists(bucket);
+    }
+    
     const deletePromises = arnList.map((arn) => {
       const { bucket, objectName } = this.extractArn(arn);
 
@@ -142,6 +195,10 @@ export class StorageService {
       fileSize,
       contentType = 'application/octet-stream',
     } = options;
+    
+    // Ensure bucket exists before proceeding
+    await this.ensureBucketExists(bucket);
+    
     const objectName = scope ? `${scope}/${this.generateUuid()}` : this.generateUuid();
 
     const fileBuffer = Buffer.isBuffer(file)
@@ -174,5 +231,75 @@ export class StorageService {
 
   private generateUuid(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  }
+
+  /**
+   * Download file by ARN with direct path
+   * ARN format: s3:bucket:path/to/file (e.g., s3:akabotdn:knowledge/example.txt)
+   */
+  async downloadFileByArn(arn: string) {
+    const [service, bucket, objectPath] = arn.split(':');
+    
+    if (service !== 's3') {
+      throw new BadRequestException(`Invalid service ${service}`);
+    }
+
+    if (!bucket) {
+      throw new BadRequestException(`Invalid bucket ${bucket}`);
+    }
+
+    if (!objectPath) {
+      throw new BadRequestException(`Invalid object path ${objectPath}`);
+    }
+
+    const key = objectPath;
+
+    // Ensure bucket exists before proceeding
+    await this.ensureBucketExists(bucket);
+
+    // Check if file exists and get metadata
+    let fileName = '';
+    let contentType = 'application/octet-stream';
+    
+    try {
+      const headCommand = new HeadObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      });
+      const headResult = await this.s3Client.send(headCommand);
+      
+      fileName =
+        (headResult as any).Metadata?.['x-file-name'] ||
+        (headResult as any).Metadata?.['file-name'] ||
+        objectPath.split('/').pop() || objectPath;
+
+      contentType = (headResult as any).ContentType || contentType;
+    } catch (err) {
+      throw new BadRequestException('File does not exist');
+    }
+
+    // Get file content
+    const command = new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    });
+    const result = await this.s3Client.send(command);
+
+    // Convert stream to Buffer
+    const streamToBuffer = (stream: any) =>
+      new Promise<Buffer>((resolve, reject) => {
+        const chunks: Buffer[] = [];
+        stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+        stream.on('end', () => resolve(Buffer.concat(chunks)));
+        stream.on('error', reject);
+      });
+
+    const fileContent = await streamToBuffer(result.Body);
+
+    return {
+      fileContent,
+      fileName: decodeURIComponent(fileName),
+      contentType,
+    };
   }
 }

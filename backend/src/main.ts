@@ -38,6 +38,7 @@ async function bootstrap() {
     .addTag('companies', 'Company management endpoints')
     .addTag('faqs', 'FAQ management endpoints')
     .addTag('partners', 'Partner management endpoints')
+    .addTag('storage', 'Storage management endpoints')
     .addBearerAuth()
     .build();
 

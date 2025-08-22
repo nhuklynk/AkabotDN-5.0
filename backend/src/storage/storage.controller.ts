@@ -11,11 +11,14 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import type { UploadOptions } from './types';
+import { DownloadFileDto } from './dto/download-file.dto';
+import { DownloadUrlDto } from './dto/download-url.dto';
 
 @ApiTags('Storage')
 @Controller('storage')
@@ -27,7 +30,12 @@ export class StorageController {
   async getUploadPolicy(
     @Body() options: UploadOptions & { expiresInSeconds?: number },
   ) {
-    return this.storageService.getUploadPolicy(options);
+    const result = await this.storageService.getUploadPolicy(options);
+    return {
+      success: true,
+      data: result,
+      message: 'Upload policy generated successfully'
+    };
   }
 
   @Post('upload')
@@ -48,7 +56,7 @@ export class StorageController {
   ) {
     const { bucket, scope, fileName } = uploadOptions;
     
-    return this.storageService.uploadFile({
+    const arn = await this.storageService.uploadFile({
       file: file.buffer,
       bucket,
       scope,
@@ -56,27 +64,87 @@ export class StorageController {
       fileSize: file.size,
       contentType: file.mimetype,
     });
+    
+    return {
+      success: true,
+      data: {
+        arn,
+        bucket,
+        scope,
+        fileName: fileName || file.originalname,
+        fileSize: file.size,
+        contentType: file.mimetype,
+      },
+      message: 'File uploaded successfully'
+    };
   }
 
-  @Get('download/:arn')
+  @Post('download')
   @ApiOperation({ summary: 'Get download URL for file' })
-  async getDownloadUrl(
-    @Param('arn') arn: string,
-    @Query('expiresIn') expiresIn?: string,
-  ) {
-    const expiresInSeconds = expiresIn ? parseInt(expiresIn, 10) : 5 * 60;
-    return this.storageService.getDownloadUrl(arn, expiresInSeconds);
+  async getDownloadUrl(@Body() downloadUrlDto: DownloadUrlDto) {
+    const expiresInSeconds = downloadUrlDto.expiresIn || 5 * 60;
+    const downloadUrl = await this.storageService.getDownloadUrl(downloadUrlDto.arn, expiresInSeconds);
+    
+    return {
+      success: true,
+      data: {
+        arn: downloadUrlDto.arn,
+        downloadUrl,
+        expiresInSeconds,
+        expiresAt: new Date(Date.now() + expiresInSeconds * 1000).toISOString()
+      },
+      message: 'Download URL generated successfully'
+    };
+  }
+
+  @Post('file')
+  @ApiOperation({ summary: 'Download file by ARN' })
+  async downloadFileByArn(@Body() downloadFileDto: DownloadFileDto) {
+    const result = await this.storageService.downloadFileByArn(downloadFileDto.arn);
+    
+    return {
+      success: true,
+      data: {
+        arn: downloadFileDto.arn,
+        fileName: result.fileName,
+        contentType: result.contentType,
+        fileSize: result.fileContent.length,
+        downloadUrl: `data:${result.contentType};base64,${result.fileContent.toString('base64')}`,
+      },
+      message: 'File downloaded successfully'
+    };
   }
 
   @Delete('files')
   @ApiOperation({ summary: 'Delete multiple files by ARNs' })
   async deleteFiles(@Body() body: { arns: string[] }) {
-    return this.storageService.deleteFiles(...body.arns);
+    const results = await this.storageService.deleteFiles(...body.arns);
+    
+    return {
+      success: true,
+      data: {
+        arns: body.arns,
+        results,
+        deletedCount: results.filter(r => r.status === 'fulfilled').length,
+        failedCount: results.filter(r => r.status === 'rejected').length,
+      },
+      message: `Deleted ${results.filter(r => r.status === 'fulfilled').length} files successfully`
+    };
   }
 
   @Delete('file/:arn')
   @ApiOperation({ summary: 'Delete single file by ARN' })
   async deleteFile(@Param('arn') arn: string) {
-    return this.storageService.deleteFiles(arn);
+    const results = await this.storageService.deleteFiles(arn);
+    
+    return {
+      success: true,
+      data: {
+        arn,
+        results,
+        deleted: results[0]?.status === 'fulfilled',
+      },
+      message: results[0]?.status === 'fulfilled' ? 'File deleted successfully' : 'Failed to delete file'
+    };
   }
 }
