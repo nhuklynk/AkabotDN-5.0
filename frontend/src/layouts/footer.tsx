@@ -4,13 +4,21 @@ import { Facebook, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-[#977DFF] to-[#0600AF] border-t border-[#FFCCF2]/20">
+    <footer className="bg-gradient-to-b from-[#977DFF] to-[#0600AF]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="lg:col-span-1 space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded bg-gradient-to-br from-[#FFCCF2] to-[#0033FF]"></div>
+              <div className="h-8 w-8 rounded flex items-center justify-center overflow-hidden">
+                <img
+                  src="/icons/logo.png"
+                  alt="Hiệp hội Dữ liệu Quốc gia Việt Nam"
+                  width={32}
+                  height={32}
+                  className="object-contain h-8 w-8"
+                />
+              </div>
               <div>
                 <h3 className="font-bold text-white">HIỆP HỘI DỮ LIỆU</h3>
                 <p className="text-sm text-[#FFCCF2]">QUỐC GIA VIỆT NAM</p>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">
+  <defs>
+    <linearGradient id="sun-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B" />
+      <stop offset="100%" style="stop-color:#D97706" />
+    </linearGradient>
+    <radialGradient id="sun-radial" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FDE047" />
+      <stop offset="100%" style="stop-color:#F59E0B" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="100" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" rx="5"/>
+  
+  <!-- Sun Symbol -->
+  <g transform="translate(30,25)">
+    <circle cx="25" cy="25" r="18" fill="url(#sun-radial)"/>
+    
+    <!-- Sun rays -->
+    <line x1="25" y1="0" x2="25" y2="8" stroke="url(#sun-gradient)" stroke-width="2"/>
+    <line x1="25" y1="42" x2="25" y2="50" stroke="url(#sun-gradient)" stroke-width="2"/>
+    <line x1="0" y1="25" x2="8" y2="25" stroke="url(#sun-gradient)" stroke-width="2"/>
+    <line x1="42" y1="25" x2="50" y2="25" stroke="url(#sun-gradient)" stroke-width="2"/>
+    
+    <line x1="7" y1="7" x2="13" y2="13" stroke="url(#sun-gradient)" stroke-width="2"/>
+    <line x1="43" y1="7" x2="37" y2="13" stroke="url(#sun-gradient)" stroke-width="2"/>
+    <line x1="7" y1="43" x2="13" y2="37" stroke="url(#sun-gradient)" stroke-width="2"/>
+    <line x1="43" y1="43" x2="37" y2="37" stroke="url(#sun-gradient)" stroke-width="2"/>
+    
+    <!-- Sun face -->
+    <circle cx="20" cy="20" r="2" fill="#D97706"/>
+    <circle cx="30" cy="20" r="2" fill="#D97706"/>
+    <path d="M20,30 Q25,35 30,30" stroke="#D97706" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Company Name -->
+  <text x="115" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="url(#sun-gradient)">SUN</text>
+  <text x="115" y="48" text-anchor="middle" font-size="16" font-weight="bold" fill="url(#sun-gradient)">GROUP</text>
+  
+  <!-- Vietnamese Text -->
+  <text x="115" y="65" text-anchor="middle" font-size="10" fill="#6B7280">Tập đoàn Sun Group</text>
+  <text x="115" y="78" text-anchor="middle" font-size="9" fill="#9CA3AF">Đầu tư & Phát triển Du lịch</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="170" cy="20" r="3" fill="#F59E0B" opacity="0.6"/>
+  <circle cx="175" cy="30" r="2" fill="#FDE047" opacity="0.8"/>
+  <circle cx="165" cy="35" r="2" fill="#F59E0B" opacity="0.7"/>
+</svg>
+
+

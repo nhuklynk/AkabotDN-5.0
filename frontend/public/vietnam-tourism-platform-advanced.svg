@@ -1,0 +1,246 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4682B4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E90FF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="platformGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0033FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#977DFF;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="sunGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:0.6" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Sky Background -->
+  <rect width="800" height="400" fill="url(#skyGradient)"/>
+  
+  <!-- Sun -->
+  <circle cx="150" cy="100" r="40" fill="url(#sunGradient)"/>
+  <g stroke="#FFD700" stroke-width="2" opacity="0.7">
+    <line x1="150" y1="40" x2="150" y2="20"/>
+    <line x1="192" y1="58" x2="206" y2="44"/>
+    <line x1="192" y1="142" x2="206" y2="156"/>
+    <line x1="150" y1="160" x2="150" y2="180"/>
+    <line x1="108" y1="142" x2="94" y2="156"/>
+    <line x1="108" y1="58" x2="94" y2="44"/>
+    <line x1="210" y1="100" x2="230" y2="100"/>
+    <line x1="70" y1="100" x2="90" y2="100"/>
+  </g>
+  
+  <!-- Mountains/Ha Long Bay -->
+  <g fill="#2F4F4F" opacity="0.8">
+    <path d="M0,300 Q100,200 200,280 Q300,180 400,250 Q500,200 600,270 Q700,180 800,240 L800,400 L0,400 Z"/>
+  </g>
+  
+  <!-- Water/Sea -->
+  <rect y="400" width="800" height="200" fill="url(#waterGradient)"/>
+  
+  <!-- Islands -->
+  <g fill="#228B22" opacity="0.7">
+    <ellipse cx="100" cy="350" rx="40" ry="25"/>
+    <ellipse cx="300" cy="340" rx="50" ry="30"/>
+    <ellipse cx="500" cy="360" rx="35" ry="20"/>
+    <ellipse cx="700" cy="345" rx="45" ry="25"/>
+  </g>
+  
+  <!-- Palm Trees -->
+  <g fill="#8B4513">
+    <rect x="295" y="325" width="4" height="25"/>
+    <rect x="305" y="320" width="4" height="30"/>
+    <rect x="495" y="340" width="4" height="20"/>
+    <rect x="505" y="345" width="4" height="15"/>
+  </g>
+  <g fill="#228B22">
+    <!-- Palm leaves -->
+    <path d="M297,320 Q290,310 285,315 Q290,325 297,320"/>
+    <path d="M297,320 Q305,310 310,315 Q305,325 297,320"/>
+    <path d="M297,320 Q295,305 290,310 Q300,320 297,320"/>
+    <path d="M297,320 Q300,305 305,310 Q295,320 297,320"/>
+    
+    <path d="M507,345 Q500,335 495,340 Q500,350 507,345"/>
+    <path d="M507,345 Q515,335 520,340 Q515,350 507,345"/>
+    <path d="M507,345 Q505,330 500,335 Q510,345 507,345"/>
+    <path d="M507,345 Q510,330 515,335 Q505,345 507,345"/>
+  </g>
+  
+  <!-- Tourism Platform Interface -->
+  <g transform="translate(400, 200)">
+    <!-- Main Platform Screen -->
+    <rect x="-120" y="-80" width="240" height="160" rx="15" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="3" opacity="0.95"/>
+    <rect x="-110" y="-70" width="220" height="140" rx="10" fill="#F8F9FA"/>
+    
+    <!-- Header -->
+    <rect x="-105" y="-65" width="210" height="30" rx="5" fill="url(#platformGradient)"/>
+    <text x="0" y="-47" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">
+      VISIT VIETNAM
+    </text>
+    <text x="0" y="-35" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#FFFFFF">
+      Nền tảng Du lịch Quốc gia
+    </text>
+    
+    <!-- Navigation Menu -->
+    <g transform="translate(0, -15)">
+      <rect x="-80" y="0" width="35" height="15" rx="3" fill="#0033FF" opacity="0.8"/>
+      <text x="-62" y="9" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#FFFFFF">
+        Địa điểm
+      </text>
+      
+      <rect x="-35" y="0" width="35" height="15" rx="3" fill="#977DFF" opacity="0.8"/>
+      <text x="-17" y="9" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#FFFFFF">
+        Khách sạn
+      </text>
+      
+      <rect x="10" y="0" width="35" height="15" rx="3" fill="#FFCCF2" opacity="0.8"/>
+      <text x="27" y="9" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#0033FF">
+        Ẩm thực
+      </text>
+      
+      <rect x="55" y="0" width="35" height="15" rx="3" fill="#0033FF" opacity="0.8"/>
+      <text x="72" y="9" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#FFFFFF">
+        Sự kiện
+      </text>
+    </g>
+    
+    <!-- Search Bar -->
+    <rect x="-100" y="5" width="200" height="20" rx="10" fill="#FFFFFF" stroke="#CCCCCC"/>
+    <text x="-95" y="17" font-family="Arial, sans-serif" font-size="8" fill="#999">
+      Tìm kiếm địa điểm du lịch...
+    </text>
+    <circle cx="85" cy="15" r="8" fill="url(#platformGradient)"/>
+    <path d="M80,15 L90,15 M85,10 L90,15 L85,20" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    
+    <!-- Content Grid -->
+    <g transform="translate(0, 35)">
+      <!-- Destination Card 1: Ha Long -->
+      <rect x="-95" y="0" width="55" height="35" rx="5" fill="#FFFFFF" stroke="#E0E0E0"/>
+      <rect x="-90" y="5" width="45" height="20" rx="3" fill="#4682B4"/>
+      <path d="M-85,15 Q-80,10 -75,15 Q-70,10 -65,15" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+      <text x="-67" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#0033FF">
+        Vịnh Hạ Long
+      </text>
+      
+      <!-- Destination Card 2: Hoi An -->
+      <rect x="-35" y="0" width="55" height="35" rx="5" fill="#FFFFFF" stroke="#E0E0E0"/>
+      <rect x="-30" y="5" width="45" height="20" rx="3" fill="#DAA520"/>
+      <rect x="-25" y="10" width="10" height="10" rx="1" fill="#8B4513"/>
+      <rect x="-12" y="8" width="8" height="12" rx="1" fill="#CD853F"/>
+      <text x="-7" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#0033FF">
+        Hội An
+      </text>
+      
+      <!-- Destination Card 3: Sapa -->
+      <rect x="25" y="0" width="55" height="35" rx="5" fill="#FFFFFF" stroke="#E0E0E0"/>
+      <rect x="30" y="5" width="45" height="20" rx="3" fill="#228B22"/>
+      <path d="M35,20 Q45,10 55,20 Q65,10 75,20" stroke="#90EE90" stroke-width="1" fill="none"/>
+      <text x="52" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#0033FF">
+        Sa Pa
+      </text>
+    </g>
+  </g>
+  
+  <!-- Mobile App Interface -->
+  <g transform="translate(150, 450)">
+    <rect x="-35" y="-60" width="70" height="120" rx="10" fill="#2C3E50"/>
+    <rect x="-30" y="-55" width="60" height="110" rx="8" fill="#1a1a1a"/>
+    <rect x="-25" y="-50" width="50" height="100" rx="5" fill="#FFFFFF"/>
+    
+    <!-- App Header -->
+    <rect x="-20" y="-45" width="40" height="15" rx="3" fill="url(#platformGradient)"/>
+    <text x="0" y="-35" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#FFFFFF">
+      Vietnam Travel
+    </text>
+    
+    <!-- App Icons -->
+    <g fill="#0033FF" opacity="0.8">
+      <rect x="-18" y="-25" width="8" height="8" rx="2"/>
+      <rect x="-8" y="-25" width="8" height="8" rx="2"/>
+      <rect x="2" y="-25" width="8" height="8" rx="2"/>
+      <rect x="12" y="-25" width="8" height="8" rx="2"/>
+      
+      <rect x="-18" y="-15" width="8" height="8" rx="2"/>
+      <rect x="-8" y="-15" width="8" height="8" rx="2"/>
+      <rect x="2" y="-15" width="8" height="8" rx="2"/>
+      <rect x="12" y="-15" width="8" height="8" rx="2"/>
+    </g>
+    
+    <!-- Navigation -->
+    <rect x="-20" y="35" width="40" height="12" rx="2" fill="#F0F0F0"/>
+    <circle cx="-12" cy="41" r="3" fill="#0033FF"/>
+    <circle cx="0" cy="41" r="3" fill="#CCCCCC"/>
+    <circle cx="12" cy="41" r="3" fill="#CCCCCC"/>
+    
+    <text x="0" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#0033FF">
+      Mobile App
+    </text>
+  </g>
+  
+  <!-- QR Code -->
+  <g transform="translate(650, 450)">
+    <rect x="-25" y="-25" width="50" height="50" rx="5" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="2"/>
+    <g fill="#000000">
+      <rect x="-20" y="-20" width="5" height="5"/>
+      <rect x="-10" y="-20" width="5" height="5"/>
+      <rect x="0" y="-20" width="5" height="5"/>
+      <rect x="10" y="-20" width="5" height="5"/>
+      <rect x="-20" y="-10" width="5" height="5"/>
+      <rect x="10" y="-10" width="5" height="5"/>
+      <rect x="-20" y="0" width="5" height="5"/>
+      <rect x="-10" y="0" width="5" height="5"/>
+      <rect x="10" y="0" width="5" height="5"/>
+      <rect x="-20" y="10" width="5" height="5"/>
+      <rect x="0" y="10" width="5" height="5"/>
+      <rect x="10" y="10" width="5" height="5"/>
+    </g>
+    <text x="0" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#0033FF">
+      Tải App
+    </text>
+  </g>
+  
+  <!-- Vietnamese Flag -->
+  <g transform="translate(70, 50)">
+    <rect x="0" y="0" width="40" height="27" fill="#FF0000"/>
+    <polygon points="20,7 24,17 13,11 27,11 16,17" fill="#FFD700"/>
+  </g>
+  
+  <!-- Statistics -->
+  <g transform="translate(600, 100)" fill="#FFFFFF" opacity="0.9">
+    <rect x="-50" y="-30" width="100" height="60" rx="10" fill="rgba(0,51,255,0.8)"/>
+    <text x="0" y="-15" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold">
+      DU KHÁCH 2025
+    </text>
+    <text x="0" y="-5" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">
+      18M+
+    </text>
+    <text x="0" y="8" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">
+      Lượt khách quốc tế
+    </text>
+    <text x="0" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="8">
+      Tăng trưởng 25%
+    </text>
+  </g>
+  
+  <!-- Data Connections -->
+  <g stroke="#977DFF" stroke-width="2" opacity="0.5" fill="none">
+    <path d="M400,280 Q500,350 650,425">
+      <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M400,280 Q300,350 150,390">
+      <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#0033FF">
+    NỀN TẢNG DU LỊCH VIỆT NAM
+  </text>
+  <text x="400" y="570" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666">
+    Khám phá • Trải nghiệm • Kết nối
+  </text>
+</svg>

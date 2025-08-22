@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-exhibition" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#1E40AF;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="booth" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF" />
+      <stop offset="100%" style="stop-color:#F8FAFC" />
+    </linearGradient>
+    <linearGradient id="product1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF" />
+      <stop offset="100%" style="stop-color:#3B82F6" />
+    </linearGradient>
+    <linearGradient id="product2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669" />
+      <stop offset="100%" style="stop-color:#10B981" />
+    </linearGradient>
+    <linearGradient id="product3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626" />
+      <stop offset="100%" style="stop-color:#EF4444" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-exhibition)"/>
+  
+  <!-- Exhibition Hall Floor -->
+  <rect x="0" y="400" width="800" height="200" fill="#F1F5F9" opacity="0.8"/>
+  <rect x="0" y="350" width="800" height="50" fill="#E2E8F0" opacity="0.6"/>
+  
+  <!-- Main Exhibition Banner -->
+  <g transform="translate(150,50)">
+    <rect x="0" y="0" width="500" height="80" rx="8" fill="#1E40AF" opacity="0.9"/>
+    <text x="250" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">TRIỂN LÃM GIỚI THIỆU</text>
+    <text x="250" y="50" text-anchor="middle" font-size="16" fill="#FFFFFF">6 Sản phẩm Dữ liệu Tiên phong</text>
+    <text x="250" y="70" text-anchor="middle" font-size="12" fill="#FFFFFF">Trung tâm Dữ liệu Quốc gia - Hiệp hội Dữ liệu Quốc gia</text>
+  </g>
+  
+  <!-- Exhibition Booth 1 - AI Platform -->
+  <g transform="translate(100,180)">
+    <rect x="0" y="0" width="120" height="150" rx="5" fill="url(#booth)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- Product Display Screen -->
+    <rect x="10" y="10" width="100" height="60" rx="3" fill="url(#product1)"/>
+    <text x="60" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">AI</text>
+    <text x="60" y="45" text-anchor="middle" font-size="10" fill="#FFFFFF">PLATFORM</text>
+    <text x="60" y="58" text-anchor="middle" font-size="8" fill="#FFFFFF">v2.0</text>
+    
+    <!-- Features -->
+    <text x="60" y="85" text-anchor="middle" font-size="9" font-weight="bold" fill="#1E40AF">Tính năng chính:</text>
+    <text x="10" y="100" font-size="7" fill="#374151">• Phân tích dữ liệu thông minh</text>
+    <text x="10" y="110" font-size="7" fill="#374151">• Học máy tự động</text>
+    <text x="10" y="120" font-size="7" fill="#374151">• Dự đoán xu hướng</text>
+    <text x="10" y="130" font-size="7" fill="#374151">• API tích hợp dễ dàng</text>
+    
+    <text x="60" y="145" text-anchor="middle" font-size="8" fill="#1E40AF">Sản phẩm #1</text>
+  </g>
+  
+  <!-- Exhibition Booth 2 - Blockchain -->
+  <g transform="translate(240,180)">
+    <rect x="0" y="0" width="120" height="150" rx="5" fill="url(#booth)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- Blockchain Display -->
+    <rect x="10" y="10" width="100" height="60" rx="3" fill="url(#product2)"/>
+    <rect x="20" y="25" width="15" height="15" rx="2" fill="#FFFFFF" opacity="0.9"/>
+    <rect x="40" y="25" width="15" height="15" rx="2" fill="#FFFFFF" opacity="0.7"/>
+    <rect x="60" y="25" width="15" height="15" rx="2" fill="#FFFFFF" opacity="0.9"/>
+    <rect x="80" y="25" width="15" height="15" rx="2" fill="#FFFFFF" opacity="0.6"/>
+    
+    <!-- Chain lines -->
+    <line x1="35" y1="32" x2="40" y2="32" stroke="#FFFFFF" stroke-width="2"/>
+    <line x1="55" y1="32" x2="60" y2="32" stroke="#FFFFFF" stroke-width="2"/>
+    <line x1="75" y1="32" x2="80" y2="32" stroke="#FFFFFF" stroke-width="2"/>
+    
+    <text x="60" y="55" text-anchor="middle" font-size="8" font-weight="bold" fill="#FFFFFF">BLOCKCHAIN</text>
+    
+    <text x="60" y="85" text-anchor="middle" font-size="9" font-weight="bold" fill="#059669">Đặc điểm:</text>
+    <text x="10" y="100" font-size="7" fill="#374151">• Bảo mật tuyệt đối</text>
+    <text x="10" y="110" font-size="7" fill="#374151">• Minh bạch dữ liệu</text>
+    <text x="10" y="120" font-size="7" fill="#374151">• Không thể thay đổi</text>
+    <text x="10" y="130" font-size="7" fill="#374151">• Phi tập trung</text>
+    
+    <text x="60" y="145" text-anchor="middle" font-size="8" fill="#059669">Sản phẩm #2</text>
+  </g>
+  
+  <!-- Exhibition Booth 3 - IoT Platform -->
+  <g transform="translate(380,180)">
+    <rect x="0" y="0" width="120" height="150" rx="5" fill="url(#booth)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- IoT Display -->
+    <rect x="10" y="10" width="100" height="60" rx="3" fill="url(#product3)"/>
+    
+    <!-- IoT Devices -->
+    <circle cx="30" cy="30" r="6" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="60" cy="25" r="4" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="80" cy="35" r="5" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="45" cy="50" r="3" fill="#FFFFFF" opacity="0.7"/>
+    <circle cx="70" cy="55" r="4" fill="#FFFFFF" opacity="0.8"/>
+    
+    <!-- Connection lines -->
+    <line x1="30" y1="35" x2="45" y2="47" stroke="#FFFFFF" stroke-width="1" opacity="0.6"/>
+    <line x1="60" y1="29" x2="80" y2="31" stroke="#FFFFFF" stroke-width="1" opacity="0.6"/>
+    <line x1="45" y1="53" x2="70" y2="52" stroke="#FFFFFF" stroke-width="1" opacity="0.6"/>
+    
+    <text x="60" y="85" text-anchor="middle" font-size="9" font-weight="bold" fill="#DC2626">IoT Platform:</text>
+    <text x="10" y="100" font-size="7" fill="#374151">• Kết nối thiết bị IoT</text>
+    <text x="10" y="110" font-size="7" fill="#374151">• Thu thập dữ liệu real-time</text>
+    <text x="10" y="120" font-size="7" fill="#374151">• Giám sát từ xa</text>
+    <text x="10" y="130" font-size="7" fill="#374151">• Cảnh báo thông minh</text>
+    
+    <text x="60" y="145" text-anchor="middle" font-size="8" fill="#DC2626">Sản phẩm #3</text>
+  </g>
+  
+  <!-- Exhibition Booth 4 - Data Analytics -->
+  <g transform="translate(520,180)">
+    <rect x="0" y="0" width="120" height="150" rx="5" fill="url(#booth)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- Analytics Display -->
+    <rect x="10" y="10" width="100" height="60" rx="3" fill="#7C3AED"/>
+    
+    <!-- Charts -->
+    <rect x="20" y="30" width="4" height="20" fill="#FFFFFF"/>
+    <rect x="28" y="25" width="4" height="25" fill="#FFFFFF"/>
+    <rect x="36" y="35" width="4" height="15" fill="#FFFFFF"/>
+    <rect x="44" y="20" width="4" height="30" fill="#FFFFFF"/>
+    
+    <!-- Line chart -->
+    <polyline points="55,45 62,35 70,40 78,30 85,25" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <circle cx="55" cy="45" r="2" fill="#FFFFFF"/>
+    <circle cx="70" cy="40" r="2" fill="#FFFFFF"/>
+    <circle cx="85" cy="25" r="2" fill="#FFFFFF"/>
+    
+    <text x="60" y="85" text-anchor="middle" font-size="9" font-weight="bold" fill="#7C3AED">Data Analytics:</text>
+    <text x="10" y="100" font-size="7" fill="#374151">• Phân tích Big Data</text>
+    <text x="10" y="110" font-size="7" fill="#374151">• Báo cáo tự động</text>
+    <text x="10" y="120" font-size="7" fill="#374151">• Dashboard trực quan</text>
+    <text x="10" y="130" font-size="7" fill="#374151">• Insights thông minh</text>
+    
+    <text x="60" y="145" text-anchor="middle" font-size="8" fill="#7C3AED">Sản phẩm #4</text>
+  </g>
+  
+  <!-- Exhibition Booth 5 & 6 -->
+  <g transform="translate(200,350)">
+    <rect x="0" y="0" width="100" height="100" rx="5" fill="url(#booth)" stroke="#E5E7EB" stroke-width="2"/>
+    <rect x="10" y="10" width="80" height="40" rx="3" fill="#F59E0B"/>
+    <text x="50" y="35" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">CLOUD</text>
+    <text x="50" y="65" text-anchor="middle" font-size="8" fill="#F59E0B">Cloud Platform</text>
+    <text x="50" y="85" text-anchor="middle" font-size="7" fill="#F59E0B">Sản phẩm #5</text>
+  </g>
+  
+  <g transform="translate(350,350)">
+    <rect x="0" y="0" width="100" height="100" rx="5" fill="url(#booth)" stroke="#E5E7EB" stroke-width="2"/>
+    <rect x="10" y="10" width="80" height="40" rx="3" fill="#EC4899"/>
+    <text x="50" y="30" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">SECURITY</text>
+    <text x="50" y="42" text-anchor="middle" font-size="8" fill="#FFFFFF">SUITE</text>
+    <text x="50" y="65" text-anchor="middle" font-size="8" fill="#EC4899">Cyber Security</text>
+    <text x="50" y="85" text-anchor="middle" font-size="7" fill="#EC4899">Sản phẩm #6</text>
+  </g>
+  
+  <!-- Visitors -->
+  <g transform="translate(150,450)">
+    <!-- Visitor 1 -->
+    <circle cx="0" cy="0" r="12" fill="#1E40AF" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="4" fill="#FFFFFF"/>
+    <path d="M-6,3 Q0,8 6,3" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    
+    <!-- Visitor 2 -->
+    <circle cx="30" cy="5" r="12" fill="#059669" opacity="0.8"/>
+    <circle cx="30" cy="0" r="4" fill="#FFFFFF"/>
+    <path d="M24,8 Q30,13 36,8" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+    
+    <!-- Visitor 3 -->
+    <circle cx="60" cy="3" r="12" fill="#DC2626" opacity="0.8"/>
+    <circle cx="60" cy="-2" r="4" fill="#FFFFFF"/>
+    <path d="M54,6 Q60,11 66,6" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+  </g>
+  
+  <!-- Information Panels -->
+  <g transform="translate(600,350)">
+    <rect x="0" y="0" width="150" height="100" rx="5" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="75" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E40AF">THÔNG TIN TRIỂN LÃM</text>
+    <text x="10" y="35" font-size="8" fill="#374151">📅 Thời gian: 04/07/2025</text>
+    <text x="10" y="45" font-size="8" fill="#374151">📍 Địa điểm: Bộ Công an</text>
+    <text x="10" y="55" font-size="8" fill="#374151">👥 Đối tượng: Cán bộ, Chuyên gia</text>
+    <text x="10" y="65" font-size="8" fill="#374151">🎯 Mục tiêu: Giới thiệu sản phẩm</text>
+    <text x="10" y="75" font-size="8" fill="#374151">🏢 Đơn vị: NDC + Hiệp hội</text>
+    <text x="10" y="85" font-size="8" fill="#374151">✨ Công nghệ: Made in Vietnam</text>
+  </g>
+  
+  <!-- Logo -->
+  <g transform="translate(50,50)">
+    <circle cx="25" cy="25" r="20" fill="#1E40AF" opacity="0.8"/>
+    <text x="25" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">NDC</text>
+  </g>
+  
+  <!-- Achievement Icons -->
+  <g transform="translate(50,500)">
+    <circle cx="15" cy="15" r="12" fill="#F59E0B" opacity="0.8"/>
+    <polygon points="15,8 17,13 22,13 18,16 20,21 15,18 10,21 12,16 8,13 13,13" fill="#FFFFFF"/>
+    <text x="15" y="35" text-anchor="middle" font-size="7" fill="#F59E0B">Innovation</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1E40AF">
+    Triển lãm 6 Sản phẩm Dữ liệu Tiên phong
+  </text>
+  <text x="400" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#059669" opacity="0.8">
+    Khẳng định Nội lực Công nghệ Việt Nam
+  </text>
+</svg>
+
+

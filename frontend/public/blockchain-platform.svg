@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-blockchain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="block1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF" />
+      <stop offset="100%" style="stop-color:#3B82F6" />
+    </linearGradient>
+    <linearGradient id="block2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED" />
+      <stop offset="100%" style="stop-color:#A855F7" />
+    </linearGradient>
+    <linearGradient id="block3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669" />
+      <stop offset="100%" style="stop-color:#10B981" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-blockchain)"/>
+  
+  <!-- Title -->
+  <g transform="translate(200,50)">
+    <rect x="0" y="0" width="400" height="70" rx="10" fill="url(#block1)" opacity="0.9"/>
+    <text x="200" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">NỀN TẢNG BLOCKCHAIN QUỐC GIA</text>
+    <text x="200" y="50" text-anchor="middle" font-size="16" fill="#FFFFFF">Hạ tầng Chuỗi khối Đáng tin cậy</text>
+  </g>
+  
+  <!-- Main Blockchain Chain -->
+  <g transform="translate(100,150)">
+    <!-- Genesis Block -->
+    <g transform="translate(0,0)">
+      <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#block1)" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="40" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">BLOCK #0</text>
+      <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">Genesis</text>
+      <text x="40" y="55" text-anchor="middle" font-size="6" fill="#FFFFFF">Hash: 0x000...001</text>
+      <text x="40" y="68" text-anchor="middle" font-size="6" fill="#FFFFFF">Prev: NULL</text>
+    </g>
+    
+    <!-- Chain Link 1 -->
+    <line x1="80" y1="40" x2="120" y2="40" stroke="#3B82F6" stroke-width="4">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </line>
+    
+    <!-- Block 1 -->
+    <g transform="translate(120,0)">
+      <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#block2)" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="40" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">BLOCK #1</text>
+      <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">Identity</text>
+      <text x="40" y="55" text-anchor="middle" font-size="6" fill="#FFFFFF">Hash: 0x000...002</text>
+      <text x="40" y="68" text-anchor="middle" font-size="6" fill="#FFFFFF">Prev: 0x000...001</text>
+    </g>
+    
+    <!-- Chain Link 2 -->
+    <line x1="200" y1="40" x2="240" y2="40" stroke="#A855F7" stroke-width="4">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+    </line>
+    
+    <!-- Block 2 -->
+    <g transform="translate(240,0)">
+      <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#block3)" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="40" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">BLOCK #2</text>
+      <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">Contract</text>
+      <text x="40" y="55" text-anchor="middle" font-size="6" fill="#FFFFFF">Hash: 0x000...003</text>
+      <text x="40" y="68" text-anchor="middle" font-size="6" fill="#FFFFFF">Prev: 0x000...002</text>
+    </g>
+    
+    <!-- Chain Link 3 -->
+    <line x1="320" y1="40" x2="360" y2="40" stroke="#10B981" stroke-width="4">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1s"/>
+    </line>
+    
+    <!-- Block 3 -->
+    <g transform="translate(360,0)">
+      <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#block1)" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="40" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">BLOCK #3</text>
+      <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">Transaction</text>
+      <text x="40" y="55" text-anchor="middle" font-size="6" fill="#FFFFFF">Hash: 0x000...004</text>
+      <text x="40" y="68" text-anchor="middle" font-size="6" fill="#FFFFFF">Prev: 0x000...003</text>
+    </g>
+    
+    <!-- Chain Link 4 -->
+    <line x1="440" y1="40" x2="480" y2="40" stroke="#3B82F6" stroke-width="4">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+    </line>
+    
+    <!-- Block 4 -->
+    <g transform="translate(480,0)">
+      <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#block2)" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="40" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFFFFF">BLOCK #N</text>
+      <text x="40" y="40" text-anchor="middle" font-size="8" fill="#FFFFFF">Latest</text>
+      <text x="40" y="55" text-anchor="middle" font-size="6" fill="#FFFFFF">Hash: 0x000...00N</text>
+      <text x="40" y="68" text-anchor="middle" font-size="6" fill="#FFFFFF">Prev: 0x000...004</text>
+    </g>
+    
+    <!-- Continuing arrow -->
+    <path d="M565,40 L585,35 L585,45 Z" fill="#7C3AED">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <text x="590" y="45" font-size="10" fill="#7C3AED">...</text>
+  </g>
+  
+  <!-- Network Nodes -->
+  <g transform="translate(50,300)">
+    <text x="350" y="0" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E40AF">MẠNG LƯỚI PHÂN TÁN</text>
+    
+    <!-- Node 1 - Government -->
+    <g transform="translate(50,30)">
+      <circle cx="40" cy="40" r="30" fill="#1E40AF" opacity="0.8"/>
+      <rect x="30" y="30" width="20" height="15" rx="2" fill="#FFFFFF"/>
+      <rect x="32" y="32" width="16" height="3" fill="#1E40AF"/>
+      <rect x="32" y="37" width="16" height="3" fill="#1E40AF"/>
+      <rect x="32" y="42" width="16" height="3" fill="#1E40AF"/>
+      <text x="40" y="85" text-anchor="middle" font-size="10" fill="#1E40AF">Chính phủ</text>
+    </g>
+    
+    <!-- Node 2 - Enterprise -->
+    <g transform="translate(200,30)">
+      <circle cx="40" cy="40" r="30" fill="#7C3AED" opacity="0.8"/>
+      <rect x="25" y="25" width="30" height="20" rx="3" fill="#FFFFFF"/>
+      <rect x="30" y="30" width="5" height="10" fill="#7C3AED"/>
+      <rect x="37" y="30" width="5" height="10" fill="#7C3AED"/>
+      <rect x="44" y="30" width="5" height="10" fill="#7C3AED"/>
+      <text x="40" y="85" text-anchor="middle" font-size="10" fill="#7C3AED">Doanh nghiệp</text>
+    </g>
+    
+    <!-- Node 3 - Citizens -->
+    <g transform="translate(350,30)">
+      <circle cx="40" cy="40" r="30" fill="#059669" opacity="0.8"/>
+      <circle cx="40" cy="32" r="8" fill="#FFFFFF"/>
+      <path d="M25,55 Q40,65 55,55" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+      <text x="40" y="85" text-anchor="middle" font-size="10" fill="#059669">Công dân</text>
+    </g>
+    
+    <!-- Node 4 - Institutions -->
+    <g transform="translate(500,30)">
+      <circle cx="40" cy="40" r="30" fill="#DC2626" opacity="0.8"/>
+      <rect x="25" y="30" width="30" height="20" rx="2" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="35" cy="38" r="3" fill="#FFFFFF"/>
+      <circle cx="45" cy="38" r="3" fill="#FFFFFF"/>
+      <rect x="32" y="43" width="16" height="2" fill="#FFFFFF"/>
+      <text x="40" y="85" text-anchor="middle" font-size="10" fill="#DC2626">Tổ chức</text>
+    </g>
+    
+    <!-- Node 5 - Central Node -->
+    <g transform="translate(275,120)">
+      <circle cx="40" cy="40" r="35" fill="#F59E0B" opacity="0.9"/>
+      <rect x="20" y="20" width="40" height="30" rx="5" fill="#FFFFFF"/>
+      <rect x="25" y="25" width="10" height="5" fill="#F59E0B"/>
+      <rect x="37" y="25" width="10" height="5" fill="#F59E0B"/>
+      <rect x="49" y="25" width="10" height="5" fill="#F59E0B"/>
+      <rect x="25" y="32" width="10" height="5" fill="#F59E0B"/>
+      <rect x="37" y="32" width="10" height="5" fill="#F59E0B"/>
+      <rect x="49" y="32" width="10" height="5" fill="#F59E0B"/>
+      <rect x="25" y="39" width="10" height="5" fill="#F59E0B"/>
+      <rect x="37" y="39" width="10" height="5" fill="#F59E0B"/>
+      <rect x="49" y="39" width="10" height="5" fill="#F59E0B"/>
+      <text x="40" y="95" text-anchor="middle" font-size="10" fill="#F59E0B">Trung tâm DL</text>
+    </g>
+    
+    <!-- Network Connections -->
+    <g stroke="#6B7280" stroke-width="2" opacity="0.6" fill="none">
+      <line x1="90" y1="70" x2="275" y2="140">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+      </line>
+      <line x1="240" y1="70" x2="300" y2="140">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/>
+      </line>
+      <line x1="390" y1="70" x2="335" y2="140">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.8s" repeatCount="indefinite"/>
+      </line>
+      <line x1="540" y1="70" x2="355" y2="140">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3.2s" repeatCount="indefinite"/>
+      </line>
+      <line x1="90" y1="70" x2="240" y2="70">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+      </line>
+      <line x1="240" y1="70" x2="390" y2="70">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.3s" repeatCount="indefinite"/>
+      </line>
+      <line x1="390" y1="70" x2="540" y2="70">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.7s" repeatCount="indefinite"/>
+      </line>
+    </g>
+  </g>
+  
+  <!-- Features Panel -->
+  <g transform="translate(50,480)">
+    <rect x="0" y="0" width="700" height="80" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="350" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E40AF">TÍNH NĂNG BLOCKCHAIN QUỐC GIA</text>
+    
+    <!-- Feature 1 -->
+    <g transform="translate(50,35)">
+      <circle cx="15" cy="15" r="12" fill="#1E40AF"/>
+      <path d="M10,15 L13,18 L20,11" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="35" y="12" font-size="10" font-weight="bold" fill="#1E40AF">MINH BẠCH</text>
+      <text x="35" y="24" font-size="8" fill="#6B7280">Mọi giao dịch đều công khai và có thể kiểm chứng</text>
+    </g>
+    
+    <!-- Feature 2 -->
+    <g transform="translate(200,35)">
+      <circle cx="15" cy="15" r="12" fill="#059669"/>
+      <rect x="10" y="10" width="10" height="8" rx="1" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+      <rect x="12" y="7" width="6" height="5" rx="3" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+      <text x="35" y="12" font-size="10" font-weight="bold" fill="#059669">BẢO MẬT</text>
+      <text x="35" y="24" font-size="8" fill="#6B7280">Mã hóa mạnh mẽ và không thể thay đổi</text>
+    </g>
+    
+    <!-- Feature 3 -->
+    <g transform="translate(350,35)">
+      <circle cx="15" cy="15" r="12" fill="#7C3AED"/>
+      <circle cx="15" cy="15" r="8" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="15" cy="15" r="4" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="35" y="12" font-size="10" font-weight="bold" fill="#7C3AED">MỞ RỘNG</text>
+      <text x="35" y="24" font-size="8" fill="#6B7280">Khả năng xử lý hàng triệu giao dịch</text>
+    </g>
+    
+    <!-- Feature 4 -->
+    <g transform="translate(500,35)">
+      <circle cx="15" cy="15" r="12" fill="#DC2626"/>
+      <rect x="10" y="10" width="10" height="8" rx="1" fill="#FFFFFF"/>
+      <line x1="12" y1="13" x2="18" y2="13" stroke="#DC2626" stroke-width="1"/>
+      <line x1="12" y1="15" x2="18" y2="15" stroke="#DC2626" stroke-width="1"/>
+      <text x="35" y="12" font-size="10" font-weight="bold" fill="#DC2626">TUÂN THỦ</text>
+      <text x="35" y="24" font-size="8" fill="#6B7280">Đáp ứng các quy định pháp luật Việt Nam</text>
+    </g>
+  </g>
+  
+  <!-- Data Mining Animation -->
+  <g opacity="0.4">
+    <circle r="2" fill="#1E40AF">
+      <animateMotion dur="6s" repeatCount="indefinite" 
+                     path="M100,190 Q200,150 300,190 Q400,230 500,190 Q600,150 700,190"/>
+    </circle>
+    <circle r="1" fill="#7C3AED">
+      <animateMotion dur="4s" repeatCount="indefinite" 
+                     path="M150,350 Q250,300 350,350 Q450,400 550,350"/>
+    </circle>
+    <circle r="2" fill="#059669">
+      <animateMotion dur="5s" repeatCount="indefinite" 
+                     path="M200,280 Q300,320 400,280 Q500,240 600,280"/>
+    </circle>
+  </g>
+</svg>
+
+

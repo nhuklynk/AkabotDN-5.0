@@ -31,7 +31,7 @@ export function MembersPageClient({ members }: MembersPageClientProps) {
   return (
     <>
       {/* Members Table */}
-      <Card>
+      <Card className="border-0">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building className="w-5 h-5" />
@@ -41,7 +41,7 @@ export function MembersPageClient({ members }: MembersPageClientProps) {
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b">
+              <thead className="border-0">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 w-16">
                     STT
@@ -108,21 +108,21 @@ export function MembersPageClient({ members }: MembersPageClientProps) {
 
       {/* Statistics */}
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Building className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{members.length}</p>
             <p className="text-sm text-gray-600">Tổ chức thành viên</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <User className="w-8 h-8 text-blue-600 mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">150+</p>
             <p className="text-sm text-gray-600">Cá nhân thành viên</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Phone className="w-8 h-8 text-purple-600 mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">24/7</p>

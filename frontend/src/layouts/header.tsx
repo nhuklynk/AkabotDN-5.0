@@ -21,7 +21,15 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded bg-gradient-to-br from-[#977DFF] to-[#0033FF]"></div>
+              <div className="h-8 w-8 rounded flex items-center justify-center overflow-hidden">
+                <img
+                  src="/icons/logo.svg"
+                  alt="Hiệp hội Dữ liệu Quốc gia Việt Nam"
+                  width={32}
+                  height={32}
+                  className="object-contain h-8 w-8"
+                />
+              </div>
               <div className="hidden sm:block">
                 <Link href="/">
                   <h1 className="text-lg font-bold text-[#0033FF] hover:text-[#0600AF] transition-colors cursor-pointer">
@@ -47,6 +55,13 @@ export function Header() {
               className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
             >
               HOẠT ĐỘNG CỦA HIỆP HỘI
+            </Link>
+
+            <Link
+              href="/posts"
+              className="text-sm font-medium text-[#0600AF] hover:text-[#0033FF] transition-colors"
+            >
+              BÀI ĐĂNG
             </Link>
 
             <Link
