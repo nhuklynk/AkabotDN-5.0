@@ -30,6 +30,8 @@ import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import { Earth } from "./components/Earth";
+import { GlobeSceneWrapper } from "@/app/(end-user)/landing-page/components/GlobeSceneWrapper";
+import { Globe3D } from "@/app/(end-user)/landing-page/components/Globe3D";
 
 interface Expert {
   id: number;
@@ -461,73 +463,151 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* Right: Interactive Globe */}
+            {/* Right: Interactive Globe in Space */}
             <div className="relative flex justify-center items-center">
-              <div className="relative w-96 h-96 mx-auto">
-                {/* Corner Texts */}
-                {/* Top Left */}
-                <div className="absolute -top-8 -left-8 text-center animate-float z-20">
-                  <div className="bg-gradient-to-r from-[#0033FF] to-[#4F46E5] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    Kết nối toàn cầu
-                  </div>
-                </div>
-
-                {/* Top Right */}
+              <div className="relative w-[500px] h-[500px] mx-auto">
+                {/* Cosmic Space Background */}
                 <div
-                  className="absolute -top-8 -right-8 text-center animate-float z-20"
-                  style={{ animationDelay: "0.5s" }}
+                  className="absolute inset-0 rounded-3xl overflow-hidden"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at center, rgba(147, 51, 234, 0.2) 0%, rgba(67, 56, 202, 0.3) 50%, rgba(0, 0, 0, 0.8) 100%)",
+                  }}
                 >
-                  <div className="bg-gradient-to-r from-[#977DFF] to-[#8B5CF6] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    An toàn dữ liệu
+                  {/* Animated Stars Layer 1 - Small stars */}
+                  <div className="absolute inset-0">
+                    {[...Array(40)].map((_, i) => (
+                      <div
+                        key={`star-small-${i}`}
+                        className="absolute w-0.5 h-0.5 bg-white rounded-full opacity-60"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animation: `twinkle ${
+                            2 + Math.random() * 2
+                          }s ease-in-out infinite`,
+                          animationDelay: `${Math.random() * 3}s`,
+                        }}
+                      />
+                    ))}
                   </div>
-                </div>
 
-                {/* Bottom Left */}
-                <div
-                  className="absolute -bottom-8 -left-8 text-center animate-float z-20"
-                  style={{ animationDelay: "1s" }}
-                >
-                  <div className="bg-gradient-to-r from-[#FFCCF2] to-[#EC4899] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    Đồng bộ dữ liệu
+                  {/* Animated Stars Layer 2 - Medium stars */}
+                  <div className="absolute inset-0">
+                    {[...Array(20)].map((_, i) => (
+                      <div
+                        key={`star-medium-${i}`}
+                        className="absolute w-1 h-1 bg-white rounded-full opacity-80"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animation: `twinkle ${
+                            3 + Math.random() * 2
+                          }s ease-in-out infinite`,
+                          animationDelay: `${Math.random() * 4}s`,
+                        }}
+                      />
+                    ))}
                   </div>
-                </div>
 
-                {/* Bottom Right */}
-                <div
-                  className="absolute -bottom-8 -right-8 text-center animate-float z-20"
-                  style={{ animationDelay: "1.5s" }}
-                >
-                  <div className="bg-gradient-to-r from-[#10B981] to-[#059669] text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
-                    Trí tuệ nhân tạo
+                  {/* Animated Stars Layer 3 - Large stars */}
+                  <div className="absolute inset-0">
+                    {[...Array(8)].map((_, i) => (
+                      <div
+                        key={`star-large-${i}`}
+                        className="absolute w-1.5 h-1.5 bg-white rounded-full opacity-90 shadow-lg shadow-white/50"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animation: `twinkle ${
+                            4 + Math.random() * 2
+                          }s ease-in-out infinite`,
+                          animationDelay: `${Math.random() * 5}s`,
+                        }}
+                      />
+                    ))}
                   </div>
-                </div>
 
-                {/* 3D Earth Canvas */}
-                <div className="relative w-full h-full rounded-2xl shadow-2xl overflow-hidden group cursor-pointer transform transition-all duration-1000 hover:scale-105">
-                  <Canvas camera={{ position: [0, 0, 3], fov: 75 }}>
-                    <ambientLight intensity={0.3} />
-                    <directionalLight position={[5, 5, 5]} intensity={1} />
-                    <Earth />
-                    <OrbitControls
-                      enableZoom={true}
-                      enablePan={true}
-                      enableRotate={true}
-                      autoRotate={true}
-                      autoRotateSpeed={0.5}
+                  {/* Nebula/Cosmic Clouds */}
+                  <div
+                    className="absolute top-10 left-10 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"
+                    style={{
+                      animation: "nebulaDrift 8s ease-in-out infinite",
+                    }}
+                  />
+                  <div
+                    className="absolute bottom-16 right-12 w-24 h-24 bg-blue-400/15 rounded-full blur-2xl"
+                    style={{
+                      animation: "nebulaDrift 8s ease-in-out infinite",
+                      animationDelay: "2s",
+                    }}
+                  />
+                  <div
+                    className="absolute top-1/2 left-8 w-20 h-20 bg-pink-400/10 rounded-full blur-2xl"
+                    style={{
+                      animation: "nebulaDrift 8s ease-in-out infinite",
+                      animationDelay: "4s",
+                    }}
+                  />
+
+                  {/* Cosmic Ring/Halo around Globe area */}
+                  <div
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-white/10 rounded-full"
+                    style={{
+                      animation: "cosmicRing 20s linear infinite",
+                    }}
+                  />
+                  <div
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 border border-blue-400/20 rounded-full"
+                    style={{
+                      animation: "cosmicRing 20s linear infinite reverse",
+                      animationDelay: "1s",
+                    }}
+                  />
+
+                  {/* 3D Earth Canvas - Embedded Mode */}
+                  <div className="absolute inset-8 bg-transparent rounded-2xl">
+                    <Globe3D
+                      mode="embedded"
+                      showBackground={false}
+                      className="rounded-2xl"
                     />
-                    <Environment preset="night" />
-                  </Canvas>
-                </div>
+                  </div>
 
-                {/* Floating Elements - Reduced to avoid clutter with corner texts */}
-                <div
-                  className="absolute top-1/4 -left-12 w-6 h-6 bg-[#0033FF]/30 rounded-full animate-bounce opacity-40"
-                  style={{ animationDelay: "2s", animationDuration: "3s" }}
-                />
-                <div
-                  className="absolute top-3/4 -right-12 w-8 h-8 bg-[#977DFF]/30 rounded-full animate-bounce opacity-40"
-                  style={{ animationDelay: "2.5s", animationDuration: "3.5s" }}
-                />
+                  {/* Floating Info Labels */}
+                  <div className="absolute top-12 left-12 z-20">
+                    <div className="bg-gradient-to-r from-blue-500/80 to-cyan-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold animate-float border border-white/20">
+                      🌐 Kết nối toàn cầu
+                    </div>
+                  </div>
+
+                  <div
+                    className="absolute top-16 right-12 z-20 animate-float"
+                    style={{ animationDelay: "1s" }}
+                  >
+                    <div className="bg-gradient-to-r from-purple-500/80 to-violet-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
+                      🔒 An toàn dữ liệu
+                    </div>
+                  </div>
+
+                  <div
+                    className="absolute bottom-16 left-16 z-20 animate-float"
+                    style={{ animationDelay: "2s" }}
+                  >
+                    <div className="bg-gradient-to-r from-pink-500/80 to-rose-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
+                      🔄 Đồng bộ dữ liệu
+                    </div>
+                  </div>
+
+                  <div
+                    className="absolute bottom-12 right-16 z-20 animate-float"
+                    style={{ animationDelay: "3s" }}
+                  >
+                    <div className="bg-gradient-to-r from-emerald-500/80 to-green-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
+                      🤖 Trí tuệ nhân tạo
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -627,6 +707,52 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+
+        {/* CSS Keyframes for Cosmic Animations */}
+        <style jsx>{`
+          @keyframes twinkle {
+            0%,
+            100% {
+              opacity: 0.3;
+              transform: scale(1);
+            }
+            50% {
+              opacity: 1;
+              transform: scale(1.2);
+            }
+          }
+
+          @keyframes nebulaDrift {
+            0%,
+            100% {
+              transform: translate(0, 0) scale(1);
+              opacity: 0.1;
+            }
+            33% {
+              transform: translate(-10px, -10px) scale(1.1);
+              opacity: 0.15;
+            }
+            66% {
+              transform: translate(10px, -5px) scale(0.95);
+              opacity: 0.08;
+            }
+          }
+
+          @keyframes cosmicRing {
+            0% {
+              transform: translate(-50%, -50%) rotate(0deg) scale(1);
+              opacity: 0.1;
+            }
+            50% {
+              transform: translate(-50%, -50%) rotate(180deg) scale(1.05);
+              opacity: 0.2;
+            }
+            100% {
+              transform: translate(-50%, -50%) rotate(360deg) scale(1);
+              opacity: 0.1;
+            }
+          }
+        `}</style>
       </section>
 
       {/* Upcoming Events */}

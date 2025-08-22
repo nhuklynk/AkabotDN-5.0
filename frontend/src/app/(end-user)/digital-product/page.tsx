@@ -322,7 +322,7 @@ export default function DigitalProductsPage() {
 
           {/* Partners Section */}
           <div className="mt-8">
-            <PartnersList partners={partners} />
+            <PartnersList partners={partners as any} />
           </div>
         </div>
       </section>

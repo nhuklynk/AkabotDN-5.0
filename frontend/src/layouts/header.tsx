@@ -21,7 +21,7 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded bg-gradient-to-br from-[#977DFF] to-[#0033FF] flex items-center justify-center overflow-hidden">
+              <div className="h-8 w-8 rounded  flex items-center justify-center overflow-hidden">
                 <img
                   src="/icons/logo.png"
                   alt="Hiệp hội Dữ liệu Quốc gia Việt Nam"

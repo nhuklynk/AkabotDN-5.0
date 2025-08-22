@@ -176,7 +176,7 @@ export default function HoatDongPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-[#FFCCF2] via-[#977DFF] to-[#0033FF] text-white py-16">
+      <section className="bg-gradient-to-r bg-[#0033FF] text-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -189,35 +189,35 @@ export default function HoatDongPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Badge
                 variant="secondary"
-                className="text-lg px-4 py-2 bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0 hover:from-[#977DFF] hover:to-[#0033FF] transition-all duration-300"
+                className="text-lg px-6 py-3 bg-gradient-to-r from-white/90 to-blue-100 text-[#0033FF] border-0 hover:from-yellow-200 hover:to-amber-100 hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
               >
                 <Calendar className="w-5 h-5 mr-2" />
                 Sự kiện
               </Badge>
               <Badge
                 variant="secondary"
-                className="text-lg px-4 py-2 bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0 hover:from-[#FFCCF2] hover:to-[#977DFF] transition-all duration-300"
+                className="text-lg px-6 py-3 bg-gradient-to-r from-cyan-100 to-teal-100 text-[#0033FF] border-0 hover:from-emerald-200 hover:to-green-100 hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
               >
                 <Users className="w-5 h-5 mr-2" />
                 Chuyên gia
               </Badge>
               <Badge
                 variant="secondary"
-                className="text-lg px-4 py-2 bg-gradient-to-r from-[#0033FF] to-[#0600AF] text-white border-0 hover:from-[#977DFF] hover:to-[#FFCCF2] transition-all duration-300"
+                className="text-lg px-6 py-3 bg-gradient-to-r from-purple-100 to-pink-100 text-[#0033FF] border-0 hover:from-rose-200 hover:to-pink-200 hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
               >
                 <GraduationCap className="w-5 h-5 mr-2" />
                 Đào tạo
               </Badge>
               <Badge
                 variant="secondary"
-                className="text-lg px-4 py-2 bg-gradient-to-r from-[#FFCCF2] to-[#0033FF] text-white border-0 hover:from-[#977DFF] hover:to-[#0600AF] transition-all duration-300"
+                className="text-lg px-6 py-3 bg-gradient-to-r from-orange-100 to-yellow-100 text-[#0033FF] border-0 hover:from-amber-200 hover:to-yellow-200 hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
               >
                 <FileText className="w-5 h-5 mr-2" />
                 Chính sách
               </Badge>
               <Badge
                 variant="secondary"
-                className="text-lg px-4 py-2 bg-gradient-to-r from-[#977DFF] to-[#FFCCF2] text-white border-0 hover:from-[#0033FF] hover:to-[#977DFF] transition-all duration-300"
+                className="text-lg px-6 py-3 bg-gradient-to-r from-indigo-100 to-purple-100 text-[#0033FF] border-0 hover:from-violet-200 hover:to-purple-200 hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
               >
                 <Globe className="w-5 h-5 mr-2" />
                 Hợp tác
