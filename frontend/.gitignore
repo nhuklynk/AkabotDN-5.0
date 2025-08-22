@@ -1,0 +1,16 @@
+node_modules/
+npm-debug.log
+yarn-error.log
+logs
+*.log
+.env
+.env.local
+/.env.*
+dist/
+build/
+.next/
+.vscode/
+.idea/
+.vs/
+.vs/slnx.sqlite
+!.env.sample
