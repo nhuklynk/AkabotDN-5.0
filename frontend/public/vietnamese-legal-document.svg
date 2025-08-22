@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="800" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="800" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  
+  <!-- Header with National Emblem Area -->
+  <rect x="20" y="20" width="560" height="120" fill="#f8fafc" stroke="#d1d5db" stroke-width="1"/>
+  
+  <!-- National Emblem (simplified) -->
+  <circle cx="300" cy="80" r="35" fill="#dc2626" stroke="#b91c1c" stroke-width="2"/>
+  <polygon points="300,55 310,75 290,75" fill="#fbbf24"/>
+  <text x="300" y="85" text-anchor="middle" fill="white" font-family="serif" font-size="12" font-weight="bold">VN</text>
+  
+  <!-- Header Text -->
+  <text x="300" y="110" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="14" font-weight="bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</text>
+  <text x="300" y="125" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="12">Độc lập - Tự do - Hạnh phúc</text>
+  
+  <!-- Decorative line -->
+  <line x1="250" y1="135" x2="350" y2="135" stroke="#dc2626" stroke-width="2"/>
+  
+  <!-- Document Title -->
+  <text x="300" y="180" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="20" font-weight="bold">ĐIỀU LỆ</text>
+  <text x="300" y="205" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="18" font-weight="bold">HIỆP HỘI DỮ LIỆU QUỐC GIA VIỆT NAM</text>
+  <text x="300" y="225" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="14">(National Data Association of Vietnam - NDA)</text>
+  
+  <!-- Date and Place -->
+  <text x="450" y="260" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="12" style="font-style: italic;">Hà Nội, ngày 15 tháng 03 năm 2024</text>
+  
+  <!-- Chapter Title -->
+  <rect x="40" y="290" width="520" height="30" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="300" y="310" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="14" font-weight="bold">CHƯƠNG I: NHỮNG QUY ĐỊNH CHUNG</text>
+  
+  <!-- Articles -->
+  <text x="50" y="350" fill="#1f2937" font-family="serif" font-size="12" font-weight="bold">Điều 1. Tên gọi, địa chỉ trụ sở</text>
+  <text x="70" y="370" fill="#374151" font-family="serif" font-size="11">1. Tên gọi: Hiệp hội Dữ liệu Quốc gia Việt Nam</text>
+  <text x="70" y="385" fill="#374151" font-family="serif" font-size="11">   Tên tiếng Anh: National Data Association of Vietnam</text>
+  <text x="70" y="400" fill="#374151" font-family="serif" font-size="11">   Tên viết tắt: NDA Vietnam hoặc NDA</text>
+  <text x="70" y="415" fill="#374151" font-family="serif" font-size="11">2. Trụ sở chính: Số 8 Tôn Thất Thuyết, Cầu Giấy, Hà Nội</text>
+  
+  <text x="50" y="450" fill="#1f2937" font-family="serif" font-size="12" font-weight="bold">Điều 2. Tính chất pháp lý</text>
+  <text x="70" y="470" fill="#374151" font-family="serif" font-size="11">Hiệp hội Dữ liệu Quốc gia Việt Nam là tổ chức xã hội nghề nghiệp,</text>
+  <text x="70" y="485" fill="#374151" font-family="serif" font-size="11">có tư cách pháp nhân, có con dấu riêng, có tài khoản riêng,</text>
+  <text x="70" y="500" fill="#374151" font-family="serif" font-size="11">hoạt động theo pháp luật Việt Nam và Điều lệ này.</text>
+  
+  <text x="50" y="535" fill="#1f2937" font-family="serif" font-size="12" font-weight="bold">Điều 3. Mục tiêu hoạt động</text>
+  <text x="70" y="555" fill="#374151" font-family="serif" font-size="11">1. Kết nối các cơ quan, tổ chức, doanh nghiệp trong lĩnh vực dữ liệu</text>
+  <text x="70" y="570" fill="#374151" font-family="serif" font-size="11">2. Thúc đẩy phát triển hệ sinh thái dữ liệu quốc gia</text>
+  <text x="70" y="585" fill="#374151" font-family="serif" font-size="11">3. Hỗ trợ ứng dụng công nghệ tiên tiến trong quản lý dữ liệu</text>
+  
+  <!-- Page break indicator -->
+  <line x1="40" y1="620" x2="560" y2="620" stroke="#d1d5db" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="300" y="640" text-anchor="middle" fill="#6b7280" font-family="serif" font-size="10">--- Tiếp tục trang 2 ---</text>
+  
+  <!-- Footer with stamp and signature area -->
+  <rect x="350" y="680" width="200" height="80" fill="#f9fafb" stroke="#d1d5db" stroke-width="1"/>
+  <text x="450" y="700" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="10" font-weight="bold">CHỦ TỊCH HIỆP HỘI</text>
+  
+  <!-- Official Stamp (simplified) -->
+  <circle cx="450" cy="730" r="25" fill="#dc2626" stroke="#b91c1c" stroke-width="2"/>
+  <text x="450" y="725" text-anchor="middle" fill="white" font-family="serif" font-size="6" font-weight="bold">HIỆP HỘI</text>
+  <text x="450" y="735" text-anchor="middle" fill="white" font-family="serif" font-size="6" font-weight="bold">DỮ LIỆU</text>
+  <text x="450" y="742" text-anchor="middle" fill="white" font-family="serif" font-size="6" font-weight="bold">QUỐC GIA VN</text>
+  
+  <text x="450" y="770" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="10">Trung tướng Nguyễn Văn Long</text>
+  
+  <!-- Page number -->
+  <text x="300" y="790" text-anchor="middle" fill="#6b7280" font-family="serif" font-size="10">- Trang 1/24 -</text>
+  
+  <!-- Document classification -->
+  <text x="50" y="790" fill="#dc2626" font-family="serif" font-size="10" font-weight="bold">Bản chính</text>
+  
+  <!-- Watermark effect -->
+  <g opacity="0.05">
+    <circle cx="300" cy="400" r="100" fill="#1f2937"/>
+    <text x="300" y="385" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="16" font-weight="bold">NDA</text>
+    <text x="300" y="405" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="12">VIETNAM</text>
+    <text x="300" y="420" text-anchor="middle" fill="#1f2937" font-family="serif" font-size="10">2024</text>
+  </g>
+</svg>
+

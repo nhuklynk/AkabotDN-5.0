@@ -1,0 +1,57 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F2E6EE;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="doc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="200" fill="url(#bg)" rx="12"/>
+  
+  <!-- Document Stack -->
+  <rect x="80" y="60" width="140" height="80" fill="url(#doc)" rx="8"/>
+  <rect x="90" y="70" width="120" height="60" fill="white" opacity="0.1" rx="6"/>
+  
+  <!-- Document Content -->
+  <rect x="100" y="80" width="80" height="4" fill="white" opacity="0.8" rx="2"/>
+  <rect x="100" y="90" width="60" height="4" fill="white" opacity="0.6" rx="2"/>
+  <rect x="100" y="100" width="70" height="4" fill="white" opacity="0.4" rx="2"/>
+  <rect x="100" y="110" width="50" height="4" fill="white" opacity="0.3" rx="2"/>
+  
+  <!-- Document Corner -->
+  <path d="M 200 60 L 220 60 L 220 80 L 200 60" fill="#FFCCF2" opacity="0.8"/>
+  
+  <!-- Second Document -->
+  <rect x="90" y="70" width="140" height="80" fill="url(#doc)" opacity="0.6" rx="8"/>
+  <rect x="100" y="80" width="120" height="60" fill="white" opacity="0.05" rx="6"/>
+  
+  <!-- Third Document -->
+  <rect x="100" y="80" width="140" height="80" fill="url(#doc)" opacity="0.4" rx="8"/>
+  <rect x="110" y="90" width="120" height="60" fill="white" opacity="0.03" rx="6"/>
+  
+  <!-- Document Icons -->
+  <circle cx="70" cy="50" r="12" fill="#FFCCF2" opacity="0.8"/>
+  <text x="70" y="55" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">PDF</text>
+  
+  <circle cx="230" cy="50" r="12" fill="#977DFF" opacity="0.8"/>
+  <text x="230" y="55" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">DOC</text>
+  
+  <!-- Floating Elements -->
+  <circle cx="50" cy="40" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="250" cy="40" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="50" cy="160" r="6" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="250" cy="160" r="6" fill="#FFCCF2" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="150" y="25" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="14" font-weight="bold">Tài liệu & Văn bản</text>
+  <text x="150" y="185" text-anchor="middle" fill="#0600AF" font-family="Arial" font-size="12">Thư viện tài liệu số</text>
+</svg>
+
+
+
+

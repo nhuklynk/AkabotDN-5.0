@@ -1,0 +1,61 @@
+<svg width="280" height="200" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lightbulb" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFCCF2;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#977DFF;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Lightbulb -->
+  <path d="M 140 40 Q 140 20 120 20 Q 100 20 100 40 Q 100 60 120 80 L 140 100 L 160 80 Q 180 60 180 40 Q 180 20 160 20 Q 140 20 140 40" fill="url(#lightbulb)" stroke="#977DFF" stroke-width="2"/>
+  
+  <!-- Lightbulb Base -->
+  <rect x="130" y="100" width="20" height="15" fill="#977DFF" rx="4"/>
+  <rect x="135" y="105" width="10" height="5" fill="white" opacity="0.3" rx="2"/>
+  
+  <!-- Light Rays -->
+  <path d="M 140 40 Q 140 30 130 25" stroke="url(#spark)" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M 140 40 Q 140 30 150 25" stroke="url(#spark)" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M 140 40 Q 140 30 120 35" stroke="url(#spark)" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M 140 40 Q 140 30 160 35" stroke="url(#spark)" stroke-width="3" fill="none" opacity="0.8"/>
+  
+  <!-- Innovation Elements -->
+  <circle cx="80" cy="60" r="15" fill="url(#spark)" opacity="0.6"/>
+  <text x="80" y="65" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">AI</text>
+  
+  <circle cx="200" cy="60" r="15" fill="url(#spark)" opacity="0.6"/>
+  <text x="200" y="65" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">ML</text>
+  
+  <circle cx="80" cy="140" r="15" fill="url(#spark)" opacity="0.6"/>
+  <text x="80" y="145" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">IoT</text>
+  
+  <circle cx="200" cy="140" r="15" fill="url(#spark)" opacity="0.6"/>
+  <text x="200" y="145" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">Cloud</text>
+  
+  <!-- Connection Lines -->
+  <line x1="95" y1="60" x2="125" y2="45" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  <line x1="185" y1="60" x2="155" y2="45" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  <line x1="95" y1="140" x2="125" y2="155" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  <line x1="185" y1="140" x2="155" y2="155" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Data Flow -->
+  <path d="M 140 115 Q 140 125 140 135" stroke="#FFCCF2" stroke-width="2" fill="none" opacity="0.8"/>
+  <path d="M 140 135 Q 140 145 140 155" stroke="#FFCCF2" stroke-width="2" fill="none" opacity="0.8"/>
+  
+  <!-- Floating Ideas -->
+  <circle cx="60" cy="30" r="4" fill="#977DFF" opacity="0.6"/>
+  <circle cx="220" cy="30" r="4" fill="#977DFF" opacity="0.6"/>
+  <circle cx="60" cy="170" r="4" fill="#977DFF" opacity="0.6"/>
+  <circle cx="220" cy="170" r="4" fill="#977DFF" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="140" y="185" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="14" font-weight="bold">Đổi mới Sáng tạo</text>
+</svg>
+
+
+
+

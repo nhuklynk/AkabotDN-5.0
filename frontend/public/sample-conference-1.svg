@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="300" fill="url(#grad1)"/>
+  
+  <!-- Conference table -->
+  <ellipse cx="200" cy="200" rx="120" ry="40" fill="#ffffff" opacity="0.2"/>
+  
+  <!-- People icons -->
+  <g fill="#ffffff" opacity="0.8">
+    <!-- Person 1 -->
+    <circle cx="150" cy="180" r="12"/>
+    <rect x="142" y="192" width="16" height="20" rx="8"/>
+    
+    <!-- Person 2 -->
+    <circle cx="200" cy="160" r="12"/>
+    <rect x="192" y="172" width="16" height="20" rx="8"/>
+    
+    <!-- Person 3 -->
+    <circle cx="250" cy="180" r="12"/>
+    <rect x="242" y="192" width="16" height="20" rx="8"/>
+    
+    <!-- Person 4 -->
+    <circle cx="180" cy="200" r="12"/>
+    <rect x="172" y="212" width="16" height="20" rx="8"/>
+    
+    <!-- Person 5 -->
+    <circle cx="220" cy="200" r="12"/>
+    <rect x="212" y="212" width="16" height="20" rx="8"/>
+  </g>
+  
+  <!-- Title -->
+  <rect x="50" y="50" width="300" height="60" fill="#ffffff" opacity="0.9" rx="10"/>
+  <text x="200" y="75" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">Hội nghị Dữ liệu Quốc gia</text>
+  <text x="200" y="95" text-anchor="middle" fill="#666" font-size="12">Thảo luận về tương lai công nghệ</text>
+  
+  <!-- Data visualization elements -->
+  <g fill="#ffffff" opacity="0.3">
+    <rect x="80" y="130" width="4" height="30"/>
+    <rect x="90" y="140" width="4" height="20"/>
+    <rect x="100" y="125" width="4" height="35"/>
+    <rect x="110" y="135" width="4" height="25"/>
+    
+    <rect x="290" y="130" width="4" height="30"/>
+    <rect x="300" y="140" width="4" height="20"/>
+    <rect x="310" y="125" width="4" height="35"/>
+    <rect x="320" y="135" width="4" height="25"/>
+  </g>
+</svg>

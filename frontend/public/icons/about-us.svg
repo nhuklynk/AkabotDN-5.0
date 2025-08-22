@@ -1,0 +1,75 @@
+<svg width="350" height="250" viewBox="0 0 350 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="building" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F2E6EE;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="people" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main Building -->
+  <rect x="100" y="100" width="150" height="120" fill="url(#building)" rx="12" stroke="#977DFF" stroke-width="2"/>
+  <rect x="110" y="110" width="130" height="100" fill="white" opacity="0.1" rx="8"/>
+  
+  <!-- Windows -->
+  <rect x="120" y="120" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  <rect x="155" y="120" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  <rect x="190" y="120" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  
+  <rect x="120" y="150" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  <rect x="155" y="150" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  <rect x="190" y="150" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  
+  <rect x="120" y="180" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  <rect x="155" y="180" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  <rect x="190" y="180" width="25" height="20" fill="#FFCCF2" opacity="0.6"/>
+  
+  <!-- Door -->
+  <rect x="155" y="190" width="25" height="30" fill="#977DFF" opacity="0.8" rx="4"/>
+  <rect x="160" y="195" width="15" height="25" fill="white" opacity="0.2" rx="2"/>
+  
+  <!-- People -->
+  <circle cx="80" cy="80" r="20" fill="url(#people)"/>
+  <circle cx="80" cy="80" r="12" fill="white" opacity="0.3"/>
+  <path d="M 60 110 Q 80 90 100 110" fill="url(#people)"/>
+  
+  <circle cx="270" cy="80" r="20" fill="url(#people)"/>
+  <circle cx="270" cy="80" r="12" fill="white" opacity="0.3"/>
+  <path d="M 250 110 Q 270 90 290 110" fill="url(#people)"/>
+  
+  <circle cx="175" cy="60" r="20" fill="url(#people)"/>
+  <circle cx="175" cy="60" r="12" fill="white" opacity="0.3"/>
+  <path d="M 155 90 Q 175 70 195 90" fill="url(#people)"/>
+  
+  <!-- Connection Lines -->
+  <line x1="100" y1="80" x2="120" y2="100" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  <line x1="250" y1="80" x2="230" y2="100" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  <line x1="175" y1="80" x2="175" y2="100" stroke="#FFCCF2" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Values -->
+  <rect x="50" y="150" width="40" height="25" fill="#FFCCF2" opacity="0.6" rx="4"/>
+  <text x="70" y="165" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">Trust</text>
+  
+  <rect x="260" y="150" width="40" height="25" fill="#977DFF" opacity="0.6" rx="4"/>
+  <text x="280" y="165" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">Innovation</text>
+  
+  <rect x="155" y="30" width="40" height="25" fill="#FFCCF2" opacity="0.6" rx="4"/>
+  <text x="175" y="45" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="8" font-weight="bold">Excellence</text>
+  
+  <!-- Floating Elements -->
+  <circle cx="40" cy="40" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="310" cy="40" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="40" cy="210" r="6" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="310" cy="210" r="6" fill="#FFCCF2" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="175" y="25" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="16" font-weight="bold">Về Chúng tôi</text>
+  <text x="175" y="235" text-anchor="middle" fill="#0600AF" font-family="Arial" font-size="12">Hiệp hội Dữ liệu Quốc gia Việt Nam</text>
+</svg>
+
+
+
+
