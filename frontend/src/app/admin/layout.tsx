@@ -26,41 +26,43 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Suspense } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 const navigation = [
   {
     name: "Bảng điều khiển",
-    href: "/dashboard",
+    href: "/admin",
     icon: LayoutDashboard,
   },
   {
     name: "Quản lý người dùng",
-    href: "/user-management",
+    href: "/admin/user-management",
     icon: Users,
   },
   {
     name: "Quản lý tài nguyên",
-    href: "/resource-management",
+    href: "/admin/resource-management",
     icon: FolderOpen,
   },
   {
     name: "Quản lý danh mục",
-    href: "/category-management",
+    href: "/admin/category-management",
     icon: Tag,
   },
   {
     name: "Quản lý bài viết",
-    href: "/post-management",
+    href: "/admin/post-management",
     icon: FileText,
   },
   {
     name: "Quản lý FAQ",
-    href: "/faq-management",
+    href: "/admin/faq-management",
     icon: HelpCircle,
   },
   {
     name: "Phân quyền",
-    href: "/permission-management",
+    href: "/admin/permission-management",
     icon: ShieldCheck,
   },
 ];
@@ -95,13 +97,10 @@ export default function AdminLayout({
       .join(" ");
 
   const segments = pathname.split("/").filter(Boolean);
-  const breadcrumbItems = [
-    { href: "/", label: nameMap.get("/") || "Bảng điều khiển" },
-  ];
-  segments.forEach((_, idx) => {
+  const breadcrumbItems = segments.map((_, idx) => {
     const href = "/" + segments.slice(0, idx + 1).join("/");
     const label = nameMap.get(href) || toTitle(segments[idx]);
-    breadcrumbItems.push({ href, label });
+    return { href, label };
   });
   const currentTitle =
     breadcrumbItems[breadcrumbItems.length - 1]?.label || "Bảng điều khiển";
@@ -239,7 +238,17 @@ export default function AdminLayout({
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-6">
+          <Suspense
+            fallback={
+              <div className="fixed inset-0 flex items-center justify-center">
+                <Spinner size={36} className="text-foreground" />
+              </div>
+            }
+          >
+            {children}
+          </Suspense>
+        </main>
       </div>
     </div>
   );

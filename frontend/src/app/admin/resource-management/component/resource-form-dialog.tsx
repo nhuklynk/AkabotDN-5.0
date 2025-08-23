@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 type ResourceFormData = {
@@ -78,7 +78,10 @@ export default function ResourceFormDialog({ open, onOpenChange, formData, setFo
           </div>
           <div>
             <Label htmlFor="description">Mô tả</Label>
-            <Textarea id="description" value={formData.description} onChange={(e) => setFormData((d) => ({ ...d, description: e.target.value }))} placeholder="Nhập mô tả tài nguyên" rows={3} />
+            <RichTextEditor
+              value={formData.description}
+              onChange={(html) => setFormData((d) => ({ ...d, description: html }))}
+            />
           </div>
         </div>
 

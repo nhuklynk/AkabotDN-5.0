@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 
 type Data = { question: string; answer: string; category: string }
 
@@ -38,7 +38,10 @@ export default function FaqFormDialog({
           </div>
           <div>
             <Label htmlFor="a">Câu trả lời</Label>
-            <Textarea id="a" value={data.answer} onChange={(e) => setData((d) => ({ ...d, answer: e.target.value }))} placeholder="Nhập câu trả lời" rows={4} />
+            <RichTextEditor
+              value={data.answer}
+              onChange={(html) => setData((d) => ({ ...d, answer: html }))}
+            />
           </div>
           <div>
             <Label htmlFor="c">Danh mục</Label>
