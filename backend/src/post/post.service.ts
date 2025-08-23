@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, Like } from 'typeorm';
 import { Post, PostStatus } from './entity/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
+import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { plainToClass } from 'class-transformer';
@@ -39,7 +40,7 @@ export class PostService {
 
     const post = this.postRepository.create({
       ...createPostDto,
-      user: { id: createPostDto.user_id },
+      // user: { id: createPostDto.user_id },
     });
 
     // Handle categories
@@ -61,6 +62,50 @@ export class PostService {
 
     const savedPost = await this.postRepository.save(post);
     return this.findOne(savedPost.id);
+  }
+
+  async createWithFormdata(createPostFormdataDto: CreatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
+    // Check if post with slug already exists
+    const existingPost = await this.postRepository.findOne({
+      where: { slug: createPostFormdataDto.slug },
+    });
+
+    if (existingPost) {
+      throw new ConflictException('Post with this slug already exists');
+    }
+
+    // Convert formdata to CreatePostDto format
+    const createPostDto: CreatePostDto = {
+      ...createPostFormdataDto,
+      // Convert comma-separated strings to arrays
+      category_ids: createPostFormdataDto.category_ids ? 
+        createPostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
+        undefined,
+      tag_ids: createPostFormdataDto.tag_ids ? 
+        createPostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
+        undefined,
+    };
+
+    // Handle featured image if provided
+    if (featuredImage) {
+      // Here you would typically:
+      // 1. Save the file to your storage (local disk, cloud storage, etc.)
+      // 2. Generate a unique filename
+      // 3. Store the file path/URL in the database
+      // For now, we'll just log the file info
+      console.log('Featured image received:', {
+        originalname: featuredImage.originalname,
+        mimetype: featuredImage.mimetype,
+        size: featuredImage.size
+      });
+      
+      // You can add logic here to save the file and get the path
+      // const imagePath = await this.saveImage(featuredImage);
+      // createPostDto.primary_media_id = imagePath;
+    }
+
+    // Use the existing create method
+    return this.create(createPostDto);
   }
 
   async findAll(query?: PostQueryDto): Promise<PostResponseDto[]> {

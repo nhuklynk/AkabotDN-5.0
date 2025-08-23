@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
 import { Status } from '../../config/base-audit.entity';
 
-export class CreatePostDto {
+export class CreatePostFormdataDto {
   @ApiProperty({
     description: 'Post title',
     example: 'Getting Started with NestJS',
@@ -70,24 +70,22 @@ export class CreatePostDto {
   primary_media_id?: string;
 
   @ApiProperty({
-    description: 'Category IDs',
-    example: ['123e4567-e89b-12d3-a456-426614174000'],
-    type: [String],
+    description: 'Category IDs (comma-separated string)',
+    example: '123e4567-e89b-12d3-a456-426614174000,987fcdeb-51a2-43d1-b789-123456789abc',
     required: false
   })
   @IsOptional()
-  @IsUUID(undefined, { each: true })
-  category_ids?: string[];
+  @IsString()
+  category_ids?: string;
 
   @ApiProperty({
-    description: 'Tag IDs',
-    example: ['123e4567-e89b-12d3-a456-426614174000'],
-    type: [String],
+    description: 'Tag IDs (comma-separated string)',
+    example: '123e4567-e89b-12d3-a456-426614174000,987fcdeb-51a2-43d1-b789-123456789abc',
     required: false
   })
   @IsOptional()
-  @IsUUID(undefined, { each: true })
-  tag_ids?: string[];
+  @IsString()
+  tag_ids?: string;
 
   @ApiProperty({
     description: 'Entity status',
@@ -108,4 +106,13 @@ export class CreatePostDto {
   @IsOptional()
   @IsUUID()
   event_id?: string;
+
+  @ApiProperty({
+    description: 'Post featured image',
+    type: 'string',
+    format: 'binary',
+    required: false
+  })
+  @IsOptional()
+  featured_image?: any;
 }
