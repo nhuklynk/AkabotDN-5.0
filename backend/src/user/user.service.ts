@@ -39,7 +39,7 @@ export class UserService {
 
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.userRepository.find({
-      relations: ['role'],
+      relations: ['roles'],
     });
     return users.map(user => plainToClass(UserResponseDto, user, { excludeExtraneousValues: true }));
   }
@@ -47,7 +47,7 @@ export class UserService {
   async findOne(id: string): Promise<UserResponseDto> {
     const user = await this.userRepository.findOne({
       where: { id: id },
-      relations: ['role'],
+      relations: ['roles'],
     });
 
     if (!user) {
@@ -60,7 +60,7 @@ export class UserService {
   async findByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email: email },
-      relations: ['role'],
+      relations: ['roles'],
     });
 
     if (!user) {
@@ -98,7 +98,7 @@ export class UserService {
     await this.userRepository.update(id, updateUserDto);
     const updatedUser = await this.userRepository.findOne({
       where: { id: id },
-      relations: ['role'],
+      relations: ['roles'],
     });
 
     return plainToClass(UserResponseDto, updatedUser, { excludeExtraneousValues: true });

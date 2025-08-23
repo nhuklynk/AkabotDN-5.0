@@ -5,10 +5,7 @@ export class FaqResponseDto {
   id: string;
 
   @Expose()
-  question: string;
-
-  @Expose()
-  answer: string;
+  content: string;
 
   @Expose()
   created_at: Date;
@@ -19,10 +16,6 @@ export class FaqResponseDto {
   @Expose()
   @Type(() => Object)
   parent?: any;
-
-  @Expose()
-  @Type(() => Array)
-  children?: any[];
 
   constructor(partial: Partial<FaqResponseDto>) {
     Object.assign(this, partial);
