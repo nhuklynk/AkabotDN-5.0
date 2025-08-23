@@ -12,12 +12,18 @@ import { Category } from '../../category/entity/category.entity';
 import { Tag } from '../../tag/entity/tag.entity';
 import { Comment } from '../../comment/entity/comment.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
+import { Event } from 'src/event/entity/event.entity';
 
 export enum PostStatus {
   DRAFT = 'draft',
   PUBLISHED = 'published',
   ARCHIVED = 'archived',
   SCHEDULED = 'scheduled',
+}
+
+export enum PostType {
+  MEMBER_ACTIVITY = 'MEMBER_ACTIVITY',
+  ASSOCIATION_ACTIVITY = 'ASSOCIATION_ACTIVITY',
 }
 
 @Entity('posts')
@@ -45,12 +51,10 @@ export class Post extends BaseAuditEntity {
   @Column({ nullable: true, name: 'published_at', type: 'timestamp' })
   published_at?: Date;
 
-  // Nhiều bài viết thuộc về một user
   @ManyToOne(() => User, (user) => user.posts, { eager: false })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  // Một post có nhiều categories
   @ManyToMany(() => Category, (category) => category.posts)
   @JoinTable({
     name: 'post_categories',
@@ -59,7 +63,6 @@ export class Post extends BaseAuditEntity {
   })
   categories: Category[];
 
-  // Một post có nhiều tags
   @ManyToMany(() => Tag, (tag) => tag.posts)
   @JoinTable({
     name: 'post_tags',
@@ -68,7 +71,18 @@ export class Post extends BaseAuditEntity {
   })
   tags: Tag[];
 
-  // Một post có nhiều comments
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @Column({
+    type: 'enum',
+    enum: PostType,
+    default: PostType.MEMBER_ACTIVITY,
+    name: 'post_type'
+  })
+  post_type: PostType;
+
+  @ManyToOne(() => Event, (event) => event.posts)
+  @JoinColumn({ name: 'event_id' })
+  event: Event;
 }

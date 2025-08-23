@@ -8,9 +8,13 @@ import {
   Delete,
   Query,
   HttpStatus,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
+import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { PostQueryDto } from './dto/post-query.dto';
@@ -28,6 +32,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
+  ApiConsumes,
 } from '@nestjs/swagger';
 
 @ApiTags('posts')
@@ -39,13 +44,15 @@ export class PostController {
   ) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('featured_image'))
   @ApiOperation({
     summary: 'Create a new post',
     description: 'Creates a new blog post with the provided data. The post will be created with default status "draft" and current timestamp. Slug must be unique across all posts. Categories and tags can be assigned using their UUIDs.'
   })
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
-    type: CreatePostDto,
-    description: 'Post data including title, slug, content, status, categories, tags, and author information. Slug must be unique and URL-friendly.'
+    type: CreatePostFormdataDto,
+    description: 'Post data including title, slug, content, status, categories, tags, author information, and featured image. Slug must be unique and URL-friendly.'
   })
   @ApiCreatedResponse({
     description: 'Post created successfully. Returns the newly created post with all its details including generated ID, timestamps, and relationships.',
@@ -57,8 +64,8 @@ export class PostController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error - Something went wrong on the server side.'
   })
-  create(@Body() createPostDto: CreatePostDto): Promise<PostResponseDto> {
-    return this.postService.create(createPostDto);
+  create(@Body() createPostFormdataDto: CreatePostFormdataDto, @UploadedFile() featuredImage?: any): Promise<PostResponseDto> {
+    return this.postService.createWithFormdata(createPostFormdataDto, featuredImage);
   }
 
   @Get()

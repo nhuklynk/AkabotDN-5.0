@@ -12,6 +12,8 @@ import { MediaModule } from './media/media.module';
 import { MemberModule } from './member/member.module';
 import { FaqModule } from './faq/faq.module';
 import { PartnerModule } from './partner/partner.module';
+import { EventModule } from './event/event.module';
+import { EventMediaModule } from './event-media/event-media.module';
 import { AuditSubscriber } from './config/audit.subscriber';
 import { CommonModule } from './common/common.module';
 
@@ -28,6 +30,8 @@ import { CommonModule } from './common/common.module';
     MemberModule,
     FaqModule,
     PartnerModule,
+    EventModule,
+    EventMediaModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuditSubscriber],

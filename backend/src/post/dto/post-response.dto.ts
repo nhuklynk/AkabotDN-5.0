@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
 import { Status } from '../../config/base-audit.entity';
 import { TagResponseDto } from '../../tag/dto/tag-response.dto';
+import { EventResponseDto } from 'src/event/dto/event-response.dto';
 
 // Nested DTOs for better Swagger documentation
 export class UserResponseDto {
@@ -152,4 +153,12 @@ export class PostResponseDto {
   @Expose()
   @Type(() => TagResponseDto)
   tags: TagResponseDto[];
+
+  @ApiProperty({
+    description: 'Event',
+    type: EventResponseDto
+  })
+  @Expose()
+  @Type(() => EventResponseDto)
+  event: EventResponseDto;
 }
