@@ -1,17 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, IsNull } from 'typeorm';
+import { Repository, IsNull, Like } from 'typeorm';
 import { CreateFaqDto } from './dto/create-faq.dto';
 import { UpdateFaqDto } from './dto/update-faq.dto';
 import { FaqResponseDto } from './dto/faq-response.dto';
 import { plainToClass } from 'class-transformer';
 import { Faq } from './entity/faq.entity';
+import { FaqQueryDto } from './dto/faq-query.dto';
+import { PaginationService } from '../common/services/pagination.service';
+import { PaginatedData } from '../common/interfaces/api-response.interface';
 
 @Injectable()
 export class FaqService {
   constructor(
     @InjectRepository(Faq)
     private faqRepository: Repository<Faq>,
+    private paginationService: PaginationService,
   ) {}
 
   async create(createFaqDto: CreateFaqDto): Promise<FaqResponseDto> {
@@ -20,9 +24,30 @@ export class FaqService {
     return this.findOne(savedFaq.id);
   }
 
-  async findAll(): Promise<FaqResponseDto[]> {
-    const faqs = await this.faqRepository.find();
-    return faqs.map(faq => plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true }));
+  async searchAndPaginate(query: FaqQueryDto): Promise<PaginatedData<FaqResponseDto>> {
+    const { skip, take, page, limit } = this.paginationService.createPaginationOptions(query);
+    
+    const whereCondition = query.search 
+      ? { content: Like(`%${query.search}%`) }
+      : {};
+
+    const [faqs, total] = await this.faqRepository.findAndCount({
+      where: whereCondition,
+      skip,
+      take,
+      order: { created_at: 'DESC' },
+    });
+
+    const responseDtos = faqs.map(faq => 
+      plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true })
+    );
+
+    return this.paginationService.createPaginatedResponse(
+      responseDtos,
+      total,
+      page,
+      limit,
+    );
   }
 
   async findOne(id: string): Promise<FaqResponseDto> {
@@ -61,20 +86,4 @@ export class FaqService {
 
     await this.faqRepository.remove(faq);
   }
-
-  // async findRootFaqs(): Promise<FaqResponseDto[]> {
-  //   const faqs = await this.faqRepository.find({
-  //     where: { parent: IsNull() },
-  //     relations: ['children'],
-  //   });
-  //   return faqs.map(faq => plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true }));
-  // }
-
-  // async findChildren(parent_id: string): Promise<FaqResponseDto[]> {
-  //   const faqs = await this.faqRepository.find({
-  //     where: { parent: { faq_id: parent_id } },
-  //     relations: ['children'],
-  //   });
-  //   return faqs.map(faq => plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true }));
-  // }
 }

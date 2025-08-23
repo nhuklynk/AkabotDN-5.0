@@ -12,10 +12,13 @@ import { MediaModule } from './media/media.module';
 import { MemberModule } from './member/member.module';
 import { FaqModule } from './faq/faq.module';
 import { PartnerModule } from './partner/partner.module';
+import { AuditSubscriber } from './config/audit.subscriber';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
+    CommonModule,
     UserModule,
     PostModule,
     CategoryModule,
@@ -27,6 +30,6 @@ import { PartnerModule } from './partner/partner.module';
     PartnerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuditSubscriber],
 })
 export class AppModule {}

@@ -7,11 +7,15 @@ import {
   Param,
   Delete,
   Query,
+  HttpStatus,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
+import { PostQueryDto } from './dto/post-query.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { PaginationService } from '../common/services/pagination.service';
 import {
   ApiTags,
   ApiOperation,
@@ -19,87 +23,217 @@ import {
   ApiParam,
   ApiBody,
   ApiQuery,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('posts')
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly paginationService: PaginationService,
+  ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new post' })
-  @ApiBody({ type: CreatePostDto })
-  @ApiResponse({
-    status: 201,
-    description: 'Post created successfully',
-    type: PostResponseDto,
+  @ApiOperation({
+    summary: 'Create a new post',
+    description: 'Creates a new blog post with the provided data. The post will be created with default status "draft" and current timestamp. Slug must be unique across all posts. Categories and tags can be assigned using their UUIDs.'
   })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad request - Invalid input data',
+  @ApiBody({
+    type: CreatePostDto,
+    description: 'Post data including title, slug, content, status, categories, tags, and author information. Slug must be unique and URL-friendly.'
+  })
+  @ApiCreatedResponse({
+    description: 'Post created successfully. Returns the newly created post with all its details including generated ID, timestamps, and relationships.',
+    type: PostResponseDto
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request - Invalid input data. Check that all required fields are provided and validation rules are met.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
   })
   create(@Body() createPostDto: CreatePostDto): Promise<PostResponseDto> {
     return this.postService.create(createPostDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all posts' })
-  @ApiQuery({ name: 'page', required: false, description: 'Page number' })
-  @ApiQuery({ name: 'limit', required: false, description: 'Items per page' })
-  @ApiQuery({ name: 'status', required: false, description: 'Post status filter' })
+  @ApiOperation({
+    summary: 'Advanced search and filter posts with pagination',
+    description: 'Advanced search and filter endpoint that combines multiple filtering options with pagination. You can filter by status, category, tag, author, date range, and perform text search across titles and content. All filters are optional and can be combined.'
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number to retrieve (starts from 1). Default is 1 if not specified.'
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Number of posts per page (maximum 100). Default is 10 if not specified.'
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    type: String,
+    description: 'Filter posts by publication status. Valid values: draft, published, archived.'
+  })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    type: String,
+    description: 'Filter posts by category slug. Only returns posts that belong to the specified category.'
+  })
+  @ApiQuery({
+    name: 'tag',
+    required: false,
+    type: String,
+    description: 'Filter posts by tag slug. Only returns posts that have the specified tag.'
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Search across multiple fields (title, content) using partial match (case-insensitive).'
+  })
+  @ApiQuery({
+    name: 'author_id',
+    required: false,
+    type: String,
+    description: 'Filter posts by author ID. Only returns posts written by the specified user.'
+  })
+  @ApiQuery({
+    name: 'date_from',
+    required: false,
+    type: String,
+    description: 'Filter posts by creation date range (start date). Format: YYYY-MM-DD'
+  })
+  @ApiQuery({
+    name: 'date_to',
+    required: false,
+    type: String,
+    description: 'Filter posts by creation date range (end date). Format: YYYY-MM-DD'
+  })
   @ApiResponse({
     status: 200,
-    description: 'List of posts',
-    type: [PostResponseDto],
+    description: 'Filtered and paginated list of posts retrieved successfully. Returns only posts that match the specified filters along with pagination metadata.',
+    schema: {
+      type: 'object',
+      properties: {
+        success: { type: 'boolean', example: true },
+        statusCode: { type: 'number', example: 200 },
+        message: { type: 'string', example: 'Request processed successfully' },
+        data: {
+          type: 'object',
+          properties: {
+            items: {
+              type: 'array',
+              items: { $ref: '#/components/schemas/PostResponseDto' },
+            },
+            total: { type: 'number', example: 50, description: 'Total number of posts matching the filters' },
+            page: { type: 'number', example: 1, description: 'Current page number' },
+            limit: { type: 'number', example: 10, description: 'Number of items per page' },
+            totalPages: { type: 'number', example: 5, description: 'Total number of pages for the filtered results' },
+          },
+        },
+        errors: { type: 'null', example: null },
+        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
+        path: { type: 'string', example: '/api/posts/search' },
+      },
+    },
   })
-  findAll(): Promise<PostResponseDto[]> {
-    return this.postService.findAll();
+  async searchAndFilter(@Query() query: PostQueryDto) {
+    const paginationOptions = this.paginationService.createPaginationOptions(query);
+    const [items, total] = await this.postService.findFilteredAndPaginated(query);
+    
+    return this.paginationService.createPaginatedResponse(
+      items,
+      total,
+      paginationOptions.page,
+      paginationOptions.limit,
+    );
   }
 
   @Get('slug/:slug')
-  @ApiOperation({ summary: 'Get post by slug' })
-  @ApiParam({ name: 'slug', description: 'Post slug' })
-  @ApiResponse({
-    status: 200,
-    description: 'Post found',
-    type: PostResponseDto,
+  @ApiOperation({
+    summary: 'Get post by slug',
+    description: 'Retrieves a specific post using its URL-friendly slug. This is the preferred method for accessing posts in web applications as slugs are more user-friendly than UUIDs.'
   })
-  @ApiResponse({
-    status: 404,
-    description: 'Post not found',
+  @ApiParam({
+    name: 'slug',
+    description: 'The unique slug identifier of the post (e.g., "getting-started-with-nestjs", "api-design-best-practices")',
+    example: 'getting-started-with-nestjs'
+  })
+  @ApiOkResponse({
+    description: 'Post found and retrieved successfully. Returns the complete post information including author, categories, tags, and comments.',
+    type: PostResponseDto
+  })
+  @ApiNotFoundResponse({
+    description: 'Post not found. No post exists with the specified slug.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
   })
   findBySlug(@Param('slug') slug: string): Promise<PostResponseDto> {
     return this.postService.findBySlug(slug);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get post by ID' })
-  @ApiParam({ name: 'id', description: 'Post ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Post found',
-    type: PostResponseDto,
+  @ApiOperation({
+    summary: 'Get post by ID',
+    description: 'Retrieves a specific post using its unique UUID identifier. This is the most direct way to access a post when you have its ID.'
   })
-  @ApiResponse({
-    status: 404,
-    description: 'Post not found',
+  @ApiParam({
+    name: 'id',
+    description: 'The unique UUID identifier of the post',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @ApiOkResponse({
+    description: 'Post found and retrieved successfully. Returns the complete post information including author, categories, tags, and comments.',
+    type: PostResponseDto
+  })
+  @ApiNotFoundResponse({
+    description: 'Post not found. No post exists with the specified ID.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
   })
   findOne(@Param('id') id: string): Promise<PostResponseDto> {
     return this.postService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update post by ID' })
-  @ApiParam({ name: 'id', description: 'Post ID' })
-  @ApiBody({ type: UpdatePostDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Post updated successfully',
-    type: PostResponseDto,
+  @ApiOperation({
+    summary: 'Update post by ID',
+    description: 'Updates an existing post with new information. Only the provided fields will be updated; other fields remain unchanged. Slug updates are validated for uniqueness. Categories and tags can be updated by providing new arrays of UUIDs.'
   })
-  @ApiResponse({
-    status: 404,
-    description: 'Post not found',
+  @ApiParam({
+    name: 'id',
+    description: 'The unique UUID identifier of the post to update',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @ApiBody({
+    type: UpdatePostDto,
+    description: 'Post information to update. Only include the fields you want to change.'
+  })
+  @ApiOkResponse({
+    description: 'Post updated successfully. Returns the updated post with all current information.',
+    type: PostResponseDto
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request - Invalid input data. Check that all required fields are provided and validation rules are met.'
+  })
+  @ApiNotFoundResponse({
+    description: 'Post not found. No post exists with the specified ID.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
   })
   update(
     @Param('id') id: string,
@@ -109,15 +243,23 @@ export class PostController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete post by ID' })
-  @ApiParam({ name: 'id', description: 'Post ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Post deleted successfully',
+  @ApiOperation({
+    summary: 'Delete post by ID',
+    description: 'Permanently deletes a post from the database. This action cannot be undone. The post and all its associated data (comments, relationships) will be permanently removed.'
   })
-  @ApiResponse({
-    status: 404,
-    description: 'Post not found',
+  @ApiParam({
+    name: 'id',
+    description: 'The unique UUID identifier of the post to delete',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @ApiOkResponse({
+    description: 'Post deleted successfully. No content is returned as the post has been permanently removed.'
+  })
+  @ApiNotFoundResponse({
+    description: 'Post not found. No post exists with the specified ID.'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
   })
   remove(@Param('id') id: string): Promise<void> {
     return this.postService.remove(id);
