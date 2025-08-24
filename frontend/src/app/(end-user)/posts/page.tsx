@@ -1,6 +1,8 @@
-import { Header } from "@/layouts/header";
-import { Footer } from "@/layouts/footer";
+"use client";
+
+import { useState } from "react";
 import { PostsGrid } from "@/app/(end-user)/posts/components/posts-grid";
+import { PostsInfo } from "@/app/(end-user)/posts/components/posts-search";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,6 +13,22 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export default function PostsPage() {
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalPosts: 0,
+    currentPage: 1,
+    totalPages: 1,
+    postsPerPage: 10,
+  });
+
+  const handlePaginationUpdate = (info: {
+    totalPosts: number;
+    currentPage: number;
+    totalPages: number;
+    postsPerPage: number;
+  }) => {
+    setPaginationInfo(info);
+  };
+
   return (
     <div className="min-h-screen">
       <main className="container mx-auto px-4 py-8">
@@ -34,7 +52,14 @@ export default function PostsPage() {
           </p>
         </div>
 
-        <PostsGrid />
+        <PostsInfo
+          totalPosts={paginationInfo.totalPosts}
+          currentPage={paginationInfo.currentPage}
+          totalPages={paginationInfo.totalPages}
+          postsPerPage={paginationInfo.postsPerPage}
+        />
+
+        <PostsGrid onPaginationUpdate={handlePaginationUpdate} />
       </main>
     </div>
   );
