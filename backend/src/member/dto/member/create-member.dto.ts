@@ -15,7 +15,7 @@ export class CreateMemberDto {
 
   @IsOptional()
   @IsString()
-  job_tittle?: string;
+  job_title?: string;
 
   @IsOptional()
   @IsString()

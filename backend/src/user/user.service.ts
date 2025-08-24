@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { User, UserStatus } from './entity/user.entity';
@@ -46,12 +46,32 @@ export class UserService {
     const user = this.userRepository.create({
       ...createUserDto,
       password_hash: hashedPassword,
-      created_by: 'system', // hoặc user ID nếu có authentication
+      status: (createUserDto.status as any) || Status.ACTIVE, // Use status from DTO or default to ACTIVE
+      created_by: 'system',
       modified_by: 'system',
     });
 
     const savedUser = await this.userRepository.save(user);
-    return plainToClass(UserResponseDto, savedUser);
+
+    // Assign role if role_id is provided
+    if (createUserDto.role_id) {
+      const role = await this.roleRepository.findOne({
+        where: { id: createUserDto.role_id }
+      });
+      
+      if (!role) {
+        throw new BadRequestException(`Role with ID ${createUserDto.role_id} not found`);
+      }
+
+      await this.userRepository
+        .createQueryBuilder()
+        .relation(User, 'roles')
+        .of(savedUser)
+        .add(role);
+    }
+
+    // Return user with roles
+    return this.findOne(savedUser.id);
   }
 
   async findAll(): Promise<UserResponseDto[]> {

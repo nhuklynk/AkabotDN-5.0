@@ -10,10 +10,9 @@ import { Post } from '../../post/entity/post.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
 export enum MediaType {
-  IMAGE = 'image',
-  VIDEO = 'video',
-  AUDIO = 'audio',
-  DOCUMENT = 'document',
+  POST = 'post',
+  EVENT = 'event',
+  MEMBER = 'member',
   OTHER = 'other',
 }
 
@@ -34,7 +33,7 @@ export class Media extends BaseAuditEntity {
   @Column({
     type: 'enum',
     enum: MediaType,
-    default: MediaType.AUDIO,
+    default: MediaType.OTHER,
     name: 'media_type'
   })
   media_type: MediaType;
