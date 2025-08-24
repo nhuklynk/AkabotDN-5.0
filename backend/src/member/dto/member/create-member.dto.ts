@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsUUID, IsEmail } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsUUID } from 'class-validator';
 import { MembershipType, ExpertiseLevel } from '../../entity/member.entity';
 
 export class CreateMemberDto {

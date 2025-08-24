@@ -4,6 +4,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  Index,
 } from 'typeorm';
 import { Role } from './role.entity';
 import { Media } from '../../media/entity/media.entity';
@@ -35,14 +36,6 @@ export class User extends BaseAuditEntity {
 
   @Column({ nullable: true, name: 'phone' })
   phone?: string;
-
-  @Column({
-    type: 'enum',
-    enum: UserStatus,
-    default: UserStatus.PENDING,
-    name: 'user_status'
-  })
-  user_status: UserStatus;
 
   @ManyToMany(() => Role)
   @JoinTable({

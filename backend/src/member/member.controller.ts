@@ -24,7 +24,8 @@ import {
 
 // Helper function to validate UUID
 function validateUUID(uuid: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid);
 }
 
@@ -46,7 +47,9 @@ export class MemberController {
     status: 400,
     description: 'Bad request - Invalid input data',
   })
-  async create(@Body() createMemberDto: CreateMemberDto): Promise<MemberResponseDto> {
+  async create(
+    @Body() createMemberDto: CreateMemberDto,
+  ): Promise<MemberResponseDto> {
     return this.memberService.create(createMemberDto);
   }
 
@@ -73,7 +76,9 @@ export class MemberController {
     status: 400,
     description: 'Bad request - Invalid UUID format',
   })
-  async findByUser(@Param('user_id') user_id: string): Promise<MemberResponseDto[]> {
+  async findByUser(
+    @Param('user_id') user_id: string,
+  ): Promise<MemberResponseDto[]> {
     if (!validateUUID(user_id)) {
       throw new BadRequestException('Invalid UUID format for user_id');
     }
@@ -92,7 +97,13 @@ export class MemberController {
     status: 400,
     description: 'Bad request - Invalid UUID format',
   })
-  async findByCompany(@Param('company_id') company_id: string): Promise<MemberResponseDto[]> {
+  @ApiResponse({
+    status: 404,
+    description: 'Company not found',
+  })
+  async findByCompany(
+    @Param('company_id') company_id: string,
+  ): Promise<MemberResponseDto[]> {
     if (!validateUUID(company_id)) {
       throw new BadRequestException('Invalid UUID format for company_id');
     }
@@ -172,4 +183,3 @@ export class MemberController {
     return this.memberService.remove(id);
   }
 }
-

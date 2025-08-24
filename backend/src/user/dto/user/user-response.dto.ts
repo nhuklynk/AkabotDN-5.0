@@ -8,7 +8,7 @@ export class UserResponseDto {
     description: 'Unique user identifier',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  user_id: string;
+  id: string;
 
   @Expose()
   @ApiProperty({
@@ -48,7 +48,31 @@ export class UserResponseDto {
   status: UserStatus;
 
   @Expose()
-  roles?: any[];
+  @ApiProperty({
+    description: 'User roles',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        name: { type: 'string' }
+      }
+    },
+    example: [
+      {
+        id: 'role-1',
+        name: 'admin'
+      },
+      {
+        id: 'role-2',
+        name: 'user'
+      }
+    ]
+  })
+  roles?: Array<{
+    id: string;
+    name: string;
+  }>;
 
   constructor(partial: Partial<UserResponseDto>) {
     Object.assign(this, partial);

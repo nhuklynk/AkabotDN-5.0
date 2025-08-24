@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './entity/company.entity';
 import { CreateCompanyDto } from './dto/company/create-company.dto';
 import { UpdateCompanyDto } from './dto/company/update-company.dto';
+import { CompanySimpleResponseDto } from './dto/company/company-simple-response.dto';
 import { CompanyResponseDto } from './dto/company/company-response.dto';
 import { plainToClass } from 'class-transformer';
 
@@ -14,7 +19,9 @@ export class CompanyService {
     private companyRepository: Repository<Company>,
   ) {}
 
-  async create(createCompanyDto: CreateCompanyDto): Promise<CompanyResponseDto> {
+  async create(
+    createCompanyDto: CreateCompanyDto,
+  ): Promise<CompanySimpleResponseDto> {
     // Check if company with name already exists
     const existingCompany = await this.companyRepository.findOne({
       where: { name: createCompanyDto.name },
@@ -29,30 +36,34 @@ export class CompanyService {
     return this.findOne(savedCompany.id);
   }
 
-  async findAll(): Promise<CompanyResponseDto[]> {
-    const companies = await this.companyRepository.find({
-      relations: ['members'],
-    });
-    return companies.map(company => plainToClass(CompanyResponseDto, company, { excludeExtraneousValues: true }));
+  async findAll(): Promise<CompanySimpleResponseDto[]> {
+    const companies = await this.companyRepository.find();
+    return companies.map((company) =>
+      plainToClass(CompanySimpleResponseDto, company, {
+        excludeExtraneousValues: true,
+      }),
+    );
   }
 
   async findOne(id: string): Promise<CompanyResponseDto> {
     const company = await this.companyRepository.findOne({
       where: { id: id },
-      relations: ['members'],
+      relations: ['members', 'members.user', 'members.company'],
     });
 
     if (!company) {
       throw new NotFoundException(`Company with ID ${id} not found`);
     }
 
-    return plainToClass(CompanyResponseDto, company, { excludeExtraneousValues: true });
+    return plainToClass(CompanyResponseDto, company, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findByName(name: string): Promise<Company> {
     const company = await this.companyRepository.findOne({
       where: { name: name },
-      relations: ['members'],
+      relations: ['members', 'members.user', 'members.company'],
     });
 
     if (!company) {
@@ -62,7 +73,10 @@ export class CompanyService {
     return company;
   }
 
-  async update(id: string, updateCompanyDto: UpdateCompanyDto): Promise<CompanyResponseDto> {
+  async update(
+    id: string,
+    updateCompanyDto: UpdateCompanyDto,
+  ): Promise<CompanySimpleResponseDto> {
     const company = await this.companyRepository.findOne({
       where: { id: id },
     });

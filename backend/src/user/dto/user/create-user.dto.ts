@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsOptional, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
@@ -27,4 +27,16 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   full_name: string;
+
+  @ApiProperty({
+    description: 'User phone number (optional, must be unique if provided)',
+    example: '0909090909',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  @Matches(/^[0-9+\-\s()]+$/, {
+    message: 'Phone number must contain only digits, spaces, hyphens, parentheses and plus signs'
+  })
+  phone?: string;
 }

@@ -1,5 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { MembershipType, ExpertiseLevel } from '../../entity/member.entity';
+import { MemberCompanyDto } from './member-company.dto';
 
 export class MemberResponseDto {
   @Expose()
@@ -9,7 +10,7 @@ export class MemberResponseDto {
   membership_type: MembershipType;
 
   @Expose()
-  job_tittle: string;
+  job_title: string;
 
   @Expose()
   assistant_info: string;
@@ -34,8 +35,8 @@ export class MemberResponseDto {
   user?: any;
 
   @Expose()
-  @Type(() => Object)
-  company?: any;
+  @Type(() => MemberCompanyDto)
+  company?: MemberCompanyDto;
 
   constructor(partial: Partial<MemberResponseDto>) {
     Object.assign(this, partial);

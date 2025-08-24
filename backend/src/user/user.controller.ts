@@ -91,18 +91,24 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete user by ID' })
+  @ApiOperation({ summary: 'Suspend user by ID (soft delete)' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({
     status: 200,
-    description: 'User deleted successfully',
+    description: 'User suspended successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'User suspended successfully' },
+      }
+    }
   })
   @ApiResponse({
     status: 404,
     description: 'User not found',
   })
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string): Promise<void> {
+  @HttpCode(HttpStatus.OK)
+  async remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
 }

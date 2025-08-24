@@ -1,8 +1,9 @@
 import { Expose, Type } from 'class-transformer';
+import { MemberResponseDto } from '../member/member-response.dto';
 
 export class CompanyResponseDto {
   @Expose()
-  company_id: string;
+  id: string;
 
   @Expose()
   name: string;
@@ -20,8 +21,8 @@ export class CompanyResponseDto {
   business_registration_form_url: string;
 
   @Expose()
-  @Type(() => Array)
-  members?: any[];
+  @Type(() => MemberResponseDto)
+  members?: MemberResponseDto[];
 
   constructor(partial: Partial<CompanyResponseDto>) {
     Object.assign(this, partial);

@@ -4,17 +4,14 @@ export class CreateCompanyDto {
   @IsString()
   name: string;
 
-  @IsOptional()
   @IsString()
-  tax_number?: string;
+  tax_number: string;
 
-  @IsOptional()
   @IsEmail()
-  email?: string;
+  email: string;
 
-  @IsOptional()
   @IsString()
-  phone_number?: string;
+  phone_number: string;
 
   @IsOptional()
   @IsString()
