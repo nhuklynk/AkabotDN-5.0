@@ -2,7 +2,6 @@ import {
   Entity,
   Column,
   ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import { Post } from '../../post/entity/post.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';

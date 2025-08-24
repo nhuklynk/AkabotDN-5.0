@@ -23,14 +23,6 @@ export class MediaResponseDto {
   @Expose()
   created_at: Date;
 
-  @Expose()
-  @Type(() => Object)
-  uploaded_by?: any;
-
-  @Expose()
-  @Type(() => Array)
-  posts?: any[];
-
   constructor(partial: Partial<MediaResponseDto>) {
     Object.assign(this, partial);
   }

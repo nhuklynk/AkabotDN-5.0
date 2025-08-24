@@ -1,98 +1,164 @@
 import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
+import { Status } from '../../config/base-audit.entity';
+import { TagResponseDto } from '../../tag/dto/tag-response.dto';
+import { EventResponseDto } from 'src/event/dto/event-response.dto';
+
+// Nested DTOs for better Swagger documentation
+export class UserResponseDto {
+  @ApiProperty({
+    description: 'User ID',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @Expose()
+  id: string;
+
+  @ApiProperty({
+    description: 'User name',
+    example: 'John Doe'
+  })
+  @Expose()
+  name: string;
+
+  @ApiProperty({
+    description: 'User email',
+    example: 'john.doe@example.com'
+  })
+  @Expose()
+  email: string;
+}
+
+export class CategoryResponseDto {
+  @ApiProperty({
+    description: 'Category ID',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @Expose()
+  id: string;
+
+  @ApiProperty({
+    description: 'Category name',
+    example: 'Technology'
+  })
+  @Expose()
+  name: string;
+
+  @ApiProperty({
+    description: 'Category slug',
+    example: 'technology'
+  })
+  @Expose()
+  slug: string;
+}
 
 export class PostResponseDto {
-  @Expose()
   @ApiProperty({
     description: 'Unique post identifier',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  post_id: string;
-
   @Expose()
+  id: string;
+
   @ApiProperty({
     description: 'Post title',
-    example: 'Getting Started with NestJS'
+    example: 'Getting Started with NestJS',
+    maxLength: 255
   })
+  @Expose()
   title: string;
 
-  @Expose()
   @ApiProperty({
     description: 'Post slug (URL-friendly version of title)',
-    example: 'getting-started-with-nestjs'
+    example: 'getting-started-with-nestjs',
+    maxLength: 255
   })
+  @Expose()
   slug: string;
 
-  @Expose()
   @ApiProperty({
     description: 'Post content',
     example: 'This is the main content of the post...'
   })
+  @Expose()
   content: string;
 
-  @Expose()
   @ApiProperty({
     description: 'Post status',
     enum: PostStatus,
     example: PostStatus.PUBLISHED
   })
-  status: PostStatus;
-
   @Expose()
+  post_status: PostStatus;
+
   @ApiProperty({
     description: 'Post summary',
     example: 'A brief summary of the post content',
-    required: false
+    required: false,
+    maxLength: 500
   })
+  @Expose()
   summary: string;
 
-  @Expose()
   @ApiProperty({
     description: 'Publication date',
     example: '2024-01-01T00:00:00.000Z',
     required: false
   })
+  @Expose()
   published_at: Date;
 
+  @ApiProperty({
+    description: 'Entity status',
+    enum: Status,
+    example: Status.ACTIVE
+  })
   @Expose()
+  status: Status;
+
   @ApiProperty({
     description: 'Creation date',
     example: '2024-01-01T00:00:00.000Z'
   })
+  @Expose()
   created_at: Date;
 
-  @Expose()
   @ApiProperty({
     description: 'Last update date',
     example: '2024-01-01T00:00:00.000Z'
   })
+  @Expose()
   updated_at: Date;
 
-  @Expose()
   @ApiProperty({
-    description: 'Post author information'
+    description: 'Post author information',
+    type: UserResponseDto
   })
-  author: any;
-
   @Expose()
-  @ApiProperty({
-    description: 'Primary media for the post',
-    required: false
-  })
-  primary_media: any;
+  @Type(() => UserResponseDto)
+  user: UserResponseDto;
 
-  @Expose()
   @ApiProperty({
     description: 'Post categories',
-    type: 'array'
+    type: [CategoryResponseDto]
   })
-  categories: any[];
-
   @Expose()
+  @Type(() => CategoryResponseDto)
+  categories: CategoryResponseDto[];
+
   @ApiProperty({
     description: 'Post tags',
-    type: 'array'
+    type: [TagResponseDto]
   })
-  tags: any[];
+  @Expose()
+  @Type(() => TagResponseDto)
+  tags: TagResponseDto[];
+
+  @ApiProperty({
+    description: 'Event',
+    type: EventResponseDto
+  })
+  @Expose()
+  @Type(() => EventResponseDto)
+  event: EventResponseDto;
 }

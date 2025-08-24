@@ -15,16 +15,13 @@ export class MediaService {
   ) {}
 
   async findAll(): Promise<MediaResponseDto[]> {
-    const media = await this.mediaRepository.find({
-      relations: ['uploaded_by', 'posts'],
-    });
+    const media = await this.mediaRepository.find();
     return media.map(media => plainToClass(MediaResponseDto, media, { excludeExtraneousValues: true }));
   }
 
   async findOne(id: string): Promise<MediaResponseDto> {
     const media = await this.mediaRepository.findOne({
       where: { id: id },
-      relations: ['uploaded_by', 'posts'],
     });
 
     if (!media) {
@@ -37,7 +34,6 @@ export class MediaService {
   async findByType(media_type: MediaType): Promise<MediaResponseDto[]> {
     const media = await this.mediaRepository.find({
       where: { media_type: media_type },
-      relations: ['uploaded_by'],
     });
     return media.map(media => plainToClass(MediaResponseDto, media, { excludeExtraneousValues: true }));
   }
