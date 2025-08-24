@@ -13,10 +13,10 @@ import { MediaModule } from './media/media.module';
 import { MemberModule } from './member/member.module';
 import { FaqModule } from './faq/faq.module';
 import { PartnerModule } from './partner/partner.module';
-import { EventMediaModule } from './event-media/event-media.module';
 import { AuditSubscriber } from './config/audit.subscriber';
 import { CommonModule } from './common/common.module';
 import { StorageModule } from './storage/storage.module';
+import { SwaggerExportController } from './config/swagger-export.controller';
 
 @Module({
   imports: [
@@ -35,10 +35,9 @@ import { StorageModule } from './storage/storage.module';
     MemberModule,
     FaqModule,
     PartnerModule,
-    EventMediaModule,
     StorageModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, SwaggerExportController],
   providers: [AppService, AuditSubscriber],
 })
 export class AppModule {}
