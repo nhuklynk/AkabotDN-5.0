@@ -1,0 +1,31 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="12" fill="#F0F9FF"/>
+  
+  <!-- Central node -->
+  <circle cx="32" cy="32" r="8" fill="#0EA5E9" stroke="#0369A1" stroke-width="2"/>
+  
+  <!-- Connected nodes -->
+  <circle cx="16" cy="16" r="5" fill="#10B981" stroke="#047857" stroke-width="2"/>
+  <circle cx="48" cy="16" r="5" fill="#F59E0B" stroke="#D97706" stroke-width="2"/>
+  <circle cx="16" cy="48" r="5" fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+  <circle cx="48" cy="48" r="5" fill="#EF4444" stroke="#DC2626" stroke-width="2"/>
+  
+  <!-- Connection lines -->
+  <path d="M21 21L27 27" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  <path d="M37 27L43 21" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  <path d="M21 43L27 37" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  <path d="M37 37L43 43" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Data flow arrows -->
+  <path d="M32 24L32 16" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  <path d="M40 32L48 32" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  <path d="M32 40L32 48" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  <path d="M24 32L16 32" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0EA5E9"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-meeting" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#059669;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="table" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#92400E" />
+      <stop offset="100%" style="stop-color:#78350F" />
+    </linearGradient>
+    <linearGradient id="screen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#111827" />
+      <stop offset="100%" style="stop-color:#1F2937" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-meeting)"/>
+  
+  <!-- Conference Room Background -->
+  <rect x="0" y="300" width="800" height="300" fill="#F9FAFB" opacity="0.8"/>
+  <rect x="0" y="250" width="800" height="50" fill="#E5E7EB" opacity="0.6"/>
+  
+  <!-- Large Meeting Screen -->
+  <g transform="translate(250,50)">
+    <rect x="0" y="0" width="300" height="180" rx="8" fill="#374151"/>
+    <rect x="10" y="10" width="280" height="160" rx="5" fill="url(#screen)"/>
+    
+    <!-- Content on screen -->
+    <text x="150" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">DỰNG THẢO NGHỊ ĐỊNH</text>
+    <text x="150" y="60" text-anchor="middle" font-size="12" fill="#F3F4F6">Kết nối, chia sẻ dữ liệu</text>
+    
+    <!-- Document outline on screen -->
+    <rect x="40" y="80" width="220" height="80" rx="5" fill="#FFFFFF" opacity="0.9"/>
+    <text x="150" y="100" text-anchor="middle" font-size="10" fill="#1F2937">Điều 1: Phạm vi điều chỉnh</text>
+    <text x="150" y="115" text-anchor="middle" font-size="10" fill="#1F2937">Điều 2: Đối tượng áp dụng</text>
+    <text x="150" y="130" text-anchor="middle" font-size="10" fill="#1F2937">Điều 3: Quyền và nghĩa vụ</text>
+    <text x="150" y="145" text-anchor="middle" font-size="10" fill="#1F2937">Điều 4: Trách nhiệm các cơ quan</text>
+    
+    <!-- Progress indicator -->
+    <rect x="40" y="175" width="220" height="4" rx="2" fill="#4B5563"/>
+    <rect x="40" y="175" width="110" height="4" rx="2" fill="#059669"/>
+  </g>
+  
+  <!-- Conference Table -->
+  <ellipse cx="400" cy="380" rx="250" ry="80" fill="url(#table)" opacity="0.8"/>
+  <ellipse cx="400" cy="375" rx="240" ry="75" fill="#A16207" opacity="0.6"/>
+  
+  <!-- Participants around the table -->
+  <!-- Ministry of Public Security representatives -->
+  <g transform="translate(300,320)">
+    <circle cx="0" cy="0" r="15" fill="#1E40AF" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#1E40AF">Bộ Công an</text>
+  </g>
+  
+  <g transform="translate(500,320)">
+    <circle cx="0" cy="0" r="15" fill="#1E40AF" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#1E40AF">Đại diện BCA</text>
+  </g>
+  
+  <!-- National Data Center representatives -->
+  <g transform="translate(350,440)">
+    <circle cx="0" cy="0" r="15" fill="#059669" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#059669">NDC</text>
+  </g>
+  
+  <g transform="translate(450,440)">
+    <circle cx="0" cy="0" r="15" fill="#059669" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#059669">Trung tâm DL</text>
+  </g>
+  
+  <!-- Association representatives -->
+  <g transform="translate(200,380)">
+    <circle cx="0" cy="0" r="15" fill="#DC2626" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#DC2626">Hiệp hội</text>
+  </g>
+  
+  <g transform="translate(600,380)">
+    <circle cx="0" cy="0" r="15" fill="#DC2626" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#DC2626">Chuyên gia</text>
+  </g>
+  
+  <!-- Documents on table -->
+  <g transform="translate(380,360)">
+    <rect x="0" y="0" width="15" height="20" rx="1" fill="#FFFFFF" stroke="#9CA3AF"/>
+    <line x1="2" y1="4" x2="13" y2="4" stroke="#9CA3AF" stroke-width="0.5"/>
+    <line x1="2" y1="7" x2="13" y2="7" stroke="#9CA3AF" stroke-width="0.5"/>
+    <line x1="2" y1="10" x2="10" y2="10" stroke="#9CA3AF" stroke-width="0.5"/>
+  </g>
+  
+  <g transform="translate(405,365)">
+    <rect x="0" y="0" width="15" height="20" rx="1" fill="#FEF3C7" stroke="#F59E0B"/>
+    <line x1="2" y1="4" x2="13" y2="4" stroke="#F59E0B" stroke-width="0.5"/>
+    <line x1="2" y1="7" x2="13" y2="7" stroke="#F59E0B" stroke-width="0.5"/>
+    <line x1="2" y1="10" x2="10" y2="10" stroke="#F59E0B" stroke-width="0.5"/>
+    <text x="7" y="35" text-anchor="middle" font-size="6" fill="#F59E0B">Dự thảo</text>
+  </g>
+  
+  <!-- Legal Framework Symbols -->
+  <g transform="translate(100,100)">
+    <!-- Law book -->
+    <rect x="0" y="0" width="30" height="40" rx="2" fill="#1E40AF"/>
+    <rect x="2" y="2" width="26" height="36" rx="1" fill="#3B82F6"/>
+    <text x="15" y="25" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">LAW</text>
+    <text x="15" y="55" text-anchor="middle" font-size="8" fill="#1E40AF">Pháp luật</text>
+  </g>
+  
+  <g transform="translate(650,120)">
+    <!-- Gavel -->
+    <rect x="0" y="15" width="20" height="8" rx="4" fill="#92400E"/>
+    <rect x="18" y="0" width="6" height="30" rx="3" fill="#78350F"/>
+    <text x="15" y="50" text-anchor="middle" font-size="8" fill="#92400E">Nghị định</text>
+  </g>
+  
+  <!-- Data Flow Arrows -->
+  <g stroke="#059669" stroke-width="3" fill="#059669" opacity="0.6">
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+              refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#059669" />
+      </marker>
+    </defs>
+    
+    <path d="M150,250 Q200,200 250,250" fill="none" marker-end="url(#arrowhead)">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M550,250 Q600,200 650,250" fill="none" marker-end="url(#arrowhead)">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+    
+    <text x="200" y="200" font-size="10" fill="#059669">Góp ý</text>
+    <text x="600" y="200" font-size="10" fill="#059669">Phản hồi</text>
+  </g>
+  
+  <!-- Meeting agenda -->
+  <g transform="translate(50,300)">
+    <rect x="0" y="0" width="100" height="120" rx="5" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+    <text x="50" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#1F2937">CHƯƠNG TRÌNH</text>
+    <text x="5" y="35" font-size="8" fill="#6B7280">9:00 - Khai mạc</text>
+    <text x="5" y="50" font-size="8" fill="#6B7280">9:30 - Báo cáo dự thảo</text>
+    <text x="5" y="65" font-size="8" fill="#6B7280">10:00 - Thảo luận</text>
+    <text x="5" y="80" font-size="8" fill="#6B7280">11:00 - Góp ý kiến</text>
+    <text x="5" y="95" font-size="8" fill="#6B7280">11:30 - Tổng kết</text>
+    <text x="5" y="110" font-size="8" fill="#6B7280">12:00 - Bế mạc</text>
+  </g>
+  
+  <!-- Vietnam Flag -->
+  <g transform="translate(650,400)">
+    <rect x="0" y="0" width="60" height="40" fill="#DC2626"/>
+    <polygon points="30,8 33,16 41,16 35,21 38,29 30,25 22,29 25,21 19,16 27,16" fill="#FDE047"/>
+    <text x="30" y="55" text-anchor="middle" font-size="8" fill="#DC2626">QGND Việt Nam</text>
+  </g>
+  
+  <!-- Data Security Icons -->
+  <g transform="translate(50,500)" opacity="0.7">
+    <rect x="0" y="0" width="20" height="15" rx="2" fill="#374151"/>
+    <rect x="5" y="-5" width="10" height="8" rx="5" fill="none" stroke="#374151" stroke-width="2"/>
+    <text x="30" y="10" font-size="8" fill="#374151">Bảo mật</text>
+  </g>
+  
+  <g transform="translate(120,500)" opacity="0.7">
+    <circle cx="10" cy="10" r="8" fill="none" stroke="#059669" stroke-width="2"/>
+    <path d="M6,10 L9,13 L14,7" stroke="#059669" stroke-width="2" fill="none"/>
+    <text x="30" y="15" font-size="8" fill="#059669">Tuân thủ</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#1E40AF">
+    Hội nghị Dự thảo Nghị định Kết nối Chia sẻ Dữ liệu
+  </text>
+  <text x="400" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#059669" opacity="0.8">
+    Bộ Công an - Trung tâm Dữ liệu Quốc gia
+  </text>
+</svg>
+
+
+

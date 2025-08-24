@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-email" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1F2937;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#DC2626;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="email-interface" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF" />
+      <stop offset="100%" style="stop-color:#F8FAFC" />
+    </linearGradient>
+    <linearGradient id="security" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626" />
+      <stop offset="100%" style="stop-color:#B91C1C" />
+    </linearGradient>
+    <linearGradient id="government" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF" />
+      <stop offset="100%" style="stop-color:#1E3A8A" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-email)"/>
+  
+  <!-- Title -->
+  <g transform="translate(150,50)">
+    <rect x="0" y="0" width="500" height="70" rx="10" fill="url(#government)" opacity="0.9"/>
+    <text x="250" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">HỆ THỐNG THƯ ĐIỆN TỬ QUỐC GIA</text>
+    <text x="250" y="50" text-anchor="middle" font-size="16" fill="#FFFFFF">Email Bảo mật Cao - Cơ quan Nhà nước</text>
+  </g>
+  
+  <!-- Main Email Interface -->
+  <g transform="translate(100,150)">
+    <rect x="0" y="0" width="600" height="400" rx="15" fill="url(#email-interface)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- Email Header -->
+    <rect x="10" y="10" width="580" height="50" rx="8" fill="#1E40AF"/>
+    <text x="30" y="30" font-size="16" font-weight="bold" fill="#FFFFFF">📧 GovMail Vietnam</text>
+    <text x="30" y="45" font-size="12" fill="#FFFFFF">Hệ thống Thư điện tử Chính phủ</text>
+    
+    <!-- Security Status -->
+    <g transform="translate(450,15)">
+      <rect x="0" y="0" width="120" height="20" rx="10" fill="#10B981"/>
+      <circle cx="15" cy="10" r="4" fill="#FFFFFF"/>
+      <text x="25" y="14" font-size="10" font-weight="bold" fill="#FFFFFF">Kết nối An toàn</text>
+    </g>
+    
+    <!-- Sidebar Menu -->
+    <rect x="10" y="70" width="150" height="320" rx="5" fill="#F9FAFB" stroke="#E5E7EB"/>
+    
+    <g transform="translate(20,85)">
+      <text x="0" y="15" font-size="12" font-weight="bold" fill="#1F2937">FOLDERS</text>
+      
+      <!-- Inbox -->
+      <g transform="translate(0,25)">
+        <rect x="0" y="0" width="130" height="25" rx="5" fill="#EBF8FF"/>
+        <circle cx="10" cy="12" r="3" fill="#3B82F6"/>
+        <text x="20" y="16" font-size="10" fill="#1E40AF">📥 Hộp thư đến (24)</text>
+      </g>
+      
+      <!-- Sent -->
+      <g transform="translate(0,55)">
+        <rect x="0" y="0" width="130" height="25" rx="5" fill="#F0FDF4"/>
+        <circle cx="10" cy="12" r="3" fill="#10B981"/>
+        <text x="20" y="16" font-size="10" fill="#059669">📤 Thư đã gửi</text>
+      </g>
+      
+      <!-- Drafts -->
+      <g transform="translate(0,85)">
+        <rect x="0" y="0" width="130" height="25" rx="5" fill="#FFFBEB"/>
+        <circle cx="10" cy="12" r="3" fill="#F59E0B"/>
+        <text x="20" y="16" font-size="10" fill="#D97706">📝 Bản nháp (3)</text>
+      </g>
+      
+      <!-- Archive -->
+      <g transform="translate(0,115)">
+        <rect x="0" y="0" width="130" height="25" rx="5" fill="#F5F5F5"/>
+        <circle cx="10" cy="12" r="3" fill="#6B7280"/>
+        <text x="20" y="16" font-size="10" fill="#4B5563">📦 Lưu trữ</text>
+      </g>
+      
+      <!-- Encrypted -->
+      <g transform="translate(0,145)">
+        <rect x="0" y="0" width="130" height="25" rx="5" fill="#FEF2F2"/>
+        <circle cx="10" cy="12" r="3" fill="#DC2626"/>
+        <text x="20" y="16" font-size="10" fill="#B91C1C">🔒 Mã hóa (8)</text>
+      </g>
+      
+      <!-- Labels -->
+      <text x="0" y="190" font-size="12" font-weight="bold" fill="#1F2937">LABELS</text>
+      <text x="10" y="210" font-size="10" fill="#DC2626">🔴 Khẩn cấp</text>
+      <text x="10" y="225" font-size="10" fill="#F59E0B">🟡 Quan trọng</text>
+      <text x="10" y="240" font-size="10" fill="#10B981">🟢 Thường</text>
+      <text x="10" y="255" font-size="10" fill="#3B82F6">🔵 Tài liệu</text>
+    </g>
+    
+    <!-- Email List -->
+    <rect x="170" y="70" width="420" height="200" rx="5" fill="#FFFFFF" stroke="#E5E7EB"/>
+    
+    <!-- Email Headers -->
+    <g transform="translate(180,85)">
+      <rect x="0" y="0" width="400" height="20" fill="#F9FAFB"/>
+      <text x="10" y="14" font-size="10" font-weight="bold" fill="#374151">Người gửi</text>
+      <text x="150" y="14" font-size="10" font-weight="bold" fill="#374151">Chủ đề</text>
+      <text x="320" y="14" font-size="10" font-weight="bold" fill="#374151">Thời gian</text>
+    </g>
+    
+    <!-- Email 1 -->
+    <g transform="translate(180,110)">
+      <rect x="0" y="0" width="400" height="30" fill="#FEF9E7" stroke="#F59E0B" stroke-width="1"/>
+      <circle cx="15" cy="15" r="4" fill="#F59E0B"/>
+      <text x="25" y="12" font-size="10" font-weight="bold" fill="#92400E">Bộ Công an</text>
+      <text x="25" y="22" font-size="8" fill="#6B7280">security@mps.gov.vn</text>
+      <text x="150" y="15" font-size="10" fill="#1F2937">[KHẨN] Cập nhật chính sách bảo mật</text>
+      <text x="320" y="15" font-size="9" fill="#6B7280">09:30</text>
+      <rect x="370" y="8" width="20" height="10" rx="2" fill="#DC2626"/>
+      <text x="380" y="16" text-anchor="middle" font-size="6" fill="#FFFFFF">🔒</text>
+    </g>
+    
+    <!-- Email 2 -->
+    <g transform="translate(180,145)">
+      <rect x="0" y="0" width="400" height="30" fill="#F0F9FF" stroke="#3B82F6" stroke-width="1"/>
+      <circle cx="15" cy="15" r="4" fill="#3B82F6"/>
+      <text x="25" y="12" font-size="10" font-weight="bold" fill="#1E40AF">Bộ Tài chính</text>
+      <text x="25" y="22" font-size="8" fill="#6B7280">admin@mof.gov.vn</text>
+      <text x="150" y="15" font-size="10" fill="#1F2937">Báo cáo ngân sách Q4/2024</text>
+      <text x="320" y="15" font-size="9" fill="#6B7280">08:15</text>
+      <rect x="370" y="8" width="20" height="10" rx="2" fill="#059669"/>
+      <text x="380" y="16" text-anchor="middle" font-size="6" fill="#FFFFFF">✓</text>
+    </g>
+    
+    <!-- Email 3 -->
+    <g transform="translate(180,180)">
+      <rect x="0" y="0" width="400" height="30" fill="#F0FDF4" stroke="#10B981" stroke-width="1"/>
+      <circle cx="15" cy="15" r="4" fill="#10B981"/>
+      <text x="25" y="12" font-size="10" font-weight="bold" fill="#059669">Văn phòng Chính phủ</text>
+      <text x="25" y="22" font-size="8" fill="#6B7280">office@gov.vn</text>
+      <text x="150" y="15" font-size="10" fill="#1F2937">Thông báo họp tuần</text>
+      <text x="320" y="15" font-size="9" fill="#6B7280">07:45</text>
+      <rect x="370" y="8" width="20" height="10" rx="2" fill="#F59E0B"/>
+      <text x="380" y="16" text-anchor="middle" font-size="6" fill="#FFFFFF">📎</text>
+    </g>
+    
+    <!-- Email 4 -->
+    <g transform="translate(180,215)">
+      <rect x="0" y="0" width="400" height="30" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <circle cx="15" cy="15" r="4" fill="#6B7280"/>
+      <text x="25" y="12" font-size="10" fill="#4B5563">Hiệp hội Dữ liệu QG</text>
+      <text x="25" y="22" font-size="8" fill="#6B7280">info@vnda.gov.vn</text>
+      <text x="150" y="15" font-size="10" fill="#6B7280">Lời mời tham gia hội thảo</text>
+      <text x="320" y="15" font-size="9" fill="#6B7280">Hôm qua</text>
+    </g>
+    
+    <!-- Email Content Preview -->
+    <rect x="170" y="280" width="420" height="100" rx="5" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <g transform="translate(180,295)">
+      <text x="0" y="15" font-size="12" font-weight="bold" fill="#1F2937">[KHẨN] Cập nhật chính sách bảo mật</text>
+      <text x="0" y="30" font-size="10" fill="#6B7280">Từ: Bộ Công an &lt;security@mps.gov.vn&gt;</text>
+      <text x="0" y="45" font-size="10" fill="#6B7280">Đến: Các cơ quan, đơn vị thuộc Chính phủ</text>
+      <text x="0" y="60" font-size="10" fill="#374151">Kính gửi các đồng chí,</text>
+      <text x="0" y="75" font-size="10" fill="#374151">Thông báo cập nhật chính sách bảo mật thông tin mới...</text>
+      <text x="0" y="90" font-size="10" fill="#374151">Vui lòng thực hiện theo hướng dẫn đính kèm.</text>
+    </g>
+  </g>
+  
+  <!-- Security Features Panel -->
+  <g transform="translate(50,200)">
+    <rect x="0" y="0" width="120" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="60" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#DC2626">BẢO MẬT</text>
+    
+    <!-- End-to-End Encryption -->
+    <g transform="translate(10,35)">
+      <rect x="0" y="0" width="100" height="30" rx="5" fill="#FEF2F2"/>
+      <rect x="10" y="8" width="20" height="12" rx="2" fill="none" stroke="#DC2626" stroke-width="2"/>
+      <rect x="15" y="5" width="10" height="8" rx="5" fill="none" stroke="#DC2626" stroke-width="2"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#DC2626">MÃ HÓA</text>
+      <text x="35" y="22" font-size="7" fill="#B91C1C">End-to-End</text>
+    </g>
+    
+    <!-- Digital Signature -->
+    <g transform="translate(10,75)">
+      <rect x="0" y="0" width="100" height="30" rx="5" fill="#EBF8FF"/>
+      <circle cx="20" cy="15" r="8" fill="none" stroke="#3B82F6" stroke-width="2"/>
+      <path d="M16,15 L19,18 L26,11" stroke="#3B82F6" stroke-width="2" fill="none"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#3B82F6">CHỮ KÝ SỐ</text>
+      <text x="35" y="22" font-size="7" fill="#1E40AF">Digital Sign</text>
+    </g>
+    
+    <!-- Anti-Virus -->
+    <g transform="translate(10,115)">
+      <rect x="0" y="0" width="100" height="30" rx="5" fill="#F0FDF4"/>
+      <circle cx="20" cy="15" r="8" fill="#10B981"/>
+      <path d="M16,15 L19,18 L24,13" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#10B981">ANTI-VIRUS</text>
+      <text x="35" y="22" font-size="7" fill="#059669">Quét tự động</text>
+    </g>
+    
+    <!-- Backup & Archive -->
+    <g transform="translate(10,155)">
+      <rect x="0" y="0" width="100" height="30" rx="5" fill="#FFFBEB"/>
+      <rect x="12" y="8" width="16" height="12" rx="2" fill="none" stroke="#F59E0B" stroke-width="1"/>
+      <rect x="14" y="10" width="12" height="8" rx="1" fill="#F59E0B"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#F59E0B">SAO LƯU</text>
+      <text x="35" y="22" font-size="7" fill="#D97706">Tự động 24h</text>
+    </g>
+  </g>
+  
+  <!-- Government Network -->
+  <g transform="translate(750,200)">
+    <rect x="0" y="0" width="120" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="60" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E40AF">MẠNG LƯỚI</text>
+    
+    <!-- Government Network -->
+    <g transform="translate(10,35)">
+      <circle cx="50" cy="20" r="15" fill="#1E40AF" opacity="0.8"/>
+      <rect x="43" y="13" width="14" height="10" rx="1" fill="#FFFFFF"/>
+      <rect x="45" y="15" width="10" height="2" fill="#1E40AF"/>
+      <rect x="45" y="18" width="10" height="2" fill="#1E40AF"/>
+      <rect x="45" y="21" width="10" height="2" fill="#1E40AF"/>
+      <text x="50" y="45" text-anchor="middle" font-size="8" fill="#1E40AF">Gov Network</text>
+    </g>
+    
+    <!-- Connected Ministries -->
+    <g transform="translate(15,70)">
+      <circle cx="20" cy="10" r="8" fill="#059669"/>
+      <circle cx="50" cy="10" r="8" fill="#DC2626"/>
+      <circle cx="80" cy="10" r="8" fill="#F59E0B"/>
+      
+      <line x1="28" y1="10" x2="42" y2="10" stroke="#6B7280" stroke-width="1"/>
+      <line x1="58" y1="10" x2="72" y2="10" stroke="#6B7280" stroke-width="1"/>
+      
+      <text x="50" y="30" text-anchor="middle" font-size="7" fill="#6B7280">24 Bộ, Ngành</text>
+    </g>
+    
+    <!-- Secure Gateway -->
+    <g transform="translate(30,110)">
+      <rect x="0" y="0" width="40" height="25" rx="5" fill="#7C3AED" opacity="0.8"/>
+      <text x="20" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="#FFFFFF">VPN</text>
+      <text x="20" y="40" text-anchor="middle" font-size="7" fill="#7C3AED">Secure Gateway</text>
+    </g>
+    
+    <!-- Firewall -->
+    <g transform="translate(30,150)">
+      <rect x="0" y="0" width="40" height="25" rx="5" fill="#EF4444" opacity="0.8"/>
+      <text x="20" y="12" text-anchor="middle" font-size="6" font-weight="bold" fill="#FFFFFF">🔥🧱</text>
+      <text x="20" y="20" text-anchor="middle" font-size="6" fill="#FFFFFF">Firewall</text>
+      <text x="20" y="40" text-anchor="middle" font-size="7" fill="#EF4444">Multi-layer</text>
+    </g>
+  </g>
+  
+  <!-- System Status -->
+  <g transform="translate(200,570)">
+    <rect x="0" y="0" width="400" height="25" rx="12" fill="#F3F4F6"/>
+    <text x="20" y="17" font-size="10" fill="#374151">System Status:</text>
+    
+    <circle cx="120" cy="12" r="4" fill="#10B981"/>
+    <text x="130" y="17" font-size="10" fill="#059669">Email Service: Online</text>
+    
+    <circle cx="240" cy="12" r="4" fill="#10B981"/>
+    <text x="250" y="17" font-size="10" fill="#059669">Security: Active</text>
+    
+    <circle cx="340" cy="12" r="4" fill="#F59E0B"/>
+    <text x="350" y="17" font-size="10" fill="#D97706">Maintenance: 02:00-04:00</text>
+  </g>
+  
+  <!-- Data Flow Animation -->
+  <g opacity="0.3">
+    <circle r="2" fill="#DC2626">
+      <animateMotion dur="6s" repeatCount="indefinite" 
+                     path="M100,350 Q200,300 300,350 Q400,400 500,350 Q600,300 700,350"/>
+    </circle>
+    <circle r="1" fill="#1E40AF">
+      <animateMotion dur="4s" repeatCount="indefinite" 
+                     path="M700,250 Q600,200 500,250 Q400,300 300,250 Q200,200 100,250"/>
+    </circle>
+  </g>
+</svg>
+
+
+

@@ -1,0 +1,6 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="15" width="80" height="60" rx="8" fill="#FF0000"/>
+  <path d="M30 30L40 55H35L33 50H27L25 55H20L30 30ZM30 42L28 47H32L30 42Z" fill="white"/>
+  <path d="M45 30H50C55 30 58 33 58 38C58 43 55 46 50 46H48V55H45V30ZM48 33V43H50C53 43 55 41 55 38C55 35 53 33 50 33H48Z" fill="white"/>
+  <text x="50" y="90" text-anchor="middle" fill="#FF0000" font-size="11" font-weight="bold">Adobe</text>
+</svg>

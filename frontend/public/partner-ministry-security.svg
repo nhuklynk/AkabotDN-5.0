@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">
+  <defs>
+    <linearGradient id="security-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626" />
+      <stop offset="100%" style="stop-color:#991B1B" />
+    </linearGradient>
+    <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FDE047" />
+      <stop offset="100%" style="stop-color:#F59E0B" />
+    </linearGradient>
+    <linearGradient id="vietnam-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626" />
+      <stop offset="100%" style="stop-color:#B91C1C" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="100" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" rx="5"/>
+  
+  <!-- Vietnam National Emblem Base -->
+  <g transform="translate(25,15)">
+    <circle cx="25" cy="25" r="20" fill="url(#vietnam-bg)"/>
+    <polygon points="25,12 27,17 32,17 28,20 30,25 25,22 20,25 22,20 18,17 23,17" fill="url(#shield-gradient)"/>
+    
+    <!-- Shield overlay -->
+    <path d="M25,10 L35,15 L35,28 Q35,35 25,40 Q15,35 15,28 L15,15 Z" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+  </g>
+  
+  <!-- Security Shield -->
+  <g transform="translate(60,20)">
+    <path d="M15,5 L25,10 L25,23 Q25,30 15,35 Q5,30 5,23 L5,10 Z" fill="url(#security-gradient)"/>
+    <path d="M10,15 L13,18 L20,11" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="125" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="url(#security-gradient)">BỘ CÔNG AN</text>
+  <text x="125" y="40" text-anchor="middle" font-size="11" fill="#6B7280">CỘNG HÒA XÃ HỘI CHỦ NGHĨA</text>
+  <text x="125" y="52" text-anchor="middle" font-size="11" fill="#6B7280">VIỆT NAM</text>
+  
+  <!-- English Text -->
+  <text x="125" y="68" text-anchor="middle" font-size="9" fill="#9CA3AF">Ministry of Public Security</text>
+  <text x="125" y="80" text-anchor="middle" font-size="8" fill="#9CA3AF">Socialist Republic of Vietnam</text>
+  
+  <!-- Security Elements -->
+  <g transform="translate(165,15)">
+    <rect x="0" y="5" width="15" height="10" rx="2" fill="none" stroke="url(#security-gradient)" stroke-width="1"/>
+    <rect x="2" y="2" width="11" height="7" rx="5" fill="none" stroke="url(#security-gradient)" stroke-width="1"/>
+  </g>
+  
+  <!-- Data Protection Symbol -->
+  <g transform="translate(170,35)">
+    <circle cx="8" cy="8" r="6" fill="none" stroke="#10B981" stroke-width="1"/>
+    <path d="M5,8 L7,10 L11,6" stroke="#10B981" stroke-width="1" fill="none"/>
+  </g>
+</svg>
+
+
+
