@@ -99,13 +99,4 @@ export class CreatePostDto {
   @IsOptional()
   @IsEnum(Status)
   status?: Status;
-
-  @ApiProperty({
-    description: 'Event ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    required: false
-  })
-  @IsOptional()
-  @IsUUID()
-  event_id?: string;
 }

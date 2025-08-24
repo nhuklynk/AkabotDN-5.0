@@ -86,14 +86,4 @@ export class UpdatePostDto {
   @IsArray()
   @IsUUID('4', { each: true })
   tag_ids?: string[];
-
-  @ApiProperty({
-    description: 'Entity status',
-    enum: Status,
-    example: Status.ACTIVE,
-    required: false
-  })
-  @IsOptional()
-  @IsEnum(Status)
-  status?: Status;
 }

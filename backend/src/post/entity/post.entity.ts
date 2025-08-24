@@ -12,7 +12,6 @@ import { Category } from '../../category/entity/category.entity';
 import { Tag } from '../../tag/entity/tag.entity';
 import { Comment } from '../../comment/entity/comment.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
-import { Event } from 'src/event/entity/event.entity';
 
 export enum PostStatus {
   DRAFT = 'draft',
@@ -81,8 +80,4 @@ export class Post extends BaseAuditEntity {
     name: 'post_type'
   })
   post_type: PostType;
-
-  @ManyToOne(() => Event, (event) => event.posts)
-  @JoinColumn({ name: 'event_id' })
-  event: Event;
 }
