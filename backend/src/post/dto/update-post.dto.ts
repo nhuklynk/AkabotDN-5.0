@@ -1,7 +1,6 @@
-import { IsString, IsOptional, IsEnum, IsArray, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
-import { Status } from '../../config/base-audit.entity';
 
 export class UpdatePostDto {
   @ApiProperty({
@@ -14,17 +13,6 @@ export class UpdatePostDto {
   @IsOptional()
   @IsString()
   title?: string;
-
-  @ApiProperty({
-    description: 'Post slug (URL-friendly version of title)',
-    example: 'getting-started-with-nestjs',
-    required: false,
-    minLength: 1,
-    maxLength: 255
-  })
-  @IsOptional()
-  @IsString()
-  slug?: string;
 
   @ApiProperty({
     description: 'Post content',
@@ -57,23 +45,12 @@ export class UpdatePostDto {
   summary?: string;
 
   @ApiProperty({
-    description: 'Primary media ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    required: false
-  })
-  @IsOptional()
-  @IsUUID()
-  primary_media_id?: string;
-
-  @ApiProperty({
     description: 'Category IDs',
     example: ['123e4567-e89b-12d3-a456-426614174000'],
     type: [String],
     required: false
   })
   @IsOptional()
-  @IsArray()
-  @IsUUID('4', { each: true })
   category_ids?: string[];
 
   @ApiProperty({
@@ -83,7 +60,16 @@ export class UpdatePostDto {
     required: false
   })
   @IsOptional()
-  @IsArray()
-  @IsUUID('4', { each: true })
   tag_ids?: string[];
+
+  @ApiProperty({
+    description: 'Post featured image',
+    type: 'string',
+    format: 'binary',
+    required: false
+  })
+  @IsOptional()
+  featured_image?: any;
+
+  media_id?: string;
 }

@@ -80,4 +80,7 @@ export class Post extends BaseAuditEntity {
     name: 'post_type'
   })
   post_type: PostType;
+
+  @Column({ nullable: true, name: 'media_id' })
+  media_id?: string;
 }

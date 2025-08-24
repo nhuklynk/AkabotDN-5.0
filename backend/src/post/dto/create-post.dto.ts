@@ -99,4 +99,13 @@ export class CreatePostDto {
   @IsOptional()
   @IsEnum(Status)
   status?: Status;
+
+  @ApiProperty({
+    description: 'Media ID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    required: false
+  })
+  @IsOptional()
+  @IsUUID()
+  media_id?: string;
 }

@@ -8,9 +8,11 @@ import { Tag } from 'src/tag/entity/tag.entity';
 import { User } from '../user/entity/user.entity';
 import { Comment } from '../comment/entity/comment.entity';
 import { CommonModule } from '../common/common.module';
+import { StorageModule } from 'src/storage';
+import { MediaModule } from 'src/media/media.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule],
+  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule, StorageModule, MediaModule],
   controllers: [PostController],
   providers: [PostService],
   exports: [PostService],

@@ -12,6 +12,9 @@ import { Tag } from 'src/tag/entity/tag.entity';
 import { User } from '../user/entity/user.entity';
 import { Comment } from '../comment/entity/comment.entity';
 import { PostQueryDto } from './dto/post-query.dto';
+import { StorageService } from 'src/storage';
+import { MediaService } from 'src/media/media.service';
+import { MediaType } from 'src/media/entity/media.entity';
 
 @Injectable()
 export class PostService {
@@ -22,14 +25,11 @@ export class PostService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(Tag)
     private tagRepository: Repository<Tag>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(Comment)
-    private commentRepository: Repository<Comment>,
+    private storageService: StorageService,
+    private mediaService: MediaService,
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<PostResponseDto> {
-    // Check if post with slug already exists
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostDto.slug },
     });
@@ -43,19 +43,16 @@ export class PostService {
       // user: { id: createPostDto.user_id },
     });
 
-    // Handle categories
     if (createPostDto.category_ids?.length) {
       const categories = await this.categoryRepository.findBy({ id: In(createPostDto.category_ids) });
       post.categories = categories;
     }
 
-    // Handle tags
     if (createPostDto.tag_ids?.length) {
       const tags = await this.tagRepository.findBy({ id: In(createPostDto.tag_ids) });
       post.tags = tags;
     }
 
-    // Set published date if status is published
     if (createPostDto.post_status === PostStatus.PUBLISHED) {
       post.published_at = new Date();
     }
@@ -65,7 +62,6 @@ export class PostService {
   }
 
   async createWithFormdata(createPostFormdataDto: CreatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
-    // Check if post with slug already exists
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostFormdataDto.slug },
     });
@@ -73,11 +69,9 @@ export class PostService {
     if (existingPost) {
       throw new ConflictException('Post with this slug already exists');
     }
-
-    // Convert formdata to CreatePostDto format
+    
     const createPostDto: CreatePostDto = {
       ...createPostFormdataDto,
-      // Convert comma-separated strings to arrays
       category_ids: createPostFormdataDto.category_ids ? 
         createPostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
         undefined,
@@ -85,26 +79,11 @@ export class PostService {
         createPostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
         undefined,
     };
-
-    // Handle featured image if provided
     if (featuredImage) {
-      // Here you would typically:
-      // 1. Save the file to your storage (local disk, cloud storage, etc.)
-      // 2. Generate a unique filename
-      // 3. Store the file path/URL in the database
-      // For now, we'll just log the file info
-      console.log('Featured image received:', {
-        originalname: featuredImage.originalname,
-        mimetype: featuredImage.mimetype,
-        size: featuredImage.size
-      });
-      
-      // You can add logic here to save the file and get the path
-      // const imagePath = await this.saveImage(featuredImage);
-      // createPostDto.primary_media_id = imagePath;
+      const media = await this.uploadFeaturedImage(featuredImage);
+      createPostDto.media_id = media.id;
     }
 
-    // Use the existing create method
     return this.create(createPostDto);
   }
 
@@ -259,6 +238,14 @@ export class PostService {
     return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
   }
 
+  async updateWithFile(id: string, updatePostDto: UpdatePostDto, featuredImage?: any): Promise<PostResponseDto> {
+    if (featuredImage) {
+      const media = await this.uploadFeaturedImage(featuredImage);
+      updatePostDto.media_id = media.id;
+    }
+    return this.update(id, updatePostDto);
+  }
+
   async update(id: string, updatePostDto: UpdatePostDto): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { id: id },
@@ -269,18 +256,6 @@ export class PostService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
-    // Check if slug is being updated and if it already exists
-    if (updatePostDto.slug && updatePostDto.slug !== post.slug) {
-      const existingPost = await this.postRepository.findOne({
-        where: { slug: updatePostDto.slug },
-      });
-
-      if (existingPost) {
-        throw new ConflictException('Post with this slug already exists');
-      }
-    }
-
-    // Handle categories
     if (updatePostDto.category_ids) {
       const categories = await this.categoryRepository.findBy({ id: In(updatePostDto.category_ids) });
       post.categories = categories;
@@ -335,5 +310,24 @@ export class PostService {
       .getMany();
 
     return posts.map(post => plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }));
+  }
+
+  async uploadFeaturedImage(featuredImage: any) {
+    const filePath = await this.storageService.uploadFile({
+      bucket: 'akabotdn',
+      file: featuredImage.buffer,
+      fileName: featuredImage.originalname,
+      fileSize: featuredImage.size,
+      contentType: featuredImage.mimetype,
+      scope: 'posts'
+    });
+    const media = await this.mediaService.create({
+      file_name: featuredImage.originalname,
+      file_path: filePath,
+      mime_type: featuredImage.mimetype,
+      file_size: featuredImage.size,
+      media_type: MediaType.POST,
+    });
+    return media;
   }
 }

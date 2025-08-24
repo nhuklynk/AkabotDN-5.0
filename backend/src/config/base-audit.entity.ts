@@ -16,6 +16,7 @@ export enum Status {
   DRAFT = 'draft',
   PUBLISHED = 'published',
   ARCHIVED = 'archived',
+  PENDING = 'pending',
 }
 
 export abstract class BaseAuditEntity {
