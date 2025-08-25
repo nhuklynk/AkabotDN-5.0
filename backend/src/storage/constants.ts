@@ -1,0 +1,2 @@
+export const AWS_S3_CLIENT = 'AWS_S3_CLIENT';
+export const STORAGE_OPTIONS = 'STORAGE_OPTIONS';
