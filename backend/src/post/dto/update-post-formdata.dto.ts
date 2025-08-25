@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsDateString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
 
@@ -88,4 +88,11 @@ export class UpdatePostFormdataDto {
   @IsDateString()
   published_at?: string;
 
+  @ApiProperty({
+    description: 'User ID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    required: true
+  })
+  @IsUUID()
+  user_id: string;
 }
