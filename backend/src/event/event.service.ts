@@ -14,6 +14,7 @@ import { EventQueryDto } from './dto/event-query.dto';
 import { EventResponseDto } from './dto/event-response.dto';
 import { PaginatedData } from '../common/interfaces/api-response.interface';
 import { Status } from '../config/base-audit.entity';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class EventService {
@@ -69,7 +70,7 @@ export class EventService {
     }
 
     const savedEvent = await this.eventRepository.save(event);
-    return this.findOne(savedEvent.id);
+    return plainToClass(EventResponseDto, savedEvent, { excludeExtraneousValues: true });
   }
 
   async findAll(queryDto: EventQueryDto): Promise<PaginatedData<EventResponseDto>> {
@@ -87,26 +88,26 @@ export class EventService {
     } = queryDto;
     
     const skip = (page - 1) * limit;
-
+  
     const queryBuilder = this.eventRepository
       .createQueryBuilder('event')
       .leftJoinAndSelect('event.tags', 'tag')
       .leftJoinAndSelect('event.categories', 'category')
       .where('event.status = :status', { status: Status.ACTIVE });
-
+  
     // Apply filters
     if (title) {
-      queryBuilder.andWhere('event.title ILIKE :title', { title: `%${title}%` });
+      queryBuilder.andWhere('LOWER(event.title) LIKE LOWER(:title)', { title: `%${title}%` });
     }
-
+  
     if (location) {
-      queryBuilder.andWhere('event.location ILIKE :location', { location: `%${location}%` });
+      queryBuilder.andWhere('LOWER(event.location) LIKE LOWER(:location)', { location: `%${location}%` });
     }
-
+  
     if (public_status) {
       queryBuilder.andWhere('event.public_status = :public_status', { public_status });
     }
-
+  
     if (start_date && end_date) {
       queryBuilder.andWhere('event.start_time BETWEEN :start_date AND :end_date', {
         start_date,
@@ -117,36 +118,36 @@ export class EventService {
     } else if (end_date) {
       queryBuilder.andWhere('event.start_time <= :end_date', { end_date });
     }
-
+  
     if (tag_id) {
       queryBuilder.andWhere('tag.id = :tag_id', { tag_id });
     }
-
+  
     if (category_id) {
       queryBuilder.andWhere('category.id = :category_id', { category_id });
     }
-
+  
     if (countdown_enabled !== undefined) {
       queryBuilder.andWhere('event.countdown_enabled = :countdown_enabled', { countdown_enabled });
     }
-
+  
     // Add pagination and ordering
     queryBuilder
       .orderBy('event.start_time', 'DESC')
       .skip(skip)
       .take(limit);
-
+  
     const [items, total] = await queryBuilder.getManyAndCount();
     const totalPages = Math.ceil(total / limit);
-
+  
     return {
-      items: items.map(item => this.mapToResponseDto(item)),
+      items: items.map(item => plainToClass(EventResponseDto, item, { excludeExtraneousValues: true })),
       total,
       page,
       limit,
       totalPages,
     };
-  }
+  }  
 
   async findOne(id: string): Promise<EventResponseDto> {
     const event = await this.eventRepository.findOne({
@@ -158,7 +159,7 @@ export class EventService {
       throw new NotFoundException(`Event with ID ${id} not found`);
     }
 
-    return this.mapToResponseDto(event);
+    return plainToClass(EventResponseDto, event, { excludeExtraneousValues: true });
   }
 
   async update(id: string, updateEventDto: UpdateEventDto): Promise<EventResponseDto> {
@@ -215,41 +216,18 @@ export class EventService {
     await this.eventRepository.update(id, eventUpdateData);
     
     // Save the event with updated relations
-    await this.eventRepository.save(event);
-    
-    return this.findOne(id);
+    const updatedEvent = await this.eventRepository.save(event);
+    return plainToClass(EventResponseDto, updatedEvent, { excludeExtraneousValues: true });
   }
 
   async remove(id: string): Promise<void> {
     const event = await this.eventRepository.findOne({
       where: { id, status: Status.ACTIVE },
     });
-    
+
     if (event) {
       event.status = Status.INACTIVE;
       await this.eventRepository.save(event);
     }
-  }
-
-  private mapToResponseDto(event: Event): EventResponseDto {
-    return {
-      id: event.id,
-      title: event.title,
-      slug: event.slug,
-      description: event.description,
-      location: event.location,
-      start_time: event.start_time,
-      end_time: event.end_time,
-      thumbnail_url_id: event.thumbnail_url_id,
-      countdown_enabled: event.countdown_enabled,
-      public_status: event.public_status,
-      tags: event.tags ? event.tags.map(tag => ({ id: tag.id, name: tag.name })) : [],
-      categories: event.categories ? event.categories.map(category => ({ id: category.id, name: category.name })) : [],
-      status: event.status,
-      created_at: event.created_at,
-      created_by: event.created_by,
-      modified_at: event.modified_at,
-      modified_by: event.modified_by,
-    };
   }
 }

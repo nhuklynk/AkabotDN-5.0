@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, IsNull, Like } from 'typeorm';
+import { Repository, IsNull, Like, Raw } from 'typeorm';
 import { CreateFaqDto } from './dto/create-faq.dto';
 import { UpdateFaqDto } from './dto/update-faq.dto';
 import { FaqResponseDto } from './dto/faq-response.dto';
@@ -21,14 +21,21 @@ export class FaqService {
   async create(createFaqDto: CreateFaqDto): Promise<FaqResponseDto> {
     const faq = this.faqRepository.create(createFaqDto);
     const savedFaq = await this.faqRepository.save(faq);
-    return this.findOne(savedFaq.id);
+    return plainToClass(FaqResponseDto, savedFaq, { excludeExtraneousValues: true });
   }
 
-  async searchAndPaginate(query: FaqQueryDto): Promise<PaginatedData<FaqResponseDto>> {
-    const { skip, take, page, limit } = this.paginationService.createPaginationOptions(query);
-    
-    const whereCondition = query.search 
-      ? { content: Like(`%${query.search}%`) }
+  async searchAndPaginate(
+    query: FaqQueryDto,
+  ): Promise<PaginatedData<FaqResponseDto>> {
+    const { skip, take, page, limit } =
+      this.paginationService.createPaginationOptions(query);
+
+    const whereCondition = query.search
+      ? {
+          content: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:search)`, {
+            search: `%${query.search}%`,
+          }),
+        }
       : {};
 
     const [faqs, total] = await this.faqRepository.findAndCount({
@@ -38,8 +45,8 @@ export class FaqService {
       order: { created_at: 'DESC' },
     });
 
-    const responseDtos = faqs.map(faq => 
-      plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true })
+    const responseDtos = faqs.map((faq) =>
+      plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true }),
     );
 
     return this.paginationService.createPaginatedResponse(
@@ -62,7 +69,10 @@ export class FaqService {
     return plainToClass(FaqResponseDto, faq, { excludeExtraneousValues: true });
   }
 
-  async update(id: string, updateFaqDto: UpdateFaqDto): Promise<FaqResponseDto> {
+  async update(
+    id: string,
+    updateFaqDto: UpdateFaqDto,
+  ): Promise<FaqResponseDto> {
     const faq = await this.faqRepository.findOne({
       where: { id: id },
     });
@@ -71,8 +81,8 @@ export class FaqService {
       throw new NotFoundException(`FAQ with ID ${id} not found`);
     }
 
-    await this.faqRepository.update(id, updateFaqDto);
-    return this.findOne(id);
+    const updatedFaq = await this.faqRepository.update(id, updateFaqDto);
+    return plainToClass(FaqResponseDto, updatedFaq, { excludeExtraneousValues: true });
   }
 
   async remove(id: string): Promise<void> {

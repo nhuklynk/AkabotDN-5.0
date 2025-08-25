@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { MediaService } from './media.service';
 import { CreateMediaDto } from './dto/create-media.dto';
@@ -23,6 +24,8 @@ import {
   ApiBody,
   ApiQuery,
 } from '@nestjs/swagger';
+import { MediaQueryDto } from './dto/media-query.dto';
+import { PaginatedData } from 'src/common/interfaces/api-response.interface';
 
 // Helper function to validate UUID
 function validateUUID(uuid: string): boolean {
@@ -42,8 +45,8 @@ export class MediaController {
     description: 'List of all media files',
     type: [MediaResponseDto],
   })
-  async findAll(): Promise<MediaResponseDto[]> {
-    return this.mediaService.findAll();
+  async findAll(@Query() query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
+    return this.mediaService.findAll(query);
   }
 
   @Get(':id')

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, ILike, IsNull } from 'typeorm';
 import { Category } from './entity/category.entity';
@@ -16,8 +20,10 @@ export class CategoryService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto): Promise<CategoryResponseDto> {
-    // Check if category with slug already exists
+  async create(
+    createCategoryDto: CreateCategoryDto,
+  ): Promise<CategoryResponseDto> {
+    // Check slug duplicate
     const existingCategory = await this.categoryRepository.findOne({
       where: { slug: createCategoryDto.slug },
     });
@@ -26,40 +32,81 @@ export class CategoryService {
       throw new ConflictException('Category with this slug already exists');
     }
 
-    const category = this.categoryRepository.create(createCategoryDto);
+    let parentCategory: Category | null = null;
+
+    if (createCategoryDto.parent_id) {
+      parentCategory = await this.categoryRepository.findOne({
+        where: { id: createCategoryDto.parent_id },
+      });
+
+      if (!parentCategory) {
+        throw new NotFoundException(
+          `Parent category with ID ${createCategoryDto.parent_id} not found`,
+        );
+      }
+    }
+
+    // Tạo entity
+    const category = this.categoryRepository.create({
+      name: createCategoryDto.name,
+      slug: createCategoryDto.slug,
+      description: createCategoryDto.description,
+      parent: parentCategory,
+    });
+
     const savedCategory = await this.categoryRepository.save(category);
     return this.findOne(savedCategory.id);
   }
 
-  async findPaginated(skip: number, take: number): Promise<[CategoryResponseDto[], number]> {
+  async findPaginated(
+    skip: number,
+    take: number,
+  ): Promise<[CategoryResponseDto[], number]> {
     const [categories, total] = await this.categoryRepository.findAndCount({
       skip,
       take,
       order: { created_at: 'DESC' },
     });
 
-    const categoryDtos = categories.map(category => 
-      plainToClass(CategoryResponseDto, category, { excludeExtraneousValues: true })
+    const categoryDtos = categories.map((category) =>
+      plainToClass(CategoryResponseDto, category, {
+        excludeExtraneousValues: true,
+      }),
     );
 
     return [categoryDtos, total];
   }
 
-  async findFilteredAndPaginated(query: CategoryQueryDto): Promise<[CategoryResponseDto[], number]> {
-    const { page = 1, limit = 10, name, slug, parentId, status, search } = query;
+  async findFilteredAndPaginated(
+    query: CategoryQueryDto,
+  ): Promise<[CategoryResponseDto[], number]> {
+    const {
+      page = 1,
+      limit = 10,
+      name,
+      slug,
+      parentId,
+      status,
+      search,
+    } = query;
     const skip = (page - 1) * limit;
 
     // Build query builder for search functionality
-    const queryBuilder = this.categoryRepository.createQueryBuilder('category')
+    const queryBuilder = this.categoryRepository
+      .createQueryBuilder('category')
       .leftJoinAndSelect('category.parent', 'parent');
 
     // Add where conditions
     if (name) {
-      queryBuilder.andWhere('category.name ILIKE :name', { name: `%${name}%` });
+      queryBuilder.andWhere('LOWER(category.name) LIKE LOWER(:name)', {
+        name: `%${name}%`,
+      });
     }
 
     if (slug) {
-      queryBuilder.andWhere('category.slug ILIKE :slug', { slug: `%${slug}%` });
+      queryBuilder.andWhere('LOWER(category.slug) LIKE LOWER(:slug)', {
+        slug: `%${slug}%`,
+      });
     }
 
     if (parentId) {
@@ -73,21 +120,20 @@ export class CategoryService {
     // Add search functionality
     if (search) {
       queryBuilder.andWhere(
-        '(category.name ILIKE :search OR category.description ILIKE :search OR category.slug ILIKE :search)',
-        { search: `%${search}%` }
+        '(LOWER(category.name) LIKE LOWER(:search) OR LOWER(category.description) LIKE LOWER(:search) OR LOWER(category.slug) LIKE LOWER(:search))',
+        { search: `%${search}%` },
       );
     }
 
     // Add pagination and ordering
-    queryBuilder
-      .skip(skip)
-      .take(limit)
-      .orderBy('category.created_at', 'DESC');
+    queryBuilder.skip(skip).take(limit).orderBy('category.created_at', 'DESC');
 
     const [categories, total] = await queryBuilder.getManyAndCount();
 
-    const categoryDtos = categories.map(category => 
-      plainToClass(CategoryResponseDto, category, { excludeExtraneousValues: true })
+    const categoryDtos = categories.map((category) =>
+      plainToClass(CategoryResponseDto, category, {
+        excludeExtraneousValues: true,
+      }),
     );
 
     return [categoryDtos, total];
@@ -102,7 +148,9 @@ export class CategoryService {
       throw new NotFoundException(`Category with ID ${id} not found`);
     }
 
-    return plainToClass(CategoryResponseDto, category, { excludeExtraneousValues: true });
+    return plainToClass(CategoryResponseDto, category, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findBySlug(slug: string): Promise<CategoryResponseDto> {
@@ -114,19 +162,25 @@ export class CategoryService {
       throw new NotFoundException(`Category with slug ${slug} not found`);
     }
 
-    return plainToClass(CategoryResponseDto, category, { excludeExtraneousValues: true });
+    return plainToClass(CategoryResponseDto, category, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto): Promise<CategoryResponseDto> {
+  async update(
+    id: string,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<CategoryResponseDto> {
     const category = await this.categoryRepository.findOne({
-      where: { id: id },
+      where: { id },
+      relations: ['parent'],
     });
 
     if (!category) {
       throw new NotFoundException(`Category with ID ${id} not found`);
     }
 
-    // Check if slug is being updated and if it already exists
+    // Check slug duplicate
     if (updateCategoryDto.slug && updateCategoryDto.slug !== category.slug) {
       const existingCategory = await this.categoryRepository.findOne({
         where: { slug: updateCategoryDto.slug },
@@ -137,8 +191,41 @@ export class CategoryService {
       }
     }
 
-    await this.categoryRepository.update(id, updateCategoryDto);
-    return this.findOne(id);
+    // Handle parent_id update (chỉ khi client có gửi parent_id)
+    if (updateCategoryDto.parent_id !== undefined) {
+      if (updateCategoryDto.parent_id === id) {
+        throw new ConflictException('A category cannot be its own parent');
+      }
+
+      if (updateCategoryDto.parent_id) {
+        const parentCategory = await this.categoryRepository.findOne({
+          where: { id: updateCategoryDto.parent_id },
+        });
+
+        if (!parentCategory) {
+          throw new NotFoundException(
+            `Parent category with ID ${updateCategoryDto.parent_id} not found`,
+          );
+        }
+
+        category.parent = parentCategory;
+      } else {
+        // Trường hợp client gửi null => bỏ quan hệ cha
+        category.parent = null;
+      }
+    }
+
+    // Update các field còn lại
+    Object.assign(category, {
+      name: updateCategoryDto.name ?? category.name,
+      slug: updateCategoryDto.slug ?? category.slug,
+      description: updateCategoryDto.description ?? category.description,
+    });
+
+    const savedCategory = await this.categoryRepository.save(category);
+    return plainToClass(CategoryResponseDto, savedCategory, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async remove(id: string): Promise<void> {
@@ -156,8 +243,10 @@ export class CategoryService {
       where: { parent: IsNull() },
       order: { created_at: 'DESC' },
     });
-    return categories.map(category => plainToClass(CategoryResponseDto, category, { excludeExtraneousValues: true }));
+    return categories.map((category) =>
+      plainToClass(CategoryResponseDto, category, {
+        excludeExtraneousValues: true,
+      }),
+    );
   }
 }
-
-

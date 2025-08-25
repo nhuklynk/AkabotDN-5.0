@@ -35,39 +35,31 @@ export class PartnerService {
 
   async searchAndPaginate(query: PartnerQueryDto): Promise<PaginatedData<PartnerResponseDto>> {
     const { skip, take, page, limit } = this.paginationService.createPaginationOptions(query);
-    
-    let whereCondition: any = {};
-    
+  
+    const qb = this.partnerRepository
+      .createQueryBuilder('partner')
+      .orderBy('partner.sort_order', 'ASC')
+      .addOrderBy('partner.created_at', 'DESC')
+      .skip(skip)
+      .take(take);
+  
     if (query.search) {
-      whereCondition = [
-        { name: Like(`%${query.search}%`) },
-        { description: Like(`%${query.search}%`) }
-      ];
+      qb.andWhere(
+        '(LOWER(partner.name) LIKE LOWER(:search) OR LOWER(partner.description) LIKE LOWER(:search))',
+        { search: `%${query.search}%` }
+      );
     }
-    
+  
     if (query.partner_type) {
-      if (query.search) {
-        // If both search and partner_type are provided, we need to combine them
-        whereCondition = whereCondition.map(condition => ({
-          ...condition,
-          partner_type: query.partner_type
-        }));
-      } else {
-        whereCondition = { partner_type: query.partner_type };
-      }
+      qb.andWhere('partner.partner_type = :partner_type', { partner_type: query.partner_type });
     }
-
-    const [partners, total] = await this.partnerRepository.findAndCount({
-      where: Object.keys(whereCondition).length > 0 ? whereCondition : {},
-      skip,
-      take,
-      order: { sort_order: 'ASC', created_at: 'DESC' },
-    });
-
-    const responseDtos = partners.map(partner => 
-      plainToClass(PartnerResponseDto, partner, { excludeExtraneousValues: true })
+  
+    const [partners, total] = await qb.getManyAndCount();
+  
+    const responseDtos = partners.map(p =>
+      plainToClass(PartnerResponseDto, p, { excludeExtraneousValues: true })
     );
-
+  
     return this.paginationService.createPaginatedResponse(
       responseDtos,
       total,
