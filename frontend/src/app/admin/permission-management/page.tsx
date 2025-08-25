@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useLocale } from "@/hooks/useLocale";
 
 type Permission = {
   key: string;
@@ -25,6 +26,7 @@ const ALL_PERMISSIONS: Permission[] = [
 ];
 
 export default function PermissionManagementPage() {
+  const { t } = useLocale();
   const [roles, setRoles] = useState<Role[]>([
     {
       name: "Admin",
@@ -95,8 +97,8 @@ export default function PermissionManagementPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Phân quyền</h1>
-        <p className="text-muted-foreground">Quản lý vai trò và quyền hạn cho người dùng.</p>
+        <h1 className="text-3xl font-bold text-foreground">{t("permission.title")}</h1>
+        <p className="text-muted-foreground">{t("permission.subtitle")}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -104,15 +106,15 @@ export default function PermissionManagementPage() {
           <Card key={role.name}>
             <CardHeader className="space-y-1">
               <CardTitle>{role.name}</CardTitle>
-              <CardDescription>Gán quyền cho vai trò này</CardDescription>
+              <CardDescription>{t("permission.assign")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => setAllForRole(roleIndex, true)}>
-                  Chọn tất cả
+                  {t("permission.selectAll")}
                 </Button>
                 <Button size="sm" variant="outline" onClick={() => setAllForRole(roleIndex, false)}>
-                  Bỏ chọn
+                  {t("permission.unselect")}
                 </Button>
               </div>
 

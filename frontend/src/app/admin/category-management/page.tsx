@@ -21,6 +21,7 @@ import {
   Search,
 } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
+import { useLocale } from "@/hooks/useLocale";
 
 // Mock data for categories
 const initialCategories = [
@@ -116,6 +117,7 @@ const colorOptions = [
 ];
 
 export default function CategoriesPage() {
+  const { t } = useLocale();
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -252,19 +254,15 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">
-            Quản lý danh mục
-          </h1>
-          <p className="text-muted-foreground">
-            Tổ chức nội dung theo cấu trúc danh mục và thẻ.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">{t("category.title")}</h1>
+          <p className="text-muted-foreground">{t("category.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
           onClick={() => setIsCreateDialogOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          Thêm danh mục
+          {t("category.add")}
         </Button>
         <CategoryFormDialog
           open={isCreateDialogOpen}
@@ -287,7 +285,7 @@ export default function CategoriesPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Tìm kiếm danh mục..."
+                placeholder={t("category.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -295,16 +293,16 @@ export default function CategoriesPage() {
             </div>
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Lọc theo trạng thái" />
+                <SelectValue placeholder={t("category.filterByStatus")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tất cả</SelectItem>
-                <SelectItem value="active">Hoạt động</SelectItem>
-                <SelectItem value="inactive">Ngưng hoạt động</SelectItem>
+                <SelectItem value="all">{t("category.all")}</SelectItem>
+                <SelectItem value="active">{t("category.active")}</SelectItem>
+                <SelectItem value="inactive">{t("category.inactive")}</SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">
-              {filteredCategories.length} / {categories.length} danh mục
+              {t("category.countSummary", { filtered: filteredCategories.length, total: categories.length })}
             </div>
           </div>
 

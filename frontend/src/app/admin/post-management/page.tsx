@@ -21,6 +21,7 @@ import {
 } from "@/services/admin/moderationService";
 import { classifyContent } from "@/services/admin/classifierService";
 import PostFormDialog from "./component/post-form-dialog";
+import { useLocale } from "@/hooks/useLocale";
 
 // Mock data for posts
 const initialPosts = [
@@ -123,6 +124,22 @@ type Post = {
   createdAt: string;
   views: number;
   likes: number;
+  // new fields
+  allowComments?: boolean;
+  isFeatured?: boolean;
+  requireLogin?: boolean;
+  postType?: string; // article, news, event, guide...
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    openGraph?: {
+      title?: string;
+      description?: string;
+      image?: string;
+    };
+  };
+  statusHistory?: { status: string; at: string; by?: string; note?: string }[];
 };
 
 // Mock categories and authors for dropdowns
@@ -142,24 +159,27 @@ const authors = [
 ];
 
 export default function PostsPage() {
+  const { t } = useLocale();
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [filterPostType, setFilterPostType] = useState("all");
+  const [filterTag, setFilterTag] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    excerpt: "",
+    summary: "",
     content: "",
-    status: "draft",
-    authorId: 1,
-    categoryId: 1,
-    featuredImage: "",
-    tags: "",
-    publishedAt: "",
+    status: "active",
+    user_id: 1,
+    media_id: "" as number | "",
+    post_status: "draft",
+    published_at: "",
+    post_type: "article",
   });
   const [progress, setProgress] = useState(0);
   const [badTitleWords, setBadTitleWords] = useState<string[]>([]);
@@ -176,7 +196,9 @@ export default function PostsPage() {
       filterStatus === "all" || post.status === filterStatus;
     const matchesCategory =
       filterCategory === "all" || post.categoryId.toString() === filterCategory;
-    return matchesSearch && matchesStatus && matchesCategory;
+    const matchesType = filterPostType === "all" || post.postType === filterPostType;
+    const matchesTag = !filterTag || post.tags.map((t) => t.toLowerCase()).includes(filterTag.toLowerCase());
+    return matchesSearch && matchesStatus && matchesCategory && matchesType && matchesTag;
   });
 
   // Pagination
@@ -209,7 +231,7 @@ export default function PostsPage() {
     const category = categories.find((c) => c.id === formData.categoryId);
 
     // Moderator Agent: block unsafe
-    const textForCheck = `${formData.title}\n${formData.excerpt}\n${formData.content}`;
+    const textForCheck = `${formData.title}\n${formData.summary}\n${formData.content}`;
     const moderation = await moderateContent(textForCheck);
     if (!moderation.isSafe) {
       alert(
@@ -222,46 +244,44 @@ export default function PostsPage() {
 
     // Classifier Agent: infer labels (append to tags if missing)
     const classification = await classifyContent(textForCheck);
-    const extraTags = (classification.labels || [])
-      .filter((l) => l && !formData.tags.includes(l))
-      .join(", ");
 
     const newPost: Post = {
       id: Math.max(...posts.map((p) => p.id)) + 1,
       title: formData.title,
       slug: formData.slug || generateSlug(formData.title),
-      excerpt: formData.excerpt,
+      excerpt: formData.summary,
       content: formData.content,
-      status: formData.status,
+      status: formData.post_status,
       author: author?.name || "Unknown",
-      authorId: formData.authorId,
+      authorId: formData.user_id,
       category: category?.name || "Uncategorized",
-      categoryId: formData.categoryId,
-      featuredImage: formData.featuredImage || "/blog-post-concept.png",
-      tags: (formData.tags + (extraTags ? `, ${extraTags}` : ""))
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-      publishedAt:
-        formData.status === "published"
-          ? new Date().toISOString().split("T")[0]
-          : formData.publishedAt || null,
+      categoryId: 0,
+      featuredImage: "/blog-post-concept.png",
+      tags: (classification.labels || []) as string[],
+      publishedAt: formData.published_at || null,
       createdAt: new Date().toISOString().split("T")[0],
       views: 0,
       likes: 0,
+      postType: formData.post_type,
+      statusHistory: [
+        { status: "draft", at: new Date().toISOString(), by: "system" },
+        formData.post_status !== "draft"
+          ? { status: formData.post_status, at: new Date().toISOString(), by: "system" }
+          : undefined,
+      ].filter(Boolean) as { status: string; at: string; by?: string; note?: string }[],
     };
     setPosts([...posts, newPost]);
     setFormData({
       title: "",
       slug: "",
-      excerpt: "",
+      summary: "",
       content: "",
-      status: "draft",
-      authorId: 1,
-      categoryId: 1,
-      featuredImage: "",
-      tags: "",
-      publishedAt: "",
+      status: "active",
+      user_id: 1,
+      media_id: "",
+      post_status: "draft",
+      published_at: "",
+      post_type: "article",
     });
     setIsCreateDialogOpen(false);
   };
@@ -271,14 +291,14 @@ export default function PostsPage() {
     setFormData({
       title: post.title,
       slug: post.slug,
-      excerpt: post.excerpt,
+      summary: post.excerpt,
       content: post.content,
-      status: post.status,
-      authorId: post.authorId,
-      categoryId: post.categoryId,
-      featuredImage: post.featuredImage,
-      tags: post.tags.join(", "),
-      publishedAt: post.publishedAt || "",
+      status: "active",
+      user_id: post.authorId,
+      media_id: "",
+      post_status: post.status,
+      published_at: post.publishedAt || "",
+      post_type: post.postType || "article",
     });
     setIsEditDialogOpen(true);
   };
@@ -288,7 +308,7 @@ export default function PostsPage() {
       const author = authors.find((a) => a.id === formData.authorId);
       const category = categories.find((c) => c.id === formData.categoryId);
 
-      const textForCheck = `${formData.title}\n${formData.excerpt}\n${formData.content}`;
+      const textForCheck = `${formData.title}\n${formData.summary}\n${formData.content}`;
       const moderation = await moderateContent(textForCheck);
       if (!moderation.isSafe) {
         alert(
@@ -300,9 +320,6 @@ export default function PostsPage() {
       }
 
       const classification = await classifyContent(textForCheck);
-      const extraTags = (classification.labels || [])
-        .filter((l) => l && !formData.tags.includes(l))
-        .join(", ");
 
       setPosts(
         posts.map((post) =>
@@ -311,22 +328,23 @@ export default function PostsPage() {
                 ...post,
                 title: formData.title,
                 slug: formData.slug || generateSlug(formData.title),
-                excerpt: formData.excerpt,
+                excerpt: formData.summary,
                 content: formData.content,
-                status: formData.status,
+                status: formData.post_status,
                 author: author?.name || "Unknown",
-                authorId: formData.authorId,
+                authorId: formData.user_id,
                 category: category?.name || "Uncategorized",
-                categoryId: formData.categoryId,
-                featuredImage: formData.featuredImage,
-                tags: formData.tags
-                  .split(",")
-                  .map((tag) => tag.trim())
-                  .filter(Boolean),
-                publishedAt:
-                  formData.status === "published" && !post.publishedAt
-                    ? new Date().toISOString().split("T")[0]
-                    : formData.publishedAt || post.publishedAt,
+                categoryId: 0,
+                featuredImage: post.featuredImage,
+                tags: classification.labels || post.tags,
+                publishedAt: formData.published_at || post.publishedAt,
+                postType: formData.post_type,
+                statusHistory: [
+                  ...(post.statusHistory || []),
+                  post.status !== formData.post_status
+                    ? { status: formData.post_status, at: new Date().toISOString(), by: "system" }
+                    : undefined,
+                ].filter(Boolean) as { status: string; at: string; by?: string; note?: string }[],
               }
             : post
         )
@@ -336,14 +354,14 @@ export default function PostsPage() {
       setFormData({
         title: "",
         slug: "",
-        excerpt: "",
+        summary: "",
         content: "",
-        status: "draft",
-        authorId: 1,
-        categoryId: 1,
-        featuredImage: "",
-        tags: "",
-        publishedAt: "",
+        status: "active",
+        user_id: 1,
+        media_id: "",
+        post_status: "draft",
+        published_at: "",
+        post_type: "article",
       });
     }
   };
@@ -367,19 +385,15 @@ export default function PostsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">
-            Quản lý bài viết
-          </h1>
-          <p className="text-muted-foreground">
-            Tạo, chỉnh sửa và quản lý các bài viết.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">{t("post.title")}</h1>
+          <p className="text-muted-foreground">{t("post.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
           onClick={() => setIsCreateDialogOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          Tạo bài viết
+          {t("post.add")}
         </Button>
         <PostFormDialog
           open={isCreateDialogOpen}
@@ -403,7 +417,7 @@ export default function PostsPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Tìm kiếm bài viết..."
+                placeholder={t("post.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -414,10 +428,14 @@ export default function PostsPage() {
               setFilterStatus={setFilterStatus}
               filterCategory={filterCategory}
               setFilterCategory={setFilterCategory}
+              filterPostType={filterPostType}
+              setFilterPostType={setFilterPostType}
+              filterTag={filterTag}
+              setFilterTag={setFilterTag}
               categories={categories}
             />
             <div className="text-sm text-muted-foreground">
-              {filteredPosts.length} / {posts.length} bài viết
+              {t("post.countSummary", { filtered: filteredPosts.length, total: posts.length })}
             </div>
           </div>
 
@@ -450,6 +468,7 @@ export default function PostsPage() {
           setFormData({ ...formData, title, slug: generateSlug(title) })
         }
         mode="edit"
+        statusHistory={editingPost?.statusHistory}
       />
     </div>
   );

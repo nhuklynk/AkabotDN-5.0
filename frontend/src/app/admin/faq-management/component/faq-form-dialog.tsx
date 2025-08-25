@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import RichTextEditor from "@/components/ui/rich-text-editor"
+import { useLocale } from "@/hooks/useLocale"
 
 type Data = { question: string; answer: string; category: string }
 
@@ -24,12 +25,13 @@ export default function FaqFormDialog({
   mode: "create" | "edit"
 }) {
   const isCreate = mode === "create"
+  const { t } = useLocale()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{isCreate ? "Thêm FAQ" : "Chỉnh sửa FAQ"}</DialogTitle>
-          <DialogDescription>{isCreate ? "Nhập câu hỏi và câu trả lời." : "Cập nhật nội dung câu hỏi và trả lời."}</DialogDescription>
+          <DialogTitle>{isCreate ? t("faq.dialog.createTitle") : t("faq.dialog.editTitle")}</DialogTitle>
+          <DialogDescription>{isCreate ? t("faq.dialog.createDesc") : t("faq.dialog.editDesc")}</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div>
@@ -50,9 +52,9 @@ export default function FaqFormDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Hủy
+            {t("common.cancel")}
           </Button>
-          <Button onClick={onSubmit}>{isCreate ? "Thêm" : "Cập nhật"}</Button>
+          <Button onClick={onSubmit}>{isCreate ? t("faq.dialog.createCta") : t("faq.dialog.updateCta")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
