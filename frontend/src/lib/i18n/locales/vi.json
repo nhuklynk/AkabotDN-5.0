@@ -1,0 +1,287 @@
+{
+  "app": {
+    "title": "Hiệp hội Dữ liệu Quốc gia Việt Nam"
+  },
+  "nav": {
+    "dashboard": "Bảng điều khiển",
+    "admin": "Bảng quản trị"
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Bảng điều khiển",
+      "userManagement": "Quản lý người dùng",
+      "userAll": "Quản lý tất cả người dùng",
+      "userMembersExperts": "Quản lý hội viên, chuyên gia",
+      "resourceManagement": "Quản lý tài nguyên",
+      "categoryManagement": "Quản lý danh mục",
+      "postManagement": "Quản lý bài viết",
+      "eventManagement": "Quản lý sự kiện, hoạt động",
+      "faqManagement": "Quản lý FAQ",
+      "permissionManagement": "Phân quyền"
+    }
+  },
+  "common": {
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "cancel": "Hủy",
+    "areYouSure": "Bạn chắc chắn?",
+    "deleteWarning": "Thao tác này không thể hoàn tác.",
+    "deleteWarningLong": "Thao tác này không thể hoàn tác. Danh mục sẽ bị xóa vĩnh viễn và có thể ảnh hưởng đến nội dung liên quan.",
+    "preview": "Xem trước",
+    "view": "Xem",
+    "viewLive": "Xem trực tiếp"
+  },
+  "editor": {
+    "bold": "B",
+    "italic": "I",
+    "underline": "U",
+    "strike": "S",
+    "code": "</>",
+    "bulletList": "• List",
+    "orderedList": "1. List",
+    "h3": "H3",
+    "h2": "H2",
+    "h1": "H1",
+    "paragraph": "P",
+    "blockquote": "“Quote”",
+    "link": "Link",
+    "unlink": "Unlink",
+    "undo": "Undo",
+    "redo": "Redo",
+    "clear": "Clear",
+    "enterUrl": "Nhập URL"
+  },
+  "category": {
+    "title": "Quản lý danh mục",
+    "subtitle": "Tổ chức nội dung theo cấu trúc danh mục và thẻ.",
+    "add": "Thêm danh mục",
+    "searchPlaceholder": "Tìm kiếm danh mục...",
+    "filterByStatus": "Lọc theo trạng thái",
+    "all": "Tất cả",
+    "active": "Hoạt động",
+    "inactive": "Ngưng hoạt động",
+    "countSummary": "{{filtered}} / {{total}} danh mục",
+    "table": {
+      "category": "Danh mục",
+      "level": "Cấp",
+      "status": "Trạng thái",
+      "posts": "Bài viết",
+      "createdAt": "Tạo lúc",
+      "actions": "Thao tác",
+      "root": "Không có (Cấp gốc)"
+    },
+    "dialog": {
+      "createTitle": "Tạo danh mục mới",
+      "editTitle": "Chỉnh sửa danh mục",
+      "createDesc": "Thêm danh mục mới để tổ chức nội dung.",
+      "editDesc": "Cập nhật thông tin và cài đặt danh mục.",
+      "createCta": "Tạo danh mục",
+      "updateCta": "Cập nhật danh mục"
+    },
+    "form": {
+      "name": "Tên danh mục",
+      "namePlaceholder": "Nhập tên danh mục",
+      "slug": "Đường dẫn (slug)",
+      "parent": "Danh mục cha",
+      "parentPlaceholder": "Chọn danh mục cha",
+      "color": "Màu sắc",
+      "colorPlaceholder": "Chọn màu",
+      "status": "Trạng thái",
+      "statusPlaceholder": "Chọn trạng thái",
+      "description": "Mô tả"
+    }
+  }
+  ,
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "subtitle": "Tổng quan số liệu quản trị và thao tác nhanh.",
+    "stats": {
+      "users": { "title": "Tổng người dùng", "desc": "+12% so với tháng trước" },
+      "resources": { "title": "Tài nguyên", "desc": "+8% so với tháng trước" },
+      "categories": { "title": "Danh mục", "desc": "+3 mới tháng này" },
+      "posts": { "title": "Bài viết", "desc": "+18% so với tháng trước" }
+    },
+    "recent": {
+      "title": "Hoạt động gần đây",
+      "desc": "Các thao tác mới nhất trong bảng quản trị.",
+      "userRegistered": "Người dùng mới đăng ký",
+      "resourceUploaded": "Tải lên tài nguyên",
+      "categoryCreated": "Tạo danh mục",
+      "postPublished": "Xuất bản bài viết"
+    },
+    "quick": {
+      "title": "Thao tác nhanh",
+      "desc": "Các tác vụ thường dùng.",
+      "createPost": "Tạo bài viết mới",
+      "createPostDesc": "Thêm bài viết blog mới",
+      "addUser": "Thêm người dùng",
+      "addUserDesc": "Tạo tài khoản người dùng",
+      "upload": "Tải lên tài nguyên",
+      "uploadDesc": "Thêm tệp hoặc media mới"
+    }
+  },
+  "event": {
+    "title": "Quản lý sự kiện, hoạt động",
+    "subtitle": "Tạo, sửa, xóa và quản lý sự kiện/hoạt động.",
+    "add": "Thêm sự kiện",
+    "searchPlaceholder": "Tìm kiếm theo tiêu đề, nội dung, địa điểm...",
+    "dialog": {
+      "createTitle": "Tạo sự kiện/hoạt động",
+      "editTitle": "Chỉnh sửa sự kiện/hoạt động",
+      "createDesc": "Thêm mới sự kiện hoặc hoạt động.",
+      "editDesc": "Cập nhật thông tin sự kiện hoặc hoạt động.",
+      "createCta": "Tạo sự kiện",
+      "updateCta": "Cập nhật sự kiện"
+    }
+  },
+  "faq": {
+    "title": "Quản lý FAQ",
+    "subtitle": "Tạo, chỉnh sửa và quản lý các câu hỏi thường gặp.",
+    "add": "Thêm FAQ",
+    "searchPlaceholder": "Tìm kiếm...",
+    "countSummary": "{{filtered}} / {{total}} mục",
+    "table": {
+      "question": "Câu hỏi",
+      "category": "Danh mục",
+      "createdAt": "Tạo lúc",
+      "actions": "Thao tác"
+    },
+    "dialog": {
+      "createTitle": "Thêm FAQ",
+      "editTitle": "Chỉnh sửa FAQ",
+      "createDesc": "Nhập câu hỏi và câu trả lời.",
+      "editDesc": "Cập nhật nội dung câu hỏi và trả lời.",
+      "createCta": "Thêm",
+      "updateCta": "Cập nhật"
+    }
+  },
+  "permission": {
+    "title": "Phân quyền",
+    "subtitle": "Quản lý vai trò và quyền hạn cho người dùng.",
+    "assign": "Gán quyền cho vai trò này",
+    "selectAll": "Chọn tất cả",
+    "unselect": "Bỏ chọn"
+  },
+  "post": {
+    "title": "Quản lý bài viết",
+    "subtitle": "Tạo, chỉnh sửa và quản lý các bài viết.",
+    "add": "Tạo bài viết",
+    "searchPlaceholder": "Tìm kiếm bài viết...",
+    "countSummary": "{{filtered}} / {{total}} bài viết",
+    "table": {
+      "post": "Bài viết",
+      "author": "Tác giả",
+      "category": "Danh mục",
+      "status": "Trạng thái",
+      "published": "Xuất bản",
+      "views": "Lượt xem",
+      "actions": "Thao tác"
+    },
+    "dialog": {
+      "createTitle": "Tạo bài viết mới",
+      "editTitle": "Chỉnh sửa bài viết",
+      "createDesc": "Viết bài blog hoặc bài viết mới.",
+      "editDesc": "Cập nhật nội dung và cài đặt.",
+      "createCta": "Tạo bài viết",
+      "updateCta": "Cập nhật bài viết"
+    }
+  },
+  "resource": {
+    "title": "Quản lý tài nguyên",
+    "subtitle": "Quản lý tài sản số, tệp tin và nội dung đa phương tiện.",
+    "add": "Thêm tài nguyên",
+    "searchPlaceholder": "Tìm kiếm tài nguyên...",
+    "filterByType": "Lọc theo loại",
+    "all": "Tất cả",
+    "types": {
+      "document": "Tài liệu",
+      "image": "Hình ảnh",
+      "video": "Video",
+      "audio": "Âm thanh",
+      "archive": "Lưu trữ"
+    },
+    "countSummary": "{{filtered}} / {{total}} tài nguyên",
+    "download": "Tải xuống",
+    "table": {
+      "name": "Tên",
+      "filename": "Tên tệp",
+      "type": "Loại",
+      "category": "Danh mục",
+      "size": "Kích thước",
+      "uploadedBy": "Tải lên bởi",
+      "createdAt": "Tạo lúc",
+      "actions": "Thao tác"
+    },
+    "form": {
+      "name": "Tên tài nguyên",
+      "namePlaceholder": "Nhập tên tài nguyên",
+      "filename": "Tên tệp",
+      "filenamePlaceholder": "Nhập tên tệp",
+      "type": "Loại",
+      "typePlaceholder": "Chọn loại",
+      "category": "Danh mục",
+      "categoryPlaceholder": "Chọn danh mục",
+      "description": "Mô tả"
+    },
+    "categories": {
+      "general": "Chung",
+      "branding": "Thương hiệu",
+      "marketing": "Marketing",
+      "documentation": "Tài liệu",
+      "media": "Media"
+    },
+    "dialog": {
+      "createTitle": "Thêm tài nguyên mới",
+      "editTitle": "Chỉnh sửa tài nguyên",
+      "createDesc": "Tải lên tài nguyên hoặc tệp mới vào hệ thống.",
+      "editDesc": "Cập nhật thông tin và metadata của tài nguyên.",
+      "createCta": "Thêm tài nguyên",
+      "updateCta": "Cập nhật tài nguyên"
+    }
+  },
+  "user": {
+    "title": "Quản lý người dùng",
+    "subtitle": "Quản lý người dùng và quyền hạn.",
+    "add": "Thêm người dùng",
+    "searchPlaceholder": "Tìm kiếm người dùng...",
+    "countSummary": "{{filtered}} / {{total}} người dùng",
+    "table": {
+      "name": "Họ tên",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "createdAt": "Tạo lúc",
+      "actions": "Thao tác"
+    },
+    "dialog": {
+      "createTitle": "Tạo người dùng mới",
+      "editTitle": "Chỉnh sửa người dùng",
+      "createDesc": "Thêm người dùng mới với thông tin cơ bản.",
+      "editDesc": "Cập nhật thông tin và quyền hạn người dùng.",
+      "createCta": "Tạo người dùng",
+      "updateCta": "Cập nhật"
+    },
+    "form": {
+      "name": "Họ tên",
+      "namePlaceholder": "Nhập họ tên",
+      "email": "Email",
+      "emailPlaceholder": "Nhập địa chỉ email",
+      "role": "Vai trò",
+      "rolePlaceholder": "Chọn vai trò",
+      "status": "Trạng thái",
+      "statusPlaceholder": "Chọn trạng thái"
+    },
+    "roles": {
+      "user": "Người dùng",
+      "editor": "Biên tập",
+      "admin": "Quản trị",
+      "member": "Hội viên",
+      "expert": "Chuyên gia"
+    },
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Ngưng hoạt động"
+    }
+  }
+}
+
+
