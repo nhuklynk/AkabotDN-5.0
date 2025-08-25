@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsArray, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsEnum, IsDateString, IsDate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
 import { Status } from '../../config/base-audit.entity';
@@ -7,40 +7,26 @@ export class UpdatePostDto {
   @ApiProperty({
     description: 'Post title',
     example: 'Getting Started with NestJS',
-    required: false,
     minLength: 1,
     maxLength: 255
   })
-  @IsOptional()
   @IsString()
-  title?: string;
-
-  @ApiProperty({
-    description: 'Post slug (URL-friendly version of title)',
-    example: 'getting-started-with-nestjs',
-    required: false,
-    minLength: 1,
-    maxLength: 255
-  })
-  @IsOptional()
-  @IsString()
-  slug?: string;
+  title: string;
 
   @ApiProperty({
     description: 'Post content',
     example: 'This is the main content of the post...',
-    required: false,
     minLength: 1
   })
-  @IsOptional()
   @IsString()
-  content?: string;
+  content: string;
 
   @ApiProperty({
     description: 'Post status',
     enum: PostStatus,
-    example: PostStatus.PUBLISHED,
-    required: false
+    example: PostStatus.DRAFT,
+    required: false,
+    default: PostStatus.DRAFT
   })
   @IsOptional()
   @IsEnum(PostStatus)
@@ -57,13 +43,13 @@ export class UpdatePostDto {
   summary?: string;
 
   @ApiProperty({
-    description: 'Primary media ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: 'Publication date (ISO string)',
+    example: '2024-01-01T00:00:00.000Z',
     required: false
   })
   @IsOptional()
-  @IsUUID()
-  primary_media_id?: string;
+  @IsDate()
+  published_at?: Date;
 
   @ApiProperty({
     description: 'Category IDs',
@@ -72,8 +58,7 @@ export class UpdatePostDto {
     required: false
   })
   @IsOptional()
-  @IsArray()
-  @IsUUID('4', { each: true })
+  @IsUUID(undefined, { each: true })
   category_ids?: string[];
 
   @ApiProperty({
@@ -83,7 +68,15 @@ export class UpdatePostDto {
     required: false
   })
   @IsOptional()
-  @IsArray()
-  @IsUUID('4', { each: true })
+  @IsUUID(undefined, { each: true })
   tag_ids?: string[];
+
+  @ApiProperty({
+    description: 'Media ID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    required: false
+  })
+  @IsOptional()
+  @IsUUID()
+  media_id?: string;
 }

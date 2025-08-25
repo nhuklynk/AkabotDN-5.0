@@ -4,14 +4,17 @@ import { Repository, In, Like } from 'typeorm';
 import { Post, PostStatus } from './entity/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { plainToClass } from 'class-transformer';
 import { Category } from 'src/category/entity/category.entity';
-import { Tag } from 'src/tag/entity/tag.entity';
-import { User } from '../user/entity/user.entity';
-import { Comment } from '../comment/entity/comment.entity';
 import { PostQueryDto } from './dto/post-query.dto';
+import { StorageService } from 'src/storage';
+import { MediaService } from 'src/media/media.service';
+import { MediaType } from 'src/media/entity/media.entity';
+import { Status } from 'src/config/base-audit.entity';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { Tag } from 'src/tag/entity/tag.entity';
 
 @Injectable()
 export class PostService {
@@ -22,14 +25,11 @@ export class PostService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(Tag)
     private tagRepository: Repository<Tag>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(Comment)
-    private commentRepository: Repository<Comment>,
+    private storageService: StorageService,
+    private mediaService: MediaService,
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<PostResponseDto> {
-    // Check if post with slug already exists
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostDto.slug },
     });
@@ -43,19 +43,16 @@ export class PostService {
       // user: { id: createPostDto.user_id },
     });
 
-    // Handle categories
     if (createPostDto.category_ids?.length) {
       const categories = await this.categoryRepository.findBy({ id: In(createPostDto.category_ids) });
       post.categories = categories;
     }
 
-    // Handle tags
     if (createPostDto.tag_ids?.length) {
       const tags = await this.tagRepository.findBy({ id: In(createPostDto.tag_ids) });
       post.tags = tags;
     }
 
-    // Set published date if status is published
     if (createPostDto.post_status === PostStatus.PUBLISHED) {
       post.published_at = new Date();
     }
@@ -65,7 +62,6 @@ export class PostService {
   }
 
   async createWithFormdata(createPostFormdataDto: CreatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
-    // Check if post with slug already exists
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostFormdataDto.slug },
     });
@@ -73,11 +69,9 @@ export class PostService {
     if (existingPost) {
       throw new ConflictException('Post with this slug already exists');
     }
-
-    // Convert formdata to CreatePostDto format
+    
     const createPostDto: CreatePostDto = {
       ...createPostFormdataDto,
-      // Convert comma-separated strings to arrays
       category_ids: createPostFormdataDto.category_ids ? 
         createPostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
         undefined,
@@ -85,87 +79,12 @@ export class PostService {
         createPostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
         undefined,
     };
-
-    // Handle featured image if provided
     if (featuredImage) {
-      // Here you would typically:
-      // 1. Save the file to your storage (local disk, cloud storage, etc.)
-      // 2. Generate a unique filename
-      // 3. Store the file path/URL in the database
-      // For now, we'll just log the file info
-      console.log('Featured image received:', {
-        originalname: featuredImage.originalname,
-        mimetype: featuredImage.mimetype,
-        size: featuredImage.size
-      });
-      
-      // You can add logic here to save the file and get the path
-      // const imagePath = await this.saveImage(featuredImage);
-      // createPostDto.primary_media_id = imagePath;
+      const media = await this.uploadFeaturedImage(featuredImage);
+      createPostDto.media_id = media.id;
     }
 
-    // Use the existing create method
     return this.create(createPostDto);
-  }
-
-  async findAll(query?: PostQueryDto): Promise<PostResponseDto[]> {
-    const queryBuilder = this.postRepository
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.user', 'user')
-      .leftJoinAndSelect('post.categories', 'categories')
-      .leftJoinAndSelect('post.tags', 'tags');
-
-    // Apply filters
-    if (query?.status) {
-      queryBuilder.andWhere('post.post_status = :status', { status: query.status });
-    }
-
-    if (query?.search) {
-      queryBuilder.andWhere(
-        '(post.title ILIKE :search OR post.content ILIKE :search)',
-        { search: `%${query.search}%` }
-      );
-    }
-
-    if (query?.author_id) {
-      queryBuilder.andWhere('user.id = :author_id', { author_id: query.author_id });
-    }
-
-    if (query?.date_from) {
-      queryBuilder.andWhere('post.created_at >= :date_from', { date_from: query.date_from });
-    }
-
-    if (query?.date_to) {
-      queryBuilder.andWhere('post.created_at <= :date_to', { date_to: query.date_to });
-    }
-
-    // Apply pagination
-    if (query?.page && query?.limit) {
-      const skip = (query.page - 1) * query.limit;
-      queryBuilder.skip(skip).take(query.limit);
-    }
-
-    // Order by created_at desc
-    queryBuilder.orderBy('post.created_at', 'DESC');
-
-    const posts = await queryBuilder.getMany();
-    
-    // Apply category and tag filters after fetching
-    let filteredPosts = posts;
-    
-    if (query?.category) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.categories?.some(cat => cat.slug === query.category)
-      );
-    }
-    
-    if (query?.tag) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.tags?.some(tag => tag.slug === query.tag)
-      );
-    }
-    
-    return filteredPosts.map(post => plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }));
   }
 
   async findFilteredAndPaginated(query: PostQueryDto): Promise<[PostResponseDto[], number]> {
@@ -236,7 +155,7 @@ export class PostService {
   async findOne(id: string): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { id: id },
-      relations: ['user', 'categories', 'tags', 'comments'],
+      relations: ['user', 'categories', 'tags'],
     });
 
     if (!post) {
@@ -249,7 +168,7 @@ export class PostService {
   async findBySlug(slug: string): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { slug: slug },
-      relations: ['user', 'categories', 'tags', 'comments'],
+      relations: ['user', 'categories', 'tags'],
     });
 
     if (!post) {
@@ -259,7 +178,15 @@ export class PostService {
     return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto): Promise<PostResponseDto> {
+  async updateWithFile(id: string, updatePostDto: UpdatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
+    if (featuredImage) {
+      const media = await this.uploadFeaturedImage(featuredImage);
+      updatePostDto.media_id = media.id;
+    }
+    return this.update(id, updatePostDto);
+  }
+
+  async update(id: string, updatePostFormdataDto: UpdatePostFormdataDto): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { id: id },
       relations: ['categories', 'tags'],
@@ -269,32 +196,25 @@ export class PostService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
-    // Check if slug is being updated and if it already exists
-    if (updatePostDto.slug && updatePostDto.slug !== post.slug) {
-      const existingPost = await this.postRepository.findOne({
-        where: { slug: updatePostDto.slug },
-      });
-
-      if (existingPost) {
-        throw new ConflictException('Post with this slug already exists');
-      }
-    }
-
-    // Handle categories
-    if (updatePostDto.category_ids) {
-      const categories = await this.categoryRepository.findBy({ id: In(updatePostDto.category_ids) });
-      post.categories = categories;
-    }
-
-    // Handle tags
-    if (updatePostDto.tag_ids) {
-      const tags = await this.tagRepository.findBy({ id: In(updatePostDto.tag_ids) });
-      post.tags = tags;
-    }
+    const updatePostDto: UpdatePostDto = {
+      ...updatePostFormdataDto,
+      title: updatePostFormdataDto.title || post.title,
+      content: updatePostFormdataDto.content || post.content,
+      post_status: updatePostFormdataDto.post_status || post.post_status,
+      summary: updatePostFormdataDto.summary || post.summary,
+      published_at: updatePostFormdataDto.published_at ? new Date(updatePostFormdataDto.published_at) : post.published_at,
+      media_id: updatePostFormdataDto.media_id || post.media_id,
+      category_ids: updatePostFormdataDto.category_ids ? 
+        updatePostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
+        undefined,
+      tag_ids: updatePostFormdataDto.tag_ids ? 
+        updatePostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
+        undefined,
+    };
 
     // Set published date if status is being changed to published
     if (updatePostDto.post_status === PostStatus.PUBLISHED && post.post_status !== PostStatus.PUBLISHED) {
-      post.published_at = new Date();
+      updatePostDto.published_at = new Date();
     }
 
     await this.postRepository.update(id, updatePostDto);
@@ -306,11 +226,10 @@ export class PostService {
       where: { id: id },
     });
 
-    if (!post) {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+    if (post) {
+      post.status = Status.INACTIVE;
+      await this.postRepository.save(post);
     }
-
-    await this.postRepository.remove(post);
   }
 
   async findByCategory(category_id: string): Promise<PostResponseDto[]> {
@@ -335,5 +254,24 @@ export class PostService {
       .getMany();
 
     return posts.map(post => plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }));
+  }
+
+  async uploadFeaturedImage(featuredImage: any) {
+    const filePath = await this.storageService.uploadFile({
+      bucket: 'akabotdn',
+      file: featuredImage.buffer,
+      fileName: featuredImage.originalname,
+      fileSize: featuredImage.size,
+      contentType: featuredImage.mimetype,
+      scope: 'posts'
+    });
+    const media = await this.mediaService.create({
+      file_name: featuredImage.originalname,
+      file_path: filePath,
+      mime_type: featuredImage.mimetype,
+      file_size: featuredImage.size,
+      media_type: MediaType.POST,
+    });
+    return media;
   }
 }

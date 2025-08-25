@@ -10,7 +10,7 @@ import {
 import { User } from '../../user/entity/user.entity';
 import { Category } from '../../category/entity/category.entity';
 import { Tag } from '../../tag/entity/tag.entity';
-import { Comment } from '../../comment/entity/comment.entity';
+import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
 export enum PostStatus {
@@ -70,9 +70,6 @@ export class Post extends BaseAuditEntity {
   })
   tags: Tag[];
 
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
-
   @Column({
     type: 'enum',
     enum: PostType,
@@ -80,4 +77,7 @@ export class Post extends BaseAuditEntity {
     name: 'post_type'
   })
   post_type: PostType;
+
+  @Column({ nullable: true, name: 'media_id' })
+  media_id?: string;
 }

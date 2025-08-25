@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserStatus } from '../../entity/user.entity';
+import { Status } from 'src/config/base-audit.entity';
 
 export class UserResponseDto {
   @Expose()
@@ -45,7 +45,7 @@ export class UserResponseDto {
   phone: string;
 
   @Expose()
-  status: UserStatus;
+  status: Status;
 
   @Expose()
   @ApiProperty({

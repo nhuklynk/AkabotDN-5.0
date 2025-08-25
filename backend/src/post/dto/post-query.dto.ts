@@ -106,12 +106,4 @@ export class PostQueryDto {
   @IsOptional()
   @IsString()
   date_to?: string;
-
-  @ApiPropertyOptional({
-    description: 'Filter posts by event ID. Only returns posts that belong to the specified event.',
-    example: '123e4567-e89b-12d3-a456-426614174000'
-  })
-  @IsOptional()
-  @IsString()
-  event_id?: string;
 }

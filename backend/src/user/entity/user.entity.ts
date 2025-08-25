@@ -14,13 +14,6 @@ import { Comment } from '../../comment/entity/comment.entity';
 import { Member } from '../../member/entity/member.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
-export enum UserStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  SUSPENDED = 'suspended',
-  PENDING = 'pending',
-}
-
 @Entity('users')
 export class User extends BaseAuditEntity {
   @Column({ unique: true, name: 'email' })

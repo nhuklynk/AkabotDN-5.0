@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
 import { Status } from '../../config/base-audit.entity';
 import { TagResponseDto } from '../../tag/dto/tag-response.dto';
+import { MediaResponseDto } from 'src/media/dto/media-response.dto';
 
 // Nested DTOs for better Swagger documentation
 export class UserResponseDto {
@@ -152,4 +153,12 @@ export class PostResponseDto {
   @Expose()
   @Type(() => TagResponseDto)
   tags: TagResponseDto[];
+
+  @ApiProperty({
+    description: 'Post media (featured image)',
+    type: MediaResponseDto,
+    required: false
+  })
+  @Expose()
+  media_id?: string;
 }
