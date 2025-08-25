@@ -8,7 +8,7 @@ import type { TagDetail } from "@/services/admin/tags/getTagById";
 export function useCreateTag() {
   const qc = useQueryClient();
   const mutation = useMutation<TagDetail, Error, CreateTagPayload>({
-    mutationFn: (payload) => createTag(payload),
+    mutationFn: async (payload) => await createTag(payload),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-tags"] }),
   });
 
