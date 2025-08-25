@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { MembershipType, ExpertiseLevel } from '../../entity/member.entity';
 import { MemberCompanyDto } from './member-company.dto';
+import { UserResponseDto } from '../../../user/dto/user/user-response.dto';
 
 export class MemberResponseDto {
   @Expose()
@@ -31,8 +32,8 @@ export class MemberResponseDto {
   joined_at: Date;
 
   @Expose()
-  @Type(() => Object)
-  user?: any;
+  @Type(() => UserResponseDto)
+  user?: UserResponseDto;
 
   @Expose()
   @Type(() => MemberCompanyDto)

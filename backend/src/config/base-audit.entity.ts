@@ -10,12 +10,13 @@ import {
 } from 'typeorm';
 
 export enum Status {
-  ACTIVE = 'active',//for delete
-  INACTIVE = 'inactive',//for delete
-  DRAFT = 'draft', //for update/create
-  PUBLISHED = 'published', //for update/create
-  ARCHIVED = 'archived', //for update/create
-  PENDING = 'pending', //for update/create
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  DELETED = 'deleted',
+  DRAFT = 'draft',
+  PUBLISHED = 'published',
+  ARCHIVED = 'archived',
+  PENDING = 'pending',
 }
 
 export abstract class BaseAuditEntity {

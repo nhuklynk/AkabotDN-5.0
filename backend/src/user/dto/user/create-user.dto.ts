@@ -39,4 +39,20 @@ export class CreateUserDto {
     message: 'Phone number must contain only digits, spaces, hyphens, parentheses and plus signs'
   })
   phone?: string;
+
+  @ApiProperty({
+    description: 'Role ID to assign (optional)',
+    example: '550e8400-e29b-41d4-a716-446655440004',
+    required: false
+  })
+  @IsOptional()
+  role_id?: string;
+
+  @ApiProperty({
+    description: 'User status (optional, default: active)',
+    example: 'active',
+    required: false
+  })
+  @IsOptional()
+  status?: string;
 }
