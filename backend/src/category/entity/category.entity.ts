@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Post } from '../../post/entity/post.entity';
+import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
 @Entity('categories')
@@ -25,4 +26,7 @@ export class Category extends BaseAuditEntity {
 
   @ManyToMany(() => Post, (post) => post.categories)
   posts: Post[];
+
+  @ManyToMany(() => Event, (event) => event.categories)
+  events: Event[];
 }

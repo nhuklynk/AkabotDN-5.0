@@ -6,6 +6,7 @@ import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import { MediaResponseDto } from './dto/media-response.dto';
 import { plainToClass } from 'class-transformer';
+import { Status } from 'src/config/base-audit.entity';
 
 @Injectable()
 export class MediaService {
@@ -66,10 +67,9 @@ export class MediaService {
       where: { id: id },
     });
 
-    if (!media) {
-      throw new NotFoundException(`Media with ID ${id} not found`);
+    if (media) {
+      media.status = Status.INACTIVE;
+      await this.mediaRepository.save(media);
     }
-
-    await this.mediaRepository.remove(media);
   }
 }

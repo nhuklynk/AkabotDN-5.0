@@ -7,6 +7,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentResponseDto } from './dto/comment-response.dto';
 import { CommentQueryDto } from './dto/comment-query.dto';
 import { plainToClass } from 'class-transformer';
+import { Status } from 'src/config/base-audit.entity';
 
 @Injectable()
 export class CommentService {
@@ -19,7 +20,8 @@ export class CommentService {
     // Create comment with proper relationship mapping
     const comment = this.commentRepository.create({
       content: createCommentDto.content,
-      post: { id: createCommentDto.post_id },
+      comment_type: createCommentDto.comment_type,
+      comment_type_id: createCommentDto.comment_type_id,
       ...(createCommentDto.parent_id && { parent: { id: createCommentDto.parent_id } }),
       ...(createCommentDto.author_id && { author: { id: createCommentDto.author_id } }),
     });
@@ -128,16 +130,15 @@ export class CommentService {
       where: { id: id },
     });
 
-    if (!comment) {
-      throw new NotFoundException(`Comment with ID ${id} not found`);
+    if (comment) {
+      comment.status = Status.INACTIVE;
+      await this.commentRepository.save(comment);
     }
-
-    await this.commentRepository.remove(comment);
   }
 
   async findByPost(post_id: string): Promise<CommentResponseDto[]> {
     const comments = await this.commentRepository.find({
-      where: { post: { id: post_id } },
+      where: { comment_type_id: post_id },
       relations: ['post', 'author'],
       order: { created_at: 'DESC' },
     });
@@ -147,7 +148,7 @@ export class CommentService {
   async findRootComments(post_id: string): Promise<CommentResponseDto[]> {
     const comments = await this.commentRepository.find({
       where: {
-        post: { id: post_id },
+        comment_type_id: post_id,
         parent: IsNull()
       },
       relations: ['post', 'author'],

@@ -15,7 +15,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { PostQueryDto } from './dto/post-query.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
@@ -34,6 +33,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiConsumes,
 } from '@nestjs/swagger';
+import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -216,21 +216,23 @@ export class PostController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('featured_image'))
   @ApiOperation({
     summary: 'Update post by ID',
-    description: 'Updates an existing post with new information. Only the provided fields will be updated; other fields remain unchanged. Slug updates are validated for uniqueness. Categories and tags can be updated by providing new arrays of UUIDs.'
+    description: 'Updates an existing post with new information including optional featured image upload. Only the provided fields will be updated; other fields remain unchanged. Slug updates are validated for uniqueness. Categories and tags can be updated by providing arrays of UUIDs. Featured image can be uploaded as multipart file.'
   })
+  @ApiConsumes('multipart/form-data')
   @ApiParam({
     name: 'id',
     description: 'The unique UUID identifier of the post to update',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiBody({
-    type: UpdatePostDto,
-    description: 'Post information to update. Only include the fields you want to change.'
+    type: UpdatePostFormdataDto,
+    description: 'Post information to update with optional featured image. Only include the fields you want to change. Categories and tags should be arrays of UUIDs.'
   })
   @ApiOkResponse({
-    description: 'Post updated successfully. Returns the updated post with all current information.',
+    description: 'Post updated successfully. Returns the updated post with all current information including new featured image if uploaded.',
     type: PostResponseDto
   })
   @ApiBadRequestResponse({
@@ -244,9 +246,10 @@ export class PostController {
   })
   update(
     @Param('id') id: string,
-    @Body() updatePostDto: UpdatePostDto,
+    @Body() updatePostDto: UpdatePostFormdataDto,
+    @UploadedFile() featuredImage?: any,
   ): Promise<PostResponseDto> {
-    return this.postService.update(id, updatePostDto);
+    return this.postService.updateWithFile(id, updatePostDto, featuredImage);
   }
 
   @Delete(':id')

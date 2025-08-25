@@ -7,6 +7,7 @@ import { TagResponseDto } from './dto/tag-response.dto';
 import { TagQueryDto } from './dto/tag-query.dto';
 import { plainToClass } from 'class-transformer';
 import { Tag } from './entity/tag.entity';
+import { Status } from 'src/config/base-audit.entity';
 
 @Injectable()
 export class TagService {
@@ -154,10 +155,9 @@ export class TagService {
       where: { id: id },
     });
 
-    if (!tag) {
-      throw new NotFoundException(`Tag with ID ${id} not found`);
+    if (tag) {
+      tag.status = Status.INACTIVE;
+      await this.tagRepository.save(tag);
     }
-
-    await this.tagRepository.remove(tag);
   }
 }
