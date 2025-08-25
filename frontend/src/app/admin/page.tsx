@@ -1,43 +1,48 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, FolderOpen, Tag, FileText } from "lucide-react"
+import { useLocale } from "@/hooks/useLocale"
 
-const stats = [
+const buildStats = (t: (k: string, o?: any) => string) => [
   {
-    title: "Tổng người dùng",
+    title: t("dashboard.stats.users.title"),
     value: "1,234",
-    description: "Người dùng đang hoạt động",
+    description: t("dashboard.stats.users.desc"),
     icon: Users,
     color: "text-chart-1",
   },
   {
-    title: "Tài nguyên",
+    title: t("dashboard.stats.resources.title"),
     value: "567",
-    description: "Tài nguyên khả dụng",
+    description: t("dashboard.stats.resources.desc"),
     icon: FolderOpen,
     color: "text-chart-2",
   },
   {
-    title: "Danh mục",
+    title: t("dashboard.stats.categories.title"),
     value: "89",
-    description: "Danh mục nội dung",
+    description: t("dashboard.stats.categories.desc"),
     icon: Tag,
     color: "text-chart-3",
   },
   {
-    title: "Bài viết",
+    title: t("dashboard.stats.posts.title"),
     value: "2,345",
-    description: "Bài viết đã xuất bản",
+    description: t("dashboard.stats.posts.desc"),
     icon: FileText,
     color: "text-chart-4",
   },
 ]
 
 export default function AdminDashboard() {
+  const { t } = useLocale()
+  const stats = buildStats(t)
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Bảng điều khiển</h1>
-        <p className="text-muted-foreground">Tổng quan số liệu và thao tác nhanh.</p>
+        <h1 className="text-3xl font-bold text-foreground">{t("dashboard.title")}</h1>
+        <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
       </div>
 
       {/* Stats Grid */}
@@ -60,24 +65,24 @@ export default function AdminDashboard() {
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Hoạt động gần đây</CardTitle>
-            <CardDescription>Các thao tác mới nhất trong bảng quản trị</CardDescription>
+            <CardTitle>{t("dashboard.recent.title")}</CardTitle>
+            <CardDescription>{t("dashboard.recent.desc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="h-2 w-2 rounded-full bg-chart-1"></div>
-                <span className="text-sm text-card-foreground">Người dùng mới đăng ký</span>
+                <span className="text-sm text-card-foreground">{t("dashboard.recent.userRegistered")}</span>
                 <span className="text-xs text-muted-foreground ml-auto">2 phút trước</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="h-2 w-2 rounded-full bg-chart-2"></div>
-                <span className="text-sm text-card-foreground">Cập nhật tài nguyên</span>
+                <span className="text-sm text-card-foreground">{t("dashboard.recent.resourceUploaded")}</span>
                 <span className="text-xs text-muted-foreground ml-auto">5 phút trước</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="h-2 w-2 rounded-full bg-chart-3"></div>
-                <span className="text-sm text-card-foreground">Xuất bản bài viết mới</span>
+                <span className="text-sm text-card-foreground">{t("dashboard.recent.postPublished")}</span>
                 <span className="text-xs text-muted-foreground ml-auto">10 phút trước</span>
               </div>
             </div>
@@ -86,22 +91,22 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Trạng thái hệ thống</CardTitle>
-            <CardDescription>Tình trạng hoạt động hiện tại</CardDescription>
+            <CardTitle>{t("dashboard.quick.title")}</CardTitle>
+            <CardDescription>{t("dashboard.quick.desc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-card-foreground">Cơ sở dữ liệu</span>
-                <span className="text-sm text-chart-5">Ổn định</span>
+                <span className="text-sm text-card-foreground">{t("dashboard.quick.createPost")}</span>
+                <span className="text-sm text-chart-5">{t("dashboard.quick.createPostDesc")}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-card-foreground">Trạng thái API</span>
-                <span className="text-sm text-chart-5">Trực tuyến</span>
+                <span className="text-sm text-card-foreground">{t("dashboard.quick.addUser")}</span>
+                <span className="text-sm text-chart-5">{t("dashboard.quick.addUserDesc")}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-card-foreground">Lưu trữ</span>
-                <span className="text-sm text-chart-4">Đã dùng 85%</span>
+                <span className="text-sm text-card-foreground">{t("dashboard.quick.upload")}</span>
+                <span className="text-sm text-chart-4">{t("dashboard.quick.uploadDesc")}</span>
               </div>
             </div>
           </CardContent>

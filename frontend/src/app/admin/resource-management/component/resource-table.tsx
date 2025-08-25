@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Download, Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
+import { useLocale } from "@/hooks/useLocale"
 
 type Resource = {
   id: number
@@ -36,19 +37,20 @@ export default function ResourceTable({
   onEdit: (r: Resource) => void
   onDelete: (id: number) => void
 }) {
+  const { t } = useLocale()
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Tên</TableHead>
-            <TableHead>Tên tệp</TableHead>
-            <TableHead>Loại</TableHead>
-            <TableHead>Danh mục</TableHead>
-            <TableHead>Kích thước</TableHead>
-            <TableHead>Tải lên bởi</TableHead>
-            <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[90px]">Thao tác</TableHead>
+            <TableHead>{t("resource.table.name")}</TableHead>
+            <TableHead>{t("resource.table.filename")}</TableHead>
+            <TableHead>{t("resource.table.type")}</TableHead>
+            <TableHead>{t("resource.table.category")}</TableHead>
+            <TableHead>{t("resource.table.size")}</TableHead>
+            <TableHead>{t("resource.table.uploadedBy")}</TableHead>
+            <TableHead>{t("resource.table.createdAt")}</TableHead>
+            <TableHead className="w-[90px]">{t("resource.table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -76,17 +78,17 @@ export default function ResourceTable({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
-                      <Eye className="h-4 w-4 mr-2" /> Xem
+                      <Eye className="h-4 w-4 mr-2" /> {t("common.view")}
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Download className="h-4 w-4 mr-2" /> Tải xuống
+                      <Download className="h-4 w-4 mr-2" /> {t("resource.download")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => onEdit(resource)}>
-                      <Edit className="h-4 w-4 mr-2" /> Sửa
+                      <Edit className="h-4 w-4 mr-2" /> {t("common.edit")}
                     </DropdownMenuItem>
                     <DeleteConfirmDialog onConfirm={() => onDelete(resource.id)}>
                       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Xóa
+                        <Trash2 className="h-4 w-4 mr-2" /> {t("common.delete")}
                       </DropdownMenuItem>
                     </DeleteConfirmDialog>
                   </DropdownMenuContent>

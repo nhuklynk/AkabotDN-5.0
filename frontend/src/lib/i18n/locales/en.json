@@ -1,0 +1,287 @@
+{
+  "app": {
+    "title": "Vietnam National Data Association"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "admin": "Admin Panel"
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "userManagement": "User Management",
+      "userAll": "Manage all users",
+      "userMembersExperts": "Manage members & experts",
+      "resourceManagement": "Resource Management",
+      "categoryManagement": "Category Management",
+      "postManagement": "Post Management",
+      "eventManagement": "Event Management",
+      "faqManagement": "FAQ Management",
+      "permissionManagement": "Permissions"
+    }
+  },
+  "common": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "areYouSure": "Are you sure?",
+    "deleteWarning": "This action cannot be undone.",
+    "deleteWarningLong": "This action cannot be undone. The category will be permanently deleted and may affect related content.",
+    "preview": "Preview",
+    "view": "View",
+    "viewLive": "View live"
+  },
+  "editor": {
+    "bold": "B",
+    "italic": "I",
+    "underline": "U",
+    "strike": "S",
+    "code": "</>",
+    "bulletList": "• List",
+    "orderedList": "1. List",
+    "h3": "H3",
+    "h2": "H2",
+    "h1": "H1",
+    "paragraph": "P",
+    "blockquote": "“Quote”",
+    "link": "Link",
+    "unlink": "Unlink",
+    "undo": "Undo",
+    "redo": "Redo",
+    "clear": "Clear",
+    "enterUrl": "Enter URL"
+  },
+  "category": {
+    "title": "Category Management",
+    "subtitle": "Organize content by categories and tags.",
+    "add": "Add category",
+    "searchPlaceholder": "Search categories...",
+    "filterByStatus": "Filter by status",
+    "all": "All",
+    "active": "Active",
+    "inactive": "Inactive",
+    "countSummary": "{{filtered}} / {{total}} categories",
+    "table": {
+      "category": "Category",
+      "level": "Level",
+      "status": "Status",
+      "posts": "Posts",
+      "createdAt": "Created",
+      "actions": "Actions",
+      "root": "None (Root)"
+    },
+    "dialog": {
+      "createTitle": "Create new category",
+      "editTitle": "Edit category",
+      "createDesc": "Add a new category to organize content.",
+      "editDesc": "Update category information and settings.",
+      "createCta": "Create category",
+      "updateCta": "Update category"
+    },
+    "form": {
+      "name": "Category name",
+      "namePlaceholder": "Enter category name",
+      "slug": "Slug",
+      "parent": "Parent category",
+      "parentPlaceholder": "Select parent category",
+      "color": "Color",
+      "colorPlaceholder": "Select color",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "description": "Description"
+    }
+  }
+  ,
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of admin metrics and quick actions.",
+    "stats": {
+      "users": { "title": "Total users", "desc": "+12% vs last month" },
+      "resources": { "title": "Resources", "desc": "+8% vs last month" },
+      "categories": { "title": "Categories", "desc": "+3 new this month" },
+      "posts": { "title": "Posts", "desc": "+18% vs last month" }
+    },
+    "recent": {
+      "title": "Recent activity",
+      "desc": "Most recent actions in the admin.",
+      "userRegistered": "New user registered",
+      "resourceUploaded": "Resource uploaded",
+      "categoryCreated": "Category created",
+      "postPublished": "Post published"
+    },
+    "quick": {
+      "title": "Quick actions",
+      "desc": "Frequently used tasks.",
+      "createPost": "Create new post",
+      "createPostDesc": "Add a new blog post",
+      "addUser": "Add user",
+      "addUserDesc": "Create a user account",
+      "upload": "Upload resource",
+      "uploadDesc": "Add a new file or media"
+    }
+  },
+  "event": {
+    "title": "Event & activity management",
+    "subtitle": "Create, edit, delete and manage events/activities.",
+    "add": "Add event",
+    "searchPlaceholder": "Search by title, content, location...",
+    "dialog": {
+      "createTitle": "Create event/activity",
+      "editTitle": "Edit event/activity",
+      "createDesc": "Add a new event or activity.",
+      "editDesc": "Update event or activity information.",
+      "createCta": "Create event",
+      "updateCta": "Update event"
+    }
+  },
+  "faq": {
+    "title": "FAQ Management",
+    "subtitle": "Create, edit and manage frequently asked questions.",
+    "add": "Add FAQ",
+    "searchPlaceholder": "Search...",
+    "countSummary": "{{filtered}} / {{total}} items",
+    "table": {
+      "question": "Question",
+      "category": "Category",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "createTitle": "Add FAQ",
+      "editTitle": "Edit FAQ",
+      "createDesc": "Enter the question and answer.",
+      "editDesc": "Update the question and answer.",
+      "createCta": "Add",
+      "updateCta": "Update"
+    }
+  },
+  "permission": {
+    "title": "Permissions",
+    "subtitle": "Manage user roles and permissions.",
+    "assign": "Assign permissions to this role",
+    "selectAll": "Select all",
+    "unselect": "Unselect"
+  },
+  "post": {
+    "title": "Post Management",
+    "subtitle": "Create, edit and manage posts.",
+    "add": "Create post",
+    "searchPlaceholder": "Search posts...",
+    "countSummary": "{{filtered}} / {{total}} posts",
+    "table": {
+      "post": "Post",
+      "author": "Author",
+      "category": "Category",
+      "status": "Status",
+      "published": "Published",
+      "views": "Views",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "createTitle": "Create new post",
+      "editTitle": "Edit post",
+      "createDesc": "Write a new blog post or article.",
+      "editDesc": "Update content and settings.",
+      "createCta": "Create post",
+      "updateCta": "Update post"
+    }
+  },
+  "resource": {
+    "title": "Resource Management",
+    "subtitle": "Manage digital assets, files and media.",
+    "add": "Add resource",
+    "searchPlaceholder": "Search resources...",
+    "filterByType": "Filter by type",
+    "all": "All",
+    "types": {
+      "document": "Document",
+      "image": "Image",
+      "video": "Video",
+      "audio": "Audio",
+      "archive": "Archive"
+    },
+    "countSummary": "{{filtered}} / {{total}} resources",
+    "download": "Download",
+    "table": {
+      "name": "Name",
+      "filename": "Filename",
+      "type": "Type",
+      "category": "Category",
+      "size": "Size",
+      "uploadedBy": "Uploaded by",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Resource name",
+      "namePlaceholder": "Enter resource name",
+      "filename": "Filename",
+      "filenamePlaceholder": "Enter filename",
+      "type": "Type",
+      "typePlaceholder": "Select type",
+      "category": "Category",
+      "categoryPlaceholder": "Select category",
+      "description": "Description"
+    },
+    "categories": {
+      "general": "General",
+      "branding": "Branding",
+      "marketing": "Marketing",
+      "documentation": "Documentation",
+      "media": "Media"
+    },
+    "dialog": {
+      "createTitle": "Add new resource",
+      "editTitle": "Edit resource",
+      "createDesc": "Upload a new resource or file to the system.",
+      "editDesc": "Update resource information and metadata.",
+      "createCta": "Add resource",
+      "updateCta": "Update resource"
+    }
+  },
+  "user": {
+    "title": "User Management",
+    "subtitle": "Manage users and permissions.",
+    "add": "Add user",
+    "searchPlaceholder": "Search users...",
+    "countSummary": "{{filtered}} / {{total}} users",
+    "table": {
+      "name": "Name",
+      "role": "Role",
+      "status": "Status",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "createTitle": "Create new user",
+      "editTitle": "Edit user",
+      "createDesc": "Add a new user with basic information.",
+      "editDesc": "Update user information and permissions.",
+      "createCta": "Create user",
+      "updateCta": "Update"
+    },
+    "form": {
+      "name": "Full name",
+      "namePlaceholder": "Enter full name",
+      "email": "Email",
+      "emailPlaceholder": "Enter email address",
+      "role": "Role",
+      "rolePlaceholder": "Select role",
+      "status": "Status",
+      "statusPlaceholder": "Select status"
+    },
+    "roles": {
+      "user": "User",
+      "editor": "Editor",
+      "admin": "Admin",
+      "member": "Member",
+      "expert": "Expert"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  }
+}
+
+

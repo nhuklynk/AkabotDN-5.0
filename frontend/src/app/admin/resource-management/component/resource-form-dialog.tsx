@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useLocale } from "@/hooks/useLocale"
 
 type ResourceFormData = {
   name: string
@@ -27,66 +28,70 @@ type Props = {
 
 export default function ResourceFormDialog({ open, onOpenChange, formData, setFormData, onSubmit, mode }: Props) {
   const isCreate = mode === "create"
+  const { t } = useLocale()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{isCreate ? "Thêm tài nguyên mới" : "Chỉnh sửa tài nguyên"}</DialogTitle>
+          <DialogTitle>{isCreate ? t("resource.dialog.createTitle") : t("resource.dialog.editTitle")}</DialogTitle>
           <DialogDescription>
-            {isCreate ? "Tải lên tài nguyên hoặc tệp mới vào hệ thống." : "Cập nhật thông tin và metadata của tài nguyên."}
+            {isCreate ? t("resource.dialog.createDesc") : t("resource.dialog.editDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="name">Tên tài nguyên</Label>
-            <Input id="name" value={formData.name} onChange={(e) => setFormData((d) => ({ ...d, name: e.target.value }))} placeholder="Nhập tên tài nguyên" />
+            <Label htmlFor="name">{t("resource.form.name")}</Label>
+            <Input id="name" value={formData.name} onChange={(e) => setFormData((d) => ({ ...d, name: e.target.value }))} placeholder={t("resource.form.namePlaceholder")} />
           </div>
           <div>
-            <Label htmlFor="filename">Tên tệp</Label>
-            <Input id="filename" value={formData.filename} onChange={(e) => setFormData((d) => ({ ...d, filename: e.target.value }))} placeholder="Nhập tên tệp" />
+            <Label htmlFor="filename">{t("resource.form.filename")}</Label>
+            <Input id="filename" value={formData.filename} onChange={(e) => setFormData((d) => ({ ...d, filename: e.target.value }))} placeholder={t("resource.form.filenamePlaceholder")} />
           </div>
           <div>
-            <Label htmlFor="type">Loại</Label>
+            <Label htmlFor="type">{t("resource.form.type")}</Label>
             <Select value={formData.type} onValueChange={(value) => setFormData((d) => ({ ...d, type: value }))}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn loại" />
+                <SelectValue placeholder={t("resource.form.typePlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="document">Tài liệu</SelectItem>
-                <SelectItem value="image">Hình ảnh</SelectItem>
-                <SelectItem value="video">Video</SelectItem>
-                <SelectItem value="audio">Âm thanh</SelectItem>
-                <SelectItem value="archive">Lưu trữ</SelectItem>
+                <SelectItem value="document">{t("resource.types.document")}</SelectItem>
+                <SelectItem value="image">{t("resource.types.image")}</SelectItem>
+                <SelectItem value="video">{t("resource.types.video")}</SelectItem>
+                <SelectItem value="audio">{t("resource.types.audio")}</SelectItem>
+                <SelectItem value="archive">{t("resource.types.archive")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="category">Danh mục</Label>
+            <Label htmlFor="category">{t("resource.form.category")}</Label>
             <Select value={formData.category} onValueChange={(value) => setFormData((d) => ({ ...d, category: value }))}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn danh mục" />
+                <SelectValue placeholder={t("resource.form.categoryPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="general">Chung</SelectItem>
-                <SelectItem value="branding">Thương hiệu</SelectItem>
-                <SelectItem value="marketing">Marketing</SelectItem>
-                <SelectItem value="documentation">Tài liệu</SelectItem>
-                <SelectItem value="media">Media</SelectItem>
+                <SelectItem value="general">{t("resource.categories.general")}</SelectItem>
+                <SelectItem value="branding">{t("resource.categories.branding")}</SelectItem>
+                <SelectItem value="marketing">{t("resource.categories.marketing")}</SelectItem>
+                <SelectItem value="documentation">{t("resource.categories.documentation")}</SelectItem>
+                <SelectItem value="media">{t("resource.categories.media")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="description">Mô tả</Label>
-            <Textarea id="description" value={formData.description} onChange={(e) => setFormData((d) => ({ ...d, description: e.target.value }))} placeholder="Nhập mô tả tài nguyên" rows={3} />
+            <Label htmlFor="description">{t("resource.form.description")}</Label>
+            <RichTextEditor
+              value={formData.description}
+              onChange={(html) => setFormData((d) => ({ ...d, description: html }))}
+            />
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Hủy
+            {t("common.cancel")}
           </Button>
-          <Button onClick={onSubmit}>{isCreate ? "Thêm tài nguyên" : "Cập nhật tài nguyên"}</Button>
+          <Button onClick={onSubmit}>{isCreate ? t("resource.dialog.createCta") : t("resource.dialog.updateCta")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
