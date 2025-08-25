@@ -235,4 +235,24 @@ export class UserService {
   async validatePassword(user: User, password: string): Promise<boolean> {
     return bcrypt.compare(password, user.password_hash);
   }
+
+  
+  async findByRole(roleId: string): Promise<UserResponseDto[]> {
+    const users = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role')
+      .where('role.id = :roleId', { roleId })
+      .select([
+        'user.id',
+        'user.email',
+        'user.full_name',
+        'user.created_at',
+        'user.avatar',
+        'user.phone',
+        'user.status',
+      ])
+      .getMany();
+
+    return users.map(user => plainToClass(UserResponseDto, user));
+  }
 }

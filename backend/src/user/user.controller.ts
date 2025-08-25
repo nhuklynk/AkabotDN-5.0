@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   HttpCode,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/user/create-user.dto';
@@ -52,6 +52,27 @@ export class UserController {
   })
   async findAll(): Promise<UserResponseDto[]> {
     return this.userService.findAll();
+  }
+
+  @Get('by-role/:roleId')
+  @ApiOperation({ summary: 'Get all users by role ID' })
+  @ApiParam({ name: 'roleId', description: 'Role ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users with the specified role',
+    type: [UserResponseDto],
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Role not found',
+  })
+  async findByRole(
+    @Param('roleId') roleId: string,
+  ): Promise<UserResponseDto[]> {
+    if (!roleId) {
+      throw new BadRequestException('Role ID is required');
+    }
+    return await this.userService.findByRole(roleId);
   }
 
   @Get(':id')
@@ -100,8 +121,8 @@ export class UserController {
       type: 'object',
       properties: {
         message: { type: 'string', example: 'User suspended successfully' },
-      }
-    }
+      },
+    },
   })
   @ApiResponse({
     status: 404,
@@ -112,3 +133,4 @@ export class UserController {
     return this.userService.remove(id);
   }
 }
+
