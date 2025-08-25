@@ -6,17 +6,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ChevronRight, Edit, Folder, FolderOpen, MoreHorizontal, Trash2 } from "lucide-react"
 import DeleteConfirmDialog from "./delete-confirm-dialog"
+import { useLocale } from "@/hooks/useLocale"
 
 type Category = {
-  id: number
+  id: number | string
   name: string
   slug: string
-  description: string
+  description?: string
   color: string
   status: string
-  parentId: number | null
+  parentId: number | string | null
   postCount: number
-  createdAt: string
+  createdAt?: string
 }
 
 export default function CategoryTable({
@@ -28,22 +29,23 @@ export default function CategoryTable({
 }: {
   items: Category[]
   onEdit: (category: Category) => void
-  onDelete: (id: number) => void
-  getParentName: (parentId: number | null) => string | null
+  onDelete: (id: number | string) => void
+  getParentName: (parentId: number | string | null) => string | null
   getStatusColor: (status: string) => string
 }) {
+  const { t } = useLocale()
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Danh mục</TableHead>
+            <TableHead>{t("category.table.category")}</TableHead>
             <TableHead>Slug</TableHead>
-            <TableHead>Cấp</TableHead>
-            <TableHead>Trạng thái</TableHead>
-            <TableHead>Bài viết</TableHead>
-            <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[90px] whitespace-nowrap">Thao tác</TableHead>
+            <TableHead>{t("category.table.level")}</TableHead>
+            <TableHead>{t("category.table.status")}</TableHead>
+            <TableHead>{t("category.table.posts")}</TableHead>
+            <TableHead>{t("category.table.createdAt")}</TableHead>
+            <TableHead className="w-[90px] whitespace-nowrap">{t("category.table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -69,7 +71,7 @@ export default function CategoryTable({
                 {getParentName(category.parentId) ? (
                   <Badge variant="outline">{getParentName(category.parentId)}</Badge>
                 ) : (
-                  <span className="text-muted-foreground">Cấp gốc</span>
+                  <span className="text-muted-foreground">{t("category.table.root")}</span>
                 )}
               </TableCell>
               <TableCell>
@@ -89,15 +91,15 @@ export default function CategoryTable({
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => onEdit(category)}>
                       <Edit className="h-4 w-4 mr-2" />
-                      Sửa
+                      {t("common.edit")}
                     </DropdownMenuItem>
                     <DeleteConfirmDialog
-                      description="Thao tác này không thể hoàn tác. Danh mục sẽ bị xóa vĩnh viễn và có thể ảnh hưởng đến nội dung liên quan."
+                      description={t("common.deleteWarningLong")}
                       onConfirm={() => onDelete(category.id)}
                     >
                       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                         <Trash2 className="h-4 w-4 mr-2" />
-                        Xóa
+                        {t("common.delete")}
                       </DropdownMenuItem>
                     </DeleteConfirmDialog>
                   </DropdownMenuContent>

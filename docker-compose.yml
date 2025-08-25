@@ -39,7 +39,7 @@ services:
     image: node:20-alpine
     working_dir: /app
     volumes:
-      - ./backend/backend:/app
+      - ./backend:/app
       - backend_node_modules:/app/node_modules
     ports:
       - "4000:4000"
@@ -49,9 +49,10 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_USER=app
+      - DB_USERNAME=app
       - DB_PASSWORD=app
       - DB_NAME=app
+      - DB_SSL=false
       - DATABASE_URL=postgres://app:app@postgres:5432/app
     command: sh -c "npm ci && npm run start:dev"
     depends_on:

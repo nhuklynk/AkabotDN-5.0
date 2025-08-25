@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import ResourceFormDialog from "./component/resource-form-dialog";
 import {
@@ -60,60 +60,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Pagination } from "@/components/pagination-component";
-
-const initialResources = [
-  {
-    id: 1,
-    name: "Company Logo",
-    filename: "company-logo.png",
-    type: "image",
-    size: "245 KB",
-    category: "branding",
-    description: "Main company logo in PNG format",
-    uploadedBy: "John Doe",
-    createdAt: "2024-01-15",
-    url: "/generic-company-logo.png",
-  },
-  {
-    id: 2,
-    name: "User Manual",
-    filename: "user-manual.pdf",
-    type: "document",
-    size: "2.1 MB",
-    category: "documentation",
-    description: "Complete user manual for the application",
-    uploadedBy: "Jane Smith",
-    createdAt: "2024-01-20",
-    url: "#",
-  },
-  {
-    id: 3,
-    name: "Product Demo",
-    filename: "product-demo.mp4",
-    type: "video",
-    size: "15.3 MB",
-    category: "marketing",
-    description: "Product demonstration video for marketing",
-    uploadedBy: "Bob Johnson",
-    createdAt: "2024-02-01",
-    url: "#",
-  },
-  {
-    id: 4,
-    name: "Background Music",
-    filename: "background-music.mp3",
-    type: "audio",
-    size: "4.2 MB",
-    category: "media",
-    description: "Background music for promotional videos",
-    uploadedBy: "Alice Brown",
-    createdAt: "2024-02-10",
-    url: "#",
-  },
-];
+import { useLocale } from "@/hooks/useLocale";
+import { useMediaList } from "@/hooks/admin/media/useMediaList";
+import { useCreateMedia } from "@/hooks/admin/media/useCreateMedia";
+import { useUpdateMedia } from "@/hooks/admin/media/useUpdateMedia";
+import { useDeleteMedia } from "@/hooks/admin/media/useDeleteMedia";
 
 type Resource = {
-  id: number;
+  id: string | number;
   name: string;
   filename: string;
   type: string;
@@ -126,7 +80,8 @@ type Resource = {
 };
 
 export default function ResourcesPage() {
-  const [resources, setResources] = useState<Resource[]>(initialResources);
+  const { t } = useLocale();
+  const [resources, setResources] = useState<Resource[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -140,6 +95,30 @@ export default function ResourcesPage() {
     description: "",
   });
 
+  const { items, total, setQuery, refetch } = useMediaList({
+    initialQuery: { page: 1, limit: 10 },
+  });
+  const apiResources: Resource[] = useMemo(
+    () =>
+      items.map((m) => ({
+        id: m.id,
+        name: m.file_name,
+        filename: m.file_name,
+        type: m.media_type,
+        size: `${Math.round((m.file_size || 0) / 1024)} KB`,
+        category: "general",
+        description: "",
+        uploadedBy: "",
+        createdAt: m.created_at || "",
+        url: m.file_path,
+      })),
+    [items]
+  );
+
+  useEffect(() => {
+    setResources(apiResources);
+  }, [apiResources]);
+
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
       resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -152,7 +131,10 @@ export default function ResourcesPage() {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  const totalPages = Math.max(1, Math.ceil(filteredResources.length / pageSize));
+  const totalPages = Math.max(
+    1,
+    Math.ceil((total || filteredResources.length) / pageSize)
+  );
   const paginatedResources = filteredResources.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -162,16 +144,16 @@ export default function ResourcesPage() {
     setCurrentPage(1);
   }, [searchTerm, filterType]);
 
-  const handleCreateResource = () => {
-    const newResource: Resource = {
-      id: Math.max(...resources.map((r) => r.id)) + 1,
-      ...formData,
-      size: "1.2 MB", // Mock size
-      uploadedBy: "Current User", // Mock user
-      createdAt: new Date().toISOString().split("T")[0],
-      url: "#", // Mock URL
-    };
-    setResources([...resources, newResource]);
+  const { mutate: createMedia } = useCreateMedia();
+  const { mutate: updateMedia } = useUpdateMedia();
+  const { mutate: deleteMedia } = useDeleteMedia();
+
+  const handleCreateResource = async () => {
+    await createMedia({
+      file: new Blob(["placeholder"], { type: "text/plain" }),
+      file_name: formData.filename,
+      media_type: "other",
+    });
     setFormData({
       name: "",
       filename: "",
@@ -180,6 +162,7 @@ export default function ResourcesPage() {
       description: "",
     });
     setIsCreateDialogOpen(false);
+    refetch();
   };
 
   const handleEditResource = (resource: Resource) => {
@@ -194,29 +177,27 @@ export default function ResourcesPage() {
     setIsEditDialogOpen(true);
   };
 
-  const handleUpdateResource = () => {
-    if (editingResource) {
-      setResources(
-        resources.map((resource) =>
-          resource.id === editingResource.id
-            ? { ...resource, ...formData }
-            : resource
-        )
-      );
-      setIsEditDialogOpen(false);
-      setEditingResource(null);
-      setFormData({
-        name: "",
-        filename: "",
-        type: "document",
-        category: "general",
-        description: "",
-      });
-    }
+  const handleUpdateResource = async () => {
+    if (!editingResource) return;
+    await updateMedia(editingResource.id, {
+      file_name: formData.filename,
+      media_type: "other",
+    });
+    setIsEditDialogOpen(false);
+    setEditingResource(null);
+    setFormData({
+      name: "",
+      filename: "",
+      type: "document",
+      category: "general",
+      description: "",
+    });
+    refetch();
   };
 
-  const handleDeleteResource = (resourceId: number) => {
-    setResources(resources.filter((resource) => resource.id !== resourceId));
+  const handleDeleteResource = async (resourceId: any) => {
+    await deleteMedia(resourceId);
+    refetch();
   };
 
   const getTypeIcon = (type: string) => {
@@ -269,18 +250,16 @@ export default function ResourcesPage() {
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
           <h1 className="text-3xl font-bold text-foreground">
-            Quản lý tài nguyên
+            {t("resource.title")}
           </h1>
-          <p className="text-muted-foreground">
-            Quản lý tài sản số, tệp tin và nội dung đa phương tiện.
-          </p>
+          <p className="text-muted-foreground">{t("resource.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
           onClick={() => setIsCreateDialogOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          Thêm tài nguyên
+          {t("resource.add")}
         </Button>
         <ResourceFormDialog
           open={isCreateDialogOpen}
@@ -298,7 +277,7 @@ export default function ResourcesPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Tìm kiếm tài nguyên..."
+                placeholder={t("resource.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -306,19 +285,32 @@ export default function ResourcesPage() {
             </div>
             <Select value={filterType} onValueChange={setFilterType}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Lọc theo loại" />
+                <SelectValue placeholder={t("resource.filterByType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tất cả</SelectItem>
-                <SelectItem value="document">Tài liệu</SelectItem>
-                <SelectItem value="image">Hình ảnh</SelectItem>
-                <SelectItem value="video">Video</SelectItem>
-                <SelectItem value="audio">Âm thanh</SelectItem>
-                <SelectItem value="archive">Lưu trữ</SelectItem>
+                <SelectItem value="all">{t("resource.all")}</SelectItem>
+                <SelectItem value="document">
+                  {t("resource.types.document")}
+                </SelectItem>
+                <SelectItem value="image">
+                  {t("resource.types.image")}
+                </SelectItem>
+                <SelectItem value="video">
+                  {t("resource.types.video")}
+                </SelectItem>
+                <SelectItem value="audio">
+                  {t("resource.types.audio")}
+                </SelectItem>
+                <SelectItem value="archive">
+                  {t("resource.types.archive")}
+                </SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">
-              {filteredResources.length} / {resources.length} tài nguyên
+              {t("resource.countSummary", {
+                filtered: filteredResources.length,
+                total: resources.length,
+              })}
             </div>
           </div>
 

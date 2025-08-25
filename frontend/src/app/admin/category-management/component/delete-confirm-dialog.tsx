@@ -12,12 +12,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useLocale } from "@/hooks/useLocale"
 
 type Props = {
   title?: string
   description?: string
   confirmLabel?: string
-  onConfirm: () => void
+  onConfirm: () => void | Promise<void>
   children: React.ReactNode
 }
 
@@ -28,18 +29,19 @@ export default function DeleteConfirmDialog({
   onConfirm,
   children,
 }: Props) {
+  const { t } = useLocale()
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogTitle>{title || t("common.areYouSure")}</AlertDialogTitle>
+          <AlertDialogDescription>{description || t("common.deleteWarning")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Hủy</AlertDialogCancel>
+          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-            {confirmLabel}
+            {confirmLabel || t("common.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
