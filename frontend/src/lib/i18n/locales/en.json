@@ -90,8 +90,7 @@
       "statusPlaceholder": "Select status",
       "description": "Description"
     }
-  }
-  ,
+  },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Overview of admin metrics and quick actions.",
@@ -281,7 +280,450 @@
       "active": "Active",
       "inactive": "Inactive"
     }
+  },
+  "header": {
+    "title": "NATIONAL DATA ASSOCIATION",
+    "subtitle": "VIETNAM",
+    "nav": {
+      "about": "ABOUT US",
+      "products": "PRODUCTS & SERVICES",
+      "posts": "POSTS",
+      "members": "MEMBERS",
+      "support": "SUPPORT",
+      "search": "Search"
+    },
+    "dropdown": {
+      "products": {
+        "activities": {
+          "title": "Association Activities",
+          "desc": "Programs and events"
+        },
+        "digitalProducts": {
+          "title": "Digital Products",
+          "desc": "Technology solutions"
+        },
+        "documents": {
+          "title": "Documents",
+          "desc": "Resources and reports"
+        }
+      },
+      "members": {
+        "list": {
+          "title": "Member Directory",
+          "desc": "View member information"
+        },
+        "register": {
+          "title": "Member Registration",
+          "desc": "Join the association"
+        }
+      },
+      "support": {
+        "faq": {
+          "title": "FAQ",
+          "desc": "Frequently asked questions"
+        },
+        "contact": {
+          "title": "Contact",
+          "desc": "Contact information"
+        }
+      }
+    },
+    "mobile": {
+      "language": "Language:"
+    }
+  },
+  "footer": {
+    "organization": {
+      "name": "NATIONAL DATA",
+      "subtitle": "ASSOCIATION",
+      "description": "A pioneering organization in developing the national data ecosystem, promoting comprehensive digital transformation in Vietnam."
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "about": "About Us",
+      "leadership": "Leadership Team",
+      "executive": "Executive Board",
+      "documents": "Association Documents"
+    },
+    "services": {
+      "title": "Services",
+      "digitalProducts": "Digital Products",
+      "memberRegistration": "Member Registration",
+      "activities": "Association Activities",
+      "events": "Events"
+    },
+    "contact": {
+      "title": "Contact",
+      "address": "Hanoi, Vietnam",
+      "phone": "+84 (24) 1234 5678",
+      "email": "info@vda.gov.vn"
+    },
+    "newsletter": {
+      "title": "Newsletter Signup",
+      "placeholder": "Your email",
+      "button": "Subscribe"
+    },
+    "copyright": "© 2025 NATIONAL DATA ASSOCIATION. All rights reserved."
+  },
+  "landing": {
+    "banner": {
+      "slides": [
+        {
+          "title": "Building Vietnam's Digital Future",
+          "subtitle": "Vietnam National Data Association",
+          "description": "Where we connect, share and develop the data ecosystem for a strong and sustainable digital Vietnam.",
+          "ctaText": "Explore Now"
+        },
+        {
+          "title": "Connecting Global Experts",
+          "subtitle": "International Technology Network",
+          "description": "Join the world's leading technology expert community and share knowledge and experience.",
+          "ctaText": "Join Now"
+        },
+        {
+          "title": "Innovation & Creativity",
+          "subtitle": "Advanced Technology",
+          "description": "Applying AI, Blockchain and advanced technologies in national data management.",
+          "ctaText": "Learn More"
+        }
+      ],
+      "learnMore": "Learn More"
+    },
+    "stats": {
+      "title": "Impressive Numbers",
+      "subtitle": "Our achievements and development",
+      "items": [
+        {
+          "number": "150+",
+          "label": "Members"
+        },
+        {
+          "number": "200+",
+          "label": "Projects"
+        },
+        {
+          "number": "85+",
+          "label": "Partners"
+        },
+        {
+          "number": "98%",
+          "label": "Satisfied"
+        }
+      ]
+    },
+    "mission": {
+      "title": "Mission & Vision",
+      "subtitle": "Sustainable development orientation",
+      "items": {
+        "mission": {
+          "title": "Mission",
+          "content": "Build and develop a national data ecosystem, connecting organizations, enterprises and experts to create sustainable value for society and Vietnam's digital economy."
+        },
+        "vision": {
+          "title": "Vision",
+          "content": "Become a leading organization in promoting national digital transformation, guiding data technology development and connecting Vietnam with the international community."
+        },
+        "values": {
+          "title": "Core Values",
+          "content": "Innovation - Connection - Sharing - Sustainable Development. We believe in the power of data and technology to create positive changes for the community."
+        }
+      },
+      "labels": {
+        "globalConnection": "Global Connection",
+        "dataSecurity": "Data Security",
+        "dataSync": "Data Synchronization",
+        "ai": "Artificial Intelligence"
+      }
+    },
+    "features": {
+      "title": "Why Choose Us?",
+      "subtitle": "We are committed to delivering leading data solutions that meet all the needs of businesses and organizations.",
+      "items": [
+        {
+          "title": "National Data Management",
+          "description": "Building centralized, secure and efficient data management systems"
+        },
+        {
+          "title": "Security & Compliance",
+          "description": "Ensuring information security and compliance with legal regulations"
+        },
+        {
+          "title": "International Cooperation",
+          "description": "Connecting and sharing experiences with global data organizations"
+        },
+        {
+          "title": "Innovation & Creativity",
+          "description": "Promoting the application of new technologies in data management"
+        }
+      ],
+      "video": {
+        "title": "Vietnam Data Ecosystem",
+        "description": "Explore advanced technology and national data networks"
+      }
+    },
+    "events": {
+      "title": "Upcoming Events",
+      "subtitle": "Join the Association's activities and events",
+      "items": [
+        {
+          "title": "Tourism Data Conference 2025",
+          "date": "25/09/2025",
+          "location": "Hanoi",
+          "type": "Conference"
+        },
+        {
+          "title": "Blockchain & AI Workshop",
+          "date": "30/09/2025",
+          "location": "Ho Chi Minh City",
+          "type": "Training"
+        },
+        {
+          "title": "Data Technology Exhibition",
+          "date": "15/10/2025",
+          "location": "Da Nang",
+          "type": "Exhibition"
+        }
+      ],
+      "registerButton": "Register to Join"
+    },
+    "testimonials": {
+      "title": "Expert Reviews",
+      "subtitle": "What experts say about us",
+      "items": [
+        {
+          "name": "Dr. Nguyen Van Long",
+          "position": "Deputy Minister of Public Security",
+          "content": "The Association has actively contributed to building the national data ecosystem."
+        },
+        {
+          "name": "Prof. Michael Chen",
+          "position": "International Expert",
+          "content": "Vietnam is on the right track in developing digital data platforms."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Join Us?",
+      "subtitle": "Become part of Vietnam's leading data community",
+      "memberButton": "Register as Member",
+      "contactButton": "Contact for Consultation"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "We are always ready to listen and support you",
+      "phone": "0931.399.883",
+      "email": "vanphongNDA@nda.org.vn",
+      "address": "Hanoi, Vietnam"
+    },
+    "info": {
+      "title": "Contact Information",
+      "contactPerson": {
+        "title": "Contact Person",
+        "name": "Truong T. Phuong Thao",
+        "position": "Head of Office Department"
+      },
+      "office": {
+        "title": "Office Address",
+        "address": "Youth Cultural Center\n37 Tran Binh Trong\nNguyen Du, Hai Ba Trung\nHanoi, Vietnam"
+      },
+      "phone": {
+        "title": "Phone",
+        "number": "0931.399.883"
+      },
+      "email": {
+        "title": "Email",
+        "primary": "vanphongNDA@nda.org.vn",
+        "secondary": "thaottp@nda.org.vn"
+      },
+      "workingHours": {
+        "title": "Working Hours",
+        "weekdays": "Monday - Friday: 8:00 - 17:00",
+        "saturday": "Saturday: 8:00 - 12:00",
+        "sunday": "Sunday: Closed"
+      }
+    },
+    "quickContact": {
+      "title": "Quick Contact",
+      "call": "Call Now",
+      "email": "Send Email"
+    },
+    "map": {
+      "title": "Office Location",
+      "subtitle": "We are located in central Hanoi with convenient transportation",
+      "fullAddress": {
+        "title": "Full Address",
+        "content": "Youth Cultural Center\n37 Tran Binh Trong, Nguyen Du\nHai Ba Trung, Hanoi"
+      },
+      "transportation": {
+        "title": "Transportation",
+        "content": "Near metro station\nMultiple bus routes\nConvenient parking"
+      },
+      "postalCode": {
+        "title": "Postal Code",
+        "content": "100000\nHai Ba Trung District\nHanoi City"
+      }
+    }
+  },
+  "aboutUs": {
+    "header": {
+      "title": "About Vietnam National Data Association",
+      "subtitle": "Learn about the mission, vision and organizational structure of Vietnam National Data Association"
+    },
+    "menu": {
+      "about": "About NDA",
+      "executive": "Executive Board",
+      "standing": "Standing Committee",
+      "charter": "NDA Charter"
+    },
+    "about": {
+      "mission": {
+        "title": "Mission",
+        "content": "Connect management agencies, enterprises, and organizations in the field of data and science and technology. Build practical activities to spread knowledge, connect communities, and promote the development of Vietnam's data ecosystem in the digital era."
+      },
+      "vision": {
+        "title": "Vision",
+        "content": "To become a leading organization in building Vietnam's data ecosystem, contributing to building a sustainable digital economy and enhancing national competitiveness in the era of Industry 4.0 technology."
+      },
+      "coreValues": {
+        "title": "Core Values",
+        "items": {
+          "transparency": {
+            "title": "Transparency",
+            "content": "Ensure transparency in all activities and data processing procedures"
+          },
+          "innovation": {
+            "title": "Innovation",
+            "content": "Pioneer in applying new technologies and methods"
+          },
+          "cooperation": {
+            "title": "Cooperation",
+            "content": "Build sustainable and effective partnerships"
+          }
+        }
+      },
+      "history": {
+        "title": "Formation History",
+        "items": {
+          "founding": {
+            "year": "2024",
+            "title": "Association Establishment",
+            "content": "Vietnam National Data Association was established with the participation of leading agencies and organizations in the field of data and information technology."
+          },
+          "expansion": {
+            "year": "2025",
+            "title": "Activity Expansion",
+            "content": "Deploy international cooperation programs, build pioneering data products and organize large-scale professional events."
+          }
+        }
+      }
+    },
+    "executive": {
+      "title": "Executive Board Organization Chart",
+      "chairman": {
+        "title": "ASSOCIATION CHAIRMAN",
+        "name": "Lieutenant General Nguyen Van Long"
+      },
+      "viceChairman": {
+        "fullTime": {
+          "title": "VICE CHAIRMAN",
+          "subtitle": "Full-time"
+        },
+        "partTime": {
+          "title": "VICE CHAIRMAN",
+          "subtitle": "Part-time"
+        }
+      },
+      "departments": {
+        "research": {
+          "title": "Research Department",
+          "subtitle": "& Development"
+        },
+        "international": {
+          "title": "International",
+          "subtitle": "Cooperation Department"
+        },
+        "communication": {
+          "title": "Communication",
+          "subtitle": "& Events Department"
+        }
+      },
+      "office": {
+        "title": "ASSOCIATION OFFICE",
+        "subtitle": "Daily operations management"
+      }
+    },
+    "standing": {
+      "title": "Standing Committee Organization Chart",
+      "head": {
+        "title": "STANDING COMMITTEE HEAD",
+        "subtitle": "Association Chairman"
+      },
+      "members": {
+        "viceChairman": {
+          "title": "Vice Chairman",
+          "subtitle": "Full-time"
+        },
+        "secretary": {
+          "title": "General Secretary",
+          "subtitle": "Executive"
+        },
+        "viceSecretary": {
+          "title": "Deputy Secretary",
+          "subtitle": "Support"
+        },
+        "member": {
+          "title": "Standing",
+          "subtitle": "Member"
+        }
+      },
+      "tasks": {
+        "title": "Main Tasks",
+        "items": {
+          "daily": "• Manage daily operations of the Association",
+          "resolutions": "• Implement resolutions of the Executive Board",
+          "cooperation": "• Coordinate with member agencies and organizations",
+          "activities": "• Organize professional activities",
+          "management": "• Manage finance and personnel",
+          "reports": "• Regular reporting to the Executive Board"
+        }
+      }
+    },
+    "charter": {
+      "title": "Charter of Vietnam National Data Association",
+      "preview": {
+        "title": "Charter Front Page"
+      },
+      "info": {
+        "title": "Charter Information",
+        "document": "Charter of Vietnam National Data Association",
+        "issueDate": "March 15, 2024",
+        "pages": "24 pages",
+        "format": "PDF",
+        "fields": {
+          "name": "Document Name:",
+          "date": "Issue Date:",
+          "pages": "Number of Pages:",
+          "format": "Format:"
+        }
+      },
+      "content": {
+        "title": "Main Content",
+        "chapters": {
+          "general": "• Chapter I: General Provisions",
+          "objectives": "• Chapter II: Objectives, Tasks and Powers",
+          "members": "• Chapter III: Association Members",
+          "structure": "• Chapter IV: Organizational Structure",
+          "finance": "• Chapter V: Finance and Assets",
+          "relations": "• Chapter VI: Relations with Other Organizations",
+          "others": "• Chapter VII: Other Provisions"
+        }
+      },
+      "download": {
+        "button": "Download Full Charter (PDF)",
+        "info": "Size: 2.4 MB • Updated: March 15, 2024"
+      }
+    }
   }
 }
-
-

@@ -82,7 +82,7 @@ export default function FAQHomePage() {
   // Error state
   if (categoriesError && !isSearching) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-r from-[#0033FF] to-[#977DFF] flex items-center justify-center">
         <div className="text-center text-white">
           <p className="text-red-200 mb-4">{categoriesError}</p>
           <button

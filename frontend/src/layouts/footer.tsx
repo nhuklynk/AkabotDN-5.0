@@ -1,8 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { useLocale } from "@/hooks/useLocale";
 
 export function Footer() {
+  const { t } = useLocale();
+
   return (
     <footer className="bg-gradient-to-b from-[#977DFF] to-[#0600AF]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -20,13 +25,16 @@ export function Footer() {
                 />
               </div>
               <div>
-                <h3 className="font-bold text-white">HIỆP HỘI DỮ LIỆU</h3>
-                <p className="text-sm text-[#FFCCF2]">QUỐC GIA VIỆT NAM</p>
+                <h3 className="font-bold text-white">
+                  {t("footer.organization.name")}
+                </h3>
+                <p className="text-sm text-[#FFCCF2]">
+                  {t("footer.organization.subtitle")}
+                </p>
               </div>
             </div>
             <p className="text-sm text-white/90 leading-relaxed">
-              Tổ chức tiên phong trong việc phát triển hệ sinh thái dữ liệu quốc
-              gia, thúc đẩy chuyển đổi số toàn diện tại Việt Nam.
+              {t("footer.organization.description")}
             </p>
             <div className="flex space-x-3">
               <Button
@@ -55,99 +63,111 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-white">Liên kết nhanh</h4>
+            <h4 className="font-semibold text-white">
+              {t("footer.quickLinks.title")}
+            </h4>
             <nav className="flex flex-col space-y-2">
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Giới thiệu
+                {t("footer.quickLinks.about")}
               </a>
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Ban lãnh đạo
+                {t("footer.quickLinks.leadership")}
               </a>
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Ban chấp hành
+                {t("footer.quickLinks.executive")}
               </a>
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Văn bản hiệp hội
+                {t("footer.quickLinks.documents")}
               </a>
             </nav>
           </div>
 
           {/* Services */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-white">Dịch vụ</h4>
+            <h4 className="font-semibold text-white">
+              {t("footer.services.title")}
+            </h4>
             <nav className="flex flex-col space-y-2">
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Sản phẩm số
+                {t("footer.services.digitalProducts")}
               </a>
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Đăng ký hội viên
+                {t("footer.services.memberRegistration")}
               </a>
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Hoạt động hiệp hội
+                {t("footer.services.activities")}
               </a>
               <a
                 href="#"
                 className="text-sm text-white/80 hover:text-[#FFCCF2] transition-colors"
               >
-                Sự kiện
+                {t("footer.services.events")}
               </a>
             </nav>
           </div>
 
           {/* Contact & Newsletter */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-white">Liên hệ</h4>
+            <h4 className="font-semibold text-white">
+              {t("footer.contact.title")}
+            </h4>
             <div className="space-y-3">
               <div className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 text-[#FFCCF2] mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-white/80">Hà Nội, Việt Nam</p>
+                <p className="text-sm text-white/80">
+                  {t("footer.contact.address")}
+                </p>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-[#FFCCF2]" />
-                <p className="text-sm text-white/80">+84 (24) 1234 5678</p>
+                <p className="text-sm text-white/80">
+                  {t("footer.contact.phone")}
+                </p>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-[#FFCCF2]" />
-                <p className="text-sm text-white/80">info@vda.gov.vn</p>
+                <p className="text-sm text-white/80">
+                  {t("footer.contact.email")}
+                </p>
               </div>
             </div>
 
             <div className="space-y-2">
               <h5 className="text-sm font-medium text-white">
-                Đăng ký nhận tin
+                {t("footer.newsletter.title")}
               </h5>
               <div className="flex space-x-2">
                 <Input
                   type="email"
-                  placeholder="Email của bạn"
+                  placeholder={t("footer.newsletter.placeholder")}
                   className="text-sm border-[#FFCCF2]/30 focus:border-[#FFCCF2] focus:ring-[#FFCCF2]/20"
                 />
                 <Button
                   size="sm"
                   className="bg-[#0033FF] hover:bg-[#0600AF] text-white border-0"
                 >
-                  Đăng ký
+                  {t("footer.newsletter.button")}
                 </Button>
               </div>
             </div>
@@ -155,10 +175,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[#FFCCF2]/20 mt-12 pt-8 text-center">
-          <p className="text-sm text-white/80">
-            © 2025 Hiệp hội Dữ liệu Quốc gia Việt Nam. Tất cả quyền được bảo
-            lưu.
-          </p>
+          <p className="text-sm text-white/80">{t("footer.copyright")}</p>
         </div>
       </div>
     </footer>

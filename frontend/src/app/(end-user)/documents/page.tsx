@@ -115,7 +115,7 @@ export default function TuLieuPage() {
   const data = activeTab === "images" ? imageData : videoData;
 
   return (
-    <div className="min-h-screen bg-gradient-to-r bg-[#0033FF]">
+    <div className="min-h-screen bg-gradient-to-r from-[#0033FF] to-[#977DFF]">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
