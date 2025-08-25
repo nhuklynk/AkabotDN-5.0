@@ -47,7 +47,6 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'User status',
     enum: Status,
-    default: Status.PENDING,
   })
   @IsOptional()
   @IsEnum(Status)

@@ -136,7 +136,7 @@
       "updateCta": "Cập nhật sự kiện"
     }
   },
-  "faq": {
+  "faqManagement": {
     "title": "Quản lý FAQ",
     "subtitle": "Tạo, chỉnh sửa và quản lý các câu hỏi thường gặp.",
     "add": "Thêm FAQ",
@@ -727,6 +727,182 @@
         "button": "Tải xuống Điều lệ đầy đủ (PDF)",
         "info": "Kích thước: 2.4 MB • Cập nhật: 15/03/2024"
       }
+    }
+  },
+  "members": {
+    "register": {
+      "title": "ĐĂNG KÝ HỘI VIÊN",
+      "membershipType": {
+        "individual": "Hội viên cá nhân",
+        "corporate": "Hội viên doanh nghiệp"
+      },
+      "forms": {
+        "accountInfo": {
+          "title": "THÔNG TIN TÀI KHOẢN",
+          "email": "Email",
+          "fullName": "Họ và tên",
+          "phone": "Số điện thoại",
+          "password": "Mật khẩu",
+          "confirmPassword": "Xác nhận mật khẩu",
+          "placeholders": {
+            "email": "john@example.com",
+            "fullName": "Nguyễn Văn A",
+            "phone": "0123456789",
+            "password": "Nhập mật khẩu",
+            "confirmPassword": "Nhập lại mật khẩu"
+          }
+        },
+        "memberInfo": {
+          "title": "THÔNG TIN HỘI VIÊN",
+          "jobTitle": "Chức vụ/Vị trí công việc",
+          "workUnit": "Đơn vị công tác",
+          "expertiseLevel": "Trình độ chuyên môn",
+          "assistantInfo": "Thông tin hỗ trợ",
+          "cvUrl": "Link CV/Hồ sơ",
+          "placeholders": {
+            "jobTitle": "Kỹ sư phần mềm",
+            "workUnit": "Công ty ABC",
+            "expertiseLevel": "Chọn trình độ",
+            "assistantInfo": "Thông tin bổ sung...",
+            "cvUrl": "https://..."
+          },
+          "expertiseLevels": {
+            "beginner": "Cơ bản",
+            "intermediate": "Trung cấp",
+            "advanced": "Nâng cao",
+            "expert": "Chuyên gia"
+          }
+        },
+        "companyInfo": {
+          "title": "THÔNG TIN DOANH NGHIỆP",
+          "name": "Tên công ty",
+          "taxNumber": "Mã số thuế",
+          "email": "Email công ty",
+          "phone": "Số điện thoại công ty",
+          "businessRegistrationUrl": "Link đăng ký kinh doanh",
+          "placeholders": {
+            "name": "Công ty TNHH ABC",
+            "taxNumber": "0123456789",
+            "email": "info@company.com",
+            "phone": "024.1234.5678",
+            "businessRegistrationUrl": "https://..."
+          }
+        }
+      },
+      "messages": {
+        "success": "Đăng ký thành công! Vui lòng chờ phê duyệt.",
+        "passwordMismatch": "Mật khẩu xác nhận không khớp",
+        "missingRequiredFields": "Vui lòng điền đầy đủ thông tin bắt buộc",
+        "missingCompanyInfo": "Vui lòng điền đầy đủ thông tin công ty",
+        "genericError": "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại."
+      },
+      "buttons": {
+        "register": "Đăng ký hội viên",
+        "processing": "Đang xử lý..."
+      },
+      "contactInfo": {
+        "title": "THÔNG TIN LIÊN HỆ HIỆP HỘI",
+        "support": "Liên hệ hỗ trợ:",
+        "address": "Địa chỉ:",
+        "addressDetails": "Cung thanh niên\n37 Trần Bình Trọng, Nguyễn Du\nHai Bà Trưng, Hà Nội"
+      },
+      "required": "*"
+    },
+    "list": {
+      "title": "DANH SÁCH HỘI VIÊN",
+      "subtitle": "Danh sách hội viên tổ chức",
+      "loading": "Đang tải danh sách hội viên...",
+      "error": "Lỗi khi tải danh sách hội viên. Vui lòng thử lại sau.",
+      "tableTitle": "Danh sách {{total}} hội viên ({{current}} trên trang này)",
+      "table": {
+        "headers": {
+          "index": "STT",
+          "info": "THÔNG TIN",
+          "company": "CÔNG TY/TỔ CHỨC",
+          "memberType": "LOẠI THÀNH VIÊN",
+          "expertise": "TRÌNH ĐỘ"
+        }
+      },
+      "memberTypes": {
+        "corporate": "Tổ chức",
+        "individual": "Cá nhân",
+        "student": "Sinh viên"
+      },
+      "expertiseLevels": {
+        "expert": "Chuyên gia",
+        "advanced": "Nâng cao",
+        "intermediate": "Trung cấp",
+        "beginner": "Mới bắt đầu"
+      },
+      "stats": {
+        "totalMembers": "Tổng thành viên",
+        "organizations": "Tổ chức",
+        "individuals": "Cá nhân",
+        "students": "Sinh viên"
+      },
+      "defaultCompany": "Cá nhân"
+    }
+  },
+  "posts": {
+    "title": "Bài đăng",
+    "description": "Cập nhật những tin tức mới nhất về hoạt động của Hiệp hội Dữ liệu Quốc gia Việt Nam và các sự kiện quan trọng trong lĩnh vực dữ liệu.",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "posts": "Bài đăng"
+    },
+    "loading": "Đang tải bài viết...",
+    "error": "Có lỗi xảy ra khi tải bài viết",
+    "retry": "Thử lại",
+    "noPosts": "Chưa có bài viết nào.",
+    "noDescription": "Không có mô tả",
+    "author": "Tác giả",
+    "unknownDate": "Không rõ ngày",
+    "readingTime": "{{minutes}} phút đọc",
+    "calculating": "Đang tính...",
+    "info": {
+      "totalPosts": "Tổng số bài viết: {{total}}",
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} bài viết",
+      "page": "Trang {{current}} / {{total}}"
+    },
+    "detail": {
+      "backToList": "Quay lại danh sách bài đăng",
+      "noTitle": "Không có tiêu đề",
+      "contentUpdating": "Nội dung bài viết đang được cập nhật...",
+      "tableOfContents": "Mục lục",
+      "relatedPosts": {
+        "title": "Bài viết liên quan",
+        "loading": "Đang tải bài viết liên quan...",
+        "error": "Không thể tải bài viết liên quan",
+        "noRelated": "Chưa có bài viết liên quan"
+      },
+      "share": {
+        "title": "Chia sẻ bài viết"
+      }
+    }
+  },
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "description": "Thông tin cơ bản về Hiệp hội Dữ liệu Quốc gia",
+    "searchPlaceholder": "Tìm kiếm câu hỏi...",
+    "searching": "Đang tìm kiếm...",
+    "loading": "Đang tải câu hỏi thường gặp...",
+    "loadingQuestion": "Đang tải câu hỏi...",
+    "retry": "Thử lại",
+    "backToList": "Quay lại",
+    "backToListFull": "Quay lại danh sách câu hỏi",
+    "backToFAQ": "Quay lại danh sách FAQ",
+    "noResults": "Không tìm thấy kết quả nào cho \"{{searchTerm}}\"",
+    "questionLabel": "Câu hỏi",
+    "questionInCategory": "Câu hỏi trong danh mục",
+    "createdDate": "Tạo ngày: {{date}}",
+    "error": {
+      "loadFailed": "Không thể tải thông tin câu hỏi",
+      "notFound": "Không tìm thấy câu hỏi"
+    },
+    "contact": {
+      "title": "Không tìm thấy câu trả lời bạn cần?",
+      "description": "Hãy liên hệ với chúng tôi để được hỗ trợ trực tiếp từ đội ngũ chuyên gia.",
+      "button": "Liên hệ hỗ trợ"
     }
   }
 }

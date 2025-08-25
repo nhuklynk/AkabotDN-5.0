@@ -133,7 +133,7 @@
       "updateCta": "Update event"
     }
   },
-  "faq": {
+  "faqManagement": {
     "title": "FAQ Management",
     "subtitle": "Create, edit and manage frequently asked questions.",
     "add": "Add FAQ",
@@ -724,6 +724,182 @@
         "button": "Download Full Charter (PDF)",
         "info": "Size: 2.4 MB • Updated: March 15, 2024"
       }
+    }
+  },
+  "members": {
+    "register": {
+      "title": "MEMBER REGISTRATION",
+      "membershipType": {
+        "individual": "Individual Member",
+        "corporate": "Corporate Member"
+      },
+      "forms": {
+        "accountInfo": {
+          "title": "ACCOUNT INFORMATION",
+          "email": "Email",
+          "fullName": "Full Name",
+          "phone": "Phone Number",
+          "password": "Password",
+          "confirmPassword": "Confirm Password",
+          "placeholders": {
+            "email": "john@example.com",
+            "fullName": "John Doe",
+            "phone": "0123456789",
+            "password": "Enter password",
+            "confirmPassword": "Re-enter password"
+          }
+        },
+        "memberInfo": {
+          "title": "MEMBER INFORMATION",
+          "jobTitle": "Job Title/Position",
+          "workUnit": "Work Unit",
+          "expertiseLevel": "Expertise Level",
+          "assistantInfo": "Additional Information",
+          "cvUrl": "CV/Resume Link",
+          "placeholders": {
+            "jobTitle": "Software Engineer",
+            "workUnit": "ABC Company",
+            "expertiseLevel": "Select level",
+            "assistantInfo": "Additional information...",
+            "cvUrl": "https://..."
+          },
+          "expertiseLevels": {
+            "beginner": "Beginner",
+            "intermediate": "Intermediate",
+            "advanced": "Advanced",
+            "expert": "Expert"
+          }
+        },
+        "companyInfo": {
+          "title": "COMPANY INFORMATION",
+          "name": "Company Name",
+          "taxNumber": "Tax Number",
+          "email": "Company Email",
+          "phone": "Company Phone",
+          "businessRegistrationUrl": "Business Registration Link",
+          "placeholders": {
+            "name": "ABC Company Ltd.",
+            "taxNumber": "0123456789",
+            "email": "info@company.com",
+            "phone": "024.1234.5678",
+            "businessRegistrationUrl": "https://..."
+          }
+        }
+      },
+      "messages": {
+        "success": "Registration successful! Please wait for approval.",
+        "passwordMismatch": "Password confirmation does not match",
+        "missingRequiredFields": "Please fill in all required information",
+        "missingCompanyInfo": "Please fill in all company information",
+        "genericError": "An error occurred during registration. Please try again."
+      },
+      "buttons": {
+        "register": "Register Member",
+        "processing": "Processing..."
+      },
+      "contactInfo": {
+        "title": "ASSOCIATION CONTACT INFORMATION",
+        "support": "Support Contact:",
+        "address": "Address:",
+        "addressDetails": "Youth Cultural Center\n37 Tran Binh Trong, Nguyen Du\nHai Ba Trung, Hanoi"
+      },
+      "required": "*"
+    },
+    "list": {
+      "title": "MEMBER DIRECTORY",
+      "subtitle": "List of organization members",
+      "loading": "Loading member list...",
+      "error": "Error loading member list. Please try again later.",
+      "tableTitle": "List of {{total}} members ({{current}} on this page)",
+      "table": {
+        "headers": {
+          "index": "NO.",
+          "info": "INFORMATION",
+          "company": "COMPANY/ORGANIZATION",
+          "memberType": "MEMBER TYPE",
+          "expertise": "EXPERTISE LEVEL"
+        }
+      },
+      "memberTypes": {
+        "corporate": "Organization",
+        "individual": "Individual",
+        "student": "Student"
+      },
+      "expertiseLevels": {
+        "expert": "Expert",
+        "advanced": "Advanced",
+        "intermediate": "Intermediate",
+        "beginner": "Beginner"
+      },
+      "stats": {
+        "totalMembers": "Total Members",
+        "organizations": "Organizations",
+        "individuals": "Individuals",
+        "students": "Students"
+      },
+      "defaultCompany": "Individual"
+    }
+  },
+  "posts": {
+    "title": "Posts",
+    "description": "Stay updated with the latest news about Vietnam National Data Association activities and important events in the data field.",
+    "breadcrumb": {
+      "home": "Home",
+      "posts": "Posts"
+    },
+    "loading": "Loading posts...",
+    "error": "Error occurred while loading posts",
+    "retry": "Retry",
+    "noPosts": "No posts available yet.",
+    "noDescription": "No description",
+    "author": "Author",
+    "unknownDate": "Unknown date",
+    "readingTime": "{{minutes}} min read",
+    "calculating": "Calculating...",
+    "info": {
+      "totalPosts": "Total posts: {{total}}",
+      "showing": "Showing {{start}}-{{end}} of {{total}} posts",
+      "page": "Page {{current}} / {{total}}"
+    },
+    "detail": {
+      "backToList": "Back to posts list",
+      "noTitle": "No title",
+      "contentUpdating": "Article content is being updated...",
+      "tableOfContents": "Table of Contents",
+      "relatedPosts": {
+        "title": "Related Posts",
+        "loading": "Loading related posts...",
+        "error": "Unable to load related posts",
+        "noRelated": "No related posts available"
+      },
+      "share": {
+        "title": "Share Article"
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Basic information about Vietnam National Data Association",
+    "searchPlaceholder": "Search questions...",
+    "searching": "Searching...",
+    "loading": "Loading frequently asked questions...",
+    "loadingQuestion": "Loading question...",
+    "retry": "Try again",
+    "backToList": "Go back",
+    "backToListFull": "Back to questions list",
+    "backToFAQ": "Back to FAQ list",
+    "noResults": "No results found for \"{{searchTerm}}\"",
+    "questionLabel": "Question",
+    "questionInCategory": "Questions in category",
+    "createdDate": "Created: {{date}}",
+    "error": {
+      "loadFailed": "Unable to load question information",
+      "notFound": "Question not found"
+    },
+    "contact": {
+      "title": "Can't find the answer you need?",
+      "description": "Contact us for direct support from our expert team.",
+      "button": "Contact Support"
     }
   }
 }
