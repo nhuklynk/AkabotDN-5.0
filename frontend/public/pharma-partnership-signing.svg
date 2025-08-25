@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-pharma" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#DC2626;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="table-wood" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#92400E" />
+      <stop offset="100%" style="stop-color:#78350F" />
+    </linearGradient>
+    <linearGradient id="document" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF" />
+      <stop offset="100%" style="stop-color:#F8FAFC" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-pharma)"/>
+  
+  <!-- Event Banner -->
+  <g transform="translate(150,50)">
+    <rect x="0" y="0" width="500" height="80" rx="10" fill="#059669" opacity="0.9"/>
+    <text x="250" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#FFFFFF">KÝ KẾT HỢP TÁC CHIẾN LƯỢC</text>
+    <text x="250" y="50" text-anchor="middle" font-size="14" fill="#FFFFFF">PILA Group & ECO Pharma</text>
+    <text x="250" y="68" text-anchor="middle" font-size="12" fill="#FFFFFF">Truy xuất nguồn gốc ngành Dược phẩm</text>
+  </g>
+  
+  <!-- Signing Table -->
+  <ellipse cx="400" cy="300" rx="200" ry="60" fill="url(#table-wood)"/>
+  <ellipse cx="400" cy="295" rx="190" ry="55" fill="#A16207" opacity="0.7"/>
+  
+  <!-- Contract Documents -->
+  <g transform="translate(350,260)">
+    <rect x="0" y="0" width="50" height="60" rx="3" fill="url(#document)" stroke="#D1D5DB" stroke-width="1"/>
+    <text x="25" y="15" text-anchor="middle" font-size="8" font-weight="bold" fill="#059669">HỢP ĐỒNG</text>
+    <text x="25" y="25" text-anchor="middle" font-size="6" fill="#DC2626">HỢP TÁC</text>
+    
+    <!-- Contract details -->
+    <line x1="5" y1="30" x2="45" y2="30" stroke="#9CA3AF" stroke-width="0.5"/>
+    <line x1="5" y1="35" x2="40" y2="35" stroke="#9CA3AF" stroke-width="0.5"/>
+    <line x1="5" y1="40" x2="45" y2="40" stroke="#9CA3AF" stroke-width="0.5"/>
+    <line x1="5" y1="45" x2="35" y2="45" stroke="#9CA3AF" stroke-width="0.5"/>
+    
+    <!-- Signatures area -->
+    <rect x="5" y="50" width="15" height="5" fill="#059669" opacity="0.3"/>
+    <rect x="30" y="50" width="15" height="5" fill="#DC2626" opacity="0.3"/>
+    <text x="12" y="58" text-anchor="middle" font-size="4" fill="#059669">PILA</text>
+    <text x="37" y="58" text-anchor="middle" font-size="4" fill="#DC2626">ECO</text>
+  </g>
+  
+  <!-- Pen -->
+  <g transform="translate(420,275)">
+    <rect x="0" y="0" width="3" height="20" rx="1" fill="#1F2937"/>
+    <circle cx="1.5" cy="22" r="2" fill="#3B82F6"/>
+  </g>
+  
+  <!-- Company Representatives -->
+  <!-- PILA Group Representative -->
+  <g transform="translate(250,200)">
+    <circle cx="0" cy="0" r="25" fill="#059669" opacity="0.9"/>
+    <circle cx="0" cy="-8" r="10" fill="#FFFFFF"/>
+    <path d="M-12,8 Q0,20 12,8" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+    
+    <!-- Suit -->
+    <rect x="-15" y="15" width="30" height="40" rx="5" fill="#1F2937"/>
+    <rect x="-12" y="18" width="24" height="35" rx="3" fill="#374151"/>
+    <rect x="-8" y="20" width="16" height="30" rx="2" fill="#FFFFFF"/>
+    <rect x="-2" y="22" width="4" height="25" fill="#059669"/>
+    
+    <!-- Company logo/badge -->
+    <rect x="-20" y="-5" width="15" height="10" rx="2" fill="#FFFFFF" stroke="#059669"/>
+    <text x="-12" y="1" text-anchor="middle" font-size="6" font-weight="bold" fill="#059669">PILA</text>
+    
+    <text x="0" y="75" text-anchor="middle" font-size="10" font-weight="bold" fill="#059669">Đại diện PILA Group</text>
+    <text x="0" y="88" text-anchor="middle" font-size="8" fill="#6B7280">Tập đoàn Công nghệ</text>
+  </g>
+  
+  <!-- ECO Pharma Representative -->
+  <g transform="translate(550,200)">
+    <circle cx="0" cy="0" r="25" fill="#DC2626" opacity="0.9"/>
+    <circle cx="0" cy="-8" r="10" fill="#FFFFFF"/>
+    <path d="M-12,8 Q0,20 12,8" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+    
+    <!-- Suit -->
+    <rect x="-15" y="15" width="30" height="40" rx="5" fill="#1F2937"/>
+    <rect x="-12" y="18" width="24" height="35" rx="3" fill="#374151"/>
+    <rect x="-8" y="20" width="16" height="30" rx="2" fill="#FFFFFF"/>
+    <rect x="-2" y="22" width="4" height="25" fill="#DC2626"/>
+    
+    <!-- Company logo/badge -->
+    <rect x="5" y="-5" width="15" height="10" rx="2" fill="#FFFFFF" stroke="#DC2626"/>
+    <text x="12" y="1" text-anchor="middle" font-size="6" font-weight="bold" fill="#DC2626">ECO</text>
+    
+    <text x="0" y="75" text-anchor="middle" font-size="10" font-weight="bold" fill="#DC2626">Đại diện ECO Pharma</text>
+    <text x="0" y="88" text-anchor="middle" font-size="8" fill="#6B7280">Công ty Dược phẩm</text>
+  </g>
+  
+  <!-- Witnesses/Officials -->
+  <g transform="translate(150,350)">
+    <circle cx="0" cy="0" r="15" fill="#7C3AED" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#7C3AED">Đại diện</text>
+    <text x="0" y="40" text-anchor="middle" font-size="6" fill="#6B7280">Hiệp hội</text>
+  </g>
+  
+  <g transform="translate(650,350)">
+    <circle cx="0" cy="0" r="15" fill="#F59E0B" opacity="0.8"/>
+    <circle cx="0" cy="-5" r="6" fill="#FFFFFF"/>
+    <path d="M-8,5 Q0,12 8,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    <text x="0" y="30" text-anchor="middle" font-size="8" fill="#F59E0B">Quan khách</text>
+    <text x="0" y="40" text-anchor="middle" font-size="6" fill="#6B7280">Khách mời</text>
+  </g>
+  
+  <!-- Partnership Benefits -->
+  <g transform="translate(50,400)">
+    <rect x="0" y="0" width="200" height="120" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="100" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#059669">MỤC TIÊU HỢP TÁC</text>
+    
+    <text x="10" y="35" font-size="9" fill="#374151">🔗 Xây dựng hệ thống truy xuất</text>
+    <text x="10" y="48" font-size="9" fill="#374151">💊 Đảm bảo chất lượng dược phẩm</text>
+    <text x="10" y="61" font-size="9" fill="#374151">🛡️ Chống hàng giả, hàng nhái</text>
+    <text x="10" y="74" font-size="9" fill="#374151">📱 Ứng dụng công nghệ số</text>
+    <text x="10" y="87" font-size="9" fill="#374151">🌐 Blockchain & AI</text>
+    <text x="10" y="100" font-size="9" fill="#374151">📊 Minh bạch chuỗi cung ứng</text>
+  </g>
+  
+  <!-- Technology Integration -->
+  <g transform="translate(550,400)">
+    <rect x="0" y="0" width="200" height="120" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="100" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#DC2626">CÔNG NGHỆ ỨNG DỤNG</text>
+    
+    <!-- Blockchain -->
+    <rect x="20" y="30" width="25" height="15" rx="3" fill="#059669"/>
+    <rect x="22" y="32" width="21" height="11" rx="2" fill="#FFFFFF"/>
+    <rect x="24" y="34" width="3" height="3" fill="#059669"/>
+    <rect x="28" y="34" width="3" height="3" fill="#059669"/>
+    <rect x="32" y="34" width="3" height="3" fill="#059669"/>
+    <text x="50" y="40" font-size="8" fill="#059669">Blockchain</text>
+    
+    <!-- IoT Sensors -->
+    <circle cx="32" cy="60" r="8" fill="#7C3AED"/>
+    <circle cx="32" cy="60" r="4" fill="#FFFFFF"/>
+    <circle cx="32" cy="60" r="2" fill="#7C3AED"/>
+    <text x="50" y="64" font-size="8" fill="#7C3AED">IoT Sensors</text>
+    
+    <!-- Mobile App -->
+    <rect x="24" y="78" width="16" height="24" rx="3" fill="#DC2626"/>
+    <rect x="26" y="80" width="12" height="18" rx="1" fill="#FFFFFF"/>
+    <circle cx="32" cy="100" r="1" fill="#FFFFFF"/>
+    <text x="50" y="92" font-size="8" fill="#DC2626">Mobile App</text>
+    
+    <!-- QR Code -->
+    <rect x="120" y="35" width="20" height="20" fill="#1F2937"/>
+    <rect x="122" y="37" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="124" y="39" width="2" height="2" fill="#1F2937"/>
+    <rect x="127" y="39" width="2" height="2" fill="#1F2937"/>
+    <rect x="130" y="39" width="2" height="2" fill="#1F2937"/>
+    <text x="150" y="48" font-size="8" fill="#1F2937">QR Tracking</text>
+  </g>
+  
+  <!-- Pharmaceutical Icons -->
+  <g transform="translate(100,150)">
+    <!-- Medicine bottle -->
+    <rect x="0" y="10" width="15" height="25" rx="2" fill="#FFFFFF" stroke="#059669" stroke-width="1"/>
+    <rect x="2" y="5" width="11" height="8" rx="4" fill="#059669"/>
+    <circle cx="7" cy="20" r="2" fill="#059669"/>
+    <text x="7" y="50" text-anchor="middle" font-size="6" fill="#059669">Dược phẩm</text>
+  </g>
+  
+  <g transform="translate(650,150)">
+    <!-- Medicine pill -->
+    <ellipse cx="10" cy="15" rx="8" ry="5" fill="#DC2626"/>
+    <ellipse cx="10" cy="15" rx="8" ry="5" fill="#FFFFFF" opacity="0.5"/>
+    <line x1="10" y1="10" x2="10" y2="20" stroke="#DC2626" stroke-width="1"/>
+    <text x="10" y="35" text-anchor="middle" font-size="6" fill="#DC2626">An toàn</text>
+  </g>
+  
+  <!-- Partnership Handshake Symbol -->
+  <g transform="translate(375,350)">
+    <circle cx="25" cy="0" r="20" fill="#059669" opacity="0.2"/>
+    <circle cx="25" cy="0" r="15" fill="#DC2626" opacity="0.2"/>
+    <circle cx="25" cy="0" r="10" fill="#FFFFFF" opacity="0.9"/>
+    
+    <!-- Handshake -->
+    <path d="M15,0 Q20,-5 25,0 Q30,-5 35,0" stroke="#374151" stroke-width="2" fill="none"/>
+    <circle cx="20" cy="0" r="2" fill="#059669"/>
+    <circle cx="30" cy="0" r="2" fill="#DC2626"/>
+  </g>
+  
+  <!-- Event Date & Location */
+  <g transform="translate(300,450)">
+    <rect x="0" y="0" width="200" height="40" rx="5" fill="#F3F4F6" stroke="#D1D5DB"/>
+    <text x="100" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#374151">📅 Ngày 25/07/2025</text>
+    <text x="100" y="28" text-anchor="middle" font-size="9" fill="#6B7280">📍 Hội thảo Truy xuất nguồn gốc</text>
+    <text x="100" y="38" text-anchor="middle" font-size="8" fill="#9CA3AF">Kinh tế số Việt Nam</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#059669">
+    Ký kết Hợp tác PILA & ECO Pharma
+  </text>
+  <text x="400" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#DC2626" opacity="0.8">
+    Bước tiến mới trong Truy xuất nguồn gốc ngành Dược
+  </text>
+</svg>
+
+
+
+
+
+
+
+

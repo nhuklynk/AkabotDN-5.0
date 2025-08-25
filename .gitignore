@@ -5,8 +5,14 @@ logs
 *.log
 .env
 .env.local
+/.env.*
 dist/
 build/
+.next/
 .vscode/
 .idea/
 backend/package-lock.json
+.vs/
+.vs/slnx.sqlite
+
+!.env.sample

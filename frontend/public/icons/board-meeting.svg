@@ -1,0 +1,144 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="roomGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F8F9FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E9ECEF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="tableGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="screenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0033FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#977DFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Conference Room Background -->
+  <rect width="400" height="300" fill="url(#roomGradient)"/>
+  
+  <!-- Wall panels -->
+  <rect x="0" y="0" width="400" height="80" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="50" y="10" width="300" height="60" fill="rgba(255,255,255,0.95)" stroke="#CCCCCC" rx="10"/>
+  
+  <!-- Conference Table (Oval) -->
+  <ellipse cx="200" cy="180" rx="120" ry="60" fill="url(#tableGradient)"/>
+  <ellipse cx="200" cy="175" rx="115" ry="55" fill="#A0522D" opacity="0.8"/>
+  
+  <!-- Table Surface Details -->
+  <ellipse cx="200" cy="175" rx="100" ry="45" fill="#D2691E" opacity="0.3"/>
+  
+  <!-- Chairs around table -->
+  <g fill="#2F4F4F" opacity="0.8">
+    <!-- Top chairs -->
+    <rect x="170" y="110" width="15" height="20" rx="2"/>
+    <rect x="215" y="110" width="15" height="20" rx="2"/>
+    
+    <!-- Side chairs -->
+    <rect x="110" y="165" width="20" height="15" rx="2"/>
+    <rect x="110" y="185" width="20" height="15" rx="2"/>
+    <rect x="270" y="165" width="20" height="15" rx="2"/>
+    <rect x="270" y="185" width="20" height="15" rx="2"/>
+    
+    <!-- Bottom chairs -->
+    <rect x="170" y="235" width="15" height="20" rx="2"/>
+    <rect x="215" y="235" width="15" height="20" rx="2"/>
+  </g>
+  
+  <!-- People (simplified representations) -->
+  <g opacity="0.7">
+    <!-- Chairman at head of table -->
+    <circle cx="177" cy="120" r="6" fill="#0033FF"/>
+    <rect x="174" y="126" width="6" height="8" fill="#0033FF" rx="1"/>
+    
+    <!-- Board members -->
+    <circle cx="223" cy="120" r="6" fill="#977DFF"/>
+    <rect x="220" y="126" width="6" height="8" fill="#977DFF" rx="1"/>
+    
+    <circle cx="120" cy="170" r="6" fill="#FFCCF2"/>
+    <rect x="117" y="176" width="6" height="8" fill="#FFCCF2" rx="1"/>
+    
+    <circle cx="120" cy="190" r="6" fill="#0033FF"/>
+    <rect x="117" y="196" width="6" height="8" fill="#0033FF" rx="1"/>
+    
+    <circle cx="280" cy="170" r="6" fill="#977DFF"/>
+    <rect x="277" y="176" width="6" height="8" fill="#977DFF" rx="1"/>
+    
+    <circle cx="280" cy="190" r="6" fill="#FFCCF2"/>
+    <rect x="277" y="196" width="6" height="8" fill="#FFCCF2" rx="1"/>
+    
+    <circle cx="177" cy="245" r="6" fill="#0033FF"/>
+    <rect x="174" y="251" width="6" height="8" fill="#0033FF" rx="1"/>
+    
+    <circle cx="223" cy="245" r="6" fill="#977DFF"/>
+    <rect x="220" y="251" width="6" height="8" fill="#977DFF" rx="1"/>
+  </g>
+  
+  <!-- Documents on table -->
+  <g fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1">
+    <rect x="160" y="160" width="20" height="15" rx="1"/>
+    <rect x="185" y="165" width="15" height="20" rx="1"/>
+    <rect x="205" y="160" width="20" height="15" rx="1"/>
+    <rect x="230" y="170" width="15" height="18" rx="1"/>
+  </g>
+  
+  <!-- Laptops -->
+  <g>
+    <rect x="140" y="175" width="25" height="18" fill="#2C3E50" rx="2"/>
+    <rect x="142" y="177" width="21" height="14" fill="#34495E" rx="1"/>
+    <rect x="143" y="178" width="19" height="12" fill="url(#screenGradient)" rx="1"/>
+    
+    <rect x="235" y="175" width="25" height="18" fill="#2C3E50" rx="2"/>
+    <rect x="237" y="177" width="21" height="14" fill="#34495E" rx="1"/>
+    <rect x="238" y="178" width="19" height="12" fill="url(#screenGradient)" rx="1"/>
+  </g>
+  
+  <!-- Projection Screen -->
+  <rect x="150" y="85" width="100" height="60" fill="#F8F9FA" stroke="#CCCCCC" stroke-width="2" rx="5"/>
+  <rect x="155" y="90" width="90" height="50" fill="#1a1a1a" rx="3"/>
+  <rect x="160" y="95" width="80" height="40" fill="url(#screenGradient)" rx="2"/>
+  
+  <!-- Presentation Content -->
+  <text x="200" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#FFFFFF" font-weight="bold">
+    BÁO CÁO HOẠT ĐỘNG
+  </text>
+  <text x="200" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#FFCCF2">
+    6 tháng đầu năm 2025
+  </text>
+  
+  <!-- Chart on screen -->
+  <g transform="translate(170, 122)">
+    <rect x="0" y="0" width="5" height="8" fill="#FFFFFF" opacity="0.8"/>
+    <rect x="8" y="2" width="5" height="6" fill="#FFCCF2" opacity="0.8"/>
+    <rect x="16" y="1" width="5" height="7" fill="#FFFFFF" opacity="0.8"/>
+    <rect x="24" y="3" width="5" height="5" fill="#FFCCF2" opacity="0.8"/>
+    <rect x="32" y="0" width="5" height="8" fill="#FFFFFF" opacity="0.8"/>
+    <rect x="40" y="2" width="5" height="6" fill="#FFCCF2" opacity="0.8"/>
+  </g>
+  
+  <!-- Meeting Title -->
+  <text x="200" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0033FF">
+    HỘI NGHỊ BAN CHẤP HÀNH
+  </text>
+  <text x="200" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#977DFF">
+    Hiệp hội Dữ liệu Quốc gia Việt Nam
+  </text>
+  <text x="200" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    Sơ kết 6 tháng & Định hướng 2025
+  </text>
+  
+  <!-- Vietnamese Flag -->
+  <g transform="translate(350, 15)">
+    <rect x="0" y="0" width="30" height="20" fill="#FF0000"/>
+    <polygon points="15,5 18,12 11,8 19,8 12,12" fill="#FFD700"/>
+  </g>
+  
+  <!-- Data Network Visualization -->
+  <g transform="translate(30, 250)" opacity="0.4">
+    <circle cx="0" cy="0" r="3" fill="#0033FF"/>
+    <circle cx="20" cy="-5" r="2" fill="#977DFF"/>
+    <circle cx="15" cy="10" r="2" fill="#FFCCF2"/>
+    <line x1="0" y1="0" x2="20" y2="-5" stroke="#0033FF" stroke-width="1"/>
+    <line x1="0" y1="0" x2="15" y2="10" stroke="#977DFF" stroke-width="1"/>
+  </g>
+</svg>

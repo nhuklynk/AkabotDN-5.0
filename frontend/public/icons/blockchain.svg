@@ -1,0 +1,75 @@
+<svg width="280" height="200" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="block" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="chain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFCCF2;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#977DFF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Blockchain Blocks -->
+  <rect x="40" y="80" width="60" height="40" fill="url(#block)" rx="6"/>
+  <rect x="50" y="90" width="40" height="20" fill="white" opacity="0.1" rx="3"/>
+  <text x="70" y="103" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">Block 1</text>
+  
+  <rect x="110" y="80" width="60" height="40" fill="url(#block)" rx="6"/>
+  <rect x="120" y="90" width="40" height="20" fill="white" opacity="0.1" rx="3"/>
+  <text x="140" y="103" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">Block 2</text>
+  
+  <rect x="180" y="80" width="60" height="40" fill="url(#block)" rx="6"/>
+  <rect x="190" y="90" width="40" height="20" fill="white" opacity="0.1" rx="3"/>
+  <text x="210" y="103" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">Block 3</text>
+  
+  <!-- Connection Lines -->
+  <line x1="100" y1="100" x2="110" y2="100" stroke="url(#chain)" stroke-width="3" opacity="0.8"/>
+  <line x1="170" y1="100" x2="180" y2="100" stroke="url(#chain)" stroke-width="3" opacity="0.8"/>
+  
+  <!-- Hash Values -->
+  <rect x="40" y="130" width="60" height="25" fill="url(#chain)" rx="4"/>
+  <text x="70" y="146" text-anchor="middle" fill="white" font-family="monospace" font-size="8">Hash 1</text>
+  
+  <rect x="110" y="130" width="60" height="25" fill="url(#chain)" rx="4"/>
+  <text x="140" y="146" text-anchor="middle" fill="white" font-family="monospace" font-size="8">Hash 2</text>
+  
+  <rect x="180" y="130" width="60" height="25" fill="url(#chain)" rx="4"/>
+  <text x="210" y="146" text-anchor="middle" fill="white" font-family="monospace" font-size="8">Hash 3</text>
+  
+  <!-- Hash Connections -->
+  <line x1="70" y1="155" x2="70" y2="120" stroke="#FFCCF2" stroke-width="1.5" opacity="0.6"/>
+  <line x1="140" y1="155" x2="140" y2="120" stroke="#FFCCF2" stroke-width="1.5" opacity="0.6"/>
+  <line x1="210" y1="155" x2="210" y2="120" stroke="#FFCCF2" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Network Nodes -->
+  <circle cx="70" cy="40" r="15" fill="url(#chain)" stroke="#977DFF" stroke-width="2"/>
+  <text x="70" y="45" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">Node 1</text>
+  
+  <circle cx="140" cy="40" r="15" fill="url(#chain)" stroke="#977DFF" stroke-width="2"/>
+  <text x="140" y="45" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">Node 2</text>
+  
+  <circle cx="210" cy="40" r="15" fill="url(#chain)" stroke="#977DFF" stroke-width="2"/>
+  <text x="210" y="45" text-anchor="middle" fill="white" font-family="Arial" font-size="10" font-weight="bold">Node 3</text>
+  
+  <!-- Network Connections -->
+  <line x1="85" y1="40" x2="125" y2="40" stroke="#977DFF" stroke-width="2" opacity="0.6"/>
+  <line x1="155" y1="40" x2="195" y2="40" stroke="#977DFF" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Data Flow -->
+  <path d="M 70 55 Q 70 65 70 75" stroke="#FFCCF2" stroke-width="2" fill="none" opacity="0.8"/>
+  <path d="M 140 55 Q 140 65 140 75" stroke="#FFCCF2" stroke-width="2" fill="none" opacity="0.8"/>
+  <path d="M 210 55 Q 210 65 210 75" stroke="#FFCCF2" stroke-width="2" fill="none" opacity="0.8"/>
+  
+  <!-- Title -->
+  <text x="140" y="20" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="14" font-weight="bold">Blockchain Platform</text>
+</svg>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+<svg width="260" height="180" viewBox="0 0 260 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F2E6EE;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#FFCCF2;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="chip" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#977DFF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#0033FF;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- ID Card -->
+  <rect x="30" y="40" width="200" height="120" fill="url(#card)" rx="12" stroke="#977DFF" stroke-width="2"/>
+  <rect x="40" y="50" width="180" height="100" fill="white" opacity="0.1" rx="8"/>
+  
+  <!-- Chip -->
+  <rect x="50" y="70" width="40" height="30" fill="url(#chip)" rx="4"/>
+  <rect x="55" y="75" width="30" height="20" fill="white" opacity="0.1" rx="2"/>
+  
+  <!-- Chip Details -->
+  <rect x="58" y="78" width="6" height="6" fill="#FFCCF2" opacity="0.8"/>
+  <rect x="68" y="78" width="6" height="6" fill="#FFCCF2" opacity="0.8"/>
+  <rect x="78" y="78" width="6" height="6" fill="#FFCCF2" opacity="0.8"/>
+  <rect x="58" y="88" width="6" height="6" fill="#FFCCF2" opacity="0.8"/>
+  <rect x="68" y="88" width="6" height="6" fill="#FFCCF2" opacity="0.8"/>
+  <rect x="78" y="88" width="6" height="6" fill="#FFCCF2" opacity="0.8"/>
+  
+  <!-- Photo Area -->
+  <rect x="110" y="70" width="50" height="60" fill="#977DFF" opacity="0.3" rx="6" stroke="#977DFF" stroke-width="1" stroke-dasharray="4,2"/>
+  <circle cx="135" cy="100" r="15" fill="#FFCCF2" opacity="0.6"/>
+  <circle cx="135" cy="100" r="8" fill="#977DFF" opacity="0.8"/>
+  
+  <!-- Text Information -->
+  <rect x="50" y="110" width="50" height="8" fill="#0033FF" opacity="0.6" rx="2"/>
+  <rect x="50" y="125" width="50" height="8" fill="#0033FF" opacity="0.6" rx="2"/>
+  <rect x="50" y="140" width="50" height="8" fill="#0033FF" opacity="0.6" rx="2"/>
+  
+  <!-- Security Elements -->
+  <circle cx="200" cy="60" r="8" fill="#FFCCF2" opacity="0.8"/>
+  <path d="M 196 60 L 200 64 L 204 60" stroke="#0033FF" stroke-width="2" fill="none"/>
+  
+  <!-- QR Code Pattern -->
+  <rect x="170" y="110" width="40" height="40" fill="white" opacity="0.2" rx="4"/>
+  <rect x="175" y="115" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="185" y="115" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="195" y="115" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="175" y="125" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="185" y="125" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="195" y="125" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="175" y="135" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="185" y="135" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  <rect x="195" y="135" width="6" height="6" fill="#0033FF" opacity="0.8"/>
+  
+  <!-- Floating Security Icons -->
+  <circle cx="40" cy="30" r="6" fill="#977DFF" opacity="0.6"/>
+  <circle cx="220" cy="30" r="6" fill="#977DFF" opacity="0.6"/>
+  
+  <!-- Title -->
+  <text x="130" y="25" text-anchor="middle" fill="#0033FF" font-family="Arial" font-size="14" font-weight="bold">Định danh Số</text>
+</svg>
+
+
+
+
+
+
+
+
+

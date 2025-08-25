@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-chatbot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#06B6D4;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="chat-interface" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF" />
+      <stop offset="100%" style="stop-color:#F8FAFC" />
+    </linearGradient>
+    <linearGradient id="bot-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5" />
+      <stop offset="100%" style="stop-color:#7C3AED" />
+    </linearGradient>
+    <linearGradient id="user-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981" />
+      <stop offset="100%" style="stop-color:#059669" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-chatbot)"/>
+  
+  <!-- Title -->
+  <g transform="translate(200,50)">
+    <rect x="0" y="0" width="400" height="70" rx="10" fill="url(#bot-gradient)" opacity="0.9"/>
+    <text x="200" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#FFFFFF">TRỢ LÝ ẢO QUỐC GIA</text>
+    <text x="200" y="50" text-anchor="middle" font-size="16" fill="#FFFFFF">AI Chatbot Thông minh - Hỗ trợ Dịch vụ Công</text>
+  </g>
+  
+  <!-- Main Chat Interface -->
+  <g transform="translate(150,150)">
+    <rect x="0" y="0" width="500" height="350" rx="15" fill="url(#chat-interface)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- Chat Header -->
+    <rect x="10" y="10" width="480" height="50" rx="8" fill="#4F46E5"/>
+    <circle cx="40" cy="35" r="15" fill="url(#bot-gradient)"/>
+    <circle cx="40" cy="30" r="6" fill="#FFFFFF"/>
+    <circle cx="37" cy="28" r="2" fill="#4F46E5"/>
+    <circle cx="43" cy="28" r="2" fill="#4F46E5"/>
+    <path d="M35,35 Q40,40 45,35" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    
+    <text x="70" y="30" font-size="16" font-weight="bold" fill="#FFFFFF">Trợ lý ảo Việt Nam</text>
+    <text x="70" y="45" font-size="12" fill="#FFFFFF">Đang hoạt động</text>
+    
+    <!-- Online indicator -->
+    <circle cx="450" cy="35" r="6" fill="#10B981">
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="470" y="39" font-size="10" fill="#FFFFFF">Online</text>
+    
+    <!-- Chat Messages Area -->
+    <rect x="10" y="70" width="480" height="220" rx="5" fill="#F9FAFB"/>
+    
+    <!-- Bot Message 1 -->
+    <g transform="translate(20,85)">
+      <rect x="0" y="0" width="300" height="40" rx="20" fill="#E0E7FF"/>
+      <text x="15" y="15" font-size="12" fill="#3730A3">Xin chào! Tôi là trợ lý ảo của Chính phủ Việt Nam.</text>
+      <text x="15" y="30" font-size="12" fill="#3730A3">Tôi có thể giúp bạn về dịch vụ công. Bạn cần hỗ trợ gì?</text>
+    </g>
+    
+    <!-- User Message 1 -->
+    <g transform="translate(200,135)">
+      <rect x="0" y="0" width="280" height="25" rx="15" fill="#DCFCE7"/>
+      <text x="15" y="17" font-size="12" fill="#166534">Tôi muốn đăng ký hộ khẩu online</text>
+    </g>
+    
+    <!-- Bot Message 2 -->
+    <g transform="translate(20,170)">
+      <rect x="0" y="0" width="350" height="55" rx="20" fill="#E0E7FF"/>
+      <text x="15" y="15" font-size="12" fill="#3730A3">Tôi sẽ hướng dẫn bạn đăng ký hộ khẩu trực tuyến:</text>
+      <text x="15" y="30" font-size="12" fill="#3730A3">1. Chuẩn bị CCCD/CMND và giấy tờ liên quan</text>
+      <text x="15" y="45" font-size="12" fill="#3730A3">2. Truy cập cổng dịch vụ công quốc gia</text>
+    </g>
+    
+    <!-- User Message 2 -->
+    <g transform="translate(250,235)">
+      <rect x="0" y="0" width="230" height="25" rx="15" fill="#DCFCE7"/>
+      <text x="15" y="17" font-size="12" fill="#166534">Cảm ơn, tôi sẽ làm theo hướng dẫn</text>
+    </g>
+    
+    <!-- Bot Message 3 (Typing) -->
+    <g transform="translate(20,270)">
+      <rect x="0" y="0" width="150" height="25" rx="15" fill="#E0E7FF"/>
+      <text x="15" y="17" font-size="12" fill="#3730A3">Đang nhập</text>
+      <circle cx="90" cy="12" r="2" fill="#4F46E5">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="100" cy="12" r="2" fill="#4F46E5">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" begin="0.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="110" cy="12" r="2" fill="#4F46E5">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" begin="0.6s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Input Area -->
+    <rect x="10" y="300" width="400" height="40" rx="20" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+    <text x="25" y="325" font-size="12" fill="#9CA3AF">Nhập câu hỏi của bạn...</text>
+    
+    <!-- Send Button -->
+    <circle cx="460" cy="320" r="18" fill="url(#bot-gradient)"/>
+    <path d="M455,320 L465,315 L465,325 Z" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- AI Features Panel -->
+  <g transform="translate(50,150)">
+    <rect x="0" y="0" width="120" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="60" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#4F46E5">TÍNH NĂNG AI</text>
+    
+    <!-- Natural Language Processing -->
+    <g transform="translate(15,35)">
+      <rect x="0" y="0" width="90" height="30" rx="5" fill="#EEF2FF"/>
+      <text x="45" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#4F46E5">XỬ LÝ NGÔN NGỮ</text>
+      <text x="45" y="25" text-anchor="middle" font-size="8" fill="#6366F1">Hiểu tiếng Việt tự nhiên</text>
+    </g>
+    
+    <!-- Multi-language -->
+    <g transform="translate(15,75)">
+      <rect x="0" y="0" width="90" height="30" rx="5" fill="#ECFDF5"/>
+      <text x="45" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#059669">ĐA NGÔN NGỮ</text>
+      <text x="45" y="25" text-anchor="middle" font-size="8" fill="#10B981">Việt, Anh, Trung, Nhật</text>
+    </g>
+    
+    <!-- Machine Learning -->
+    <g transform="translate(15,115)">
+      <rect x="0" y="0" width="90" height="30" rx="5" fill="#FEF3C7"/>
+      <text x="45" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#D97706">HỌC MÁY</text>
+      <text x="45" y="25" text-anchor="middle" font-size="8" fill="#F59E0B">Cải thiện liên tục</text>
+    </g>
+    
+    <!-- 24/7 Support -->
+    <g transform="translate(15,155)">
+      <rect x="0" y="0" width="90" height="30" rx="5" fill="#FECACA"/>
+      <text x="45" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#DC2626">24/7 HỖ TRỢ</text>
+      <text x="45" y="25" text-anchor="middle" font-size="8" fill="#EF4444">Không ngừng nghỉ</text>
+    </g>
+  </g>
+  
+  <!-- Service Categories -->
+  <g transform="translate(680,150)">
+    <rect x="0" y="0" width="120" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="60" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#059669">DỊCH VỤ HỖ TRỢ</text>
+    
+    <!-- Government Services -->
+    <g transform="translate(10,35)">
+      <circle cx="15" cy="15" r="12" fill="#3B82F6"/>
+      <rect x="10" y="10" width="10" height="8" rx="1" fill="#FFFFFF"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#3B82F6">Dịch vụ công</text>
+      <text x="35" y="22" font-size="6" fill="#6B7280">Thủ tục hành chính</text>
+    </g>
+    
+    <!-- Tax Services -->
+    <g transform="translate(10,60)">
+      <circle cx="15" cy="15" r="12" fill="#10B981"/>
+      <text x="15" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">$</text>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#10B981">Thuế & phí</text>
+      <text x="35" y="22" font-size="6" fill="#6B7280">Nộp thuế online</text>
+    </g>
+    
+    <!-- Healthcare -->
+    <g transform="translate(10,85)">
+      <circle cx="15" cy="15" r="12" fill="#EF4444"/>
+      <path d="M12,15 L18,15 M15,12 L15,18" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#EF4444">Y tế</text>
+      <text x="35" y="22" font-size="6" fill="#6B7280">Khám chữa bệnh</text>
+    </g>
+    
+    <!-- Education -->
+    <g transform="translate(10,110)">
+      <circle cx="15" cy="15" r="12" fill="#8B5CF6"/>
+      <rect x="10" y="10" width="10" height="8" rx="1" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+      <line x1="11" y1="13" x2="19" y2="13" stroke="#FFFFFF" stroke-width="1"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#8B5CF6">Giáo dục</text>
+      <text x="35" y="22" font-size="6" fill="#6B7280">Học tập trực tuyến</text>
+    </g>
+    
+    <!-- Social Services -->
+    <g transform="translate(10,135)">
+      <circle cx="15" cy="15" r="12" fill="#F59E0B"/>
+      <circle cx="15" cy="12" r="3" fill="#FFFFFF"/>
+      <path d="M9,18 Q15,23 21,18" stroke="#FFFFFF" stroke-width="1" fill="none"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#F59E0B">Xã hội</text>
+      <text x="35" y="22" font-size="6" fill="#6B7280">Phúc lợi xã hội</text>
+    </g>
+    
+    <!-- Legal Services -->
+    <g transform="translate(10,160)">
+      <circle cx="15" cy="15" r="12" fill="#6B7280"/>
+      <rect x="12" y="8" width="6" height="10" rx="1" fill="#FFFFFF"/>
+      <rect x="13" y="10" width="4" height="6" fill="#6B7280"/>
+      <text x="35" y="12" font-size="8" font-weight="bold" fill="#6B7280">Pháp luật</text>
+      <text x="35" y="22" font-size="6" fill="#6B7280">Tư vấn pháp lý</text>
+    </g>
+  </g>
+  
+  <!-- Voice Recognition -->
+  <g transform="translate(300,520)">
+    <rect x="0" y="0" width="200" height="60" rx="30" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <circle cx="40" cy="30" r="20" fill="url(#bot-gradient)">
+      <animate attributeName="r" values="20;25;20" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <path d="M35,25 Q40,20 45,25 Q40,35 35,30 Q40,25 45,30 Q40,40 35,35" fill="#FFFFFF"/>
+    
+    <text x="75" y="20" font-size="12" font-weight="bold" fill="#4F46E5">Nhận dạng giọng nói</text>
+    <text x="75" y="35" font-size="10" fill="#6B7280">Hỗ trợ giọng miền Bắc, Trung, Nam</text>
+    <text x="75" y="48" font-size="10" fill="#6B7280">Độ chính xác: 98.5%</text>
+  </g>
+  
+  <!-- Statistics -->
+  <g transform="translate(100,530)">
+    <rect x="0" y="0" width="150" height="50" rx="8" fill="#F3F4F6"/>
+    <text x="75" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#374151">THỐNG KÊ SỬ DỤNG</text>
+    <text x="25" y="30" font-size="8" fill="#059669">📞 2.5M cuộc hội thoại</text>
+    <text x="25" y="42" font-size="8" fill="#3B82F6">⭐ 4.8/5 đánh giá</text>
+    <text x="100" y="30" font-size="8" fill="#8B5CF6">🕒 24/7 hoạt động</text>
+    <text x="100" y="42" font-size="8" fill="#F59E0B">⚡ 0.5s phản hồi</text>
+  </g>
+  
+  <!-- Data Flow Animation -->
+  <g opacity="0.4">
+    <circle r="3" fill="#4F46E5">
+      <animateMotion dur="4s" repeatCount="indefinite" 
+                     path="M100,300 Q200,250 300,300 Q400,350 500,300"/>
+    </circle>
+    <circle r="2" fill="#10B981">
+      <animateMotion dur="5s" repeatCount="indefinite" 
+                     path="M600,350 Q500,300 400,350 Q300,400 200,350"/>
+    </circle>
+    <circle r="2" fill="#F59E0B">
+      <animateMotion dur="3s" repeatCount="indefinite" 
+                     path="M150,400 Q250,450 350,400 Q450,350 550,400"/>
+    </circle>
+  </g>
+</svg>
+
+
+
+
+
+
+
+

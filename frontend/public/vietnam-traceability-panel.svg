@@ -1,0 +1,222 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg-panel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#0891B2;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:0.1" />
+    </linearGradient>
+    <linearGradient id="panel-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF" />
+      <stop offset="100%" style="stop-color:#F8FAFC" />
+    </linearGradient>
+    <linearGradient id="trace-chain" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669" />
+      <stop offset="100%" style="stop-color:#0891B2" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg-panel)"/>
+  
+  <!-- Conference Panel Setup -->
+  <rect x="50" y="400" width="700" height="200" fill="#F1F5F9" opacity="0.8"/>
+  
+  <!-- Main Panel Stage -->
+  <g transform="translate(100,100)">
+    <rect x="0" y="0" width="600" height="250" rx="10" fill="url(#panel-bg)" stroke="#E5E7EB" stroke-width="2"/>
+    
+    <!-- Panel Title Banner -->
+    <rect x="20" y="20" width="560" height="50" rx="5" fill="#059669"/>
+    <text x="300" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#FFFFFF">HỘI THẢO TRUY XUẤT NGUỒN GỐC</text>
+    <text x="300" y="58" text-anchor="middle" font-size="12" fill="#FFFFFF">Động lực phát triển bền vững của Kinh tế số Việt Nam</text>
+    
+    <!-- Panel Discussion Area -->
+    <rect x="40" y="90" width="520" height="140" rx="8" fill="#FFFFFF" stroke="#D1D5DB"/>
+    
+    <!-- Speakers/Panelists -->
+    <g transform="translate(80,120)">
+      <!-- Speaker 1 -->
+      <circle cx="0" cy="0" r="20" fill="#059669"/>
+      <circle cx="0" cy="-8" r="8" fill="#FFFFFF"/>
+      <path d="M-10,5 Q0,15 10,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="0" y="35" text-anchor="middle" font-size="8" fill="#059669">Diễn giả 1</text>
+      <text x="0" y="45" text-anchor="middle" font-size="6" fill="#6B7280">Blockchain</text>
+    </g>
+    
+    <g transform="translate(200,120)">
+      <!-- Speaker 2 -->
+      <circle cx="0" cy="0" r="20" fill="#0891B2"/>
+      <circle cx="0" cy="-8" r="8" fill="#FFFFFF"/>
+      <path d="M-10,5 Q0,15 10,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="0" y="35" text-anchor="middle" font-size="8" fill="#0891B2">Diễn giả 2</text>
+      <text x="0" y="45" text-anchor="middle" font-size="6" fill="#6B7280">Supply Chain</text>
+    </g>
+    
+    <g transform="translate(320,120)">
+      <!-- Speaker 3 -->
+      <circle cx="0" cy="0" r="20" fill="#7C3AED"/>
+      <circle cx="0" cy="-8" r="8" fill="#FFFFFF"/>
+      <path d="M-10,5 Q0,15 10,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="0" y="35" text-anchor="middle" font-size="8" fill="#7C3AED">Diễn giả 3</text>
+      <text x="0" y="45" text-anchor="middle" font-size="6" fill="#6B7280">IoT & Sensors</text>
+    </g>
+    
+    <g transform="translate(440,120)">
+      <!-- Speaker 4 -->
+      <circle cx="0" cy="0" r="20" fill="#DC2626"/>
+      <circle cx="0" cy="-8" r="8" fill="#FFFFFF"/>
+      <path d="M-10,5 Q0,15 10,5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="0" y="35" text-anchor="middle" font-size="8" fill="#DC2626">Diễn giả 4</text>
+      <text x="0" y="45" text-anchor="middle" font-size="6" fill="#6B7280">Data Analytics</text>
+    </g>
+  </g>
+  
+  <!-- Traceability Chain Visualization -->
+  <g transform="translate(50,380)">
+    <text x="350" y="0" text-anchor="middle" font-size="14" font-weight="bold" fill="#059669">CHUỖI TRUY XUẤT NGUỒN GỐC</text>
+    
+    <!-- Chain Steps -->
+    <g transform="translate(0,20)">
+      <!-- Step 1: Raw Materials -->
+      <rect x="0" y="0" width="100" height="60" rx="8" fill="#059669" opacity="0.9"/>
+      <text x="50" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">NGUYÊN LIỆU</text>
+      <text x="50" y="35" text-anchor="middle" font-size="8" fill="#FFFFFF">Nguồn gốc</text>
+      <text x="50" y="48" text-anchor="middle" font-size="8" fill="#FFFFFF">Xuất xứ</text>
+      
+      <!-- QR Code -->
+      <rect x="15" y="70" width="20" height="20" fill="#059669"/>
+      <rect x="17" y="72" width="16" height="16" fill="#FFFFFF"/>
+      <rect x="18" y="73" width="2" height="2" fill="#059669"/>
+      <rect x="21" y="73" width="2" height="2" fill="#059669"/>
+      <rect x="24" y="73" width="2" height="2" fill="#059669"/>
+      <rect x="18" y="76" width="2" height="2" fill="#059669"/>
+      <rect x="24" y="76" width="2" height="2" fill="#059669"/>
+      <rect x="21" y="79" width="2" height="2" fill="#059669"/>
+      
+      <!-- Arrow -->
+      <path d="M105,30 L145,30" stroke="url(#trace-chain)" stroke-width="3" marker-end="url(#arrow)"/>
+      
+      <!-- Step 2: Processing -->
+      <rect x="150" y="0" width="100" height="60" rx="8" fill="#0891B2" opacity="0.9"/>
+      <text x="200" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">SẢN XUẤT</text>
+      <text x="200" y="35" text-anchor="middle" font-size="8" fill="#FFFFFF">Quy trình</text>
+      <text x="200" y="48" text-anchor="middle" font-size="8" fill="#FFFFFF">Chế biến</text>
+      
+      <!-- Timestamp -->
+      <text x="200" y="75" text-anchor="middle" font-size="6" fill="#0891B2">Timestamp: 2025-08-01</text>
+      
+      <!-- Arrow -->
+      <path d="M255,30 L295,30" stroke="url(#trace-chain)" stroke-width="3" marker-end="url(#arrow)"/>
+      
+      <!-- Step 3: Quality Control -->
+      <rect x="300" y="0" width="100" height="60" rx="8" fill="#7C3AED" opacity="0.9"/>
+      <text x="350" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">KIỂM TRA</text>
+      <text x="350" y="35" text-anchor="middle" font-size="8" fill="#FFFFFF">Chất lượng</text>
+      <text x="350" y="48" text-anchor="middle" font-size="8" fill="#FFFFFF">An toàn</text>
+      
+      <!-- Checkmark -->
+      <circle cx="350" cy="75" r="8" fill="#10B981"/>
+      <path d="M345,75 L348,78 L355,71" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      
+      <!-- Arrow -->
+      <path d="M405,30 L445,30" stroke="url(#trace-chain)" stroke-width="3" marker-end="url(#arrow)"/>
+      
+      <!-- Step 4: Distribution -->
+      <rect x="450" y="0" width="100" height="60" rx="8" fill="#DC2626" opacity="0.9"/>
+      <text x="500" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">PHÂN PHỐI</text>
+      <text x="500" y="35" text-anchor="middle" font-size="8" fill="#FFFFFF">Vận chuyển</text>
+      <text x="500" y="48" text-anchor="middle" font-size="8" fill="#FFFFFF">Bán lẻ</text>
+      
+      <!-- Location pin -->
+      <circle cx="500" cy="75" r="6" fill="#EF4444"/>
+      <circle cx="500" cy="75" r="3" fill="#FFFFFF"/>
+      
+      <!-- Arrow -->
+      <path d="M555,30 L595,30" stroke="url(#trace-chain)" stroke-width="3" marker-end="url(#arrow)"/>
+      
+      <!-- Step 5: Consumer -->
+      <rect x="600" y="0" width="100" height="60" rx="8" fill="#F59E0B" opacity="0.9"/>
+      <text x="650" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">NGƯỜI DÙNG</text>
+      <text x="650" y="35" text-anchor="middle" font-size="8" fill="#FFFFFF">Tiêu dùng</text>
+      <text x="650" y="48" text-anchor="middle" font-size="8" fill="#FFFFFF">Xác thực</text>
+      
+      <!-- Mobile icon -->
+      <rect x="642" y="70" width="16" height="24" rx="3" fill="#F59E0B"/>
+      <rect x="644" y="72" width="12" height="18" rx="1" fill="#FFFFFF"/>
+      <circle cx="650" cy="92" r="1" fill="#FFFFFF"/>
+    </g>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="url(#trace-chain)" />
+    </marker>
+  </defs>
+  
+  <!-- Technologies Used -->
+  <g transform="translate(50,50)">
+    <rect x="0" y="0" width="150" height="100" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="75" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#059669">CÔNG NGHỆ</text>
+    
+    <!-- Blockchain -->
+    <rect x="10" y="30" width="20" height="15" rx="2" fill="#059669"/>
+    <text x="35" y="40" font-size="8" fill="#374151">Blockchain</text>
+    
+    <!-- IoT -->
+    <circle cx="20" cy="55" r="6" fill="#0891B2"/>
+    <circle cx="20" cy="55" r="3" fill="#FFFFFF"/>
+    <text x="35" y="58" font-size="8" fill="#374151">IoT Sensors</text>
+    
+    <!-- AI -->
+    <polygon points="20,70 25,75 20,80 15,75" fill="#7C3AED"/>
+    <text x="35" y="77" font-size="8" fill="#374151">AI Analytics</text>
+    
+    <!-- Mobile -->
+    <rect x="15" y="85" width="10" height="12" rx="2" fill="#DC2626"/>
+    <text x="35" y="92" font-size="8" fill="#374151">Mobile App</text>
+  </g>
+  
+  <!-- Benefits -->
+  <g transform="translate(600,50)">
+    <rect x="0" y="0" width="150" height="120" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="2"/>
+    <text x="75" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#7C3AED">LỢI ÍCH</text>
+    
+    <text x="10" y="35" font-size="8" fill="#374151">✓ Minh bạch chuỗi cung ứng</text>
+    <text x="10" y="48" font-size="8" fill="#374151">✓ Đảm bảo chất lượng sản phẩm</text>
+    <text x="10" y="61" font-size="8" fill="#374151">✓ Tăng niềm tin người tiêu dùng</text>
+    <text x="10" y="74" font-size="8" fill="#374151">✓ Giảm hàng giả, hàng nhái</text>
+    <text x="10" y="87" font-size="8" fill="#374151">✓ Tuân thủ quy định pháp luật</text>
+    <text x="10" y="100" font-size="8" fill="#374151">✓ Phát triển bền vững</text>
+    <text x="10" y="113" font-size="8" fill="#374151">✓ Nâng cao năng lực cạnh tranh</text>
+  </g>
+  
+  <!-- Data Flow -->
+  <g opacity="0.6">
+    <circle r="3" fill="#059669">
+      <animateMotion dur="4s" repeatCount="indefinite" 
+                     path="M100,450 Q200,400 300,450 Q400,500 500,450 Q600,400 700,450"/>
+    </circle>
+    <circle r="2" fill="#0891B2">
+      <animateMotion dur="3s" repeatCount="indefinite" 
+                     path="M700,450 Q600,500 500,450 Q400,400 300,450 Q200,500 100,450"/>
+    </circle>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#059669">
+    Hội thảo Xác thực Truy xuất Nguồn gốc
+  </text>
+  <text x="400" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#0891B2" opacity="0.8">
+    Góc nhìn đa chiều từ 4 Diễn giả chuyên gia
+  </text>
+</svg>
+
+
+
+
+
+
+
+
