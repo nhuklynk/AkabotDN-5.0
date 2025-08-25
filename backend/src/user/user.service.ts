@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { User, UserStatus } from './entity/user.entity';
+import { User } from './entity/user.entity';
 import { Role } from './entity/role.entity';
 import { CreateUserDto } from './dto/user/create-user.dto';
 import { UpdateUserDto } from './dto/user/update-user.dto';
@@ -196,7 +196,7 @@ export class UserService {
       }
 
       // Soft delete: Change status to DELETED instead of hard delete
-      user.status = Status.DELETED;
+      user.status = Status.INACTIVE;
       await this.userRepository.save(user);
 
       return {

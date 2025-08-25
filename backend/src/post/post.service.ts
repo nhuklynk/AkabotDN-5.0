@@ -4,17 +4,17 @@ import { Repository, In, Like } from 'typeorm';
 import { Post, PostStatus } from './entity/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { plainToClass } from 'class-transformer';
 import { Category } from 'src/category/entity/category.entity';
-import { Tag } from 'src/tag/entity/tag.entity';
-import { User } from '../user/entity/user.entity';
-import { Comment } from '../comment/entity/comment.entity';
 import { PostQueryDto } from './dto/post-query.dto';
 import { StorageService } from 'src/storage';
 import { MediaService } from 'src/media/media.service';
 import { MediaType } from 'src/media/entity/media.entity';
+import { Status } from 'src/config/base-audit.entity';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { Tag } from 'src/tag/entity/tag.entity';
 
 @Injectable()
 export class PostService {
@@ -87,66 +87,6 @@ export class PostService {
     return this.create(createPostDto);
   }
 
-  async findAll(query?: PostQueryDto): Promise<PostResponseDto[]> {
-    const queryBuilder = this.postRepository
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.user', 'user')
-      .leftJoinAndSelect('post.categories', 'categories')
-      .leftJoinAndSelect('post.tags', 'tags');
-
-    // Apply filters
-    if (query?.status) {
-      queryBuilder.andWhere('post.post_status = :status', { status: query.status });
-    }
-
-    if (query?.search) {
-      queryBuilder.andWhere(
-        '(post.title ILIKE :search OR post.content ILIKE :search)',
-        { search: `%${query.search}%` }
-      );
-    }
-
-    if (query?.author_id) {
-      queryBuilder.andWhere('user.id = :author_id', { author_id: query.author_id });
-    }
-
-    if (query?.date_from) {
-      queryBuilder.andWhere('post.created_at >= :date_from', { date_from: query.date_from });
-    }
-
-    if (query?.date_to) {
-      queryBuilder.andWhere('post.created_at <= :date_to', { date_to: query.date_to });
-    }
-
-    // Apply pagination
-    if (query?.page && query?.limit) {
-      const skip = (query.page - 1) * query.limit;
-      queryBuilder.skip(skip).take(query.limit);
-    }
-
-    // Order by created_at desc
-    queryBuilder.orderBy('post.created_at', 'DESC');
-
-    const posts = await queryBuilder.getMany();
-    
-    // Apply category and tag filters after fetching
-    let filteredPosts = posts;
-    
-    if (query?.category) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.categories?.some(cat => cat.slug === query.category)
-      );
-    }
-    
-    if (query?.tag) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.tags?.some(tag => tag.slug === query.tag)
-      );
-    }
-    
-    return filteredPosts.map(post => plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }));
-  }
-
   async findFilteredAndPaginated(query: PostQueryDto): Promise<[PostResponseDto[], number]> {
     const { page = 1, limit = 10, status, search, author_id, date_from, date_to, category, tag } = query;
     const skip = (page - 1) * limit;
@@ -215,7 +155,7 @@ export class PostService {
   async findOne(id: string): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { id: id },
-      relations: ['user', 'categories', 'tags', 'comments'],
+      relations: ['user', 'categories', 'tags'],
     });
 
     if (!post) {
@@ -228,7 +168,7 @@ export class PostService {
   async findBySlug(slug: string): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { slug: slug },
-      relations: ['user', 'categories', 'tags', 'comments'],
+      relations: ['user', 'categories', 'tags'],
     });
 
     if (!post) {
@@ -238,7 +178,7 @@ export class PostService {
     return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
   }
 
-  async updateWithFile(id: string, updatePostDto: UpdatePostDto, featuredImage?: any): Promise<PostResponseDto> {
+  async updateWithFile(id: string, updatePostDto: UpdatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
       updatePostDto.media_id = media.id;
@@ -246,7 +186,7 @@ export class PostService {
     return this.update(id, updatePostDto);
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto): Promise<PostResponseDto> {
+  async update(id: string, updatePostFormdataDto: UpdatePostFormdataDto): Promise<PostResponseDto> {
     const post = await this.postRepository.findOne({
       where: { id: id },
       relations: ['categories', 'tags'],
@@ -256,20 +196,25 @@ export class PostService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
-    if (updatePostDto.category_ids) {
-      const categories = await this.categoryRepository.findBy({ id: In(updatePostDto.category_ids) });
-      post.categories = categories;
-    }
-
-    // Handle tags
-    if (updatePostDto.tag_ids) {
-      const tags = await this.tagRepository.findBy({ id: In(updatePostDto.tag_ids) });
-      post.tags = tags;
-    }
+    const updatePostDto: UpdatePostDto = {
+      ...updatePostFormdataDto,
+      title: updatePostFormdataDto.title || post.title,
+      content: updatePostFormdataDto.content || post.content,
+      post_status: updatePostFormdataDto.post_status || post.post_status,
+      summary: updatePostFormdataDto.summary || post.summary,
+      published_at: updatePostFormdataDto.published_at ? new Date(updatePostFormdataDto.published_at) : post.published_at,
+      media_id: updatePostFormdataDto.media_id || post.media_id,
+      category_ids: updatePostFormdataDto.category_ids ? 
+        updatePostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
+        undefined,
+      tag_ids: updatePostFormdataDto.tag_ids ? 
+        updatePostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
+        undefined,
+    };
 
     // Set published date if status is being changed to published
     if (updatePostDto.post_status === PostStatus.PUBLISHED && post.post_status !== PostStatus.PUBLISHED) {
-      post.published_at = new Date();
+      updatePostDto.published_at = new Date();
     }
 
     await this.postRepository.update(id, updatePostDto);
@@ -281,11 +226,10 @@ export class PostService {
       where: { id: id },
     });
 
-    if (!post) {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+    if (post) {
+      post.status = Status.INACTIVE;
+      await this.postRepository.save(post);
     }
-
-    await this.postRepository.remove(post);
   }
 
   async findByCategory(category_id: string): Promise<PostResponseDto[]> {

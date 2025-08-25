@@ -15,7 +15,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { PostQueryDto } from './dto/post-query.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
@@ -34,6 +33,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiConsumes,
 } from '@nestjs/swagger';
+import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -228,7 +228,7 @@ export class PostController {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiBody({
-    type: UpdatePostDto,
+    type: UpdatePostFormdataDto,
     description: 'Post information to update with optional featured image. Only include the fields you want to change. Categories and tags should be arrays of UUIDs.'
   })
   @ApiOkResponse({
@@ -246,7 +246,7 @@ export class PostController {
   })
   update(
     @Param('id') id: string,
-    @Body() updatePostDto: UpdatePostDto,
+    @Body() updatePostDto: UpdatePostFormdataDto,
     @UploadedFile() featuredImage?: any,
   ): Promise<PostResponseDto> {
     return this.postService.updateWithFile(id, updatePostDto, featuredImage);

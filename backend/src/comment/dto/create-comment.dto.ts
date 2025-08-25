@@ -16,7 +16,14 @@ export class CreateCommentDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @IsUUID()
-  post_id: string;
+  comment_type_id: string;
+
+  @ApiProperty({
+    description: 'The type of the comment. This is used to link the comment to a specific post or event.',
+    example: 'post'
+  })
+  @IsString()
+  comment_type: string;
 
   @ApiPropertyOptional({
     description: 'The UUID of the parent comment if this is a reply to another comment. Leave empty for top-level comments.',

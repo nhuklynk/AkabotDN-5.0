@@ -10,7 +10,7 @@ import {
 import { User } from '../../user/entity/user.entity';
 import { Category } from '../../category/entity/category.entity';
 import { Tag } from '../../tag/entity/tag.entity';
-import { Comment } from '../../comment/entity/comment.entity';
+import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
 export enum PostStatus {
@@ -69,9 +69,6 @@ export class Post extends BaseAuditEntity {
     inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' },
   })
   tags: Tag[];
-
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
 
   @Column({
     type: 'enum',
