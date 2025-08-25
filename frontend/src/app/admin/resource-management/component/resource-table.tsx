@@ -10,7 +10,7 @@ import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Resource = {
-  id: number
+  id: number | string
   name: string
   filename: string
   type: string
@@ -35,7 +35,7 @@ export default function ResourceTable({
   getTypeIcon: (t: string) => React.ReactNode
   getCategoryColor: (c: string) => string
   onEdit: (r: Resource) => void
-  onDelete: (id: number) => void
+  onDelete: (id: number | string) => void
 }) {
   const { t } = useLocale()
   return (

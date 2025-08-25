@@ -18,7 +18,7 @@ type Props = {
   title?: string
   description?: string
   confirmLabel?: string
-  onConfirm: () => void
+  onConfirm: () => void | Promise<void>
   children: React.ReactNode
 }
 

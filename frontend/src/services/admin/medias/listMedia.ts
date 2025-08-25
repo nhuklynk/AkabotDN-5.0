@@ -5,7 +5,7 @@ export type MediaQuery = {
   limit?: number;
   search?: string;
   status?: string;
-  media_type?: string; // image | video | audio | document | other
+  media_type?: string;
 };
 
 export type MediaListItem = {
@@ -28,7 +28,27 @@ export type ListMediaResponse = {
 
 export async function listMedia(query: MediaQuery = {}): Promise<ListMediaResponse> {
   const params = { ...query } as Record<string, any>;
-  return apiClient.get("/media", { params });
+  const res: any = await apiClient.get("/media", { params });
+  const payload = res?.data ?? res;
+  const itemsRaw: any[] = Array.isArray(payload) ? payload : (payload?.items ?? []);
+
+  const items: MediaListItem[] = itemsRaw.map((m: any) => ({
+    id: m.id,
+    file_name: m.file_name,
+    mime_type: m.mime_type,
+    file_size: m.file_size,
+    file_path: m.file_path,
+    media_type: m.media_type,
+    status: m.status ?? "active",
+    created_at: m.created_at,
+  }));
+
+  return {
+    items,
+    total: (payload?.total ?? items.length) as number,
+    page: (payload?.page ?? query.page ?? 1) as number,
+    limit: (payload?.limit ?? query.limit ?? 10) as number,
+  };
 }
 
 export default listMedia;
