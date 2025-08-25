@@ -1,27 +1,27 @@
 import { IsString, IsOptional, IsEnum, IsEmail, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { MembershipType, ExpertiseLevel } from '../../entity/member.entity';
-import { UserStatus } from '../../../user/entity/user.entity';
+import { Status } from '../../../config/base-audit.entity';
 
 export class RegisterMemberDto {
   // User information
   @ApiProperty({
     description: 'User email address',
-    example: 'john.doe@example.com'
+    example: 'john.doe@example.com',
   })
   @IsEmail()
   email: string;
 
   @ApiProperty({
     description: 'User password',
-    example: 'password123'
+    example: 'password123',
   })
   @IsString()
   password: string;
 
   @ApiProperty({
     description: 'User full name',
-    example: 'John Doe'
+    example: 'John Doe',
   })
   @IsString()
   full_name: string;
@@ -29,7 +29,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'User phone number',
     example: '+84123456789',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -38,7 +38,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'User avatar URL',
     example: 'https://example.com/avatar.jpg',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -46,18 +46,18 @@ export class RegisterMemberDto {
 
   @ApiProperty({
     description: 'User status',
-    enum: UserStatus,
-    default: UserStatus.PENDING
+    enum: Status,
+    default: Status.PENDING,
   })
   @IsOptional()
-  @IsEnum(UserStatus)
-  status?: UserStatus;
+  @IsEnum(Status)
+  status?: Status;
 
   // Member information
   @ApiProperty({
     description: 'Company ID (optional for individual members)',
     example: '550e8400-e29b-41d4-a716-446655440701',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsUUID()
@@ -66,7 +66,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Membership type',
     enum: MembershipType,
-    default: MembershipType.INDIVIDUAL
+    default: MembershipType.INDIVIDUAL,
   })
   @IsOptional()
   @IsEnum(MembershipType)
@@ -75,7 +75,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Job title',
     example: 'Senior Software Engineer',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -84,7 +84,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Assistant information',
     example: 'AI-powered development assistant',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -93,7 +93,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Membership registration form URL',
     example: 'https://example.com/forms/member-registration.pdf',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -102,7 +102,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Work unit',
     example: 'TechCorp Solutions',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -111,7 +111,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Expertise level',
     enum: ExpertiseLevel,
-    default: ExpertiseLevel.BEGINNER
+    default: ExpertiseLevel.BEGINNER,
   })
   @IsOptional()
   @IsEnum(ExpertiseLevel)
@@ -120,7 +120,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Curriculum vitae URL',
     example: 'https://example.com/cv/john-doe.pdf',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()
@@ -129,7 +129,7 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'Role ID to assign (default: member role)',
     example: '550e8400-e29b-41d4-a716-446655440801',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsUUID()
