@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Calendar, User, Tag } from "lucide-react";
 import { usePosts } from "@/hooks/usePosts";
 import { Pagination } from "@/components/pagination-component";
+import { formatDate } from "@/utils/dateUtils";
+import { truncateText } from "@/utils/textUtils";
 
 interface PostsGridProps {
   onPaginationUpdate: (info: {
@@ -138,12 +140,15 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
 
                 {/* Post Content */}
                 <div className="p-4">
-                  <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                    {post.title}
+                  <h3 className="font-semibold text-lg mb-2 line-clamp-2 min-h-[3.5rem] group-hover:text-primary transition-colors">
+                    {truncateText(post.title, 80)}
                   </h3>
 
-                  <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
-                    {post.summary || post.excerpt || "Không có mô tả"}
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-3 min-h-[4.5rem]">
+                    {truncateText(
+                      post.summary || post.excerpt || "Không có mô tả",
+                      120
+                    )}
                   </p>
 
                   {/* Post Meta */}
@@ -159,10 +164,8 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
                       <Calendar className="w-3 h-3" />
                       <span>
                         {mounted
-                          ? new Date(post.created_at).toLocaleDateString(
-                              "vi-VN"
-                            )
-                          : post.created_at.split("T")[0]}
+                          ? formatDate(post.created_at)
+                          : post.created_at?.split("T")[0] || "Không rõ ngày"}
                       </span>
                     </div>
 

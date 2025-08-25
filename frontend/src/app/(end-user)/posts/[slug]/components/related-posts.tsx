@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { postService, Post } from "@/services/postService";
+import { formatDate } from "@/utils/dateUtils";
+import { truncateText } from "@/utils/textUtils";
 
 interface RelatedPostsProps {
   currentPostId: string;
@@ -147,15 +149,11 @@ export function RelatedPosts({
               href={`/posts/${post.slug}`}
               className="block group"
             >
-              <div className="text-sm font-medium text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2">
-                {post.title}
+              <div className="text-sm font-medium text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 min-h-[2.5rem]">
+                {truncateText(post.title, 70)}
               </div>
               <div className="text-xs text-slate-500 mt-1">
-                {post.published_at
-                  ? new Date(post.published_at).toLocaleDateString("vi-VN")
-                  : post.created_at
-                  ? new Date(post.created_at).toLocaleDateString("vi-VN")
-                  : "Không có ngày"}
+                {formatDate(post.published_at || post.created_at)}
               </div>
             </Link>
           ))}
@@ -164,8 +162,3 @@ export function RelatedPosts({
     </Card>
   );
 }
-
-
-
-
-

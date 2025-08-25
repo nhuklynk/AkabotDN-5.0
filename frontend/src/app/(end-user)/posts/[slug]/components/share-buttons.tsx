@@ -66,8 +66,3 @@ export function ShareButtons({ postTitle }: ShareButtonsProps) {
     </Card>
   );
 }
-
-
-
-
-
