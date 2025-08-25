@@ -6,11 +6,12 @@ import { CompanyService } from './company.service';
 import { Member } from './entity/member.entity';
 import { Company } from './entity/company.entity';
 import { MemberService } from './member.service';
+import { PaginationService } from '../common/services/pagination.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Member, Company])],
   controllers: [MemberController, CompanyController],
-  providers: [MemberService, CompanyService],
+  providers: [MemberService, CompanyService, PaginationService],
   exports: [MemberService, CompanyService],
 })
 export class MemberModule {}

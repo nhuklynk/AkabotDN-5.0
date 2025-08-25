@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { postService, Post } from "@/services/postService";
+import { postService, Post } from "@/services/end-user/postService";
 
 interface UsePostOptions {
   autoFetch?: boolean;

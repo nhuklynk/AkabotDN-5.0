@@ -1,32 +1,81 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Pagination } from "@/components/pagination-component";
-import { Building, User, Phone } from "lucide-react";
+import { Building, User, Phone, Search, Loader2 } from "lucide-react";
+import { Member } from "@/services/end-user/types/member";
+import { memberService } from "@/services/end-user/memberService";
 
-interface Member {
-  id: number;
-  name: string;
-  representative: string;
-  position: string;
+interface MemberData {
+  items: Member[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 interface MembersPageClientProps {
-  members: Member[];
+  initialData: MemberData;
 }
 
-export function MembersPageClient({ members }: MembersPageClientProps) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
-  const itemsPerPage = 20;
+export function MembersPageClient({ initialData }: MembersPageClientProps) {
+  const [memberData, setMemberData] = useState<MemberData>(initialData);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(initialData.page);
 
-  const handlePageChange = (page: number) => {
-    console.log("[v0] Page changed to:", page);
-    setCurrentPage(page);
-    // Add your page change logic here
+  const handlePageChange = async (page: number) => {
+    setLoading(true);
+    try {
+      const response = await memberService.getMembers({
+        page,
+        limit: memberData.limit,
+        search: searchTerm || undefined,
+      });
+
+      if (response.success) {
+        setMemberData(response.data);
+        setCurrentPage(page);
+      }
+    } catch (error) {
+      console.error("Error fetching page:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      const response = await memberService.getMembers({
+        page: 1,
+        limit: memberData.limit,
+        search: searchTerm || undefined,
+      });
+
+      if (response.success) {
+        setMemberData(response.data);
+        setCurrentPage(1);
+      }
+    } catch (error) {
+      console.error("Error searching members:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Count members by type
+  const corporateCount = memberData.items.filter(
+    (m) => m.membership_type === "corporate"
+  ).length;
+  const individualCount = memberData.items.filter(
+    (m) => m.membership_type === "individual"
+  ).length;
+  const studentCount = memberData.items.filter(
+    (m) => m.membership_type === "student"
+  ).length;
 
   return (
     <>
@@ -35,98 +84,173 @@ export function MembersPageClient({ members }: MembersPageClientProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building className="w-5 h-5" />
-            Danh sách {members.length} hội viên tổ chức
+            Danh sách {memberData.total} hội viên ({memberData.items.length}{" "}
+            trên trang này)
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="border-0">
-                <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 w-16">
-                    STT
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    TÊN TỔ CHỨC
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    NGƯỜI ĐẠI DIỆN
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    CHỨC DANH
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {members.map((member, index) => (
-                  <tr
-                    key={member.id}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                      {index + 1}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-start gap-3">
-                        <Building className="w-4 h-4 text-emerald-600 mt-1 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium text-gray-900 leading-tight">
-                            {member.name}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <User className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-900">
-                          {member.representative}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <Badge variant="secondary" className="text-xs">
-                        {member.position}
-                      </Badge>
-                    </td>
+          {loading && (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-6 h-6 animate-spin text-emerald-600" />
+            </div>
+          )}
+
+          {!loading && (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="border-0">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 w-16">
+                      STT
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      THÔNG TIN
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      CÔNG TY/TỔ CHỨC
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      LOẠI THÀNH VIÊN
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      TRÌNH ĐỘ
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {memberData.items.map((member, index) => (
+                    <tr
+                      key={member.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                        {(currentPage - 1) * memberData.limit + index + 1}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-start gap-3">
+                          <User className="w-4 h-4 text-emerald-600 mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-900 leading-tight">
+                              {member.user?.full_name || "N/A"}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {member.job_title}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              {member.work_unit}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <Building className="w-4 h-4 text-gray-400" />
+                          <div>
+                            <span className="text-sm text-gray-900">
+                              {member.company?.name ||
+                                member.work_unit ||
+                                "Cá nhân"}
+                            </span>
+                            {member.company?.email && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                {member.company.email}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge
+                          variant="secondary"
+                          className={`text-xs ${
+                            member.membership_type === "corporate"
+                              ? "bg-blue-100 text-blue-800"
+                              : member.membership_type === "individual"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-purple-100 text-purple-800"
+                          }`}
+                        >
+                          {member.membership_type === "corporate"
+                            ? "Tổ chức"
+                            : member.membership_type === "individual"
+                            ? "Cá nhân"
+                            : "Sinh viên"}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge
+                          variant="outline"
+                          className={`text-xs ${
+                            member.expertise_level === "expert"
+                              ? "border-red-300 text-red-700"
+                              : member.expertise_level === "advanced"
+                              ? "border-orange-300 text-orange-700"
+                              : member.expertise_level === "intermediate"
+                              ? "border-yellow-300 text-yellow-700"
+                              : "border-green-300 text-green-700"
+                          }`}
+                        >
+                          {member.expertise_level === "expert"
+                            ? "Chuyên gia"
+                            : member.expertise_level === "advanced"
+                            ? "Nâng cao"
+                            : member.expertise_level === "intermediate"
+                            ? "Trung cấp"
+                            : "Mới bắt đầu"}
+                        </Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </CardContent>
       </Card>
 
       {/* Pagination */}
-      <div className="mt-8 flex justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      {memberData.totalPages > 1 && (
+        <div className="mt-8 flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={memberData.totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
 
       {/* Statistics */}
-      <div className="mt-8 grid md:grid-cols-3 gap-6">
+      <div className="mt-8 grid md:grid-cols-4 gap-6">
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Building className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">{members.length}</p>
-            <p className="text-sm text-gray-600">Tổ chức thành viên</p>
+            <p className="text-2xl font-bold text-gray-900">
+              {memberData.total}
+            </p>
+            <p className="text-sm text-gray-600">Tổng thành viên</p>
           </CardContent>
         </Card>
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
-            <User className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">150+</p>
-            <p className="text-sm text-gray-600">Cá nhân thành viên</p>
+            <Building className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{corporateCount}</p>
+            <p className="text-sm text-gray-600">Tổ chức</p>
+          </CardContent>
+        </Card>
+        <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
+          <CardContent className="p-6 text-center">
+            <User className="w-8 h-8 text-green-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">
+              {individualCount}
+            </p>
+            <p className="text-sm text-gray-600">Cá nhân</p>
           </CardContent>
         </Card>
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Phone className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">24/7</p>
-            <p className="text-sm text-gray-600">Hỗ trợ thành viên</p>
+            <p className="text-2xl font-bold text-gray-900">{studentCount}</p>
+            <p className="text-sm text-gray-600">Sinh viên</p>
           </CardContent>
         </Card>
       </div>

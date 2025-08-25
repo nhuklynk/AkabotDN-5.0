@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Info, Users, Box, BookOpen, Loader2, Search } from "lucide-react";
 import Link from "next/link";
 import { useFaqCategories, useFaqs } from "@/hooks/useFaqs";
-import { Faq } from "@/services/faqService";
+import { Faq } from "@/services/end-user/faqService";
 import { formatDate } from "@/utils/dateUtils";
 import { truncateText } from "@/utils/textUtils";
 

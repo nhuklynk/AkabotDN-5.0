@@ -4,7 +4,7 @@ import {
   Post,
   PaginatedResponse,
   Status,
-} from "@/services/postService";
+} from "@/services/end-user/postService";
 
 interface PaginationState {
   total: number;

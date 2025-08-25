@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../apiClient";
 
 export enum Status {
   ACTIVE = "active", //for delete

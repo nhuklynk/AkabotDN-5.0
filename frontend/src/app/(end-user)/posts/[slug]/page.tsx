@@ -7,7 +7,7 @@ import { TableOfContents } from "@/app/(end-user)/posts/[slug]/components/table-
 import { RelatedPosts } from "@/app/(end-user)/posts/[slug]/components/related-posts";
 import { ShareButtons } from "@/app/(end-user)/posts/[slug]/components/share-buttons";
 import { PartnersList } from "@/components/partners-list";
-import { postService } from "@/services/postService";
+import { postService } from "@/services/end-user/postService";
 import { formatDate } from "@/utils/dateUtils";
 
 export default async function PostDetailPage({
@@ -101,7 +101,9 @@ export default async function PostDetailPage({
                   <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      <span>{formatDate(post.published_at || post.created_at)}</span>
+                      <span>
+                        {formatDate(post.published_at || post.created_at)}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4" />

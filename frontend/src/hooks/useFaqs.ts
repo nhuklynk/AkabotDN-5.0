@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { faqService, Faq, PaginatedResponse } from "@/services/faqService";
+import {
+  faqService,
+  Faq,
+  PaginatedResponse,
+} from "@/services/end-user/faqService";
 
 interface PaginationState {
   total: number;
