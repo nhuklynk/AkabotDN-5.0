@@ -11,6 +11,7 @@ import FaqTable from "./component/faq-table";
 import FaqFormDialog from "./component/faq-form-dialog";
 import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
+import { useLocale } from "@/hooks/useLocale";
 
 type Faq = {
   id: number;
@@ -38,6 +39,7 @@ const initialFaqs: Faq[] = [
 ];
 
 export default function FaqManagementPage() {
+  const { t } = useLocale();
   const [faqs, setFaqs] = useState<Faq[]>(initialFaqs);
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -116,16 +118,14 @@ export default function FaqManagementPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">Quản lý FAQ</h1>
-          <p className="text-muted-foreground">
-            Tạo, chỉnh sửa và quản lý các câu hỏi thường gặp.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">{t("faq.title")}</h1>
+          <p className="text-muted-foreground">{t("faq.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
           onClick={() => setIsCreateOpen(true)}
         >
-          <Plus className="h-4 w-4" /> Thêm FAQ
+          <Plus className="h-4 w-4" /> {t("faq.add")}
         </Button>
       </div>
 
@@ -135,14 +135,14 @@ export default function FaqManagementPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Tìm kiếm..."
+                placeholder={t("faq.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {filtered.length} / {faqs.length} mục
+              {t("faq.countSummary", { filtered: filtered.length, total: faqs.length })}
             </div>
           </div>
 

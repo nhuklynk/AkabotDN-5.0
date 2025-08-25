@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import LanguageSwitcher from "@/components/language-switcher";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -111,7 +112,7 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* Mobile menu button */}
+          {/* Right controls */}
           <Button
             variant="ghost"
             size="sm"
@@ -124,6 +125,9 @@ export function Header() {
               <Menu className="h-5 w-5" />
             )}
           </Button>
+          <div className="hidden md:flex ml-2">
+            <LanguageSwitcher compact />
+          </div>
         </div>
 
         {/* Mobile Navigation */}

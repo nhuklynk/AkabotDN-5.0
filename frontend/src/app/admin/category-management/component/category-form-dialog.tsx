@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useLocale } from "@/hooks/useLocale"
 
 type CategoryFormData = {
   name: string
@@ -51,29 +52,30 @@ export default function CategoryFormDialog({
   mode,
 }: Props) {
   const isCreate = mode === "create"
+  const { t } = useLocale()
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{isCreate ? "Tạo danh mục mới" : "Chỉnh sửa danh mục"}</DialogTitle>
+          <DialogTitle>{isCreate ? t("category.dialog.createTitle") : t("category.dialog.editTitle")}</DialogTitle>
           <DialogDescription>
-            {isCreate ? "Thêm danh mục mới để tổ chức nội dung." : "Cập nhật thông tin và cài đặt danh mục."}
+            {isCreate ? t("category.dialog.createDesc") : t("category.dialog.editDesc")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="name">Tên danh mục</Label>
+            <Label htmlFor="name">{t("category.form.name")}</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => onNameChange(e.target.value)}
-              placeholder="Nhập tên danh mục"
+              placeholder={t("category.form.namePlaceholder")}
             />
           </div>
           <div>
-            <Label htmlFor="slug">Đường dẫn (slug)</Label>
+            <Label htmlFor="slug">{t("category.form.slug")}</Label>
             <Input
               id="slug"
               value={formData.slug}
@@ -82,7 +84,7 @@ export default function CategoryFormDialog({
             />
           </div>
           <div>
-            <Label htmlFor="parent">Danh mục cha</Label>
+            <Label htmlFor="parent">{t("category.form.parent")}</Label>
             <Select
               value={formData.parentId?.toString() || "none"}
               onValueChange={(value) =>
@@ -90,10 +92,10 @@ export default function CategoryFormDialog({
               }
             >
               <SelectTrigger>
-                <SelectValue placeholder="Chọn danh mục cha" />
+                <SelectValue placeholder={t("category.form.parentPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">Không có (Cấp gốc)</SelectItem>
+                <SelectItem value="none">{t("category.table.root")}</SelectItem>
                 {parentCategories.map((category) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
                     {category.name}
@@ -103,10 +105,10 @@ export default function CategoryFormDialog({
             </Select>
           </div>
           <div>
-            <Label htmlFor="color">Màu sắc</Label>
+            <Label htmlFor="color">{t("category.form.color")}</Label>
             <Select value={formData.color} onValueChange={(value) => setFormData((d) => ({ ...d, color: value }))}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn màu" />
+                <SelectValue placeholder={t("category.form.colorPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
                 {colorOptions.map((color) => (
@@ -121,34 +123,31 @@ export default function CategoryFormDialog({
             </Select>
           </div>
           <div>
-            <Label htmlFor="status">Trạng thái</Label>
+            <Label htmlFor="status">{t("category.form.status")}</Label>
             <Select value={formData.status} onValueChange={(value) => setFormData((d) => ({ ...d, status: value }))}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn trạng thái" />
+                <SelectValue placeholder={t("category.form.statusPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="active">Hoạt động</SelectItem>
-                <SelectItem value="inactive">Ngưng hoạt động</SelectItem>
+                <SelectItem value="active">{t("category.active")}</SelectItem>
+                <SelectItem value="inactive">{t("category.inactive")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="description">Mô tả</Label>
-            <Textarea
-              id="description"
+            <Label htmlFor="description">{t("category.form.description")}</Label>
+            <RichTextEditor
               value={formData.description}
-              onChange={(e) => setFormData((d) => ({ ...d, description: e.target.value }))}
-              placeholder="Nhập mô tả danh mục"
-              rows={3}
+              onChange={(html) => setFormData((d) => ({ ...d, description: html }))}
             />
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Hủy
+            {t("common.cancel")}
           </Button>
-          <Button onClick={onSubmit}>{isCreate ? "Tạo danh mục" : "Cập nhật danh mục"}</Button>
+          <Button onClick={onSubmit}>{isCreate ? t("category.dialog.createCta") : t("category.dialog.updateCta")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Script from "next/script";
+import { Suspense } from "react";
+import { Spinner } from "@/components/ui/spinner";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import "./fonts.css";
@@ -36,7 +39,20 @@ export default function RootLayout({
         />
       </head>
       <body className={robotoCondensed.className}>
-        <AppProviders>{children}</AppProviders>
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 flex items-center justify-center">
+              <Spinner size={36} className="text-foreground" />
+            </div>
+          }
+        >
+          <AppProviders>{children}</AppProviders>
+        </Suspense>
+        <Script
+          src="https://nextdev.akabot.io/chat-widget/bootstrap.js"
+          strategy="afterInteractive"
+          data-widget="eyJ3aWRnZXRJZCI6IjJhMDVmZGNjLTM2ZTgtNDU0Zi05MTAzLWY0NTMyNjg2M2FmNiIsInRlbmFudElkIjoiZGRlOTNiNDAtZDFiYS00MDI5LTg5NmMtNDc3ZTg4MWI1YmI3In0"
+        />
       </body>
     </html>
   );

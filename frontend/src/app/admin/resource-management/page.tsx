@@ -60,6 +60,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Pagination } from "@/components/pagination-component";
+import { useLocale } from "@/hooks/useLocale";
 
 const initialResources = [
   {
@@ -126,6 +127,7 @@ type Resource = {
 };
 
 export default function ResourcesPage() {
+  const { t } = useLocale();
   const [resources, setResources] = useState<Resource[]>(initialResources);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
@@ -268,19 +270,15 @@ export default function ResourcesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">
-            Quản lý tài nguyên
-          </h1>
-          <p className="text-muted-foreground">
-            Quản lý tài sản số, tệp tin và nội dung đa phương tiện.
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">{t("resource.title")}</h1>
+          <p className="text-muted-foreground">{t("resource.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
           onClick={() => setIsCreateDialogOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          Thêm tài nguyên
+          {t("resource.add")}
         </Button>
         <ResourceFormDialog
           open={isCreateDialogOpen}
@@ -298,7 +296,7 @@ export default function ResourcesPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Tìm kiếm tài nguyên..."
+                placeholder={t("resource.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -306,19 +304,19 @@ export default function ResourcesPage() {
             </div>
             <Select value={filterType} onValueChange={setFilterType}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Lọc theo loại" />
+                <SelectValue placeholder={t("resource.filterByType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tất cả</SelectItem>
-                <SelectItem value="document">Tài liệu</SelectItem>
-                <SelectItem value="image">Hình ảnh</SelectItem>
-                <SelectItem value="video">Video</SelectItem>
-                <SelectItem value="audio">Âm thanh</SelectItem>
-                <SelectItem value="archive">Lưu trữ</SelectItem>
+                <SelectItem value="all">{t("resource.all")}</SelectItem>
+                <SelectItem value="document">{t("resource.types.document")}</SelectItem>
+                <SelectItem value="image">{t("resource.types.image")}</SelectItem>
+                <SelectItem value="video">{t("resource.types.video")}</SelectItem>
+                <SelectItem value="audio">{t("resource.types.audio")}</SelectItem>
+                <SelectItem value="archive">{t("resource.types.archive")}</SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">
-              {filteredResources.length} / {resources.length} tài nguyên
+              {t("resource.countSummary", { filtered: filteredResources.length, total: resources.length })}
             </div>
           </div>
 

@@ -7,10 +7,14 @@ type Props = {
   setFilterStatus: (v: string) => void
   filterCategory: string
   setFilterCategory: (v: string) => void
+  filterPostType?: string
+  setFilterPostType?: (v: string) => void
+  filterTag?: string
+  setFilterTag?: (v: string) => void
   categories: { id: number; name: string }[]
 }
 
-export default function PostFilters({ filterStatus, setFilterStatus, filterCategory, setFilterCategory, categories }: Props) {
+export default function PostFilters({ filterStatus, setFilterStatus, filterCategory, setFilterCategory, filterPostType = "all", setFilterPostType, filterTag = "", setFilterTag, categories }: Props) {
   return (
     <>
       <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -20,6 +24,9 @@ export default function PostFilters({ filterStatus, setFilterStatus, filterCateg
         <SelectContent>
           <SelectItem value="all">Tất cả</SelectItem>
           <SelectItem value="published">Đã xuất bản</SelectItem>
+          <SelectItem value="review">Chờ duyệt</SelectItem>
+          <SelectItem value="rejected">Từ chối</SelectItem>
+          <SelectItem value="archived">Lưu trữ</SelectItem>
           <SelectItem value="draft">Bản nháp</SelectItem>
           <SelectItem value="scheduled">Đã lên lịch</SelectItem>
         </SelectContent>
@@ -37,6 +44,28 @@ export default function PostFilters({ filterStatus, setFilterStatus, filterCateg
           ))}
         </SelectContent>
       </Select>
+      {setFilterPostType && (
+        <Select value={filterPostType} onValueChange={setFilterPostType}>
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Loại bài" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả loại</SelectItem>
+            <SelectItem value="article">Bài viết</SelectItem>
+            <SelectItem value="news">Tin tức</SelectItem>
+            <SelectItem value="event">Sự kiện</SelectItem>
+            <SelectItem value="guide">Hướng dẫn</SelectItem>
+          </SelectContent>
+        </Select>
+      )}
+      {setFilterTag && (
+        <input
+          className="border rounded px-3 py-2 text-sm bg-background"
+          placeholder="Lọc theo tag"
+          value={filterTag}
+          onChange={(e) => setFilterTag(e.target.value)}
+        />
+      )}
     </>
   )
 }

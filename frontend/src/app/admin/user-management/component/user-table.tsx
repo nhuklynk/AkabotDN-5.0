@@ -6,14 +6,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Edit, MoreHorizontal, Trash2 } from "lucide-react"
 import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
+import { useLocale } from "@/hooks/useLocale"
 
 type User = {
   id: number
-  name: string
+  full_name: string
   email: string
-  role: string
+  phone?: string
   status: string
-  createdAt: string
+  created_at: string
 }
 
 export default function UserTable({
@@ -29,35 +30,32 @@ export default function UserTable({
   onEdit: (u: User) => void
   onDelete: (id: number) => void
 }) {
+  const { t } = useLocale()
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Họ tên</TableHead>
+            <TableHead>{t("user.table.name")}</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Vai trò</TableHead>
-            <TableHead>Trạng thái</TableHead>
-            <TableHead>Tạo lúc</TableHead>
-            <TableHead className="w-[90px] whitespace-nowrap">Thao tác</TableHead>
+            <TableHead>Phone</TableHead>
+            <TableHead>{t("user.table.status")}</TableHead>
+            <TableHead>{t("user.table.createdAt")}</TableHead>
+            <TableHead className="w-[90px] whitespace-nowrap">{t("user.table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {items.map((user) => (
             <TableRow key={user.id}>
-              <TableCell className="font-medium">{user.name}</TableCell>
+              <TableCell className="font-medium">{user.full_name}</TableCell>
               <TableCell>{user.email}</TableCell>
-              <TableCell>
-                <Badge className={`${getRoleColor(user.role)} capitalize`}>
-                  {user.role}
-                </Badge>
-              </TableCell>
+              <TableCell>{user.phone || ""}</TableCell>
               <TableCell>
                 <Badge className={`${getStatusColor(user.status)} capitalize`}>
                   {user.status}
                 </Badge>
               </TableCell>
-              <TableCell>{user.createdAt}</TableCell>
+              <TableCell>{user.created_at}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -67,11 +65,11 @@ export default function UserTable({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => onEdit(user)}>
-                      <Edit className="h-4 w-4 mr-2" /> Sửa
+                      <Edit className="h-4 w-4 mr-2" /> {t("common.edit")}
                     </DropdownMenuItem>
                     <DeleteConfirmDialog onConfirm={() => onDelete(user.id)}>
                       <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Xóa
+                        <Trash2 className="h-4 w-4 mr-2" /> {t("common.delete")}
                       </DropdownMenuItem>
                     </DeleteConfirmDialog>
                   </DropdownMenuContent>
