@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { postService, Post, PaginatedResponse } from "@/services/postService";
+import {
+  postService,
+  Post,
+  PaginatedResponse,
+  Status,
+} from "@/services/postService";
 
 interface PaginationState {
   total: number;
@@ -39,15 +44,12 @@ export function usePosts(options: UsePostsOptions = {}) {
         const response = await postService.searchAndFilter({
           page,
           limit,
-          status: "published",
+          status: Status.PUBLISHED,
         });
-
-        console.log("API Response:", response);
 
         if (response.success && response.data) {
           if (Array.isArray(response.data.items)) {
             // Paginated response
-            console.log("Paginated response detected");
             setPosts(response.data.items);
             const paginationData = {
               total: response.data.total || 0,
@@ -55,11 +57,9 @@ export function usePosts(options: UsePostsOptions = {}) {
               currentPage: response.data.page || page,
               limit: response.data.limit || limit,
             };
-            console.log("Setting pagination:", paginationData);
             setPagination(paginationData);
           } else if (Array.isArray(response.data)) {
             // Direct array of posts
-            console.log("Direct array response detected");
             setPosts(response.data);
             setPagination({
               total: response.data.length,
@@ -72,7 +72,6 @@ export function usePosts(options: UsePostsOptions = {}) {
             response.data !== null
           ) {
             // Single post object
-            console.log("Single post response detected");
             const postData = response.data as any;
             if (postData.id && postData.title) {
               setPosts([postData as Post]);
@@ -85,7 +84,7 @@ export function usePosts(options: UsePostsOptions = {}) {
             }
           }
         } else {
-          console.log("Invalid response structure:", response);
+          console.error("Invalid response structure:", response);
           setError("Dữ liệu không hợp lệ từ server");
         }
       } catch (err) {
@@ -95,19 +94,19 @@ export function usePosts(options: UsePostsOptions = {}) {
         setLoading(false);
       }
     },
-    [initialLimit]
+    [] // Remove initialLimit dependency to prevent re-creation
   );
 
   const refreshPosts = useCallback(() => {
     fetchPosts(pagination.currentPage, pagination.limit);
-  }, [fetchPosts, pagination.currentPage, pagination.limit]);
+  }, [pagination.currentPage, pagination.limit]); // Remove fetchPosts dependency
 
   const setCurrentPage = useCallback(
     (page: number) => {
       fetchPosts(page, pagination.limit);
     },
-    [fetchPosts, pagination.limit]
-  );
+    [pagination.limit]
+  ); // Remove fetchPosts dependency
 
   const clearError = useCallback(() => {
     setError(null);
@@ -117,9 +116,9 @@ export function usePosts(options: UsePostsOptions = {}) {
   useEffect(() => {
     if (autoFetch && !hasInitialized.current) {
       hasInitialized.current = true;
-      fetchPosts();
+      fetchPosts(1, initialLimit);
     }
-  }, [autoFetch, fetchPosts]);
+  }, [autoFetch]); // Remove fetchPosts dependency, use initialLimit directly
 
   return {
     posts,

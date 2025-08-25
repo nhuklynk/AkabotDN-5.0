@@ -34,7 +34,7 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
 
   // Update parent component with pagination info
   useEffect(() => {
-    if (pagination) {
+    if (pagination && pagination.total > 0) {
       onPaginationUpdate({
         totalPosts: pagination.total,
         currentPage: pagination.currentPage,
@@ -42,7 +42,13 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
         postsPerPage: pagination.limit,
       });
     }
-  }, [pagination, onPaginationUpdate]);
+  }, [
+    pagination.total,
+    pagination.currentPage,
+    pagination.totalPages,
+    pagination.limit,
+    onPaginationUpdate,
+  ]); // Use individual pagination properties instead of the whole object
 
   // Fetch posts on mount and page change
   useEffect(() => {
@@ -87,6 +93,9 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
       </div>
     );
   }
+
+  // Debug logging (comment out in production)
+  // console.log("PostsGrid Debug:", { posts, loading, error, pagination });
 
   if (posts.length === 0) {
     return (

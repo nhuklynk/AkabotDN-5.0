@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { PostsGrid } from "@/app/(end-user)/posts/components/posts-grid";
 import { PostsInfo } from "@/app/(end-user)/posts/components/posts-search";
 import {
@@ -20,14 +20,17 @@ export default function PostsPage() {
     postsPerPage: 10,
   });
 
-  const handlePaginationUpdate = (info: {
-    totalPosts: number;
-    currentPage: number;
-    totalPages: number;
-    postsPerPage: number;
-  }) => {
-    setPaginationInfo(info);
-  };
+  const handlePaginationUpdate = useCallback(
+    (info: {
+      totalPosts: number;
+      currentPage: number;
+      totalPages: number;
+      postsPerPage: number;
+    }) => {
+      setPaginationInfo(info);
+    },
+    []
+  ); // Empty dependency array - function never changes
 
   return (
     <div className="min-h-screen">

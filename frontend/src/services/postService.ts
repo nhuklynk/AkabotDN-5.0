@@ -1,5 +1,14 @@
 import apiClient from "./apiClient";
 
+export enum Status {
+  ACTIVE = "active", //for delete
+  INACTIVE = "inactive", //for delete
+  DRAFT = "draft", //for update/create
+  PUBLISHED = "published", //for update/create
+  ARCHIVED = "archived", //for update/create
+  PENDING = "pending", //for update/create
+}
+
 // Types based on the backend API
 export interface Post {
   id: string;
@@ -8,8 +17,8 @@ export interface Post {
   content: string;
   excerpt?: string;
   summary?: string; // Added for API compatibility
-  post_status?: "draft" | "published" | "archived";
-  status?: "active" | "inactive"; // Added for API compatibility
+  post_status?: Status;
+  status?: Status; // Added for API compatibility
   featured_image?: string;
   author_id?: string;
   author_name?: string;
@@ -34,7 +43,7 @@ export interface Post {
 export interface PostQueryParams {
   page?: number;
   limit?: number;
-  status?: "draft" | "published" | "archived";
+  status?: Status;
   category?: string;
   tag?: string;
   search?: string;
@@ -64,7 +73,7 @@ export interface CreatePostData {
   slug: string;
   content: string;
   excerpt?: string;
-  status?: "draft" | "published" | "archived";
+  status?: Status;
   author_id: string;
   categories?: string[];
   tags?: string[];
@@ -76,7 +85,7 @@ export interface UpdatePostData {
   slug?: string;
   content?: string;
   excerpt?: string;
-  status?: "draft" | "published" | "archived";
+  status?: Status;
   author_id?: string;
   categories?: string[];
   tags?: string[];
@@ -123,7 +132,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: "published",
+      status: Status.PUBLISHED,
     });
   }
 
@@ -138,7 +147,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: "published",
+      status: Status.PUBLISHED,
       category: categorySlug,
     });
   }
@@ -154,7 +163,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: "published",
+      status: Status.PUBLISHED,
       tag: tagSlug,
     });
   }
@@ -170,7 +179,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: "published",
+      status: Status.PUBLISHED,
       search: searchTerm,
     });
   }
@@ -249,11 +258,11 @@ class PostService {
   /**
    * Get recent posts (last 5 published posts)
    */
-  async getRecentPosts(limit: number = 5): Promise<Post[]> {
+  async getRecentPosts(limit: number = 6): Promise<Post[]> {
     const response = await this.searchAndFilter({
       page: 1,
       limit,
-      status: "published",
+      status: Status.PUBLISHED,
     });
     return response.data.items;
   }
