@@ -2,7 +2,9 @@ import {
   Entity,
   Column,
   ManyToOne,
+  OneToOne,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import { User } from '../../user/entity/user.entity';
 import { Company } from './company.entity';
@@ -11,8 +13,6 @@ import { BaseAuditEntity } from '../../config/base-audit.entity';
 export enum MembershipType {
   INDIVIDUAL = 'individual',
   CORPORATE = 'corporate',
-  STUDENT = 'student',
-  HONORARY = 'honorary',
 }
 
 export enum ExpertiseLevel {
@@ -58,11 +58,12 @@ export class Member extends BaseAuditEntity {
   @Column({ nullable: true, name: 'joined_at' })
   joined_at?: Date;
 
-  @ManyToOne(() => User, (user) => user.memberships)
+  @OneToOne(() => User, (user) => user.member, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
+  @Index({ unique: true })
   user: User;
 
-  @ManyToOne(() => Company, (company) => company.members)
+  @ManyToOne(() => Company, (company) => company.members, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'company_id' })
   company: Company;
 }
