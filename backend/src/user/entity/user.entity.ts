@@ -4,6 +4,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  OneToOne,
   Index,
 } from 'typeorm';
 import { Role } from './role.entity';
@@ -12,13 +13,6 @@ import { Post } from '../../post/entity/post.entity';
 import { Comment } from '../../comment/entity/comment.entity';
 import { Member } from '../../member/entity/member.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
-
-export enum UserStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  SUSPENDED = 'suspended',
-  PENDING = 'pending',
-}
 
 @Entity('users')
 export class User extends BaseAuditEntity {
@@ -57,6 +51,6 @@ export class User extends BaseAuditEntity {
   @OneToMany(() => Comment, (comment) => comment.author)
   comments: Comment[];
 
-  @OneToMany(() => Member, (member) => member.user)
-  memberships: Member[];
+  @OneToOne(() => Member, (member) => member.user)
+  member: Member;
 }

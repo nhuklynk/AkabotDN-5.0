@@ -7,6 +7,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryResponseDto } from './dto/category-response.dto';
 import { CategoryQueryDto } from './dto/category-query.dto';
 import { plainToClass } from 'class-transformer';
+import { Status } from 'src/config/base-audit.entity';
 
 @Injectable()
 export class CategoryService {
@@ -144,12 +145,10 @@ export class CategoryService {
     const category = await this.categoryRepository.findOne({
       where: { id: id },
     });
-
-    if (!category) {
-      throw new NotFoundException(`Category with ID ${id} not found`);
+    if (category) {
+      category.status = Status.INACTIVE;
+      await this.categoryRepository.save(category);
     }
-
-    await this.categoryRepository.remove(category);
   }
 
   async findRootCategories(): Promise<CategoryResponseDto[]> {

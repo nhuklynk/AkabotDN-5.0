@@ -1,32 +1,34 @@
-import { IsString, IsOptional, IsUUID, IsEnum, IsDateString, IsDate } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
-import { Status } from '../../config/base-audit.entity';
 
-export class UpdatePostDto {
+export class UpdatePostFormdataDto {
   @ApiProperty({
     description: 'Post title',
     example: 'Getting Started with NestJS',
+    required: false,
     minLength: 1,
     maxLength: 255
   })
+  @IsOptional()
   @IsString()
-  title: string;
+  title?: string;
 
   @ApiProperty({
     description: 'Post content',
     example: 'This is the main content of the post...',
+    required: false,
     minLength: 1
   })
+  @IsOptional()
   @IsString()
-  content: string;
+  content?: string;
 
   @ApiProperty({
     description: 'Post status',
     enum: PostStatus,
-    example: PostStatus.DRAFT,
-    required: false,
-    default: PostStatus.DRAFT
+    example: PostStatus.PUBLISHED,
+    required: false
   })
   @IsOptional()
   @IsEnum(PostStatus)
@@ -43,40 +45,47 @@ export class UpdatePostDto {
   summary?: string;
 
   @ApiProperty({
-    description: 'Publication date (ISO string)',
-    example: '2024-01-01T00:00:00.000Z',
+    description: 'Category IDs (comma-separated string)',
+    example: '123e4567-e89b-12d3-a456-426614174000,987fcdeb-51a2-43d1-b789-123456789abc',
     required: false
   })
   @IsOptional()
-  @IsDate()
-  published_at?: Date;
+  @IsString()
+  category_ids?: string;
 
   @ApiProperty({
-    description: 'Category IDs',
-    example: ['123e4567-e89b-12d3-a456-426614174000'],
-    type: [String],
+    description: 'Tag IDs (comma-separated string)',
+    example: '123e4567-e89b-12d3-a456-426614174000,987fcdeb-51a2-43d1-b789-123456789abc',
     required: false
   })
   @IsOptional()
-  @IsUUID(undefined, { each: true })
-  category_ids?: string[];
+  @IsString()
+  tag_ids?: string;
 
   @ApiProperty({
-    description: 'Tag IDs',
-    example: ['123e4567-e89b-12d3-a456-426614174000'],
-    type: [String],
+    description: 'Post featured image',
+    type: 'string',
+    format: 'binary',
     required: false
   })
   @IsOptional()
-  @IsUUID(undefined, { each: true })
-  tag_ids?: string[];
+  featured_image?: any;
 
   @ApiProperty({
-    description: 'Media ID',
+    description: 'Post media ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
     required: false
   })
   @IsOptional()
-  @IsUUID()
   media_id?: string;
+
+  @ApiProperty({
+    description: 'Post published at',
+    example: '2024-01-01T00:00:00.000Z',
+    required: false
+  })
+  @IsOptional()
+  @IsDateString()
+  published_at?: string;
+
 }

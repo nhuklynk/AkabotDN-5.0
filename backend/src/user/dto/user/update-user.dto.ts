@@ -1,5 +1,5 @@
 import { IsString, IsOptional, IsEnum, MinLength, IsArray, IsUUID } from 'class-validator';
-import { UserStatus } from '../../entity/user.entity';
+import { Status } from 'src/config/base-audit.entity';
 
 export class UpdateUserDto {
 
@@ -16,8 +16,8 @@ export class UpdateUserDto {
   phone?: string;
 
   @IsOptional()
-  @IsEnum(UserStatus)
-  user_status?: UserStatus;
+  @IsEnum(Status)
+  user_status?: Status;
 
   @IsOptional()
   @IsArray()

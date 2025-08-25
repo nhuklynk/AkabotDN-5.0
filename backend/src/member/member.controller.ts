@@ -15,6 +15,8 @@ import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/member/create-member.dto';
 import { UpdateMemberDto } from './dto/member/update-member.dto';
 import { MemberResponseDto } from './dto/member/member-response.dto';
+import { RegisterMemberDto } from './dto/member/register-member.dto';
+import { RegisterMemberResponseDto } from './dto/member/register-member-response.dto';
 import { MemberQueryDto } from './dto/member-query.dto';
 import { PaginatedData } from '../common/interfaces/api-response.interface';
 import {
@@ -37,6 +39,31 @@ function validateUUID(uuid: string): boolean {
 @Controller('members')
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Register a new member (creates both user and member)',
+  })
+  @ApiBody({ type: RegisterMemberDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Member registered successfully',
+    type: RegisterMemberResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - Invalid input data',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict - User with email or phone already exists',
+  })
+  async register(
+    @Body() registerMemberDto: RegisterMemberDto,
+  ): Promise<RegisterMemberResponseDto> {
+    return this.memberService.registerMember(registerMemberDto);
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -110,20 +137,24 @@ export class MemberController {
   }
 
   @Get('user/:user_id')
-  @ApiOperation({ summary: 'Get members by user ID' })
+  @ApiOperation({ summary: 'Get member by user ID' })
   @ApiParam({ name: 'user_id', description: 'User ID (UUID)' })
   @ApiResponse({
     status: 200,
-    description: 'List of members for the user',
-    type: [MemberResponseDto],
+    description: 'Member for the user',
+    type: MemberResponseDto,
   })
   @ApiResponse({
     status: 400,
     description: 'Bad request - Invalid UUID format',
   })
+  @ApiResponse({
+    status: 404,
+    description: 'Member not found for this user',
+  })
   async findByUser(
     @Param('user_id') user_id: string,
-  ): Promise<MemberResponseDto[]> {
+  ): Promise<MemberResponseDto | null> {
     if (!validateUUID(user_id)) {
       throw new BadRequestException('Invalid UUID format for user_id');
     }

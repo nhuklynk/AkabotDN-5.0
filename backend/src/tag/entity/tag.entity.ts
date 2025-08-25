@@ -4,6 +4,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Post } from '../../post/entity/post.entity';
+import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
 @Entity('tags')
@@ -19,4 +20,7 @@ export class Tag extends BaseAuditEntity {
 
   @ManyToMany(() => Post, (post) => post.tags)
   posts: Post[];
+
+  @ManyToMany(() => Event, (event) => event.tags)
+  events: Event[];
 }

@@ -17,15 +17,13 @@ export class Comment extends BaseAuditEntity {
   @JoinColumn({ name: 'author_id' })
   author: User;
 
-  @ManyToOne(() => Post, (post) => post.comments)
-  @JoinColumn({ name: 'post_id' })
-  post: Post;
-
-  // Self-referencing relationship for nested comments
   @ManyToOne(() => Comment, (comment) => comment.id, { nullable: true })
   @JoinColumn({ name: 'parent_id' })
   parent: Comment;
 
-  // @OneToMany(() => Comment, (comment) => comment.parent)
-  // replies: Comment[];
+  @Column({ type: 'varchar', name: 'comment_type' })
+  comment_type: string;
+
+  @Column({ type: 'varchar', name: 'comment_type_id' })
+  comment_type_id: string;
 }

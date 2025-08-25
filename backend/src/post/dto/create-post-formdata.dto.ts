@@ -61,15 +61,6 @@ export class CreatePostFormdataDto {
   published_at?: string;
 
   @ApiProperty({
-    description: 'Primary media ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    required: false
-  })
-  @IsOptional()
-  @IsUUID()
-  primary_media_id?: string;
-
-  @ApiProperty({
     description: 'Category IDs (comma-separated string)',
     example: '123e4567-e89b-12d3-a456-426614174000,987fcdeb-51a2-43d1-b789-123456789abc',
     required: false
@@ -97,15 +88,6 @@ export class CreatePostFormdataDto {
   @IsOptional()
   @IsEnum(Status)
   status?: Status;
-
-  @ApiProperty({
-    description: 'Event ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    required: false
-  })
-  @IsOptional()
-  @IsUUID()
-  event_id?: string;
 
   @ApiProperty({
     description: 'Post featured image',
