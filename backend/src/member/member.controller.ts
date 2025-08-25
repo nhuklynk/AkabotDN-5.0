@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/member/create-member.dto';
@@ -16,12 +17,15 @@ import { UpdateMemberDto } from './dto/member/update-member.dto';
 import { MemberResponseDto } from './dto/member/member-response.dto';
 import { RegisterMemberDto } from './dto/member/register-member.dto';
 import { RegisterMemberResponseDto } from './dto/member/register-member-response.dto';
+import { MemberQueryDto } from './dto/member-query.dto';
+import { PaginatedData } from '../common/interfaces/api-response.interface';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
 
 // Helper function to validate UUID
@@ -38,7 +42,9 @@ export class MemberController {
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Register a new member (creates both user and member)' })
+  @ApiOperation({
+    summary: 'Register a new member (creates both user and member)',
+  })
   @ApiBody({ type: RegisterMemberDto })
   @ApiResponse({
     status: 201,
@@ -79,13 +85,54 @@ export class MemberController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all members' })
+  @ApiOperation({ summary: 'Get all members with pagination and search' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number (starts from 1)',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of items per page',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Search term for member name or email',
+  })
+  @ApiQuery({
+    name: 'company_id',
+    required: false,
+    description: 'Filter by company ID',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    description: 'Filter by membership status',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Paginated list of members',
+  })
+  async findAll(
+    @Query() query: MemberQueryDto,
+  ): Promise<PaginatedData<MemberResponseDto>> {
+    return this.memberService.searchAndPaginate(query);
+  }
+
+  @Get('all')
+  @ApiOperation({
+    summary: 'Get all members without pagination (for internal use)',
+  })
   @ApiResponse({
     status: 200,
     description: 'List of all members',
     type: [MemberResponseDto],
   })
-  async findAll(): Promise<MemberResponseDto[]> {
+  async findAllMembers(): Promise<MemberResponseDto[]> {
     return this.memberService.findAll();
   }
 

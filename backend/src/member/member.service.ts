@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { Member } from './entity/member.entity';
 import { MemberResponseDto } from './dto/member/member-response.dto';
@@ -13,12 +18,16 @@ import { UserResponseDto } from '../user/dto/user/user-response.dto';
 import { UserService } from '../user/user.service';
 import { Role } from '../user/entity/role.entity';
 import { Status } from '../config/base-audit.entity';
+import { MemberQueryDto } from './dto/member-query.dto';
+import { PaginationService } from '../common/services/pagination.service';
+import { PaginatedData } from '../common/interfaces/api-response.interface';
 
 @Injectable()
 export class MemberService {
   constructor(
     @InjectRepository(Member)
     private memberRepository: Repository<Member>,
+    private paginationService: PaginationService,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Role)
@@ -26,8 +35,10 @@ export class MemberService {
     private userService: UserService,
   ) {}
 
-  async registerMember(registerMemberDto: RegisterMemberDto): Promise<RegisterMemberResponseDto> {
-        // Create user using UserService with role and pending status
+  async registerMember(
+    registerMemberDto: RegisterMemberDto,
+  ): Promise<RegisterMemberResponseDto> {
+    // Create user using UserService with role and pending status
     const createUserDto = {
       email: registerMemberDto.email,
       password: registerMemberDto.password,
@@ -46,7 +57,8 @@ export class MemberService {
       membership_type: registerMemberDto.membership_type || 'individual',
       job_title: registerMemberDto.job_title,
       assistant_info: registerMemberDto.assistant_info,
-      membership_registration_form_url: registerMemberDto.membership_registration_form_url,
+      membership_registration_form_url:
+        registerMemberDto.membership_registration_form_url,
       work_unit: registerMemberDto.work_unit,
       expertise_level: registerMemberDto.expertise_level || 'beginner',
       curriculum_vitae_url: registerMemberDto.curriculum_vitae_url,
@@ -65,14 +77,15 @@ export class MemberService {
 
     // Get the created member with relations
     const memberWithRelations = await this.findOne((savedMember as any).id);
-    
+
     // Add roles to member response
     const memberWithRoles = {
       ...memberWithRelations,
-      roles: savedUser.roles?.map(role => ({
-        id: role.id,
-        name: role.name
-      })) || []
+      roles:
+        savedUser.roles?.map((role) => ({
+          id: role.id,
+          name: role.name,
+        })) || [],
     };
 
     return new RegisterMemberResponseDto({
@@ -85,7 +98,9 @@ export class MemberService {
     // Check if user already has a member record (one-to-one relationship)
     const existingMember = await this.findByUser(createMemberDto.user_id);
     if (existingMember) {
-      throw new BadRequestException(`User ${createMemberDto.user_id} already has a member record`);
+      throw new BadRequestException(
+        `User ${createMemberDto.user_id} already has a member record`,
+      );
     }
 
     const member = this.memberRepository.create(createMemberDto);
@@ -93,12 +108,63 @@ export class MemberService {
     return this.findOne(savedMember.id);
   }
 
+  async searchAndPaginate(
+    query: MemberQueryDto,
+  ): Promise<PaginatedData<MemberResponseDto>> {
+    const { skip, take, page, limit } =
+      this.paginationService.createPaginationOptions(query);
+
+    // Build where conditions
+    const whereConditions: any = {};
+
+    if (query.search) {
+      // Search in user email or member-related fields
+      whereConditions.user = [
+        { email: Like(`%${query.search}%`) },
+        { full_name: Like(`%${query.search}%`) },
+      ];
+    }
+
+    if (query.company_id) {
+      whereConditions.company_id = query.company_id;
+    }
+
+    if (query.status) {
+      whereConditions.membership_status = query.status;
+    }
+
+    const [members, total] = await this.memberRepository.findAndCount({
+      where: whereConditions,
+      relations: ['user', 'company'],
+      skip,
+      take,
+      order: { created_at: 'DESC' },
+    });
+
+    const responseDtos = members.map((member) =>
+      plainToClass(MemberResponseDto, member, {
+        excludeExtraneousValues: true,
+      }),
+    );
+
+    return this.paginationService.createPaginatedResponse(
+      responseDtos,
+      total,
+      page,
+      limit,
+    );
+  }
+
   async findAll(): Promise<MemberResponseDto[]> {
     const members = await this.memberRepository.find({
       relations: ['user', 'company'],
     });
-        
-    return members.map(member => plainToClass(MemberResponseDto, member, { excludeExtraneousValues: true }));
+
+    return members.map((member) =>
+      plainToClass(MemberResponseDto, member, {
+        excludeExtraneousValues: true,
+      }),
+    );
   }
 
   async findOne(id: string): Promise<MemberResponseDto> {
@@ -111,7 +177,9 @@ export class MemberService {
       throw new NotFoundException(`Member with ID ${id} not found`);
     }
 
-    return plainToClass(MemberResponseDto, member, { excludeExtraneousValues: true });
+    return plainToClass(MemberResponseDto, member, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findByUser(user_id: string): Promise<MemberResponseDto | null> {
@@ -119,7 +187,11 @@ export class MemberService {
       where: { user: { id: user_id } },
       relations: ['user', 'company'],
     });
-    return member ? plainToClass(MemberResponseDto, member, { excludeExtraneousValues: true }) : null;
+    return member
+      ? plainToClass(MemberResponseDto, member, {
+          excludeExtraneousValues: true,
+        })
+      : null;
   }
 
   async findByCompany(company_id: string): Promise<MemberResponseDto[]> {
@@ -127,10 +199,17 @@ export class MemberService {
       where: { company: { id: company_id } },
       relations: ['user', 'company'],
     });
-    return members.map(member => plainToClass(MemberResponseDto, member, { excludeExtraneousValues: true }));
+    return members.map((member) =>
+      plainToClass(MemberResponseDto, member, {
+        excludeExtraneousValues: true,
+      }),
+    );
   }
 
-  async update(id: string, updateMemberDto: UpdateMemberDto): Promise<MemberResponseDto> {
+  async update(
+    id: string,
+    updateMemberDto: UpdateMemberDto,
+  ): Promise<MemberResponseDto> {
     const member = await this.memberRepository.findOne({
       where: { id: id },
       relations: ['user', 'company'],
@@ -144,7 +223,9 @@ export class MemberService {
     if (updateMemberDto.user_id && updateMemberDto.user_id !== member.user.id) {
       const existingMember = await this.findByUser(updateMemberDto.user_id);
       if (existingMember) {
-        throw new BadRequestException(`User ${updateMemberDto.user_id} already has a member record`);
+        throw new BadRequestException(
+          `User ${updateMemberDto.user_id} already has a member record`,
+        );
       }
     }
 
