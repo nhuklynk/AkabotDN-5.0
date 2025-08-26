@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ChevronRight, Edit, Folder, FolderOpen, MoreHorizontal, Trash2 } from "lucide-react"
-import DeleteConfirmDialog from "./delete-confirm-dialog"
+import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Category = {
@@ -16,6 +16,7 @@ type Category = {
   color: string
   status: string
   parentId: number | string | null
+  level: number
   postCount: number
   createdAt?: string
 }
@@ -34,6 +35,7 @@ export default function CategoryTable({
   getStatusColor: (status: string) => string
 }) {
   const { t } = useLocale()
+  const visibleItems = items.filter((c) => (c.status || "").toLowerCase() === "active")
   return (
     <div className="rounded-md border">
       <Table>
@@ -49,7 +51,7 @@ export default function CategoryTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.map((category) => (
+          {visibleItems.map((category) => (
             <TableRow key={category.id}>
               <TableCell>
                 <div className="flex items-center gap-3">
@@ -68,10 +70,10 @@ export default function CategoryTable({
               </TableCell>
               <TableCell className="font-mono text-sm">{category.slug}</TableCell>
               <TableCell>
-                {getParentName(category.parentId) ? (
-                  <Badge variant="outline">{getParentName(category.parentId)}</Badge>
-                ) : (
+                {category.level === 0 ? (
                   <span className="text-muted-foreground">{t("category.table.root")}</span>
+                ) : (
+                  <Badge variant="outline">Level {category.level}</Badge>
                 )}
               </TableCell>
               <TableCell>

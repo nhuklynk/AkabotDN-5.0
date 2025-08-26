@@ -1,18 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useLocale } from "@/hooks/useLocale"
 
@@ -20,50 +10,31 @@ export type CategoryFormData = {
   name: string
   slug: string
   description: string
-  color: string
   status: string
-  parentId: string | number | null
+  parentId: string | null
 }
 
 export type ParentOption = { id: string | number; name: string }
 type ColorOption = { value: string; label: string }
 
 type Props = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
   formData: CategoryFormData
   setFormData: React.Dispatch<React.SetStateAction<CategoryFormData>>
   parentCategories: ParentOption[]
-  colorOptions: ColorOption[]
-  onSubmit: () => void
   onNameChange: (name: string) => void
   mode: "create" | "edit"
 }
 
 export default function CategoryFormDialog({
-  open,
-  onOpenChange,
   formData,
   setFormData,
   parentCategories,
-  colorOptions,
-  onSubmit,
   onNameChange,
   mode,
 }: Props) {
-  const isCreate = mode === "create"
   const { t } = useLocale()
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{isCreate ? t("category.dialog.createTitle") : t("category.dialog.editTitle")}</DialogTitle>
-          <DialogDescription>
-            {isCreate ? t("category.dialog.createDesc") : t("category.dialog.editDesc")}
-          </DialogDescription>
-        </DialogHeader>
-
         <div className="space-y-4">
           <div>
             <Label htmlFor="name">{t("category.form.name")}</Label>
@@ -104,24 +75,7 @@ export default function CategoryFormDialog({
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="color">{t("category.form.color")}</Label>
-            <Select value={formData.color} onValueChange={(value) => setFormData((d) => ({ ...d, color: value }))}>
-              <SelectTrigger>
-                <SelectValue placeholder={t("category.form.colorPlaceholder")} />
-              </SelectTrigger>
-              <SelectContent>
-                {colorOptions.map((color) => (
-                  <SelectItem key={color.value} value={color.value}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full border border-border" style={{ backgroundColor: color.value }} />
-                      {color.label}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+
           <div>
             <Label htmlFor="status">{t("category.form.status")}</Label>
             <Select value={formData.status} onValueChange={(value) => setFormData((d) => ({ ...d, status: value }))}>
@@ -136,21 +90,14 @@ export default function CategoryFormDialog({
           </div>
           <div>
             <Label htmlFor="description">{t("category.form.description")}</Label>
-            <RichTextEditor
+            <textarea
+              id="description"
+              className="mt-2 w-full min-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               value={formData.description}
-              onChange={(html) => setFormData((d) => ({ ...d, description: html }))}
+              onChange={(e) => setFormData((d) => ({ ...d, description: e.target.value }))}
             />
           </div>
         </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t("common.cancel")}
-          </Button>
-          <Button onClick={onSubmit}>{isCreate ? t("category.dialog.createCta") : t("category.dialog.updateCta")}</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   )
 }
 

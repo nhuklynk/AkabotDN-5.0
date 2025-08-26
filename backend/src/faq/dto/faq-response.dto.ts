@@ -11,11 +11,16 @@ export class FaqResponseDto {
   created_at: Date;
 
   @Expose()
-  updated_at: Date;
+  modified_at: Date;
 
   @Expose()
-  @Type(() => Object)
-  parent?: any;
+  created_by: string;
+
+  @Expose()
+  modified_by: string;
+
+  @Expose()
+  status: string;
 
   constructor(partial: Partial<FaqResponseDto>) {
     Object.assign(this, partial);

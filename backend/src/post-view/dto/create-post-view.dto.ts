@@ -8,13 +8,4 @@ export class CreatePostViewDto {
   })
   @IsString()
   post_id: string;
-
-  @ApiProperty({
-    description: 'Time when the post was viewed',
-    example: '2023-12-01T10:00:00.000Z',
-    required: false
-  })
-  @IsOptional()
-  @IsDateString()
-  time?: Date;
 }

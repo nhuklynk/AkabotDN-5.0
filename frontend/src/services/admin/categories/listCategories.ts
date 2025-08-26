@@ -4,19 +4,19 @@ export type CategoryQuery = {
   page?: number;
   limit?: number;
   search?: string;
-  status?: string; // active/inactive
+  status?: string; // forward to BE; BE supports multiple statuses but FE filters subset
   name?: string;
   slug?: string;
-  parentId?: number | string | null;
+  parentId?: string | null;
 };
 
 export type CategoryListItem = {
-  id: number | string;
+  id: string;
   name: string;
   slug: string;
   description?: string;
-  parentId?: number | string | null; // prefer camelCase from API
-  parent_id?: number | string | null; // support legacy
+  parentId?: string | null; // prefer camelCase from API
+  parent_id?: string | null; // support legacy
   status: string;
   createdAt?: string;
   created_at?: string; // support legacy
@@ -31,14 +31,14 @@ export type ListCategoriesResponse = {
 };
 
 export async function listCategories(query: CategoryQuery = {}): Promise<ListCategoriesResponse> {
-  const params = { ...query } as Record<string, any>;
+  const params = { ...query, status: "active" } as Record<string, any>;
   // apiClient returns response.data from Axios. Backend response shape:
   // { success, statusCode, message, data: { items, total, page, limit, totalPages }, ... }
   const res: any = await apiClient.get("/categories", { params });
   const payload = res?.data ?? res; // support both wrapped and direct
   const itemsRaw = payload?.items ?? [];
   const normalizedItems: CategoryListItem[] = itemsRaw.map((it: any) => ({
-    id: it.id,
+    id: String(it.id),
     name: it.name,
     slug: it.slug,
     description: it.description,

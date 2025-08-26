@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { EventStatus } from '../entity/event.entity';
+import { TagResponseDto } from 'src/tag/dto/tag-response.dto';
+import { CategoryResponseDto } from 'src/category/dto/category-response.dto';
 
 export class EventResponseDto {
   @ApiProperty({
@@ -71,14 +73,6 @@ export class EventResponseDto {
   countdown_enabled: boolean;
 
   @ApiProperty({
-    description: 'Event publication status',
-    enum: EventStatus,
-    example: EventStatus.PUBLISHED,
-  })
-  @Expose()
-  public_status: EventStatus;
-
-  @ApiProperty({
     description: 'Tags associated with the event',
     type: 'array',
     items: {
@@ -90,7 +84,8 @@ export class EventResponseDto {
     },
   })
   @Expose()
-  tags: Array<{ id: string; name: string }>;
+  @Type(() => TagResponseDto)
+  tags: TagResponseDto[];
 
   @ApiProperty({
     description: 'Categories associated with the event',
@@ -104,7 +99,8 @@ export class EventResponseDto {
     },
   })
   @Expose()
-  categories: Array<{ id: string; name: string }>;
+  @Type(() => CategoryResponseDto)
+  categories: CategoryResponseDto[];
 
   @ApiProperty({
     description: 'Created timestamp',
@@ -118,5 +114,19 @@ export class EventResponseDto {
     example: '2024-11-15T10:30:00.000Z',
   })
   @Expose()
-  updated_at: Date;
+  modified_at: Date;
+
+  @ApiProperty({
+    description: 'Event status (draft, published, archived)',
+    example: 'published',
+    enum: ['draft', 'published', 'archived'],
+  })
+  @Expose()
+  status: string;
+
+  @Expose()
+  created_by: string;
+
+  @Expose()
+  modified_by: string;
 }

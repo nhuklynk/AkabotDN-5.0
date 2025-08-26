@@ -18,8 +18,8 @@ type Props = {
   title?: string
   description?: string
   confirmLabel?: string
-  onConfirm: () => void | Promise<void>
-  children: React.ReactNode
+  onConfirm: () => void | Promise<any>
+  children: React.ReactElement
 }
 
 export default function DeleteConfirmDialog({
@@ -30,17 +30,36 @@ export default function DeleteConfirmDialog({
   children,
 }: Props) {
   const { t } = useLocale()
+  const [open, setOpen] = React.useState(false)
+  
+  const handleConfirm = async () => {
+    try {
+      await onConfirm()
+      setOpen(false)
+    } catch (e) {
+      console.error(e)
+      // Don't close dialog on error
+    }
+  }
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <div onClick={() => setOpen(true)}>
+          {children}
+        </div>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title || t("common.areYouSure")}</AlertDialogTitle>
           <AlertDialogDescription>{description || t("common.deleteWarning")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+          <AlertDialogCancel onClick={() => setOpen(false)}>{t("common.cancel")}</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleConfirm}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
             {confirmLabel || t("common.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -1,188 +1,268 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import UserTable from "./component/user-table"
-import UserFormDialog from "./component/user-form-dialog"
-import { Pagination } from "@/components/pagination-component"
-import { useLocale } from "@/hooks/useLocale"
- 
-import { Plus, Search } from "lucide-react"
-import { useSearchParams } from "next/navigation"
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import UserTable from "./component/user-table";
+import UserFormDialog from "./component/user-form-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Pagination } from "@/components/pagination-component";
+import { useLocale } from "@/hooks/useLocale";
 
-// Mock data for users
-const initialUsers = [
-  {
-    id: 1,
-    full_name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "0900000001",
-    status: "active",
-    created_at: "2024-01-15",
-  },
-  {
-    id: 2,
-    full_name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "0900000002",
-    status: "active",
-    created_at: "2024-01-20",
-  },
-  {
-    id: 3,
-    full_name: "Bob Johnson",
-    email: "bob.johnson@example.com",
-    phone: "0900000003",
-    status: "inactive",
-    created_at: "2024-02-01",
-  },
-  {
-    id: 4,
-    full_name: "Alice Brown",
-    email: "alice.brown@example.com",
-    phone: "0900000004",
-    status: "active",
-    created_at: "2024-02-10",
-  },
-  {
-    id: 5,
-    full_name: "Nguyen Member",
-    email: "member@example.com",
-    phone: "0900000005",
-    status: "active",
-    created_at: "2024-03-02",
-  },
-  {
-    id: 6,
-    full_name: "Tran Expert",
-    email: "expert@example.com",
-    phone: "0900000006",
-    status: "active",
-    created_at: "2024-03-05",
-  },
-]
+import { Plus, Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import useUsers from "@/hooks/admin/user/useUsers";
+import type { UserListItem } from "@/services/admin/users/getAllUser";
+// using role union via hook
 
-type User = {
-  id: number
-  full_name: string
-  email: string
-  phone?: string
-  status: string
-  created_at: string
-}
+// Data is fetched via useUsers hook
+
+type User = UserListItem;
 
 export default function UsersPage() {
-  const { t } = useLocale()
-  const searchParams = useSearchParams()
-  const tab = searchParams.get("tab")
-  const [users, setUsers] = useState<User[]>(initialUsers)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [editingUser, setEditingUser] = useState<User | null>(null)
-  const [formData, setFormData] = useState<{ full_name: string; email: string; phone?: string; status: string }>({
+  const { t } = useLocale();
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab");
+  const {
+    items,
+    total,
+    page,
+    limit,
+    setQuery,
+    fetchUsers,
+    create,
+    update,
+    remove,
+    loading,
+    setRoleIds,
+  } = useUsers({ initialQuery: { page: 1, limit: 10 } });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [formData, setFormData] = useState<{
+    full_name: string;
+    email: string;
+    phone?: string;
+    avatar?: string;
+    status: string;
+    password?: string;
+    role_id?: string;
+  }>({
     full_name: "",
     email: "",
     phone: "",
+    avatar: "",
     status: "active",
-  })
+    password: "",
+    role_id: "",
+  });
 
-  const filteredUsers = users
-    .filter(
+  const ROLE_MEMBER_ID = "550e8400-e29b-41d4-a716-446655440004";
+  const ROLE_EXPERT_ID = "550e8400-e29b-41d4-a716-446655440002";
+  const isMembersExpertsTab = tab === "members-experts";
+
+  const baseItems = items;
+
+  // Server-side filtering is applied via query. Local filter keeps UX responsive
+  const filteredUsers = useMemo(() => {
+    const activeOnly = baseItems.filter((u) => u.status === "active");
+    if (!searchTerm) return activeOnly;
+    return activeOnly.filter(
       (user) =>
         user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    .filter(() => true)
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [baseItems, items, searchTerm]);
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize))
-  const paginatedUsers = filteredUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = limit;
+  const totalCount = total || 0;
+  const totalPages = Math.max(1, Math.ceil(totalCount / (pageSize || 10)));
+  const paginatedUsers = isMembersExpertsTab
+    ? filteredUsers.slice(
+        (currentPage - 1) * (pageSize || 10),
+        currentPage * (pageSize || 10)
+      )
+    : filteredUsers;
 
   useEffect(() => {
-    setCurrentPage(1)
-  }, [searchTerm])
+    setCurrentPage(1);
+  }, [searchTerm]);
 
-  const handleCreateUser = () => {
-    const newUser: User = {
-      id: Math.max(...users.map((u) => u.id)) + 1,
+  useEffect(() => {
+    setQuery((q) => ({
+      ...q,
+      page: currentPage,
+      limit: pageSize,
+      search: searchTerm || undefined,
+      status: "active",
+    }));
+  }, [currentPage, pageSize, searchTerm, setQuery]);
+
+  // Switch between all users and role-based union via hook
+  useEffect(() => {
+    if (isMembersExpertsTab) {
+      setRoleIds([ROLE_MEMBER_ID, ROLE_EXPERT_ID]);
+    } else {
+      setRoleIds([]);
+    }
+  }, [isMembersExpertsTab, setRoleIds]);
+
+  const handleCreateUser = async () => {
+    await create({
       full_name: formData.full_name,
       email: formData.email,
+      password: formData.password || "",
       phone: formData.phone,
       status: formData.status,
-      created_at: new Date().toISOString().split("T")[0],
-    }
-    setUsers([...users, newUser])
-    setFormData({ full_name: "", email: "", phone: "", status: "active" })
-    setIsCreateDialogOpen(false)
-  }
+      role_id: formData.role_id || "",
+    });
+    setFormData({
+      full_name: "",
+      email: "",
+      phone: "",
+      avatar: "",
+      status: "active",
+      password: "",
+      role_id: "",
+    });
+    setDialogOpen(false);
+    // data auto refreshes via hook
+  };
 
   const handleEditUser = (user: User) => {
-    setEditingUser(user)
+    setEditingUser(user);
     setFormData({
       full_name: user.full_name,
       email: user.email,
       phone: user.phone || "",
+      avatar: user.avatar || "",
       status: user.status,
-    })
-    setIsEditDialogOpen(true)
-  }
+    });
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
+  };
 
-  const handleUpdateUser = () => {
+  const handleUpdateUser = async () => {
     if (editingUser) {
-      setUsers(users.map((user) => (user.id === editingUser.id ? { ...user, ...formData, created_at: user.created_at } : user)))
-      setIsEditDialogOpen(false)
-      setEditingUser(null)
-      setFormData({ full_name: "", email: "", phone: "", status: "active" })
+      await update(editingUser.id, {
+        full_name: formData.full_name,
+        phone: formData.phone,
+        avatar: formData.avatar,
+        status: formData.status,
+      });
+      setEditingUser(null);
+      setFormData({ full_name: "", email: "", phone: "", status: "active" });
+      setDialogOpen(false);
     }
-  }
+  };
 
-  const handleDeleteUser = (userId: number) => {
-    setUsers(users.filter((user) => user.id !== userId))
-  }
+  const handleDeleteUser = async (userId: number | string) => {
+    await remove(userId);
+  };
 
   const getRoleColor = (role: string) => {
     switch (role) {
       case "admin":
-        return "bg-destructive text-destructive-foreground"
+        return "bg-destructive text-destructive-foreground";
       case "editor":
-        return "bg-primary text-primary-foreground"
+        return "bg-primary text-primary-foreground";
       case "member":
-        return "bg-indigo-500 text-white"
+        return "bg-indigo-500 text-white";
       case "expert":
-        return "bg-amber-500 text-white"
+        return "bg-amber-500 text-white";
       case "user":
-        return "bg-secondary text-secondary-foreground"
+        return "bg-secondary text-secondary-foreground";
       default:
-        return "bg-muted text-muted-foreground"
+        return "bg-muted text-muted-foreground";
     }
-  }
+  };
 
-  const getStatusColor = (_status: string) => "bg-secondary text-secondary-foreground"
+  const getStatusColor = (_status: string) =>
+    "bg-secondary text-secondary-foreground";
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">{t("user.title")}</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            {t("user.title")}
+          </h1>
           <p className="text-muted-foreground">{t("user.subtitle")}</p>
         </div>
-        <Button className="flex items-center gap-2" onClick={() => setIsCreateDialogOpen(true)}>
+        <Button
+          className="flex items-center gap-2"
+          onClick={() => {
+            setDialogMode("create");
+            setDialogOpen(true);
+          }}
+        >
           <Plus className="h-4 w-4" />
           {t("user.add")}
         </Button>
-        <UserFormDialog
-          open={isCreateDialogOpen}
-          onOpenChange={setIsCreateDialogOpen}
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleCreateUser}
-          mode="create"
-        />
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open);
+            if (!open) {
+              setEditingUser(null);
+              setFormData({
+                full_name: "",
+                email: "",
+                phone: "",
+                avatar: "",
+                status: "active",
+                password: "",
+                role_id: "",
+              });
+            }
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {dialogMode === "create"
+                  ? t("user.dialog.createTitle")
+                  : t("user.dialog.editTitle")}
+              </DialogTitle>
+              <DialogDescription>
+                {dialogMode === "create"
+                  ? t("user.dialog.createDesc")
+                  : t("user.dialog.editDesc")}
+              </DialogDescription>
+            </DialogHeader>
+
+            <UserFormDialog
+              formData={formData}
+              setFormData={setFormData}
+              mode={dialogMode}
+            />
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                {t("common.cancel")}
+              </Button>
+              <Button
+                onClick={
+                  dialogMode === "create" ? handleCreateUser : handleUpdateUser
+                }
+              >
+                {dialogMode === "create"
+                  ? t("user.dialog.createCta")
+                  : t("user.dialog.updateCta")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card className="border-0 shadow-none">
@@ -198,7 +278,10 @@ export default function UsersPage() {
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {t("user.countSummary", { filtered: filteredUsers.length, total: users.length })}
+              {t("user.countSummary", {
+                filtered: filteredUsers.length,
+                total: totalCount,
+              })}
             </div>
           </div>
 
@@ -218,15 +301,7 @@ export default function UsersPage() {
         </CardContent>
       </Card>
 
-      {/* Edit User Dialog */}
-      <UserFormDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={handleUpdateUser}
-        mode="edit"
-      />
+      {/* Single dialog instance above handles both create and edit */}
     </div>
-  )
+  );
 }

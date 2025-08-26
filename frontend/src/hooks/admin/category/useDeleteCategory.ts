@@ -12,6 +12,9 @@ export function useDeleteCategory() {
       return true;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-categories"] }),
+    onError: (error) => {
+      console.error('Error deleting category:', error);
+    },
   });
 
   const mutate = useCallback((id: string | number) => mutation.mutateAsync(id), [mutation]);

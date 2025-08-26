@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  ManyToMany,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Post } from '../../post/entity/post.entity';
 import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';

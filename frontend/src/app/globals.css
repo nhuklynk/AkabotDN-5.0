@@ -158,6 +158,25 @@
     --font-roboto-condensed: "Roboto Condensed", sans-serif;
   }
 
+  /* Ensure dialogs are always on top */
+  [data-radix-alert-dialog-overlay] {
+    z-index: 99999 !important;
+  }
+  
+  [data-radix-alert-dialog-overlay][data-state="closed"] {
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+  
+  [data-radix-alert-dialog-content] {
+    z-index: 100000 !important;
+  }
+  
+  [data-radix-alert-dialog-content][data-state="closed"] {
+    z-index: -1 !important;
+    pointer-events: none !important;
+  }
+
   * {
     font-family: var(--font-roboto-condensed), system-ui, -apple-system,
       BlinkMacSystemFont, "Segoe UI", sans-serif;

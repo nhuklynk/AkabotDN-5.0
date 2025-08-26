@@ -23,7 +23,6 @@ export enum PostStatus {
 export enum PostType {
   MEMBER_ACTIVITY = 'MEMBER_ACTIVITY',
   ASSOCIATION_ACTIVITY = 'ASSOCIATION_ACTIVITY',
-  DIGITAL_PRODUCT = 'DIGITAL_PRODUCT',
 }
 
 @Entity('posts')
@@ -70,14 +69,6 @@ export class Post extends BaseAuditEntity {
     inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' },
   })
   tags: Tag[];
-
-  @Column({
-    type: 'enum',
-    enum: PostType,
-    default: PostType.MEMBER_ACTIVITY,
-    name: 'post_type',
-  })
-  post_type: PostType;
 
   @Column({ nullable: true, name: 'media_id' })
   media_id?: string;

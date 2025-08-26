@@ -4,22 +4,15 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import ResourceFormDialog from "./component/resource-form-dialog";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import ResourceTable from "./component/resource-table";
 import {
   Select,
@@ -29,36 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Plus,
   Search,
-  Edit,
-  Trash2,
-  MoreHorizontal,
   FileText,
   ImageIcon,
   Video,
   Music,
   Archive,
-  Download,
-  Eye,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
 import { useMediaList } from "@/hooks/admin/media/useMediaList";
@@ -68,13 +39,9 @@ import { useDeleteMedia } from "@/hooks/admin/media/useDeleteMedia";
 
 type Resource = {
   id: string | number;
-  name: string;
   filename: string;
-  type: string;
+  media_type: string;
   size: string;
-  category: string;
-  description: string;
-  uploadedBy: string;
   createdAt: string;
   url: string;
 };
@@ -84,15 +51,13 @@ export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
   const [formData, setFormData] = useState({
-    name: "",
+    file: null as File | null,
     filename: "",
-    type: "document",
-    category: "general",
-    description: "",
+    media_type: "other" as "post" | "event" | "member" | "other",
   });
 
   const { items, total, setQuery, refetch } = useMediaList({
@@ -100,18 +65,16 @@ export default function ResourcesPage() {
   });
   const apiResources: Resource[] = useMemo(
     () =>
-      items.map((m) => ({
-        id: m.id,
-        name: m.file_name,
-        filename: m.file_name,
-        type: m.media_type,
-        size: `${Math.round((m.file_size || 0) / 1024)} KB`,
-        category: "general",
-        description: "",
-        uploadedBy: "",
-        createdAt: m.created_at || "",
-        url: m.file_path,
-      })),
+      items
+        .filter((m) => m.status === "active") // Only show active items
+        .map((m) => ({
+          id: m.id,
+          filename: m.file_name || "",
+          media_type: m.media_type,
+          size: `${Math.round((m.file_size || 0) / 1024)} KB`,
+          createdAt: m.created_at || "",
+          url: m.file_path,
+        })),
     [items]
   );
 
@@ -120,11 +83,11 @@ export default function ResourcesPage() {
   }, [apiResources]);
 
   const filteredResources = resources.filter((resource) => {
-    const matchesSearch =
-      resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resource.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resource.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = filterType === "all" || resource.type === filterType;
+    const matchesSearch = resource.filename
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesType =
+      filterType === "all" || resource.media_type === filterType;
     return matchesSearch && matchesType;
   });
 
@@ -149,55 +112,54 @@ export default function ResourcesPage() {
   const { mutate: deleteMedia } = useDeleteMedia();
 
   const handleCreateResource = async () => {
-    await createMedia({
-      file: new Blob(["placeholder"], { type: "text/plain" }),
-      file_name: formData.filename,
-      media_type: "other",
-    });
-    setFormData({
-      name: "",
-      filename: "",
-      type: "document",
-      category: "general",
-      description: "",
-    });
-    setIsCreateDialogOpen(false);
-    refetch();
+    if (!formData.file) return;
+    try {
+      await createMedia({
+        file: formData.file,
+        media_type: formData.media_type,
+      });
+      setFormData({ file: null, filename: "", media_type: "other" });
+      setDialogOpen(false);
+      refetch();
+    } catch (error) {
+      console.error("Failed to create resource:", error);
+    }
   };
 
   const handleEditResource = (resource: Resource) => {
     setEditingResource(resource);
     setFormData({
-      name: resource.name,
+      file: null,
       filename: resource.filename,
-      type: resource.type,
-      category: resource.category,
-      description: resource.description,
+      media_type: (resource.media_type as any) || "other",
     });
-    setIsEditDialogOpen(true);
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
   };
 
   const handleUpdateResource = async () => {
     if (!editingResource) return;
-    await updateMedia(editingResource.id, {
-      file_name: formData.filename,
-      media_type: "other",
-    });
-    setIsEditDialogOpen(false);
-    setEditingResource(null);
-    setFormData({
-      name: "",
-      filename: "",
-      type: "document",
-      category: "general",
-      description: "",
-    });
-    refetch();
+    try {
+      await updateMedia(editingResource.id, {
+        media_type: formData.media_type,
+      });
+      setEditingResource(null);
+      setFormData({ file: null, filename: "", media_type: "other" });
+      setDialogOpen(false); // Close dialog after successful update
+      refetch();
+    } catch (error) {
+      console.error("Failed to update resource:", error);
+    }
   };
 
   const handleDeleteResource = async (resourceId: any) => {
-    await deleteMedia(resourceId);
-    refetch();
+    try {
+      await deleteMedia(resourceId);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting resource:", error);
+      // Don't refetch on error
+    }
   };
 
   const getTypeIcon = (type: string) => {
@@ -230,21 +192,6 @@ export default function ResourcesPage() {
     }
   };
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "branding":
-        return "bg-primary text-primary-foreground";
-      case "marketing":
-        return "bg-chart-5 text-white";
-      case "documentation":
-        return "bg-secondary text-secondary-foreground";
-      case "media":
-        return "bg-accent text-accent-foreground";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -256,19 +203,62 @@ export default function ResourcesPage() {
         </div>
         <Button
           className="flex items-center gap-2"
-          onClick={() => setIsCreateDialogOpen(true)}
+          onClick={() => {
+            setDialogMode("create");
+            setDialogOpen(true);
+          }}
         >
           <Plus className="h-4 w-4" />
           {t("resource.add")}
         </Button>
-        <ResourceFormDialog
-          open={isCreateDialogOpen}
-          onOpenChange={setIsCreateDialogOpen}
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleCreateResource}
-          mode="create"
-        />
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open);
+            if (!open) {
+              setEditingResource(null);
+              setFormData({ file: null, filename: "", media_type: "other" });
+            }
+          }}
+        >
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>
+                {dialogMode === "create"
+                  ? t("resource.dialog.createTitle")
+                  : t("resource.dialog.editTitle")}
+              </DialogTitle>
+              <DialogDescription>
+                {dialogMode === "create"
+                  ? t("resource.dialog.createDesc")
+                  : t("resource.dialog.editDesc")}
+              </DialogDescription>
+            </DialogHeader>
+
+            <ResourceFormDialog
+              formData={formData}
+              setFormData={setFormData}
+              mode={dialogMode}
+            />
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                {t("common.cancel")}
+              </Button>
+              <Button
+                onClick={
+                  dialogMode === "create"
+                    ? handleCreateResource
+                    : handleUpdateResource
+                }
+              >
+                {dialogMode === "create"
+                  ? t("resource.dialog.createCta")
+                  : t("resource.dialog.updateCta")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card className="border-0 shadow-none">
@@ -289,20 +279,15 @@ export default function ResourcesPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t("resource.all")}</SelectItem>
-                <SelectItem value="document">
-                  {t("resource.types.document")}
+                <SelectItem value="post">{t("resource.types.post")}</SelectItem>
+                <SelectItem value="event">
+                  {t("resource.types.event")}
                 </SelectItem>
-                <SelectItem value="image">
-                  {t("resource.types.image")}
+                <SelectItem value="member">
+                  {t("resource.types.member")}
                 </SelectItem>
-                <SelectItem value="video">
-                  {t("resource.types.video")}
-                </SelectItem>
-                <SelectItem value="audio">
-                  {t("resource.types.audio")}
-                </SelectItem>
-                <SelectItem value="archive">
-                  {t("resource.types.archive")}
+                <SelectItem value="other">
+                  {t("resource.types.other")}
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -315,11 +300,11 @@ export default function ResourcesPage() {
           </div>
 
           <ResourceTable
-            items={paginatedResources}
-            getTypeColor={getTypeColor}
-            getTypeIcon={getTypeIcon}
-            getCategoryColor={getCategoryColor}
-            onEdit={handleEditResource}
+            items={paginatedResources as any}
+            getTypeColor={(t) => getTypeColor(t)}
+            getTypeIcon={(t) => getTypeIcon(t)}
+            getCategoryColor={() => "bg-muted text-muted-foreground"}
+            onEdit={handleEditResource as any}
             onDelete={handleDeleteResource}
           />
           <Pagination
@@ -331,14 +316,7 @@ export default function ResourcesPage() {
         </CardContent>
       </Card>
 
-      <ResourceFormDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={handleUpdateResource}
-        mode="edit"
-      />
+      {/* Single dialog instance above handles both create and edit */}
     </div>
   );
 }
