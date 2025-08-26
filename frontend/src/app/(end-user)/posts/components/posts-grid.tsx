@@ -10,6 +10,7 @@ import { usePosts } from "@/hooks/usePosts";
 import { Pagination } from "@/components/pagination-component";
 import { formatDate } from "@/utils/dateUtils";
 import { truncateText } from "@/utils/textUtils";
+import { useLocale } from "@/hooks/useLocale";
 
 interface PostsGridProps {
   onPaginationUpdate: (info: {
@@ -21,6 +22,7 @@ interface PostsGridProps {
 }
 
 export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
+  const { t } = useLocale();
   const [currentPage, setCurrentPage] = useState(1);
   const [mounted, setMounted] = useState(false);
   const hasInitialized = useRef(false);
@@ -76,7 +78,7 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
       <div className="flex justify-center items-center py-12">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-          <p className="text-muted-foreground">Đang tải bài viết...</p>
+          <p className="text-muted-foreground">{t("posts.loading")}</p>
         </div>
       </div>
     );
@@ -90,7 +92,7 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
           onClick={() => fetchPosts()}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
         >
-          Thử lại
+          {t("posts.retry")}
         </button>
       </div>
     );
@@ -102,7 +104,7 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
   if (posts.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground">Chưa có bài viết nào.</p>
+        <p className="text-muted-foreground">{t("posts.noPosts")}</p>
       </div>
     );
   }
@@ -114,10 +116,10 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
         {posts.map((post) => (
           <Card
             key={post.id}
-            className="group hover:shadow-lg transition-shadow"
+            className="group hover:shadow-lg transition-shadow border-slate-200 shadow-lg"
           >
             <Link href={`/posts/${post.slug}`}>
-              <CardContent className="p-0">
+              <CardContent className="p-0 border-slate-200 shadow-lg">
                 {/* Post Image */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <Image
@@ -146,7 +148,7 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
 
                   <p className="text-muted-foreground text-sm mb-4 line-clamp-3 min-h-[4.5rem]">
                     {truncateText(
-                      post.summary || post.excerpt || "Không có mô tả",
+                      post.summary || post.excerpt || t("posts.noDescription"),
                       120
                     )}
                   </p>
@@ -156,7 +158,9 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
                     <div className="flex items-center gap-2">
                       <User className="w-3 h-3" />
                       <span>
-                        {post.user?.email || post.author_name || "Tác giả"}
+                        {post.user?.email ||
+                          post.author_name ||
+                          t("posts.author")}
                       </span>
                     </div>
 
@@ -165,7 +169,8 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
                       <span>
                         {mounted
                           ? formatDate(post.created_at)
-                          : post.created_at?.split("T")[0] || "Không rõ ngày"}
+                          : post.created_at?.split("T")[0] ||
+                            t("posts.unknownDate")}
                       </span>
                     </div>
 

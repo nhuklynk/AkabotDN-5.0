@@ -4,6 +4,7 @@ import {
   MemberApiResponse,
   MemberQueryParams,
 } from "@/services/end-user/types/member";
+import { companyService, CreateCompanyData } from "./companyService";
 
 // Additional types for member operations
 export interface CreateMemberData {
@@ -27,6 +28,46 @@ export interface UpdateMemberData {
   expertise_level?: "beginner" | "intermediate" | "advanced" | "expert";
   curriculum_vitae_url?: string;
   company_id?: string;
+}
+
+export interface RegisterMemberData {
+  // User information
+  email: string;
+  password: string;
+  full_name: string;
+  phone?: string;
+  avatar?: string;
+  // status is optional and will use backend default if not provided
+
+  // Member information
+  company_id?: string;
+  membership_type?: "corporate" | "individual" | "student";
+  job_title?: string;
+  assistant_info?: string;
+  membership_registration_form_url?: string;
+  work_unit?: string;
+  expertise_level?: "beginner" | "intermediate" | "advanced" | "expert";
+  curriculum_vitae_url?: string;
+  role_id?: string;
+}
+
+export interface RegisterMemberWithCompanyData extends RegisterMemberData {
+  // Company information (only for corporate members)
+  company?: CreateCompanyData;
+}
+
+export interface RegisterMemberResponse {
+  member: Member;
+  user: {
+    id: string;
+    email: string;
+    full_name: string;
+    phone?: string;
+    avatar?: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+  };
 }
 
 class MemberService {
@@ -96,6 +137,97 @@ class MemberService {
       `${this.baseUrl}/company/${companyId}`
     );
     return response as unknown as Member[];
+  }
+
+  /**
+   * Register a new member (creates both user and member)
+   */
+  async registerMember(
+    memberData: RegisterMemberData
+  ): Promise<RegisterMemberResponse> {
+    const response = await apiClient.post(
+      `${this.baseUrl}/register`,
+      memberData
+    );
+    return response.data;
+  }
+
+  /**
+   * Register a corporate member with company creation
+   */
+  async registerCorporateMember(
+    data: RegisterMemberWithCompanyData
+  ): Promise<RegisterMemberResponse> {
+    try {
+      let companyId: string | undefined;
+
+      // If this is a corporate member and company data is provided, create company first
+      if (data.membership_type === "corporate" && data.company) {
+        const newCompany = await companyService.createCompany(data.company);
+        companyId = newCompany.id;
+      }
+
+      // Prepare member registration data
+      const memberRegistrationData: RegisterMemberData = {
+        // User information
+        email: data.email,
+        password: data.password,
+        full_name: data.full_name,
+        phone: data.phone,
+        avatar: data.avatar,
+        // status will use backend default
+
+        // Member information
+        company_id: companyId || data.company_id,
+        membership_type: data.membership_type,
+        job_title: data.job_title,
+        assistant_info: data.assistant_info,
+        membership_registration_form_url: data.membership_registration_form_url,
+        work_unit: data.work_unit,
+        expertise_level: data.expertise_level,
+        curriculum_vitae_url: data.curriculum_vitae_url,
+        role_id: data.role_id,
+      };
+
+      // Register the member
+      return await this.registerMember(memberRegistrationData);
+    } catch (error) {
+      console.error("Error registering corporate member:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Register member with automatic company handling
+   * - Individual/Student members: register directly
+   * - Corporate members: create company first, then register member
+   */
+  async registerMemberWithCompany(
+    data: RegisterMemberWithCompanyData
+  ): Promise<RegisterMemberResponse> {
+    if (data.membership_type === "corporate") {
+      return await this.registerCorporateMember(data);
+    } else {
+      // For individual or student members, register directly
+      const memberData: RegisterMemberData = {
+        email: data.email,
+        password: data.password,
+        full_name: data.full_name,
+        phone: data.phone,
+        avatar: data.avatar,
+        // status will use backend default
+        company_id: data.company_id,
+        membership_type: data.membership_type,
+        job_title: data.job_title,
+        assistant_info: data.assistant_info,
+        membership_registration_form_url: data.membership_registration_form_url,
+        work_unit: data.work_unit,
+        expertise_level: data.expertise_level,
+        curriculum_vitae_url: data.curriculum_vitae_url,
+        role_id: data.role_id,
+      };
+      return await this.registerMember(memberData);
+    }
   }
 
   /**

@@ -139,7 +139,7 @@ export default function DigitalProductsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+      <section className="py-16 bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-4">SẢN PHẨM SỐ</h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">

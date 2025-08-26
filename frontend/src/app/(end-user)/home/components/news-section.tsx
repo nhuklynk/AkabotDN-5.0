@@ -34,7 +34,7 @@ export function NewsSection() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-r from-[#F2E6EE] to-[#977DFF]">
+    <section className="py-20 bg-gradient-to-r from-slate-100 to-[#977DFF]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl lg:text-4xl font-bold text-[#0033FF] mb-4">
@@ -74,7 +74,7 @@ export function NewsSection() {
                 <div className="flex items-center gap-2 text-sm text-[#977DFF] mb-2">
                   <Calendar className="h-4 w-4" />
                   {item.date}
-                  <span className="px-2 py-1 bg-[#FFCCF2]/20 text-[#0033FF] rounded-full text-xs border border-[#FFCCF2]/30">
+                  <span className="px-2 py-1 bg-blue-100 text-[#0033FF] rounded-full text-xs border border-slate-200">
                     {item.category}
                   </span>
                 </div>
@@ -89,7 +89,7 @@ export function NewsSection() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="p-0 h-auto text-[#0033FF] hover:text-[#0600AF] hover:bg-[#FFCCF2]/10"
+                  className="p-0 h-auto text-[#0033FF] hover:text-[#0600AF] hover:bg-blue-50"
                 >
                   Đọc thêm
                   <ExternalLink className="ml-1 h-4 w-4" />
