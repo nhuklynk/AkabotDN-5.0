@@ -6,7 +6,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import UserTable from "./component/user-table";
 import UserFormDialog from "./component/user-form-dialog";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
 
@@ -24,7 +31,19 @@ export default function UsersPage() {
   const { t } = useLocale();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
-  const { items, total, page, limit, setQuery, fetchUsers, create, update, remove, loading, setRoleIds } = useUsers({ initialQuery: { page: 1, limit: 10 } });
+  const {
+    items,
+    total,
+    page,
+    limit,
+    setQuery,
+    fetchUsers,
+    create,
+    update,
+    remove,
+    loading,
+    setRoleIds,
+  } = useUsers({ initialQuery: { page: 1, limit: 10 } });
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
@@ -67,9 +86,12 @@ export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = limit;
   const totalCount = total || 0;
-  const totalPages = Math.max(1, Math.ceil((totalCount) / (pageSize || 10)));
+  const totalPages = Math.max(1, Math.ceil(totalCount / (pageSize || 10)));
   const paginatedUsers = isMembersExpertsTab
-    ? filteredUsers.slice((currentPage - 1) * (pageSize || 10), currentPage * (pageSize || 10))
+    ? filteredUsers.slice(
+        (currentPage - 1) * (pageSize || 10),
+        currentPage * (pageSize || 10)
+      )
     : filteredUsers;
 
   useEffect(() => {
@@ -77,7 +99,13 @@ export default function UsersPage() {
   }, [searchTerm]);
 
   useEffect(() => {
-    setQuery((q) => ({ ...q, page: currentPage, limit: pageSize, search: searchTerm || undefined, status: "active" }));
+    setQuery((q) => ({
+      ...q,
+      page: currentPage,
+      limit: pageSize,
+      search: searchTerm || undefined,
+      status: "active",
+    }));
   }, [currentPage, pageSize, searchTerm, setQuery]);
 
   // Switch between all users and role-based union via hook
@@ -98,7 +126,15 @@ export default function UsersPage() {
       status: formData.status,
       role_id: formData.role_id || "",
     });
-    setFormData({ full_name: "", email: "", phone: "", avatar: "", status: "active", password: "", role_id: "" });
+    setFormData({
+      full_name: "",
+      email: "",
+      phone: "",
+      avatar: "",
+      status: "active",
+      password: "",
+      role_id: "",
+    });
     setDialogOpen(false);
     // data auto refreshes via hook
   };
@@ -122,18 +158,16 @@ export default function UsersPage() {
         full_name: formData.full_name,
         phone: formData.phone,
         avatar: formData.avatar,
-        user_status: formData.status,
+        status: formData.status,
       });
       setEditingUser(null);
       setFormData({ full_name: "", email: "", phone: "", status: "active" });
       setDialogOpen(false);
-      // data auto refreshes via hook
     }
   };
 
   const handleDeleteUser = async (userId: number | string) => {
     await remove(userId);
-    // data auto refreshes via hook
   };
 
   const getRoleColor = (role: string) => {
@@ -167,7 +201,10 @@ export default function UsersPage() {
         </div>
         <Button
           className="flex items-center gap-2"
-          onClick={() => { setDialogMode("create"); setDialogOpen(true); }}
+          onClick={() => {
+            setDialogMode("create");
+            setDialogOpen(true);
+          }}
         >
           <Plus className="h-4 w-4" />
           {t("user.add")}
@@ -178,22 +215,50 @@ export default function UsersPage() {
             setDialogOpen(open);
             if (!open) {
               setEditingUser(null);
-              setFormData({ full_name: "", email: "", phone: "", avatar: "", status: "active", password: "", role_id: "" });
+              setFormData({
+                full_name: "",
+                email: "",
+                phone: "",
+                avatar: "",
+                status: "active",
+                password: "",
+                role_id: "",
+              });
             }
           }}
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{dialogMode === "create" ? t("user.dialog.createTitle") : t("user.dialog.editTitle")}</DialogTitle>
-              <DialogDescription>{dialogMode === "create" ? t("user.dialog.createDesc") : t("user.dialog.editDesc")}</DialogDescription>
+              <DialogTitle>
+                {dialogMode === "create"
+                  ? t("user.dialog.createTitle")
+                  : t("user.dialog.editTitle")}
+              </DialogTitle>
+              <DialogDescription>
+                {dialogMode === "create"
+                  ? t("user.dialog.createDesc")
+                  : t("user.dialog.editDesc")}
+              </DialogDescription>
             </DialogHeader>
 
-            <UserFormDialog formData={formData} setFormData={setFormData} mode={dialogMode} />
+            <UserFormDialog
+              formData={formData}
+              setFormData={setFormData}
+              mode={dialogMode}
+            />
 
             <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("common.cancel")}</Button>
-              <Button onClick={dialogMode === "create" ? handleCreateUser : handleUpdateUser}>
-                {dialogMode === "create" ? t("user.dialog.createCta") : t("user.dialog.updateCta")}
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                {t("common.cancel")}
+              </Button>
+              <Button
+                onClick={
+                  dialogMode === "create" ? handleCreateUser : handleUpdateUser
+                }
+              >
+                {dialogMode === "create"
+                  ? t("user.dialog.createCta")
+                  : t("user.dialog.updateCta")}
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -1,6 +1,7 @@
 import { IsString, IsOptional, IsEnum, IsDateString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { PostStatus } from '../entity/post.entity';
+import { Status } from 'src/config/base-audit.entity';
+import { PostType } from '../entity/post.entity';
 
 export class UpdatePostFormdataDto {
   @ApiProperty({
@@ -23,16 +24,6 @@ export class UpdatePostFormdataDto {
   @IsOptional()
   @IsString()
   content?: string;
-
-  @ApiProperty({
-    description: 'Post status',
-    enum: PostStatus,
-    example: PostStatus.PUBLISHED,
-    required: false
-  })
-  @IsOptional()
-  @IsEnum(PostStatus)
-  post_status?: PostStatus;
 
   @ApiProperty({
     description: 'Post summary',
@@ -87,4 +78,26 @@ export class UpdatePostFormdataDto {
   })
   @IsUUID()
   user_id: string;
+
+  @ApiProperty({
+    description: 'Post status',
+    enum: Status,
+    example: Status.ACTIVE,
+    required: false,
+    default: Status.ACTIVE
+  })
+  @IsOptional()
+  @IsEnum(Status)
+  status?: Status;
+
+  @ApiProperty({
+    description: 'Post type',
+    enum: PostType,
+    example: PostType.DIGITAL_PRODUCT,
+    required: false,
+    default: PostType.MEMBER_ACTIVITY
+  })
+  @IsOptional()
+  @IsEnum(PostType)
+  post_type?: PostType;
 }

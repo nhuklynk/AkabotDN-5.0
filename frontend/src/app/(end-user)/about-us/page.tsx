@@ -14,10 +14,15 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useLocale } from "@/hooks/useLocale";
+import FlipBook from "@/components/FlipBook";
+import { generateCharterPages } from "@/utils/flipbook-helper";
 
 export default function GioiThieuPage() {
   const [activeTab, setActiveTab] = useState("about");
   const { t } = useLocale();
+
+  // Generate charter pages URLs (assuming we have 25 pages)
+  const charterPages = generateCharterPages(25);
 
   const menuItems = [
     { id: "about", label: t("aboutUs.menu.about"), icon: Target },
@@ -70,6 +75,46 @@ export default function GioiThieuPage() {
           {/* Về NDA Section */}
           {activeTab === "about" && (
             <div className="space-y-8 animate-in fade-in duration-500">
+              {/* Key Statistics */}
+              <Card className="border-slate-200 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50 mb-8">
+                <CardContent className="p-8">
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold text-[#0033FF] mb-2">
+                      {t("aboutUs.about.stats.title")}
+                    </h3>
+                    <p className="text-[#0600AF]/80">
+                      {t("aboutUs.about.stats.subtitle")}
+                    </p>
+                  </div>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="text-center p-6 bg-white rounded-lg shadow border">
+                      <div className="text-3xl font-bold text-[#0033FF] mb-2">
+                        300+
+                      </div>
+                      <p className="text-[#0600AF]/90">
+                        {t("aboutUs.about.stats.members")}
+                      </p>
+                    </div>
+                    <div className="text-center p-6 bg-white rounded-lg shadow border">
+                      <div className="text-3xl font-bold text-[#977DFF] mb-2">
+                        54
+                      </div>
+                      <p className="text-[#0600AF]/90">
+                        {t("aboutUs.about.stats.fields")}
+                      </p>
+                    </div>
+                    <div className="text-center p-6 bg-white rounded-lg shadow border">
+                      <div className="text-3xl font-bold text-[#0033FF] mb-2">
+                        100+
+                      </div>
+                      <p className="text-[#0600AF]/90">
+                        {t("aboutUs.about.stats.partners")}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Mission & Vision */}
               <div className="grid md:grid-cols-2 gap-8">
                 <Card className="border-slate-200 shadow-lg bg-white hover:border-[#977DFF]/50 transition-all duration-300">
@@ -82,9 +127,11 @@ export default function GioiThieuPage() {
                         {t("aboutUs.about.mission.title")}
                       </h3>
                     </div>
-                    <p className="text-[#0600AF]/90 leading-relaxed">
-                      {t("aboutUs.about.mission.content")}
-                    </p>
+                    <div className="text-[#0600AF]/90 leading-relaxed space-y-3">
+                      <p>{t("aboutUs.about.mission.content1")}</p>
+                      <p>{t("aboutUs.about.mission.content2")}</p>
+                      <p>{t("aboutUs.about.mission.content3")}</p>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -95,17 +142,23 @@ export default function GioiThieuPage() {
                         <Target className="w-6 h-6 text-white" />
                       </div>
                       <h3 className="text-2xl font-bold text-[#0033FF]">
-                        {t("aboutUs.about.vision.title")}
+                        {t("aboutUs.about.tasks.title")}
                       </h3>
                     </div>
-                    <p className="text-[#0600AF]/90 leading-relaxed">
-                      {t("aboutUs.about.vision.content")}
-                    </p>
+                    <div className="text-[#0600AF]/90 leading-relaxed">
+                      <ul className="space-y-2 text-sm">
+                        <li>• {t("aboutUs.about.tasks.legal")}</li>
+                        <li>• {t("aboutUs.about.tasks.data")}</li>
+                        <li>• {t("aboutUs.about.tasks.technology")}</li>
+                        <li>• {t("aboutUs.about.tasks.promotion")}</li>
+                        <li>• {t("aboutUs.about.tasks.support")}</li>
+                      </ul>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Core Values */}
+              {/* Định hướng phát triển */}
               <Card className="border-slate-200 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
@@ -113,48 +166,250 @@ export default function GioiThieuPage() {
                       <Heart className="w-6 h-6 text-[#977DFF]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[#0033FF]">
-                      {t("aboutUs.about.coreValues.title")}
+                      {t("aboutUs.about.development.title")}
                     </h3>
                   </div>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-slate-200 hover:from-blue-100 hover:to-slate-100 transition-all duration-300">
-                      <div className="w-16 h-16 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-white">1</span>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🏢 {t("aboutUs.about.development.market.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.market.content")}
+                        </p>
                       </div>
-                      <h4 className="font-semibold text-[#0033FF] mb-2">
-                        {t("aboutUs.about.coreValues.items.transparency.title")}
-                      </h4>
-                      <p className="text-sm text-[#0600AF]/90">
-                        {t(
-                          "aboutUs.about.coreValues.items.transparency.content"
-                        )}
-                      </p>
+
+                      <div className="p-4 bg-gradient-to-br from-slate-50 to-blue-100 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🤖 {t("aboutUs.about.development.ai.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.ai.content")}
+                        </p>
+                      </div>
+
+                      <div className="p-4 bg-gradient-to-br from-blue-100 to-slate-100 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🎓 {t("aboutUs.about.development.education.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.education.content")}
+                        </p>
+                      </div>
+
+                      <div className="p-4 bg-gradient-to-br from-[#977DFF]/10 to-blue-50 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🏆 {t("aboutUs.about.development.competition.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.competition.content")}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-slate-50 rounded-lg border border-slate-200 hover:from-slate-100 hover:to-blue-100 transition-all duration-300">
-                      <div className="w-16 h-16 bg-gradient-to-br from-[#977DFF] to-[#0033FF] rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-white">2</span>
+
+                    <div className="space-y-4">
+                      <div className="p-4 bg-gradient-to-br from-green-50 to-blue-50 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🇻🇳 {t("aboutUs.about.development.autonomy.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.autonomy.content")}
+                        </p>
                       </div>
-                      <h4 className="font-semibold text-[#0033FF] mb-2">
-                        {t("aboutUs.about.coreValues.items.innovation.title")}
-                      </h4>
-                      <p className="text-sm text-[#0600AF]/90">
-                        {t("aboutUs.about.coreValues.items.innovation.content")}
-                      </p>
+
+                      <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🏗️{" "}
+                          {t("aboutUs.about.development.infrastructure.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t(
+                            "aboutUs.about.development.infrastructure.content"
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="p-4 bg-gradient-to-br from-indigo-50 to-slate-100 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🌐 {t("aboutUs.about.development.cooperation.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.cooperation.content")}
+                        </p>
+                      </div>
+
+                      <div className="p-4 bg-gradient-to-br from-red-50 to-pink-50 rounded-lg border border-slate-200">
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          🔒 {t("aboutUs.about.development.security.title")}
+                        </h4>
+                        <p className="text-sm text-[#0600AF]/90">
+                          {t("aboutUs.about.development.security.content")}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center p-6 bg-gradient-to-br from-slate-50 to-blue-100 rounded-lg border border-[#977DFF]/40 hover:from-blue-200 hover:to-slate-100 transition-all duration-300">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold text-[#977DFF]">
-                          3
-                        </span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Leadership Section */}
+              <Card className="border-slate-200 shadow-lg bg-white">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center">
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-[#0033FF]">
+                      {t("aboutUs.about.leadership.title")}
+                    </h3>
+                  </div>
+
+                  {/* Leadership Details */}
+                  <div className="mb-6 space-y-4">
+                    {/* Chủ tịch */}
+                    <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white p-6 rounded-lg shadow-lg">
+                      <div className="text-center">
+                        <h4 className="text-lg font-bold mb-2">
+                          {t("aboutUs.about.leadership.chairman.title")}
+                        </h4>
+                        <p className="text-xl font-semibold">
+                          {t("aboutUs.about.leadership.chairman.name")}
+                        </p>
+                        <p className="text-sm opacity-90">
+                          {t("aboutUs.about.leadership.chairman.position")}
+                        </p>
                       </div>
-                      <h4 className="font-semibold text-[#0033FF] mb-2">
-                        {t("aboutUs.about.coreValues.items.cooperation.title")}
+                    </div>
+
+                    {/* Phó Chủ tịch thường trực */}
+                    <div className="bg-gradient-to-br from-[#977DFF] to-[#0033FF] text-white p-6 rounded-lg shadow-lg">
+                      <div className="text-center">
+                        <h4 className="text-lg font-bold mb-2">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmanPermanent.title"
+                          )}
+                        </h4>
+                        <p className="text-xl font-semibold">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmanPermanent.name"
+                          )}
+                        </p>
+                        <p className="text-sm opacity-90">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmanPermanent.position"
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Các Phó Chủ tịch */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] p-4 rounded-lg shadow border border-slate-200">
+                        <h5 className="font-semibold mb-1">
+                          {t("aboutUs.about.leadership.viceChairmen.title")}
+                        </h5>
+                        <p className="font-medium">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.nguyen_ngoc_cuong.name"
+                          )}
+                        </p>
+                        <p className="text-xs opacity-90">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.nguyen_ngoc_cuong.position"
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-blue-100 to-indigo-100 text-[#0033FF] p-4 rounded-lg shadow border border-slate-200">
+                        <h5 className="font-semibold mb-1">
+                          {t("aboutUs.about.leadership.viceChairmen.title")}
+                        </h5>
+                        <p className="font-medium">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.tran_minh_son.name"
+                          )}
+                        </p>
+                        <p className="text-xs opacity-90">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.tran_minh_son.position"
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-indigo-100 to-slate-100 text-[#0033FF] p-4 rounded-lg shadow border border-slate-200">
+                        <h5 className="font-semibold mb-1">
+                          {t("aboutUs.about.leadership.viceChairmen.title")}
+                        </h5>
+                        <p className="font-medium">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.nguyen_thieu_nam.name"
+                          )}
+                        </p>
+                        <p className="text-xs opacity-90">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.nguyen_thieu_nam.position"
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-slate-50 to-blue-100 text-[#0033FF] p-4 rounded-lg shadow border border-slate-200">
+                        <h5 className="font-semibold mb-1">
+                          {t("aboutUs.about.leadership.viceChairmen.title")}
+                        </h5>
+                        <p className="font-medium">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.truong_gia_binh.name"
+                          )}
+                        </p>
+                        <p className="text-xs opacity-90">
+                          {t(
+                            "aboutUs.about.leadership.viceChairmen.truong_gia_binh.position"
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tổng Thư ký */}
+                    <div className="bg-gradient-to-br from-green-100 to-emerald-100 text-[#0033FF] p-4 rounded-lg shadow border border-slate-200">
+                      <div className="text-center">
+                        <h5 className="font-semibold mb-1">
+                          {t("aboutUs.about.leadership.secretaryGeneral.title")}
+                        </h5>
+                        <p className="font-medium">
+                          {t("aboutUs.about.leadership.secretaryGeneral.name")}
+                        </p>
+                        <p className="text-sm opacity-90">
+                          {t(
+                            "aboutUs.about.leadership.secretaryGeneral.position1"
+                          )}
+                        </p>
+                        <p className="text-xs opacity-80">
+                          {t(
+                            "aboutUs.about.leadership.secretaryGeneral.position2"
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Leadership Chart Image */}
+                  <div className="mb-6 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-slate-200">
+                    <div className="text-center mb-4">
+                      <h4 className="text-lg font-semibold text-[#0033FF] mb-2">
+                        {t("aboutUs.about.leadership.organizationChart")}
                       </h4>
-                      <p className="text-sm text-[#0600AF]/90">
-                        {t(
-                          "aboutUs.about.coreValues.items.cooperation.content"
-                        )}
-                      </p>
+                    </div>
+                    <div className="flex justify-center">
+                      <div className="border-2 border-slate-200 rounded-lg p-4 bg-white shadow-lg max-w-5xl">
+                        <Image
+                          src="/images/danh_sach_chu_tich_va_pho_chu_tich.png"
+                          alt="Danh sách Chủ tịch và Phó Chủ tịch Hiệp hội Dữ liệu Quốc gia (2025-2030)"
+                          width={1400}
+                          height={1000}
+                          className="w-full h-auto rounded shadow-sm"
+                          priority
+                        />
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -175,30 +430,45 @@ export default function GioiThieuPage() {
                     <div className="flex gap-4">
                       <div className="flex-shrink-0">
                         <Badge className="bg-gradient-to-r from-blue-100 to-indigo-100 text-[#0033FF] px-3 py-1 border-0 font-semibold">
-                          {t("aboutUs.about.history.items.founding.year")}
+                          10/01/2025
                         </Badge>
                       </div>
                       <div>
                         <h4 className="font-semibold text-[#0033FF] mb-2">
-                          {t("aboutUs.about.history.items.founding.title")}
+                          {t("aboutUs.about.history.establishment.title")}
                         </h4>
                         <p className="text-[#0600AF]/90">
-                          {t("aboutUs.about.history.items.founding.content")}
+                          {t("aboutUs.about.history.establishment.content")}
                         </p>
                       </div>
                     </div>
                     <div className="flex gap-4">
                       <div className="flex-shrink-0">
                         <Badge className="bg-gradient-to-r from-indigo-100 to-blue-100 text-[#0033FF] px-3 py-1 border-0 font-semibold">
-                          {t("aboutUs.about.history.items.expansion.year")}
+                          22/03/2025
                         </Badge>
                       </div>
                       <div>
                         <h4 className="font-semibold text-[#0033FF] mb-2">
-                          {t("aboutUs.about.history.items.expansion.title")}
+                          {t("aboutUs.about.history.launch.title")}
                         </h4>
                         <p className="text-[#0600AF]/90">
-                          {t("aboutUs.about.history.items.expansion.content")}
+                          {t("aboutUs.about.history.launch.content")}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="flex-shrink-0">
+                        <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 text-[#0033FF] px-3 py-1 border-0 font-semibold">
+                          2025-2030
+                        </Badge>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-[#0033FF] mb-2">
+                          {t("aboutUs.about.history.firstTerm.title")}
+                        </h4>
+                        <p className="text-[#0600AF]/90">
+                          {t("aboutUs.about.history.firstTerm.content")}
                         </p>
                       </div>
                     </div>
@@ -216,92 +486,24 @@ export default function GioiThieuPage() {
                   <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     {t("aboutUs.executive.title")}
                   </h3>
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-lg border border-slate-200">
-                    <div className="text-center space-y-8">
-                      {/* Chủ tịch */}
-                      <div className="flex justify-center">
-                        <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white px-6 py-4 rounded-lg shadow-lg">
-                          <div className="font-bold text-lg">
-                            {t("aboutUs.executive.chairman.title")}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t("aboutUs.executive.chairman.name")}
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Phó Chủ tịch */}
-                      <div className="flex justify-center gap-8">
-                        <div className="bg-gradient-to-br from-[#977DFF] to-[#0033FF] text-white px-6 py-4 rounded-lg shadow-lg">
-                          <div className="font-bold">
-                            {t("aboutUs.executive.viceChairman.fullTime.title")}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t(
-                              "aboutUs.executive.viceChairman.fullTime.subtitle"
-                            )}
-                          </div>
-                        </div>
-                        <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] px-6 py-4 rounded-lg shadow-lg border border-slate-200">
-                          <div className="font-bold">
-                            {t("aboutUs.executive.viceChairman.partTime.title")}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t(
-                              "aboutUs.executive.viceChairman.partTime.subtitle"
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Các ban chuyên môn */}
-                      <div className="grid md:grid-cols-3 gap-4">
-                        <div className="bg-gradient-to-br from-blue-100 to-indigo-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
-                          <div className="font-semibold">
-                            {t("aboutUs.executive.departments.research.title")}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t(
-                              "aboutUs.executive.departments.research.subtitle"
-                            )}
-                          </div>
-                        </div>
-                        <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
-                          <div className="font-semibold">
-                            {t(
-                              "aboutUs.executive.departments.international.title"
-                            )}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t(
-                              "aboutUs.executive.departments.international.subtitle"
-                            )}
-                          </div>
-                        </div>
-                        <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
-                          <div className="font-semibold">
-                            {t(
-                              "aboutUs.executive.departments.communication.title"
-                            )}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t(
-                              "aboutUs.executive.departments.communication.subtitle"
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Văn phòng */}
-                      <div className="flex justify-center">
-                        <div className="bg-gradient-to-br from-[#977DFF] to-[#0033FF] text-white px-6 py-4 rounded-lg shadow-lg">
-                          <div className="font-bold">
-                            {t("aboutUs.executive.office.title")}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t("aboutUs.executive.office.subtitle")}
-                          </div>
-                        </div>
+                  {/* Cơ cấu tổ chức Ban chuyên môn */}
+                  <div className="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-slate-200">
+                    <div className="text-center mb-4">
+                      <h4 className="text-lg font-semibold text-[#0033FF] mb-2">
+                        {t("aboutUs.executive.organizationChart")}
+                      </h4>
+                    </div>
+                    <div className="flex justify-center">
+                      <div className="border-2 border-slate-200 rounded-lg p-4 bg-white shadow-lg max-w-5xl">
+                        <Image
+                          src="/images/co_cau_to_chuc_ban_chuyen_mon_hiep_hoi_du_lieu_quoc_gia.png"
+                          alt="Sơ đồ cơ cấu tổ chức các Ban chuyên môn thuộc Hiệp hội Dữ liệu Quốc gia"
+                          width={1400}
+                          height={1000}
+                          className="w-full h-auto rounded shadow-sm"
+                          priority
+                        />
                       </div>
                     </div>
                   </div>
@@ -318,87 +520,19 @@ export default function GioiThieuPage() {
                   <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     {t("aboutUs.standing.title")}
                   </h3>
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-lg border border-slate-200">
-                    <div className="text-center space-y-6">
-                      {/* Trưởng ban */}
-                      <div className="flex justify-center">
-                        <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white px-8 py-4 rounded-lg shadow-lg">
-                          <div className="font-bold text-lg">
-                            {t("aboutUs.standing.head.title")}
-                          </div>
-                          <div className="text-sm opacity-90">
-                            {t("aboutUs.standing.head.subtitle")}
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Các thành viên thường vụ */}
-                      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
-                          <div className="font-semibold text-sm">
-                            {t("aboutUs.standing.members.viceChairman.title")}
-                          </div>
-                          <div className="text-xs opacity-90">
-                            {t(
-                              "aboutUs.standing.members.viceChairman.subtitle"
-                            )}
-                          </div>
-                        </div>
-                        <div className="bg-gradient-to-br from-blue-100 to-indigo-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
-                          <div className="font-semibold text-sm">
-                            {t("aboutUs.standing.members.secretary.title")}
-                          </div>
-                          <div className="text-xs opacity-90">
-                            {t("aboutUs.standing.members.secretary.subtitle")}
-                          </div>
-                        </div>
-                        <div className="bg-gradient-to-br from-slate-100 to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
-                          <div className="font-semibold text-sm">
-                            {t("aboutUs.standing.members.viceSecretary.title")}
-                          </div>
-                          <div className="text-xs opacity-90">
-                            {t(
-                              "aboutUs.standing.members.viceSecretary.subtitle"
-                            )}
-                          </div>
-                        </div>
-                        <div className="bg-gradient-to-br from-[#977DFF] to-blue-100 text-white px-4 py-3 rounded-lg shadow">
-                          <div className="font-semibold text-sm">
-                            {t("aboutUs.standing.members.member.title")}
-                          </div>
-                          <div className="text-xs opacity-90">
-                            {t("aboutUs.standing.members.member.subtitle")}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Nhiệm vụ */}
-                      <div className="bg-white p-6 rounded-lg shadow border-2 border-slate-200">
-                        <h4 className="font-bold text-[#0033FF] mb-4">
-                          {t("aboutUs.standing.tasks.title")}
-                        </h4>
-                        <div className="grid md:grid-cols-3 gap-4 text-left">
-                          <ul className="space-y-2 text-sm text-[#0600AF]/90">
-                            <li>{t("aboutUs.standing.tasks.items.daily")}</li>
-                            <li>
-                              {t("aboutUs.standing.tasks.items.resolutions")}
-                            </li>
-                          </ul>
-                          <ul className="space-y-2 text-sm text-[#0600AF]/90">
-                            <li>
-                              {t("aboutUs.standing.tasks.items.cooperation")}
-                            </li>
-                            <li>
-                              {t("aboutUs.standing.tasks.items.activities")}
-                            </li>
-                          </ul>
-                          <ul className="space-y-2 text-sm text-[#0600AF]/90">
-                            <li>
-                              {t("aboutUs.standing.tasks.items.management")}
-                            </li>
-                            <li>{t("aboutUs.standing.tasks.items.reports")}</li>
-                          </ul>
-                        </div>
+                  {/* Ban Thường vụ Image */}
+                  <div className="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-slate-200">
+                    <div className="flex justify-center">
+                      <div className="border-2 border-slate-200 rounded-lg p-4 bg-white shadow-lg max-w-4xl">
+                        <Image
+                          src="/images/Ban_Thuong_Vu_final.png"
+                          alt="Danh sách Ban Thường vụ Hiệp hội Dữ liệu Quốc gia (2025-2030)"
+                          width={1200}
+                          height={800}
+                          className="w-full h-auto rounded shadow-sm"
+                          priority
+                        />
                       </div>
                     </div>
                   </div>
@@ -407,109 +541,155 @@ export default function GioiThieuPage() {
             </div>
           )}
 
-          {/* Điều lệ NDA Section */}
+          {/* Điều lệ NDA Section - Modern Design */}
           {activeTab === "charter" && (
-            <div className="animate-in fade-in duration-500">
-              <Card className="border-slate-200 shadow-lg bg-white">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
-                    {t("aboutUs.charter.title")}
-                  </h3>
-
-                  <div className="grid lg:grid-cols-2 gap-8">
-                    {/* Charter Preview */}
-                    <div className="space-y-4">
-                      <h4 className="text-lg font-semibold text-[#0033FF]">
-                        {t("aboutUs.charter.preview.title")}
-                      </h4>
-                      <div className="border-2 border-slate-200 rounded-lg p-4 bg-gradient-to-br from-slate-100 to-blue-100/20">
-                        <Image
-                          src="/vietnamese-legal-document.svg"
-                          alt="Điều lệ NDA - Trang 1"
-                          width={600}
-                          height={800}
-                          className="w-full h-auto rounded shadow-lg"
-                        />
-                      </div>
+            <div className="animate-in fade-in duration-700">
+              <Card className="border-white/20 shadow-2xl bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 backdrop-blur-sm">
+                <CardContent className="p-10">
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#0033FF]/10 to-[#977DFF]/10 rounded-2xl border border-[#0033FF]/20 backdrop-blur-sm mb-4">
+                      <FileText className="w-8 h-8 text-[#0033FF]" />
+                      <h3 className="text-3xl font-bold bg-gradient-to-r from-[#0033FF] to-[#977DFF] bg-clip-text text-transparent">
+                        {t("aboutUs.charter.title")}
+                      </h3>
                     </div>
+                    <p className="text-[#0600AF]/80 text-lg font-medium">
+                      {t("aboutUs.charter.subtitle")}
+                    </p>
+                  </div>
 
-                    {/* Charter Information */}
-                    <div className="space-y-6">
-                      <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
-                        {t("aboutUs.charter.info.title")}
-                      </h4>
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-slate-200">
-                        <div className="space-y-3 text-sm">
-                          <div className="flex justify-between">
-                            <span className="font-medium text-[#0033FF]">
-                              {t("aboutUs.charter.info.fields.name")}
+                  {/* Modern Interactive FlipBook */}
+                  <div className="mb-12 relative">
+                    {/* Background Decoration */}
+                    <div className="absolute -inset-4 bg-gradient-to-r from-[#0033FF]/5 to-[#977DFF]/5 rounded-3xl blur-xl"></div>
+                    <div className="relative">
+                      <FlipBook
+                        pages={
+                          charterPages.length > 0
+                            ? charterPages
+                            : [
+                                "/vietnamese-legal-document.svg",
+                                "/vietnam-data-association-structure.svg",
+                                "/vietnam-data-mining-economy.svg",
+                                "/vietnam-ai-assistant.svg",
+                              ]
+                        }
+                        title={t("flipbook.title")}
+                        className="rounded-2xl shadow-2xl"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Modern Charter Information */}
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Document Info Card */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-8 h-8 bg-gradient-to-r from-[#0033FF] to-[#977DFF] rounded-lg flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-white" />
+                        </div>
+                        <h4 className="text-lg font-bold text-[#0033FF]">
+                          {t("aboutUs.charter.info.title")}
+                        </h4>
+                      </div>
+                      <div className="bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-white/30 shadow-lg">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+                            <span className="font-medium text-[#0033FF] text-sm">
+                              📄 {t("aboutUs.charter.info.fields.name")}
                             </span>
-                            <span className="text-[#0600AF]/90">
+                            <span className="font-medium text-[#0600AF] text-sm">
                               {t("aboutUs.charter.info.document")}
                             </span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="font-medium text-[#0033FF]">
-                              {t("aboutUs.charter.info.fields.date")}
+                          <div className="flex justify-between items-center p-2 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg">
+                            <span className="font-medium text-[#0033FF] text-sm">
+                              📅 {t("aboutUs.charter.info.fields.date")}
                             </span>
-                            <span className="text-[#0600AF]/90">
+                            <span className="font-medium text-[#0600AF] text-sm">
                               {t("aboutUs.charter.info.issueDate")}
                             </span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="font-medium text-[#0033FF]">
-                              {t("aboutUs.charter.info.fields.pages")}
+                          <div className="flex justify-between items-center p-2 bg-gradient-to-r from-indigo-50 to-slate-50 rounded-lg">
+                            <span className="font-medium text-[#0033FF] text-sm">
+                              📊 {t("aboutUs.charter.info.fields.pages")}
                             </span>
-                            <span className="text-[#0600AF]/90">
+                            <span className="font-medium text-[#0600AF] text-sm">
                               {t("aboutUs.charter.info.pages")}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="font-medium text-[#0033FF]">
-                              {t("aboutUs.charter.info.fields.format")}
-                            </span>
-                            <span className="text-[#0600AF]/90">
-                              {t("aboutUs.charter.info.format")}
                             </span>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-lg border border-slate-200">
-                        <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
+                    {/* Content Overview Card */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-8 h-8 bg-gradient-to-r from-[#977DFF] to-[#0033FF] rounded-lg flex items-center justify-center">
+                          <Target className="w-4 h-4 text-white" />
+                        </div>
+                        <h4 className="text-lg font-bold text-[#0033FF]">
                           {t("aboutUs.charter.content.title")}
                         </h4>
-                        <ul className="space-y-2 text-sm text-[#0600AF]/90">
-                          <li>
-                            {t("aboutUs.charter.content.chapters.general")}
-                          </li>
-                          <li>
-                            {t("aboutUs.charter.content.chapters.objectives")}
-                          </li>
-                          <li>
-                            {t("aboutUs.charter.content.chapters.members")}
-                          </li>
-                          <li>
-                            {t("aboutUs.charter.content.chapters.structure")}
-                          </li>
-                          <li>
-                            {t("aboutUs.charter.content.chapters.finance")}
-                          </li>
-                          <li>
-                            {t("aboutUs.charter.content.chapters.relations")}
-                          </li>
-                          <li>
-                            {t("aboutUs.charter.content.chapters.others")}
-                          </li>
-                        </ul>
+                      </div>
+                      <div className="bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-white/30 shadow-lg">
+                        <div className="grid gap-2">
+                          {[
+                            {
+                              icon: "📋",
+                              title: t(
+                                "aboutUs.charter.content.chapters.general"
+                              ),
+                              color: "from-blue-50 to-indigo-50",
+                            },
+                            {
+                              icon: "🎯",
+                              title: t(
+                                "aboutUs.charter.content.chapters.responsibilities"
+                              ),
+                              color: "from-indigo-50 to-slate-50",
+                            },
+                            {
+                              icon: "👥",
+                              title: t(
+                                "aboutUs.charter.content.chapters.members"
+                              ),
+                              color: "from-slate-50 to-blue-50",
+                            },
+                            {
+                              icon: "🏢",
+                              title: t(
+                                "aboutUs.charter.content.chapters.rewards"
+                              ),
+                              color: "from-blue-50 to-indigo-50",
+                            },
+                            {
+                              icon: "💰",
+                              title: t(
+                                "aboutUs.charter.content.chapters.implementation"
+                              ),
+                              color: "from-indigo-50 to-slate-50",
+                            },
+                          ].map((item, index) => (
+                            <div
+                              key={index}
+                              className={`flex items-center gap-2 p-2 bg-gradient-to-r ${item.color} rounded-lg transition-all duration-200 hover:scale-102 cursor-pointer`}
+                            >
+                              <span className="text-sm">{item.icon}</span>
+                              <span className="font-medium text-[#0600AF] text-xs">
+                                {item.title}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
                       <div className="text-center">
-                        <Button className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-8 py-3 border-0 transition-all duration-300">
-                          <Download className="w-5 h-5 mr-2" />
+                        <Button className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-6 py-2 text-sm font-semibold border-0 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mb-2 transform hover:scale-105">
+                          <Download className="w-4 h-4 mr-2" />
                           {t("aboutUs.charter.download.button")}
                         </Button>
-                        <p className="text-sm text-[#0600AF]/90 mt-2">
+                        <p className="text-xs text-[#0600AF]/80 font-medium">
                           {t("aboutUs.charter.download.info")}
                         </p>
                       </div>

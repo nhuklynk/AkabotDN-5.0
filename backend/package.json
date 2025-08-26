@@ -45,6 +45,7 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.1",
     "js-yaml": "^4.1.0",
+    "jszip": "^3.10.1",
     "minio": "^8.0.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,11 +13,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
-import { useFaqs } from "@/hooks/useFaqs";
-import faqService, { type Faq as ApiFaq } from "@/services/end-user/faqService";
+import { useFaqManagement } from "@/hooks/admin/faq/useFaqManagement";
 
 type Faq = {
-  id: number;
+  id: string;
   question: string;
   answer: string;
   category: string;
@@ -26,23 +25,25 @@ type Faq = {
 
 export default function FaqManagementPage() {
   const { t } = useLocale();
-  const { faqs: apiFaqs, pagination, fetchFaqs, setCurrentPage, searchFaqs, refreshFaqs } = useFaqs({ initialLimit: 10 });
-  const faqs: Faq[] = useMemo(() => (apiFaqs || []).map((f: ApiFaq) => ({
-    id: (f.id as unknown as number),
-    question: f.content,
-    answer: f.content,
-    category: "Chung",
-    createdAt: (f.created_at || "").toString(),
-  })), [apiFaqs]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
-  const [editingFaq, setEditingFaq] = useState<ApiFaq | null>(null);
-  const [formData, setFormData] = useState({
-    question: "",
-    answer: "",
-    category: "Chung",
-  });
+  const {
+    faqs,
+    searchTerm,
+    dialogOpen,
+    dialogMode,
+    formData,
+    loading,
+    error,
+    setFormData,
+    setSearchTerm,
+    setDialogOpen,
+    openCreate,
+    openEdit,
+    handleCreate,
+    handleUpdate,
+    handleDelete,
+    handleSearch,
+    closeDialog,
+  } = useFaqManagement();
 
   const filtered = faqs.filter((f) =>
     [f.question, f.answer, f.category].some((t) =>
@@ -50,51 +51,16 @@ export default function FaqManagementPage() {
     )
   );
 
-  // Pagination driven by server
-  const currentPage = pagination.currentPage || 1;
-  const totalPages = Math.max(1, pagination.totalPages || 1);
+  // Pagination
+  const currentPage = 1;
+  const totalPages = 1;
   const paginatedFaqs = filtered;
 
   useEffect(() => {
     if (searchTerm) {
-      searchFaqs(searchTerm);
-    } else {
-      fetchFaqs(1, 10);
+      handleSearch(searchTerm);
     }
-  }, [searchTerm, fetchFaqs, searchFaqs]);
-
-  const handleCreate = async () => {
-    await faqService.createFaq({ content: formData.question });
-    setFormData({ question: "", answer: "", category: "Chung" });
-    setDialogOpen(false);
-    refreshFaqs();
-  };
-
-  const handleEdit = (faq: Faq) => {
-    const api = (apiFaqs || []).find((f) => String(f.id) === String(faq.id)) || null;
-    setEditingFaq(api);
-    setFormData({
-      question: faq.question,
-      answer: api?.content || "",
-      category: faq.category,
-    });
-    setDialogMode("edit");
-    setTimeout(() => setDialogOpen(true), 0);
-  };
-
-  const handleUpdate = async () => {
-    if (!editingFaq) return;
-    await faqService.updateFaq(editingFaq.id, { content: formData.question });
-    setDialogOpen(false);
-    setEditingFaq(null);
-    setFormData({ question: "", answer: "", category: "Chung" });
-    refreshFaqs();
-  };
-
-  const handleDelete = async (id: number) => {
-    await faqService.deleteFaq(String(id));
-    refreshFaqs();
-  };
+  }, [searchTerm, handleSearch]);
 
   return (
     <div className="space-y-6">
@@ -105,7 +71,7 @@ export default function FaqManagementPage() {
         </div>
         <Button
           className="flex items-center gap-2"
-          onClick={() => { setDialogMode("create"); setDialogOpen(true); }}
+          onClick={openCreate}
         >
           <Plus className="h-4 w-4" /> {t("faqManagement.add")}
         </Button>
@@ -128,46 +94,89 @@ export default function FaqManagementPage() {
             </div>
           </div>
 
-          <FaqTable
-            items={paginatedFaqs}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Đang tải...</p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <p className="text-destructive mb-4">{error}</p>
+                <Button variant="outline" onClick={() => window.location.reload()}>
+                  Thử lại
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <FaqTable
+              items={paginatedFaqs}
+              onEdit={openEdit}
+              onDelete={handleDelete}
+            />
+          )}
           <Pagination
             className="mt-4"
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(p) => setCurrentPage(p)}
+            onPageChange={() => {}}
           />
         </CardContent>
       </Card>
 
-      <Dialog
-        open={dialogOpen}
-        onOpenChange={(open) => {
-          setDialogOpen(open);
-          if (!open) {
-            setEditingFaq(null);
-            setFormData({ question: "", answer: "", category: "Chung" });
-          }
-        }}
-      >
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{dialogMode === "create" ? t("faqManagement.dialog.createTitle") : t("faqManagement.dialog.editTitle")}</DialogTitle>
-            <DialogDescription>{dialogMode === "create" ? t("faqManagement.dialog.createDesc") : t("faqManagement.dialog.editDesc")}</DialogDescription>
-          </DialogHeader>
+      {/* Edit/Create Dialog */}
+      <div className="relative">
+        <div
+          className={`fixed inset-0 bg-black/50 z-[9998] transition-opacity duration-200 ${
+            dialogOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={closeDialog}
+        />
+        <div
+          className={`fixed inset-0 z-[9999] flex items-center justify-center transition-opacity duration-200 ${
+            dialogOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="bg-background border rounded-lg p-6 m-4 max-w-md w-full shadow-lg">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">
+                {dialogMode === "create" ? t("faqManagement.dialog.createTitle") : t("faqManagement.dialog.editTitle")}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {dialogMode === "create" ? t("faqManagement.dialog.createDesc") : t("faqManagement.dialog.editDesc")}
+              </p>
+            </div>
 
-          <FaqFormDialog data={formData} setData={setFormData} mode={dialogMode} />
+            <FaqFormDialog 
+              data={{ 
+                question: formData.content, 
+                answer: formData.content, 
+                category: "Chung" 
+              }} 
+              setData={(data) => {
+                if (typeof data === 'function') {
+                  const newData = data({ question: formData.content, answer: formData.content, category: "Chung" });
+                  setFormData({ content: newData.question || newData.answer || "" });
+                } else {
+                  setFormData({ content: data.question || data.answer || "" });
+                }
+              }} 
+              mode={dialogMode} 
+            />
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("common.cancel")}</Button>
-            <Button onClick={dialogMode === "create" ? handleCreate : handleUpdate}>
-              {dialogMode === "create" ? t("faqManagement.dialog.createCta") : t("faqManagement.dialog.updateCta")}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={closeDialog}>
+                {t("common.cancel")}
+              </Button>
+              <Button onClick={dialogMode === "create" ? handleCreate : handleUpdate}>
+                {dialogMode === "create" ? t("faqManagement.dialog.createCta") : t("faqManagement.dialog.updateCta")}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -60,8 +60,11 @@ export const getAllPosts = async (
   if (params.page) searchParams.append("page", params.page.toString());
   if (params.limit) searchParams.append("limit", params.limit.toString());
   if (params.search) searchParams.append("search", params.search);
+  // Always add status=active unless explicitly overridden
   if (params.status && params.status !== "all")
     searchParams.append("status", params.status);
+  else
+    searchParams.append("status", "active");
   if (params.category && params.category !== "all")
     searchParams.append("category", params.category);
   if (params.postType && params.postType !== "all")

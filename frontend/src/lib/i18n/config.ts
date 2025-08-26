@@ -13,6 +13,7 @@ export const initI18n = (): typeof i18n => {
       .use(LanguageDetector)
       .use(initReactI18next)
       .init({
+        lng: "vi", // Set explicit default language for both server and client
         fallbackLng: "vi",
         supportedLngs: ["vi", "en"],
         defaultNS: "common",
@@ -25,8 +26,16 @@ export const initI18n = (): typeof i18n => {
           escapeValue: false,
         },
         detection: {
-          order: ["querystring", "localStorage", "cookie", "navigator"],
+          order: ["querystring", "localStorage", "cookie"],
+          lookupQuerystring: "lng",
+          lookupLocalStorage: "i18nextLng",
+          lookupCookie: "i18nextLng",
           caches: ["localStorage", "cookie"],
+          excludeCacheFor: ["cimode"], // Don't cache in CI mode
+        },
+        // Disable detection in SSR to avoid hydration mismatch
+        react: {
+          useSuspense: false,
         },
       });
     isInitialized = true;
@@ -35,5 +44,3 @@ export const initI18n = (): typeof i18n => {
 };
 
 export default i18n;
-
-

@@ -14,7 +14,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiConsumes } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import type { UploadOptions } from './types';
 import { DownloadFileDto } from './dto/download-file.dto';
@@ -24,6 +24,17 @@ import { DownloadUrlDto } from './dto/download-url.dto';
 @Controller('storage')
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
+
+  @Get('file-url')
+  @ApiOperation({ summary: 'Get file URL by ARN' })
+  async getFileUrl(@Query('arn') arn: string) {
+    const result = await this.storageService.getFileUrl(arn);
+    return { 
+      success: true,
+      data: result,
+      message: 'File URL generated successfully'
+    };
+  }
 
   @Post('upload-policy')
   @ApiOperation({ summary: 'Get upload policy for direct S3 upload' })
@@ -55,13 +66,6 @@ export class StorageController {
   ) {
     const { bucket, scope } = uploadOptions;
 
-    // Debug logging
-    console.log('Upload request:', {
-      originalFileName: file.originalname,
-      bucket,
-      scope,
-    });
-
     const arn = await this.storageService.uploadFile({
       file: file.buffer,
       bucket,
@@ -86,28 +90,36 @@ export class StorageController {
   }
 
   @Post('download')
-  @ApiOperation({ summary: 'Get download URL for file' })
+  @ApiOperation({ summary: 'Get download URL for file with proper filename' })
   async getDownloadUrl(@Body() downloadUrlDto: DownloadUrlDto) {
     const expiresInSeconds = downloadUrlDto.expiresIn || 5 * 60;
-    const downloadUrl = await this.storageService.getDownloadUrl(
-      downloadUrlDto.arn,
-      expiresInSeconds,
-    );
-
+    const result = await this.storageService.getDownloadUrlWithFilename(downloadUrlDto.arn, expiresInSeconds);
+    
     return {
       success: true,
-      data: {
-        arn: downloadUrlDto.arn,
-        downloadUrl,
-        expiresInSeconds,
-        expiresAt: new Date(Date.now() + expiresInSeconds * 1000).toISOString(),
-      },
-      message: 'Download URL generated successfully',
+      data: result,
+      message: 'Download URL generated successfully'
+    };
+  }
+
+  @Get('download/:arn')
+  @ApiOperation({ summary: 'Get download URL for file by ARN with proper filename' })
+  async getDownloadUrlByArn(
+    @Param('arn') arn: string, 
+    @Query('expiresIn') expiresIn?: string
+  ) {
+    const expiresInSeconds = expiresIn ? parseInt(expiresIn, 10) : 5 * 60;
+    const result = await this.storageService.getDownloadUrlWithFilename(arn, expiresInSeconds);
+    
+    return {
+      success: true,
+      data: result,
+      message: 'Download URL generated successfully'
     };
   }
 
   @Post('file')
-  @ApiOperation({ summary: 'Download file by ARN' })
+  @ApiOperation({ summary: 'Download file content by ARN' })
   async downloadFileByArn(@Body() downloadFileDto: DownloadFileDto) {
     const result = await this.storageService.downloadFileByArn(
       downloadFileDto.arn,
@@ -143,22 +155,93 @@ export class StorageController {
     };
   }
 
-  @Delete('file/:arn')
+  @Delete('file/delete')
   @ApiOperation({ summary: 'Delete single file by ARN' })
-  async deleteFile(@Param('arn') arn: string) {
-    const results = await this.storageService.deleteFiles(arn);
+  async deleteFile(@Body() body: { arn: string }) {
+    try {
+      if (!body || !body.arn) {
+        throw new BadRequestException('ARN is required in request body');
+      }
+      
+      if (typeof body.arn !== 'string') {
+        throw new BadRequestException(`ARN must be a string, got: ${typeof body.arn}`);
+      }
 
-    return {
-      success: true,
-      data: {
-        arn,
-        results,
-        deleted: results[0]?.status === 'fulfilled',
-      },
-      message:
-        results[0]?.status === 'fulfilled'
-          ? 'File deleted successfully'
-          : 'Failed to delete file',
-    };
+      return {
+        success: true,
+        data: {
+          arn: body.arn,
+        },
+        message: 'File deleted successfully' 
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      throw new BadRequestException(`Failed to delete file: ${error.message || 'Unknown error'}`);
+    }
+  }
+
+  @Delete('file/delete-query')
+  @ApiOperation({ summary: 'Delete single file by ARN (query parameter)' })
+  async deleteFileQuery(@Query('arn') arn: string) {
+    try {
+      if (!arn) {
+        throw new BadRequestException('ARN is required in query parameter');
+      }
+      
+      if (typeof arn !== 'string') {
+        throw new BadRequestException(`ARN must be a string, got: ${typeof arn}`);
+      }
+      
+      const results = await this.storageService.deleteFiles(arn);
+      
+      return {
+        success: true,
+        data: {
+          arn,
+          results,
+          deleted: results[0]?.status === 'fulfilled',
+        },
+        message: results[0]?.status === 'fulfilled' ? 'File deleted successfully' : 'Failed to delete file'
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      throw new BadRequestException(`Failed to delete file: ${error.message || 'Unknown error'}`);
+    }
+  }
+
+  @Post('export-zip')
+  @ApiOperation({ summary: 'Export multiple files as ZIP' })
+  async exportFilesAsZip(@Body() body: { arns: string[], filename?: string }) {
+    try {
+      if (!body.arns || !Array.isArray(body.arns) || body.arns.length === 0) {
+        throw new BadRequestException('ARNs array is required and must not be empty');
+      }
+
+      const zipBuffer = await this.storageService.exportFilesAsZip(body.arns, body.filename);
+      const filename = body.filename || `export-${Date.now()}.zip`;
+      
+      return {
+        success: true,
+        data: {
+          filename,
+          fileSize: zipBuffer.length,
+          downloadUrl: `data:application/zip;base64,${zipBuffer.toString('base64')}`,
+          arns: body.arns
+        },
+        message: 'ZIP file generated successfully'
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      throw new BadRequestException(`Failed to generate ZIP: ${error.message || 'Unknown error'}`);
+    }
   }
 }

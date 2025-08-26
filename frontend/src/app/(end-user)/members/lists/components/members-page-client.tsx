@@ -84,8 +84,8 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
       {/* Members Table */}
       <Card className="border-0">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Building className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-[#0600AF]/90">
+            <Building className="w-5 h-5 text-[#0600AF]/90" />
             {t("members.list.tableTitle", {
               total: memberData.total,
               current: memberData.items.length,
@@ -104,19 +104,19 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
               <table className="w-full">
                 <thead className="border-0">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 w-16">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-[#0600AF]/90 w-16">
                       {t("members.list.table.headers.index")}
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-[#0600AF]/90">
                       {t("members.list.table.headers.info")}
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-[#0600AF]/90">
                       {t("members.list.table.headers.company")}
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-[#0600AF]/90">
                       {t("members.list.table.headers.memberType")}
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-[#0600AF]/90">
                       {t("members.list.table.headers.expertise")}
                     </th>
                   </tr>
@@ -127,14 +127,14 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
                       key={member.id}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                      <td className="px-6 py-4 text-sm text-[#0600AF]/90 font-medium">
                         {(currentPage - 1) * memberData.limit + index + 1}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-start gap-3">
                           <User className="w-4 h-4 text-emerald-600 mt-1 flex-shrink-0" />
                           <div>
-                            <p className="text-sm font-medium text-gray-900 leading-tight">
+                            <p className="text-sm font-medium text-[#0600AF]/90 leading-tight">
                               {member.user?.full_name || "N/A"}
                             </p>
                             <p className="text-xs text-gray-500 mt-1">
@@ -150,7 +150,7 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
                         <div className="flex items-center gap-2">
                           <Building className="w-4 h-4 text-gray-400" />
                           <div>
-                            <span className="text-sm text-gray-900">
+                            <span className="text-sm text-[#0600AF]/90">
                               {member.company?.name ||
                                 member.work_unit ||
                                 t("members.list.defaultCompany")}
@@ -228,7 +228,7 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Building className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-[#0600AF]/90">
               {memberData.total}
             </p>
             <p className="text-sm text-gray-600">
@@ -239,7 +239,9 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Building className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">{corporateCount}</p>
+            <p className="text-2xl font-bold text-[#0600AF]/90">
+              {corporateCount}
+            </p>
             <p className="text-sm text-gray-600">
               {t("members.list.stats.organizations")}
             </p>
@@ -248,7 +250,7 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <User className="w-8 h-8 text-green-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-[#0600AF]/90">
               {individualCount}
             </p>
             <p className="text-sm text-gray-600">
@@ -259,7 +261,9 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Phone className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-gray-900">{studentCount}</p>
+            <p className="text-2xl font-bold text-[#0600AF]/90">
+              {studentCount}
+            </p>
             <p className="text-sm text-gray-600">
               {t("members.list.stats.students")}
             </p>

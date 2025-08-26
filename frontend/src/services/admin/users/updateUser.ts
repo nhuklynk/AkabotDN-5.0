@@ -5,7 +5,7 @@ export type UpdateUserPayload = Partial<{
   full_name: string;
   avatar: string;
   phone: string;
-  user_status: string;
+  status: string;
   role_ids: string[];
 }>;
 

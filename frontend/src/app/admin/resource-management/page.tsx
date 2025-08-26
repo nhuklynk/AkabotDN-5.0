@@ -65,14 +65,16 @@ export default function ResourcesPage() {
   });
   const apiResources: Resource[] = useMemo(
     () =>
-      items.map((m) => ({
-        id: m.id,
-        filename: m.file_name,
-        media_type: m.media_type,
-        size: `${Math.round((m.file_size || 0) / 1024)} KB`,
-        createdAt: m.created_at || "",
-        url: m.file_path,
-      })),
+      items
+        .filter((m) => m.status === "active") // Only show active items
+        .map((m) => ({
+          id: m.id,
+          filename: m.file_name || "",
+          media_type: m.media_type,
+          size: `${Math.round((m.file_size || 0) / 1024)} KB`,
+          createdAt: m.created_at || "",
+          url: m.file_path,
+        })),
     [items]
   );
 
@@ -114,10 +116,10 @@ export default function ResourcesPage() {
     try {
       await createMedia({
         file: formData.file,
-        file_name: formData.filename || formData.file.name,
         media_type: formData.media_type,
       });
       setFormData({ file: null, filename: "", media_type: "other" });
+      setDialogOpen(false);
       refetch();
     } catch (error) {
       console.error("Failed to create resource:", error);
@@ -139,11 +141,11 @@ export default function ResourcesPage() {
     if (!editingResource) return;
     try {
       await updateMedia(editingResource.id, {
-        file_name: formData.filename,
         media_type: formData.media_type,
       });
       setEditingResource(null);
       setFormData({ file: null, filename: "", media_type: "other" });
+      setDialogOpen(false); // Close dialog after successful update
       refetch();
     } catch (error) {
       console.error("Failed to update resource:", error);
@@ -151,8 +153,13 @@ export default function ResourcesPage() {
   };
 
   const handleDeleteResource = async (resourceId: any) => {
-    await deleteMedia(resourceId);
-    refetch();
+    try {
+      await deleteMedia(resourceId);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting resource:", error);
+      // Don't refetch on error
+    }
   };
 
   const getTypeIcon = (type: string) => {
@@ -273,9 +280,15 @@ export default function ResourcesPage() {
               <SelectContent>
                 <SelectItem value="all">{t("resource.all")}</SelectItem>
                 <SelectItem value="post">{t("resource.types.post")}</SelectItem>
-                <SelectItem value="event">{t("resource.types.event")}</SelectItem>
-                <SelectItem value="member">{t("resource.types.member")}</SelectItem>
-                <SelectItem value="other">{t("resource.types.other")}</SelectItem>
+                <SelectItem value="event">
+                  {t("resource.types.event")}
+                </SelectItem>
+                <SelectItem value="member">
+                  {t("resource.types.member")}
+                </SelectItem>
+                <SelectItem value="other">
+                  {t("resource.types.other")}
+                </SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">

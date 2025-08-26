@@ -31,6 +31,7 @@ type Category = {
   color: string;
   status: string;
   parentId: number | string | null;
+  level: number;
   postCount: number;
   createdAt: string;
 };
@@ -43,6 +44,7 @@ type TableCategory = {
   color: string;
   status: string;
   parentId: number | string | null;
+  level: number;
   postCount: number;
   createdAt?: string;
 };
@@ -72,7 +74,6 @@ export default function CategoriesPage() {
     name: "",
     slug: "",
     description: "",
-    color: "#6366f1",
     status: "active",
     parentId: null as string | null,
   });
@@ -81,25 +82,102 @@ export default function CategoriesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const { items, total, loading, setQuery, refetch } = useCategoriesList({
-    initialQuery: { page: currentPage, limit: pageSize },
+    initialQuery: { page: currentPage, limit: pageSize, status: "active" },
   });
   const totalPages = useMemo(
     () => Math.max(1, Math.ceil((total || 0) / pageSize)),
     [total]
   );
+  // Process categories - handle both nested and flat structures
+  const processCategories = (categories: any[]): any[] => {
+    // Check if categories have nested structure
+    const hasNestedStructure = categories.some(cat => cat.children && Array.isArray(cat.children));
+    
+    if (hasNestedStructure) {
+      // Process nested structure
+      const flattenCategories = (cats: any[], parentId: string | null = null, level: number = 0): any[] => {
+        let result: any[] = [];
+        cats.forEach((category) => {
+          result.push({
+            id: category.id,
+            name: category.name,
+            slug: category.slug,
+            description: category.description ?? "",
+            color: "var(--chart-1)",
+            status: category.status,
+            parentId: parentId,
+            level: level,
+            postCount: 0,
+            createdAt: category.createdAt ?? category.created_at ?? "",
+          });
+          
+          if (category.children && category.children.length > 0) {
+            result = result.concat(flattenCategories(category.children, category.id, level + 1));
+          }
+        });
+        return result;
+      };
+      return flattenCategories(categories);
+    } else {
+      // Process flat structure - calculate level based on parent_id
+      const categoryMap = new Map();
+      const result: any[] = [];
+      
+      // First pass: create map of all categories
+      categories.forEach(cat => {
+        categoryMap.set(cat.id, {
+          ...cat,
+          level: 0, // Default level
+          children: []
+        });
+      });
+      
+      // Second pass: build hierarchy and calculate levels
+      categories.forEach(cat => {
+        const category = categoryMap.get(cat.id);
+        if (cat.parent_id) {
+          const parent = categoryMap.get(cat.parent_id);
+          if (parent) {
+            parent.children.push(category);
+            category.level = parent.level + 1;
+          }
+        }
+      });
+      
+      // Third pass: flatten the hierarchy
+      const flatten = (cats: any[], level: number = 0): any[] => {
+        let flat: any[] = [];
+        cats.forEach(cat => {
+          flat.push({
+            id: cat.id,
+            name: cat.name,
+            slug: cat.slug,
+            description: cat.description ?? "",
+            color: "var(--chart-1)",
+            status: cat.status,
+            parentId: cat.parent_id || null,
+            level: cat.level || level,
+            postCount: 0,
+            createdAt: cat.createdAt ?? cat.created_at ?? "",
+          });
+          if (cat.children && cat.children.length > 0) {
+            flat = flat.concat(flatten(cat.children, level + 1));
+          }
+        });
+        return flat;
+      };
+      
+      return flatten(Array.from(categoryMap.values()).filter(cat => !cat.parent_id));
+    }
+  };
+
   const apiCategories: Category[] = useMemo(
-    () =>
-      items.map((it: any) => ({
-        id: it.id,
-        name: it.name,
-        slug: it.slug,
-        description: it.description ?? "",
-        color: "var(--chart-1)",
-        status: it.status,
-        parentId: it.parentId ?? it.parent_id ?? null,
-        postCount: 0,
-        createdAt: it.createdAt ?? it.created_at ?? "",
-      })),
+    () => {
+      console.log("Raw items from API:", items);
+      const processed = processCategories(items);
+      console.log("Processed categories:", processed);
+      return processed;
+    },
     [items]
   );
 
@@ -112,7 +190,7 @@ export default function CategoriesPage() {
       page: currentPage,
       limit: pageSize,
       search: searchTerm || undefined,
-      status: filterStatus === "all" ? undefined : filterStatus,
+      status: filterStatus === "all" ? "active" : filterStatus,
     });
   }, [currentPage, pageSize, searchTerm, filterStatus, setQuery]);
 
@@ -157,7 +235,6 @@ export default function CategoriesPage() {
         name: "",
         slug: "",
         description: "",
-        color: "#6366f1",
         status: "active",
         parentId: null,
       });
@@ -168,13 +245,13 @@ export default function CategoriesPage() {
     }
   };
 
-  const handleEditCategory = (category: TableCategory) => {
+  const handleEditCategory = (category: any) => {
     setEditingCategory(category);
     setFormData({
       name: category.name,
       slug: category.slug,
       description: category.description ?? "",
-      color: category.color,
+
       status: category.status,
       parentId: category.parentId !== null ? String(category.parentId) : null,
     });
@@ -202,7 +279,6 @@ export default function CategoriesPage() {
         name: "",
         slug: "",
         description: "",
-        color: "#6366f1",
         status: "active",
         parentId: null,
       });
@@ -214,16 +290,21 @@ export default function CategoriesPage() {
   };
 
   const handleDeleteCategory = async (categoryId: number | string) => {
-    await deleteCat(categoryId);
-    refetch();
+    try {
+      await deleteCat(categoryId);
+      refetch();
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      // Don't refetch on error
+    }
   };
 
   const getParentName = (parentId: number | string | null) => {
-    if (!parentId) return null;
+    if (!parentId) return "Root";
     const parent = apiCategories.find(
       (cat) => String(cat.id) === String(parentId)
     );
-    return parent?.name || null;
+    return parent?.name || "Unknown";
   };
 
   const getStatusColor = (_status: string) =>
@@ -254,14 +335,13 @@ export default function CategoriesPage() {
             setDialogOpen(open);
             if (!open) {
               setEditingCategory(null);
-              setFormData({
-                name: "",
-                slug: "",
-                description: "",
-                color: "#6366f1",
-                status: "active",
-                parentId: null,
-              });
+                    setFormData({
+        name: "",
+        slug: "",
+        description: "",
+        status: "active",
+        parentId: null,
+      });
             }
           }}
         >
@@ -279,7 +359,6 @@ export default function CategoriesPage() {
               formData={formData}
               setFormData={setFormData}
               parentCategories={parentOptions.filter((cat) => String(cat.id) !== String(editingCategory?.id))}
-              colorOptions={colorOptions}
               onNameChange={(name) => setFormData({ ...formData, name, slug: generateSlug(name) })}
               mode={dialogMode}
             />
@@ -329,7 +408,7 @@ export default function CategoriesPage() {
           </div>
 
           <CategoryTable
-            items={apiCategories}
+            items={apiCategories as any}
             onEdit={handleEditCategory}
             onDelete={handleDeleteCategory}
             getParentName={getParentName}

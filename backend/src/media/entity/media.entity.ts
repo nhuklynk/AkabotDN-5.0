@@ -14,6 +14,8 @@ export enum MediaType {
   EVENT = 'event',
   MEMBER = 'member',
   OTHER = 'other',
+  DOCUMENT_VIDEO = 'document_video',
+  DOCUMENT_IMAGE = 'document_image',
 }
 
 @Entity('media')

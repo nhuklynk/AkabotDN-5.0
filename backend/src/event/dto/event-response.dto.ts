@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { EventStatus } from '../entity/event.entity';
 import { TagResponseDto } from 'src/tag/dto/tag-response.dto';
 import { CategoryResponseDto } from 'src/category/dto/category-response.dto';
 
@@ -115,6 +114,14 @@ export class EventResponseDto {
   })
   @Expose()
   modified_at: Date;
+
+  @ApiProperty({
+    description: 'Event status (draft, published, archived)',
+    example: 'published',
+    enum: ['draft', 'published', 'archived'],
+  })
+  @Expose()
+  status: string;
 
   @Expose()
   created_by: string;

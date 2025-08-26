@@ -20,8 +20,7 @@ export class FaqResponseDto {
   modified_by: string;
 
   @Expose()
-  @Type(() => Object)
-  parent?: any;
+  status: string;
 
   constructor(partial: Partial<FaqResponseDto>) {
     Object.assign(this, partial);

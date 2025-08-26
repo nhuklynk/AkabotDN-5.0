@@ -26,11 +26,15 @@ export type ListMediaResponse = {
   limit: number;
 };
 
-export async function listMedia(query: MediaQuery = {}): Promise<ListMediaResponse> {
+export async function listMedia(
+  query: MediaQuery = {}
+): Promise<ListMediaResponse> {
   const params = { ...query } as Record<string, any>;
   const res: any = await apiClient.get("/media", { params });
   const payload = res?.data ?? res;
-  const itemsRaw: any[] = Array.isArray(payload) ? payload : (payload?.items ?? []);
+  const itemsRaw: any[] = Array.isArray(payload)
+    ? payload
+    : payload?.items ?? [];
 
   const items: MediaListItem[] = itemsRaw.map((m: any) => ({
     id: m.id,
@@ -52,5 +56,3 @@ export async function listMedia(query: MediaQuery = {}): Promise<ListMediaRespon
 }
 
 export default listMedia;
-
-

@@ -64,10 +64,10 @@ function MemberListContent() {
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-[#0600AF]/90 mb-2">
               {t("members.list.title")}
             </h1>
-            <div className="w-20 h-1 bg-emerald-600"></div>
+
             <p className="text-red-600 mt-4">{error}</p>
           </div>
         </div>
@@ -79,11 +79,10 @@ function MemberListContent() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-[#0600AF]/90 mb-2">
             {t("members.list.title")}
           </h1>
-          <div className="w-20 h-1 bg-emerald-600"></div>
-          <p className="text-gray-600 mt-4">{t("members.list.subtitle")}</p>
+          <p className="text-[#0600AF]/90 mt-4">{t("members.list.subtitle")}</p>
         </div>
 
         <MembersPageClient initialData={data} />
