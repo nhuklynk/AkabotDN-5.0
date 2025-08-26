@@ -11,11 +11,12 @@ export const databaseConfig: TypeOrmModuleOptions = {
   database: process.env.DB_DATABASE_NAME,
   autoLoadEntities: true,
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
-  synchronize: false, // Temporarily disabled due to enum conflict
+  synchronize: true, // Temporarily disabled due to enum conflict
   logging: process.env.NODE_ENV === 'development' ? 'all' : ['error', 'warn'],
-  ssl: process.env.DB_SSL === 'true' 
-    ? { rejectUnauthorized: process.env.NODE_ENV === 'production' }
-    : false,
+  ssl:
+    process.env.DB_SSL === 'true'
+      ? { rejectUnauthorized: process.env.NODE_ENV === 'production' }
+      : false,
   extra: {
     connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT || '10'),
     idleTimeoutMillis: parseInt(process.env.DB_IDLE_TIMEOUT || '30000'),

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, Like } from 'typeorm';
 import { Post, PostStatus } from './entity/post.entity';
@@ -32,7 +37,6 @@ export class PostService {
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<PostResponseDto> {
-
     const user = await this.userService.findOne(createPostDto.user_id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -47,16 +51,20 @@ export class PostService {
     }
 
     const post = this.postRepository.create({
-      ...createPostDto
+      ...createPostDto,
     });
 
     if (createPostDto.category_ids?.length) {
-      const categories = await this.categoryRepository.findBy({ id: In(createPostDto.category_ids) });
+      const categories = await this.categoryRepository.findBy({
+        id: In(createPostDto.category_ids),
+      });
       post.categories = categories;
     }
 
     if (createPostDto.tag_ids?.length) {
-      const tags = await this.tagRepository.findBy({ id: In(createPostDto.tag_ids) });
+      const tags = await this.tagRepository.findBy({
+        id: In(createPostDto.tag_ids),
+      });
       post.tags = tags;
     }
 
@@ -65,10 +73,15 @@ export class PostService {
     }
 
     const savedPost = await this.postRepository.save(post);
-    return plainToClass(PostResponseDto, savedPost, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, savedPost, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  async createWithFormdata(createPostFormdataDto: CreatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
+  async createWithFormdata(
+    createPostFormdataDto: CreatePostFormdataDto,
+    featuredImage?: any,
+  ): Promise<PostResponseDto> {
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostFormdataDto.slug },
     });
@@ -76,15 +89,15 @@ export class PostService {
     if (existingPost) {
       throw new ConflictException('Post with this slug already exists');
     }
-    
+
     const createPostDto: CreatePostDto = {
       ...createPostFormdataDto,
-      category_ids: createPostFormdataDto.category_ids ? 
-        createPostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
-        undefined,
-      tag_ids: createPostFormdataDto.tag_ids ? 
-        createPostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
-        undefined,
+      category_ids: createPostFormdataDto.category_ids
+        ? createPostFormdataDto.category_ids.split(',').map((id) => id.trim())
+        : undefined,
+      tag_ids: createPostFormdataDto.tag_ids
+        ? createPostFormdataDto.tag_ids.split(',').map((id) => id.trim())
+        : undefined,
       user_id: createPostFormdataDto.user_id,
     };
     if (featuredImage) {
@@ -95,8 +108,21 @@ export class PostService {
     return this.create(createPostDto);
   }
 
-  async findFilteredAndPaginated(query: PostQueryDto): Promise<[PostResponseDto[], number]> {
-    const { page = 1, limit = 10, status, search, author_id, date_from, date_to, category, tag } = query;
+  async findFilteredAndPaginated(
+    query: PostQueryDto,
+  ): Promise<[PostResponseDto[], number]> {
+    const {
+      page = 1,
+      limit = 10,
+      status,
+      search,
+      author_id,
+      date_from,
+      date_to,
+      category,
+      tag,
+      type,
+    } = query;
     const skip = (page - 1) * limit;
 
     // Build query builder for search functionality
@@ -114,7 +140,7 @@ export class PostService {
     if (search) {
       queryBuilder.andWhere(
         '(post.title ILIKE :search OR post.content ILIKE :search)',
-        { search: `%${search}%` }
+        { search: `%${search}%` },
       );
     }
 
@@ -130,31 +156,32 @@ export class PostService {
       queryBuilder.andWhere('post.created_at <= :date_to', { date_to });
     }
 
+    if (type) {
+      queryBuilder.andWhere('post.post_type = :type', { type });
+    }
+
     // Add pagination and ordering
-    queryBuilder
-      .skip(skip)
-      .take(limit)
-      .orderBy('post.created_at', 'DESC');
+    queryBuilder.skip(skip).take(limit).orderBy('post.created_at', 'DESC');
 
     const [posts, total] = await queryBuilder.getManyAndCount();
 
     // Apply category and tag filters after fetching
     let filteredPosts = posts;
-    
+
     if (category) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.categories?.some(cat => cat.slug === category)
-      );
-    }
-    
-    if (tag) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.tags?.some(tagItem => tagItem.slug === tag)
+      filteredPosts = filteredPosts.filter((post) =>
+        post.categories?.some((cat) => cat.slug === category),
       );
     }
 
-    const postDtos = filteredPosts.map(post => 
-      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true })
+    if (tag) {
+      filteredPosts = filteredPosts.filter((post) =>
+        post.tags?.some((tagItem) => tagItem.slug === tag),
+      );
+    }
+
+    const postDtos = filteredPosts.map((post) =>
+      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
     );
 
     return [postDtos, total];
@@ -170,7 +197,9 @@ export class PostService {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
-    return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, post, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findBySlug(slug: string): Promise<PostResponseDto> {
@@ -183,10 +212,16 @@ export class PostService {
       throw new NotFoundException(`Post with slug ${slug} not found`);
     }
 
-    return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, post, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  async updateWithFile(id: string, updatePostDto: UpdatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
+  async updateWithFile(
+    id: string,
+    updatePostDto: UpdatePostFormdataDto,
+    featuredImage?: any,
+  ): Promise<PostResponseDto> {
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
       updatePostDto.media_id = media.id;
@@ -194,7 +229,10 @@ export class PostService {
     return this.update(id, updatePostDto);
   }
 
-  async update(id: string, updatePostFormdataDto: UpdatePostFormdataDto): Promise<PostResponseDto> {
+  async update(
+    id: string,
+    updatePostFormdataDto: UpdatePostFormdataDto,
+  ): Promise<PostResponseDto> {
     const user = await this.userService.findOne(updatePostFormdataDto.user_id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -215,24 +253,31 @@ export class PostService {
       content: updatePostFormdataDto.content || post.content,
       post_status: updatePostFormdataDto.post_status || post.post_status,
       summary: updatePostFormdataDto.summary || post.summary,
-      published_at: updatePostFormdataDto.published_at ? new Date(updatePostFormdataDto.published_at) : post.published_at,
+      published_at: updatePostFormdataDto.published_at
+        ? new Date(updatePostFormdataDto.published_at)
+        : post.published_at,
       media_id: updatePostFormdataDto.media_id || post.media_id,
-      category_ids: updatePostFormdataDto.category_ids ? 
-        updatePostFormdataDto.category_ids.split(',').map(id => id.trim()) : 
-        undefined,
-      tag_ids: updatePostFormdataDto.tag_ids ? 
-        updatePostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
-        undefined,
+      category_ids: updatePostFormdataDto.category_ids
+        ? updatePostFormdataDto.category_ids.split(',').map((id) => id.trim())
+        : undefined,
+      tag_ids: updatePostFormdataDto.tag_ids
+        ? updatePostFormdataDto.tag_ids.split(',').map((id) => id.trim())
+        : undefined,
       user_id: updatePostFormdataDto.user_id,
     };
 
     // Set published date if status is being changed to published
-    if (updatePostDto.post_status === PostStatus.PUBLISHED && post.post_status !== PostStatus.PUBLISHED) {
+    if (
+      updatePostDto.post_status === PostStatus.PUBLISHED &&
+      post.post_status !== PostStatus.PUBLISHED
+    ) {
       updatePostDto.published_at = new Date();
     }
 
     const updatedPost = await this.postRepository.update(id, updatePostDto);
-    return plainToClass(PostResponseDto, updatedPost, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, updatedPost, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async remove(id: string): Promise<void> {
@@ -255,7 +300,9 @@ export class PostService {
       .where('category.id = :category_id', { category_id })
       .getMany();
 
-    return posts.map(post => plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }));
+    return posts.map((post) =>
+      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
+    );
   }
 
   async findByTag(tag_id: string): Promise<PostResponseDto[]> {
@@ -267,7 +314,9 @@ export class PostService {
       .where('tag.id = :tag_id', { tag_id })
       .getMany();
 
-    return posts.map(post => plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }));
+    return posts.map((post) =>
+      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
+    );
   }
 
   async uploadFeaturedImage(featuredImage: any) {
@@ -277,7 +326,7 @@ export class PostService {
       fileName: featuredImage.originalname,
       fileSize: featuredImage.size,
       contentType: featuredImage.mimetype,
-      scope: 'posts'
+      scope: 'posts',
     });
     const media = await this.mediaService.create({
       file_name: featuredImage.originalname,

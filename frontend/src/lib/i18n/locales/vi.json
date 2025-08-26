@@ -1053,6 +1053,29 @@
       }
     }
   },
+  "digitalProducts": {
+    "title": "Sản phẩm số",
+    "description": "Khám phá các giải pháp công nghệ tiên tiến của Hiệp hội Dữ liệu Quốc gia Việt Nam, góp phần thúc đẩy chuyển đổi số.",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "products": "Sản phẩm số"
+    },
+    "loading": "Đang tải sản phẩm số...",
+    "retry": "Thử lại",
+    "noProducts": "Chưa có sản phẩm số nào.",
+    "noDescription": "Không có mô tả",
+    "author": "Tác giả",
+    "unknownDate": "Không rõ ngày",
+    "badge": "Sản phẩm số",
+    "errors": {
+      "fetchFailed": "Không thể tải dữ liệu sản phẩm số"
+    },
+    "info": {
+      "totalProducts": "Tổng số sản phẩm: {{total}}",
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} sản phẩm",
+      "page": "Trang {{current}} / {{total}}"
+    }
+  },
   "faq": {
     "title": "Câu hỏi thường gặp",
     "description": "Thông tin cơ bản về Hiệp hội Dữ liệu Quốc gia",
