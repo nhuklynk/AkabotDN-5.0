@@ -65,6 +65,7 @@ export class PostService {
       slug: createPostDto.slug,
       summary: createPostDto.summary,
       status: createPostDto.status,
+      post_type: createPostDto.post_type,
       user: user,
       published_at: createPostDto.published_at
         ? new Date(createPostDto.published_at)
@@ -133,6 +134,10 @@ export class PostService {
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
       post.media_id = media.id;
+    }
+
+    if (updatePostDto.post_type) {
+      post.post_type = updatePostDto.post_type;
     }
 
     Object.assign(post, {
