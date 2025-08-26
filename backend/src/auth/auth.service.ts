@@ -47,7 +47,7 @@ export class AuthService {
           id: userResponse.id,
           username: userResponse.full_name,
           email: userResponse.email,
-          role: userResponse.roles?.[0]?.name || 'user',
+          role: userResponse.roles?.[0]?.name || 'unknown',
         },
       };
     } catch (error) {
@@ -75,7 +75,7 @@ export class AuthService {
           id: user.id,
           username: user.full_name,
           email: user.email,
-          role: user.roles?.[0]?.name || 'user',
+          role: user.roles?.[0]?.name || 'unknown',
         },
       };
     } catch (error) {
@@ -109,7 +109,7 @@ export class AuthService {
           id: user.id,
           username: user.full_name,
           email: user.email,
-          role: user.roles?.[0]?.name || 'user',
+          role: user.roles?.[0]?.name || 'unknown',
         },
       };
     } catch (error) {

@@ -40,35 +40,39 @@ export class UserService {
       }
     }
 
+    // Validate role_id is provided
+    if (!createUserDto.role_id) {
+      throw new BadRequestException('Role ID is required when creating a user');
+    }
+
+    // Check if role exists
+    const role = await this.roleRepository.findOne({
+      where: { id: createUserDto.role_id }
+    });
+    
+    if (!role) {
+      throw new BadRequestException(`Role with ID ${createUserDto.role_id} not found`);
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     const user = this.userRepository.create({
       ...createUserDto,
       password_hash: hashedPassword,
-      status: (createUserDto.status as any) || Status.ACTIVE, // Use status from DTO or default to ACTIVE
+      status: (createUserDto.status as any) || Status.ACTIVE,
       created_by: 'system',
       modified_by: 'system',
     });
 
     const savedUser = await this.userRepository.save(user);
 
-    // Assign role if role_id is provided
-    if (createUserDto.role_id) {
-      const role = await this.roleRepository.findOne({
-        where: { id: createUserDto.role_id }
-      });
-      
-      if (!role) {
-        throw new BadRequestException(`Role with ID ${createUserDto.role_id} not found`);
-      }
-
-      await this.userRepository
-        .createQueryBuilder()
-        .relation(User, 'roles')
-        .of(savedUser)
-        .add(role);
-    }
+    // Assign role (role is guaranteed to exist at this point)
+    await this.userRepository
+      .createQueryBuilder()
+      .relation(User, 'roles')
+      .of(savedUser)
+      .add(role);
 
     // Return user with roles
     return this.findOne(savedUser.id);
