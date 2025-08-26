@@ -140,7 +140,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: Status.PUBLISHED,
+      status: Status.ACTIVE,
     });
   }
 
@@ -155,7 +155,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: Status.PUBLISHED,
+      status: Status.ACTIVE,
       category: categorySlug,
     });
   }
@@ -171,7 +171,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: Status.PUBLISHED,
+      status: Status.ACTIVE,
       tag: tagSlug,
     });
   }
@@ -187,7 +187,7 @@ class PostService {
     return this.searchAndFilter({
       page,
       limit,
-      status: Status.PUBLISHED,
+      status: Status.ACTIVE,
       search: searchTerm,
     });
   }
@@ -270,7 +270,7 @@ class PostService {
     const response = await this.searchAndFilter({
       page: 1,
       limit,
-      status: Status.PUBLISHED,
+      status: Status.ACTIVE,
     });
     return response.data.items;
   }
@@ -295,6 +295,21 @@ class PostService {
       page,
       limit,
       type: PostType.DIGITAL_PRODUCT,
+      status: Status.ACTIVE,
+    });
+  }
+
+  /**
+   * Get association activity posts
+   */
+  async getAssociationActivities(
+    page: number = 1,
+    limit: number = 10
+  ): Promise<PaginatedResponse<Post>> {
+    return this.searchAndFilter({
+      page,
+      limit,
+      type: PostType.ASSOCIATION_ACTIVITY,
       status: Status.PUBLISHED,
     });
   }

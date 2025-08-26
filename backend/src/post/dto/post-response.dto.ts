@@ -3,6 +3,7 @@ import { Status } from '../../config/base-audit.entity';
 import { TagResponseDto } from '../../tag/dto/tag-response.dto';
 import { UserResponseDto } from 'src/user/dto/user/user-response.dto';
 import { CategoryResponseDto } from 'src/category/dto/category-response.dto';
+import { PostType } from '../entity/post.entity';
 
 export class PostResponseDto {
 
@@ -41,6 +42,9 @@ export class PostResponseDto {
   @Expose()
   @Type(() => CategoryResponseDto)
   categories: CategoryResponseDto[];
+
+  @Expose()
+  post_type: PostType;
 
   @Expose()
   @Type(() => TagResponseDto)

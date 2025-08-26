@@ -1,6 +1,7 @@
 import { IsString, IsOptional, IsUUID, IsEnum, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Status } from 'src/config/base-audit.entity';
+import { PostType } from '../entity/post.entity';
 
 export class CreatePostFormdataDto {
   @ApiProperty({
@@ -39,6 +40,17 @@ export class CreatePostFormdataDto {
   @IsOptional()
   @IsEnum(Status)
   status?: Status;
+
+  @ApiProperty({
+    description: 'Post type',
+    enum: PostType,
+    example: PostType.DIGITAL_PRODUCT,
+    required: false,
+    default: PostType.MEMBER_ACTIVITY
+  })
+  @IsOptional()
+  @IsEnum(PostType)
+  post_type?: PostType;
 
   @ApiProperty({
     description: 'Post summary',
