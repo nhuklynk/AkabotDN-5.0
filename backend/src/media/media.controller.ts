@@ -150,5 +150,19 @@ export class MediaController {
     }
     return this.mediaService.remove(id);
   }
+
+  @Get('download/:id')
+  @ApiOperation({ summary: 'Download media by ID' })
+  @ApiParam({ name: 'id', description: 'Media ID (UUID)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Media downloaded successfully',
+  })
+  async download(@Param('id') id: string): Promise<any> {
+    if (!validateUUID(id)) {
+      throw new BadRequestException('Invalid UUID format for media ID');
+    }
+    return this.mediaService.download(id);
+  }
 }
 

@@ -14,8 +14,6 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryResponseDto } from './dto/category-response.dto';
-import { ApiResponse } from '../common/interfaces/api-response.interface';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CategoryQueryDto } from './dto/category-query.dto';
 import { PaginationService } from '../common/services/pagination.service';
 import {
