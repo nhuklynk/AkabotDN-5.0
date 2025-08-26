@@ -25,7 +25,7 @@ import { CreatePostViewDto } from './dto/create-post-view.dto';
 import { UpdatePostViewDto } from './dto/update-post-view.dto';
 import { PostViewQueryDto } from './dto/post-view-query.dto';
 import { PostViewResponseDto, PostViewStatisticsDto } from './dto/post-view-response.dto';
-import { ApiResponse as IApiResponse, PaginatedApiResponse } from '../common/interfaces/api-response.interface';
+import { ApiResponse as IApiResponse, PaginatedApiResponse, PaginatedData } from '../common/interfaces/api-response.interface';
 
 @ApiTags('post-views')
 @Controller('post-views')
@@ -47,17 +47,9 @@ export class PostViewController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  async create(@Body() createPostViewDto: CreatePostViewDto): Promise<IApiResponse<PostViewResponseDto>> {
+  async create(@Body() createPostViewDto: CreatePostViewDto): Promise<PostViewResponseDto> {
     const data = await this.postViewService.create(createPostViewDto);
-    return {
-      success: true,
-      statusCode: HttpStatus.CREATED,
-      message: 'Post view created successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/post-views',
-    };
+    return data;
   }
 
   @Get()
@@ -73,17 +65,9 @@ export class PostViewController {
   @ApiQuery({ name: 'post_id', required: false, description: 'Filter by post ID' })
   @ApiQuery({ name: 'from_date', required: false, description: 'Filter views from date (ISO 8601)' })
   @ApiQuery({ name: 'to_date', required: false, description: 'Filter views to date (ISO 8601)' })
-  async findAll(@Query() query: PostViewQueryDto): Promise<PaginatedApiResponse<PostViewResponseDto>> {
+  async findAll(@Query() query: PostViewQueryDto): Promise<PaginatedData<PostViewResponseDto>> {
     const data = await this.postViewService.findAll(query);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Post views retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/post-views',
-    };
+    return data;
   }
 
   @Get('statistics')
@@ -98,17 +82,9 @@ export class PostViewController {
   @ApiQuery({ name: 'post_id', required: false, description: 'Filter by specific post ID' })
   @ApiQuery({ name: 'from_date', required: false, description: 'Filter views from date (ISO 8601)' })
   @ApiQuery({ name: 'to_date', required: false, description: 'Filter views to date (ISO 8601)' })
-  async getStatistics(@Query() query: PostViewQueryDto): Promise<IApiResponse<PostViewStatisticsDto[]>> {
+  async getStatistics(@Query() query: PostViewQueryDto): Promise<PostViewStatisticsDto[]> {
     const data = await this.postViewService.getViewStatistics(query);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Statistics retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/post-views/statistics',
-    };
+    return data;
   }
 
   @Get('statistics/total')
@@ -126,17 +102,9 @@ export class PostViewController {
     @Query('post_id') postId?: string,
     @Query('from_date') fromDate?: string,
     @Query('to_date') toDate?: string,
-  ): Promise<IApiResponse<{ total: number }>> {
+  ): Promise<{ total: number }> {
     const total = await this.postViewService.getTotalViews(postId, fromDate, toDate);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Total count retrieved successfully',
-      data: { total },
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/post-views/statistics/total',
-    };
+    return { total };
   }
 
   @Get('statistics/by-date')
@@ -155,17 +123,9 @@ export class PostViewController {
   async getViewsByDateRange(
     @Query('from_date') fromDate: string,
     @Query('to_date') toDate: string,
-  ): Promise<IApiResponse<{ date: string; count: number }[]>> {
+  ): Promise<{ date: string; count: number }[]> {
     const data = await this.postViewService.getViewsByDateRange(fromDate, toDate);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Daily statistics retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/post-views/statistics/by-date',
-    };
+    return data;
   }
 
   @Get('statistics/top-posts')
@@ -184,17 +144,9 @@ export class PostViewController {
     @Query('limit') limit?: number,
     @Query('from_date') fromDate?: string,
     @Query('to_date') toDate?: string,
-  ): Promise<IApiResponse<PostViewStatisticsDto[]>> {
+  ): Promise<PostViewStatisticsDto[]> {
     const data = await this.postViewService.getTopViewedPosts(limit, fromDate, toDate);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Top posts retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/post-views/statistics/top-posts',
-    };
+    return data;
   }
 
   @Get(':id')
@@ -214,17 +166,9 @@ export class PostViewController {
   @ApiNotFoundResponse({
     description: 'Post view not found',
   })
-  async findOne(@Param('id') id: string): Promise<IApiResponse<PostViewResponseDto>> {
+  async findOne(@Param('id') id: string): Promise<PostViewResponseDto> {
     const data = await this.postViewService.findOne(id);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Post view retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: `/api/post-views/${id}`,
-    };
+    return data;
   }
 
   @Patch(':id')
@@ -250,17 +194,9 @@ export class PostViewController {
   async update(
     @Param('id') id: string,
     @Body() updatePostViewDto: UpdatePostViewDto,
-  ): Promise<IApiResponse<PostViewResponseDto>> {
+  ): Promise<PostViewResponseDto> {
     const data = await this.postViewService.update(id, updatePostViewDto);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Post view updated successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: `/api/post-views/${id}`,
-    };
+    return data;
   }
 
   @Delete(':id')
@@ -279,16 +215,7 @@ export class PostViewController {
   @ApiNotFoundResponse({
     description: 'Post view not found',
   })
-  async remove(@Param('id') id: string): Promise<IApiResponse<null>> {
+  async remove(@Param('id') id: string): Promise<void> {
     await this.postViewService.remove(id);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Post view deleted successfully',
-      data: null,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: `/api/post-views/${id}`,
-    };
   }
 }

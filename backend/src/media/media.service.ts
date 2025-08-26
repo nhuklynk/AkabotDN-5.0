@@ -1,15 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Media, MediaType } from './entity/media.entity';
 import { CreateMediaDto } from './dto/create-media.dto';
-import { UpdateMediaDto } from './dto/update-media.dto';
 import { MediaResponseDto } from './dto/media-response.dto';
 import { plainToClass } from 'class-transformer';
 import { Status } from 'src/config/base-audit.entity';
 import { MediaQueryDto } from './dto/media-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
 import { StorageService } from 'src/storage';
+import * as path from 'path';
+import { CreateMediaFormDataDto } from './dto/create-media-formdata.dto';
+import { UpdateMediaFormDataDto } from './dto/update-media-formdata.dto';
 
 @Injectable()
 export class MediaService {
@@ -78,7 +80,64 @@ export class MediaService {
     return plainToClass(MediaResponseDto, savedMedia, { excludeExtraneousValues: true });
   }
 
-  async update(id: string, updateMediaDto: UpdateMediaDto): Promise<MediaResponseDto> {
+  async createFromFormData(
+    file: Express.Multer.File,
+    createMediaFormDataDto: CreateMediaFormDataDto
+  ): Promise<MediaResponseDto> {
+    if (!file) {
+      throw new BadRequestException('No file provided');
+    }
+  
+    const allowedMimeTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+      'video/mp4',
+      'video/webm',
+      'audio/mpeg',
+      'text/plain',
+      'text/csv',
+      'application/csv',
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+  
+    if (!allowedMimeTypes.includes(file.mimetype)) {
+      throw new BadRequestException(`File type "${file.mimetype}" not allowed`);
+    }
+  
+    try {
+      const uploadResult = await this.storageService.uploadFile({
+        file: file.buffer,
+        fileName: file.originalname,
+        bucket: 'media',
+        scope: 'uploads',
+      });
+
+      const media = this.mediaRepository.create({
+        file_name: file.originalname,
+        file_path: uploadResult || file.originalname,
+        mime_type: file.mimetype,
+        file_size: file.size,
+        media_type: createMediaFormDataDto.media_type,
+      });
+  
+      const savedMedia = await this.mediaRepository.save(media);
+      return plainToClass(MediaResponseDto, savedMedia, {
+        excludeExtraneousValues: true,
+      });
+    } catch (error) {
+      throw new BadRequestException(`Failed to upload file: ${error.message}`);
+    }
+  }  
+
+  async updateFromFormData(
+    id: string,
+    file: Express.Multer.File | undefined,
+    updateMediaFormDataDto: UpdateMediaFormDataDto
+  ): Promise<MediaResponseDto> {
     const media = await this.mediaRepository.findOne({
       where: { id: id },
     });
@@ -87,8 +146,55 @@ export class MediaService {
       throw new NotFoundException(`Media with ID ${id} not found`);
     }
 
-    const updatedMedia = await this.mediaRepository.update(id, updateMediaDto);
-    return plainToClass(MediaResponseDto, updatedMedia, { excludeExtraneousValues: true });
+    let updateData: Partial<Media> = {};
+
+    if (file) {
+      const allowedMimeTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/webp',
+        'video/mp4',
+        'video/webm',
+        'audio/mpeg',
+        'text/plain',
+        'text/csv',
+        'application/csv',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      ];
+
+      if (!allowedMimeTypes.includes(file.mimetype)) {
+        throw new BadRequestException(`File type "${file.mimetype}" not allowed`);
+      }
+
+      try {
+        const uploadResult = await this.storageService.uploadFile({
+          file: file.buffer,
+          fileName: file.originalname,
+          bucket: 'media',
+          scope: 'uploads',
+        });
+
+        updateData = {
+          file_name: file.originalname,
+          file_path: uploadResult,
+          mime_type: file.mimetype,
+          file_size: file.size,
+        };
+      } catch (error) {
+        throw new BadRequestException(`Failed to upload file: ${error.message}`);
+      }
+    }
+
+    if (updateMediaFormDataDto.media_type !== undefined) {
+      updateData.media_type = updateMediaFormDataDto.media_type;
+    }
+
+    await this.mediaRepository.update(id, updateData);
+
+    return this.findOne(id);
   }
 
   async remove(id: string): Promise<void> {
