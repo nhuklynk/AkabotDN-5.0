@@ -20,6 +20,7 @@ import { ExecutiveBoardModule } from './executive-board/executive-board.module';
 import { AuditSubscriber } from './config/audit.subscriber';
 import { CommonModule } from './common/common.module';
 import { StorageModule } from './storage/storage.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 import { SwaggerExportController } from './config/swagger-export.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
@@ -46,6 +47,7 @@ import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
     EventModule,
     ExecutiveBoardModule,
     StorageModule,
+    SubscriptionModule,
   ],
   controllers: [AppController, SwaggerExportController],
   providers: [

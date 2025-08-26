@@ -12,7 +12,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   autoLoadEntities: true,
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
   synchronize: true,
-  logging: process.env.NODE_ENV === 'development' ? 'all' : ['error', 'warn'],
+  // logging: process.env.NODE_ENV === 'development' ? 'all' : ['error', 'warn'],
   ssl:
     process.env.DB_SSL === 'true'
       ? { rejectUnauthorized: process.env.NODE_ENV === 'production' }

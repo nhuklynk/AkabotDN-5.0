@@ -217,6 +217,6 @@ export class MediaService {
       throw new NotFoundException(`Media with ID ${id} not found`);
     }
 
-    return this.storageService.getDownloadUrl(media.file_path);
+    return this.storageService.getDownloadUrlWithFilename(media.file_path);
   }
 }
