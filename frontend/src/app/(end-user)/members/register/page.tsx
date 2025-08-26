@@ -178,7 +178,7 @@ export default function MemberRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#0033FF] mb-2">
@@ -207,7 +207,7 @@ export default function MemberRegistrationPage() {
             className={`flex items-center gap-2 transition-all duration-200 ${
               membershipType === "individual"
                 ? "bg-[#0033FF] border-[#0033FF] text-white hover:bg-[#0033FF]/90"
-                : "bg-transparent border-[#977DFF] text-[#0600AF] hover:bg-[#FFCCF2]/10 hover:border-[#0033FF]"
+                : "bg-transparent border-[#977DFF] text-[#0600AF] hover:bg-blue-50 hover:border-[#0033FF]"
             }`}
             onClick={() => setMembershipType("individual")}
             disabled={isLoading}
@@ -220,7 +220,7 @@ export default function MemberRegistrationPage() {
             className={`flex items-center gap-2 transition-all duration-200 ${
               membershipType === "corporate"
                 ? "bg-[#0033FF] border-[#0033FF] text-white hover:bg-[#0033FF]/90"
-                : "bg-transparent border-[#977DFF] text-[#0600AF] hover:bg-[#FFCCF2]/10 hover:border-[#0033FF]"
+                : "bg-transparent border-[#977DFF] text-[#0600AF] hover:bg-blue-50 hover:border-[#0033FF]"
             }`}
             onClick={() => setMembershipType("corporate")}
             disabled={isLoading}
@@ -233,8 +233,8 @@ export default function MemberRegistrationPage() {
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-2 gap-8">
             {/* User Information Form */}
-            <Card className="border-[#FFCCF2] bg-white">
-              <CardHeader className="bg-gradient-to-r from-[#FFCCF2]/20 to-[#977DFF]/20 border-b border-[#FFCCF2]/30">
+            <Card className="border-slate-200 bg-white shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-300/30">
                 <CardTitle className="text-xl font-semibold text-[#0033FF]">
                   {t("members.register.forms.accountInfo.title")}
                 </CardTitle>
@@ -258,7 +258,7 @@ export default function MemberRegistrationPage() {
                       onChange={(e) =>
                         setUserForm({ ...userForm, email: e.target.value })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.accountInfo.placeholders.email"
                       )}
@@ -283,7 +283,7 @@ export default function MemberRegistrationPage() {
                       onChange={(e) =>
                         setUserForm({ ...userForm, full_name: e.target.value })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.accountInfo.placeholders.fullName"
                       )}
@@ -305,7 +305,7 @@ export default function MemberRegistrationPage() {
                       onChange={(e) =>
                         setUserForm({ ...userForm, phone: e.target.value })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.accountInfo.placeholders.phone"
                       )}
@@ -330,7 +330,7 @@ export default function MemberRegistrationPage() {
                       onChange={(e) =>
                         setUserForm({ ...userForm, password: e.target.value })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.accountInfo.placeholders.password"
                       )}
@@ -359,7 +359,7 @@ export default function MemberRegistrationPage() {
                           confirmPassword: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.accountInfo.placeholders.confirmPassword"
                       )}
@@ -372,8 +372,8 @@ export default function MemberRegistrationPage() {
             </Card>
 
             {/* Member Information Form */}
-            <Card className="border-[#FFCCF2] bg-white">
-              <CardHeader className="bg-gradient-to-r from-[#FFCCF2]/20 to-[#977DFF]/20 border-b border-[#FFCCF2]/30">
+            <Card className="border-slate-200 bg-white shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-300/30">
                 <CardTitle className="text-xl font-semibold text-[#0033FF]">
                   {t("members.register.forms.memberInfo.title")}
                 </CardTitle>
@@ -396,7 +396,7 @@ export default function MemberRegistrationPage() {
                           job_title: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.memberInfo.placeholders.jobTitle"
                       )}
@@ -420,7 +420,7 @@ export default function MemberRegistrationPage() {
                           work_unit: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.memberInfo.placeholders.workUnit"
                       )}
@@ -448,7 +448,7 @@ export default function MemberRegistrationPage() {
                       }
                       disabled={isLoading}
                     >
-                      <SelectTrigger className="border-[#FFCCF2] focus:border-[#0033FF]">
+                      <SelectTrigger className="border-slate-300 focus:border-[#0033FF]">
                         <SelectValue
                           placeholder={t(
                             "members.register.forms.memberInfo.placeholders.expertiseLevel"
@@ -496,7 +496,7 @@ export default function MemberRegistrationPage() {
                           assistant_info: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.memberInfo.placeholders.assistantInfo"
                       )}
@@ -521,7 +521,7 @@ export default function MemberRegistrationPage() {
                           curriculum_vitae_url: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.memberInfo.placeholders.cvUrl"
                       )}
@@ -535,8 +535,8 @@ export default function MemberRegistrationPage() {
 
           {/* Company Information Form (only for corporate members) */}
           {membershipType === "corporate" && (
-            <Card className="border-[#FFCCF2] bg-white mt-8">
-              <CardHeader className="bg-gradient-to-r from-[#FFCCF2]/20 to-[#977DFF]/20 border-b border-[#FFCCF2]/30">
+            <Card className="border-slate-200 bg-white mt-8 shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-300/30">
                 <CardTitle className="text-xl font-semibold text-[#0033FF]">
                   {t("members.register.forms.companyInfo.title")}
                 </CardTitle>
@@ -559,7 +559,7 @@ export default function MemberRegistrationPage() {
                       onChange={(e) =>
                         setCompanyForm({ ...companyForm, name: e.target.value })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.companyInfo.placeholders.name"
                       )}
@@ -587,7 +587,7 @@ export default function MemberRegistrationPage() {
                           tax_number: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.companyInfo.placeholders.taxNumber"
                       )}
@@ -616,7 +616,7 @@ export default function MemberRegistrationPage() {
                           email: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.companyInfo.placeholders.email"
                       )}
@@ -644,7 +644,7 @@ export default function MemberRegistrationPage() {
                           phone_number: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.companyInfo.placeholders.phone"
                       )}
@@ -671,7 +671,7 @@ export default function MemberRegistrationPage() {
                           business_registration_form_url: e.target.value,
                         })
                       }
-                      className="border-[#FFCCF2] focus:border-[#0033FF]"
+                      className="border-slate-300 focus:border-[#0033FF]"
                       placeholder={t(
                         "members.register.forms.companyInfo.placeholders.businessRegistrationUrl"
                       )}
@@ -688,7 +688,7 @@ export default function MemberRegistrationPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-12 py-3 text-lg font-semibold border-0 transition-all duration-300"
+              className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-12 py-3 text-lg font-semibold border-0 transition-all duration-300"
             >
               {isLoading ? (
                 <>
@@ -703,8 +703,8 @@ export default function MemberRegistrationPage() {
         </form>
 
         {/* Reference Information Card */}
-        <Card className="border-[#FFCCF2] bg-white mt-8">
-          <CardHeader className="bg-gradient-to-r from-[#FFCCF2]/20 to-[#977DFF]/20 border-b border-[#FFCCF2]/30">
+        <Card className="border-slate-200 bg-white mt-8 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-300/30">
             <CardTitle className="text-xl font-semibold text-[#0033FF]">
               {t("members.register.contactInfo.title")}
             </CardTitle>

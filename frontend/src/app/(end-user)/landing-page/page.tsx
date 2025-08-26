@@ -217,7 +217,7 @@ export default function LandingPage() {
       title: t("landing.mission.items.values.title"),
       icon: <Heart className="w-8 h-8" />,
       content: t("landing.mission.items.values.content"),
-      color: "from-[#FFCCF2] to-[#EC4899]",
+      color: "from-[#0033FF] to-[#977DFF]",
     },
   };
 
@@ -258,7 +258,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] via-white to-[#FFCCF2]/20 relative overflow-hidden">
+    <div className="min-h-screen bg-[#FFFFFF] relative overflow-hidden">
       {/* Dynamic Banner Hero Section */}
       <section className="relative h-screen overflow-hidden z-10">
         {/* Slide Container */}
@@ -288,7 +288,7 @@ export default function LandingPage() {
                 <div className="container mx-auto px-4">
                   <div className="max-w-4xl">
                     <div className="space-y-6 animate-fadeInUp">
-                      <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-[#0033FF] border-0 px-6 py-3 text-base animate-pulse">
+                      <Badge className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-[#0033FF] border-0 px-6 py-3 text-base animate-pulse">
                         <Zap className="w-5 h-5 mr-2" />
                         {slide.subtitle}
                       </Badge>
@@ -368,7 +368,7 @@ export default function LandingPage() {
         </div>
 
         {/* Animated Background Elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#FFCCF2]/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-100 rounded-full blur-3xl animate-pulse" />
         <div
           className="absolute bottom-20 right-10 w-96 h-96 bg-[#977DFF]/20 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
@@ -624,7 +624,7 @@ export default function LandingPage() {
                   className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white"
                 >
                   <CardHeader className="text-center pb-4">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
                     </div>
                     <CardTitle className="text-xl text-[#0033FF]">
@@ -689,7 +689,7 @@ export default function LandingPage() {
               {/* Decorative Elements */}
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#977DFF]/20 rounded-full blur-2xl animate-pulse" />
               <div
-                className="absolute -bottom-4 -left-4 w-32 h-32 bg-[#FFCCF2]/20 rounded-full blur-3xl animate-pulse"
+                className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-100 rounded-full blur-3xl animate-pulse"
                 style={{ animationDelay: "1s" }}
               />
             </div>
@@ -744,7 +744,7 @@ export default function LandingPage() {
       </section>
 
       {/* Upcoming Events */}
-      <section className="py-20 bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/30">
+      <section className="py-20 bg-gradient-to-r from-slate-50 to-blue-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#0033FF] mb-4">
@@ -763,7 +763,7 @@ export default function LandingPage() {
               >
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0">
+                    <Badge className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white border-0">
                       {event.type}
                     </Badge>
                     <Calendar className="w-5 h-5 text-[#977DFF]" />
@@ -862,7 +862,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="bg-white text-[#0033FF] hover:bg-[#F2E6EE] px-8 py-3 text-lg"
+                className="bg-white text-[#0033FF] hover:bg-blue-50 px-8 py-3 text-lg"
               >
                 {t("landing.cta.memberButton")}
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -870,7 +870,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="bg-white text-[#0033FF] hover:bg-[#F2E6EE] px-8 py-3 text-lg"
+                className="bg-white text-[#0033FF] hover:bg-blue-50 px-8 py-3 text-lg"
               >
                 {t("landing.cta.contactButton")}
               </Button>

@@ -35,8 +35,8 @@ export function ShareButtons({ postTitle }: ShareButtonsProps) {
   };
 
   return (
-    <Card>
-      <CardContent className="p-6">
+    <Card className="border-slate-200 shadow-lg">
+      <CardContent className="p-6 border-slate-200 shadow-lg">
         <h3 className="font-semibold text-slate-900 mb-4">
           {t("posts.detail.share.title")}
         </h3>

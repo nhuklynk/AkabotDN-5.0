@@ -181,7 +181,7 @@ export default function TuLieuPage() {
             {data.map((item, index) => (
               <Card
                 key={item.id}
-                className="group overflow-hidden hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer bg-white border-[#FFCCF2]/40 hover:border-[#977DFF]/60"
+                className="group overflow-hidden hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer bg-white border-slate-200 hover:border-[#977DFF]/60"
               >
                 <div className="relative overflow-hidden">
                   <div className="relative w-full h-64">
@@ -195,7 +195,7 @@ export default function TuLieuPage() {
 
                     {/* Video Duration for videos */}
                     {activeTab === "videos" && "duration" in item && (
-                      <div className="absolute top-3 right-3 bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white px-2 py-1 rounded text-sm font-medium">
+                      <div className="absolute top-3 right-3 bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white px-2 py-1 rounded text-sm font-medium">
                         {(item as any).duration}
                       </div>
                     )}
@@ -203,14 +203,14 @@ export default function TuLieuPage() {
                     {/* Play Button for videos */}
                     {activeTab === "videos" && (
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] rounded-full p-4 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                        <div className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] rounded-full p-4 shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300">
                           <Play className="w-8 h-8 text-white ml-1" />
                         </div>
                       </div>
                     )}
 
                     {/* View Count Badge */}
-                    <div className="absolute bottom-3 left-3 bg-gradient-to-r from-[#FFCCF2] to-[#F2E6EE] backdrop-blur-sm text-[#0033FF] px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 border border-[#FFCCF2]/30">
+                    <div className="absolute bottom-3 left-3 bg-gradient-to-r from-blue-100 to-indigo-100 backdrop-blur-sm text-[#0033FF] px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 border border-slate-200">
                       <Eye className="w-4 h-4" />
                       {item.views}
                     </div>
@@ -241,7 +241,7 @@ export default function TuLieuPage() {
 
           {/* Load More Button */}
           <div className="text-center mt-16">
-            <button className="bg-gradient-to-r from-[#FFCCF2] via-[#977DFF] to-[#0033FF] text-white px-12 py-4 rounded-2xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300 border-0 hover:from-[#977DFF] hover:via-[#0033FF] hover:to-[#FFCCF2]">
+            <button className="bg-gradient-to-r from-[#0033FF] via-[#977DFF] to-[#0033FF] text-white px-12 py-4 rounded-2xl font-semibold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300 border-0 hover:from-[#977DFF] hover:via-[#0033FF] hover:to-[#977DFF]">
               Xem thêm tư liệu
             </button>
           </div>

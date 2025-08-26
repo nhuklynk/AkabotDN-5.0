@@ -116,10 +116,10 @@ export function PostsGrid({ onPaginationUpdate }: PostsGridProps) {
         {posts.map((post) => (
           <Card
             key={post.id}
-            className="group hover:shadow-lg transition-shadow"
+            className="group hover:shadow-lg transition-shadow border-slate-200 shadow-lg"
           >
             <Link href={`/posts/${post.slug}`}>
-              <CardContent className="p-0">
+              <CardContent className="p-0 border-slate-200 shadow-lg">
                 {/* Post Image */}
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <Image

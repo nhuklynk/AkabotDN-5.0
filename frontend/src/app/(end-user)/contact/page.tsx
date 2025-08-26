@@ -9,7 +9,7 @@ export default function ContactPage() {
   const { t } = useLocale();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white py-16">
         <div className="container mx-auto px-4">
@@ -44,7 +44,7 @@ export default function ContactPage() {
           {/* Left Column - Contact Information & Quick Contact */}
           <div className="space-y-6">
             {/* Contact Information Card */}
-            <Card className="border-[#977DFF]/20 bg-white shadow-lg">
+            <Card className="border-slate-200 bg-white shadow-lg">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-[#0033FF]">
                   {t("contact.info.title")}
@@ -124,7 +124,7 @@ export default function ContactPage() {
             </Card>
 
             {/* Quick Contact Card */}
-            <Card className="border-[#FFCCF2]/30 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/20">
+            <Card className="border-slate-200 bg-white shadow-lg">
               <CardContent className="pt-6">
                 <h3 className="font-semibold text-[#0033FF] mb-3">
                   {t("contact.quickContact.title")}
@@ -151,7 +151,7 @@ export default function ContactPage() {
 
           {/* Right Column - Map Section */}
           <div className="lg:sticky lg:top-8 lg:self-start">
-            <Card className="border-[#977DFF]/20 bg-white shadow-lg">
+            <Card className="border-slate-200 bg-white shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl font-semibold text-[#0033FF] flex items-center gap-2">
                   <MapPin className="w-6 h-6" />
@@ -160,7 +160,7 @@ export default function ContactPage() {
                 <p className="text-[#0600AF]/70">{t("contact.map.subtitle")}</p>
               </CardHeader>
               <CardContent>
-                <div className="aspect-square lg:aspect-[4/3] bg-gradient-to-br from-[#F2E6EE] to-[#977DFF]/20 rounded-lg overflow-hidden border border-[#977DFF]/20">
+                <div className="aspect-square lg:aspect-[4/3] bg-gradient-to-br from-slate-50 to-blue-100 rounded-lg overflow-hidden border border-slate-200">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6962326256447!2d105.84117731533447!3d21.01624939383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab86a2e8c4e7%3A0x5c4a8b8b8b8b8b8b!2sCung%20V%C4%83n%20h%C3%B3a%20Thanh%20ni%C3%AAn!5e0!3m2!1svi!2s!4v1635000000000!5m2!1svi!2s"
                     width="100%"
@@ -172,7 +172,7 @@ export default function ContactPage() {
                     title={t("contact.map.title")}
                   ></iframe>
                 </div>
-                <div className="mt-4 p-4 bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/20 rounded-lg border border-[#FFCCF2]/30">
+                <div className="mt-4 p-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg border border-slate-200">
                   <div className="space-y-4">
                     <div>
                       <p className="font-semibold text-[#0033FF] mb-1">

@@ -27,9 +27,9 @@ export default function GioiThieuPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-[#FFCCF2]/30">
+      <div className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-[#0033FF] mb-4">
@@ -54,8 +54,8 @@ export default function GioiThieuPage() {
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center gap-2 px-6 py-3 ${
                   activeTab === item.id
-                    ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0"
-                    : "border-[#FFCCF2]/40 text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2]/20 hover:to-[#F2E6EE] hover:border-[#977DFF]/50 transition-all duration-300"
+                    ? "bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0"
+                    : "border-slate-300 text-[#0033FF] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-[#977DFF]/50 transition-all duration-300"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -72,10 +72,10 @@ export default function GioiThieuPage() {
             <div className="space-y-8 animate-in fade-in duration-500">
               {/* Mission & Vision */}
               <div className="grid md:grid-cols-2 gap-8">
-                <Card className="border-[#FFCCF2]/40 shadow-lg bg-white hover:border-[#977DFF]/50 transition-all duration-300">
+                <Card className="border-slate-200 shadow-lg bg-white hover:border-[#977DFF]/50 transition-all duration-300">
                   <CardContent className="p-8">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center">
                         <Target className="w-6 h-6 text-white" />
                       </div>
                       <h3 className="text-2xl font-bold text-[#0033FF]">
@@ -88,7 +88,7 @@ export default function GioiThieuPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-[#977DFF]/40 shadow-lg bg-white hover:border-[#FFCCF2]/50 transition-all duration-300">
+                <Card className="border-[#977DFF]/40 shadow-lg bg-white hover:border-slate-300 transition-all duration-300">
                   <CardContent className="p-8">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#977DFF] to-[#0033FF] rounded-full flex items-center justify-center">
@@ -106,10 +106,10 @@ export default function GioiThieuPage() {
               </div>
 
               {/* Core Values */}
-              <Card className="border-[#FFCCF2]/40 shadow-lg bg-white">
+              <Card className="border-slate-200 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center">
                       <Heart className="w-6 h-6 text-[#977DFF]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[#0033FF]">
@@ -117,8 +117,8 @@ export default function GioiThieuPage() {
                     </h3>
                   </div>
                   <div className="grid md:grid-cols-3 gap-6">
-                    <div className="text-center p-6 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-lg border border-[#FFCCF2]/40 hover:from-[#FFCCF2]/40 hover:to-[#F2E6EE] transition-all duration-300">
-                      <div className="w-16 h-16 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-slate-200 hover:from-blue-100 hover:to-slate-100 transition-all duration-300">
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-2xl font-bold text-white">1</span>
                       </div>
                       <h4 className="font-semibold text-[#0033FF] mb-2">
@@ -130,7 +130,7 @@ export default function GioiThieuPage() {
                         )}
                       </p>
                     </div>
-                    <div className="text-center p-6 bg-gradient-to-br from-[#FFCCF2]/30 to-[#F2E6EE] rounded-lg border border-[#FFCCF2]/40 hover:from-[#F2E6EE] hover:to-[#FFCCF2]/40 transition-all duration-300">
+                    <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-slate-50 rounded-lg border border-slate-200 hover:from-slate-100 hover:to-blue-100 transition-all duration-300">
                       <div className="w-16 h-16 bg-gradient-to-br from-[#977DFF] to-[#0033FF] rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-2xl font-bold text-white">2</span>
                       </div>
@@ -141,8 +141,8 @@ export default function GioiThieuPage() {
                         {t("aboutUs.about.coreValues.items.innovation.content")}
                       </p>
                     </div>
-                    <div className="text-center p-6 bg-gradient-to-br from-[#F2E6EE] to-[#977DFF]/30 rounded-lg border border-[#977DFF]/40 hover:from-[#977DFF]/40 hover:to-[#F2E6EE] transition-all duration-300">
-                      <div className="w-16 h-16 bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="text-center p-6 bg-gradient-to-br from-slate-50 to-blue-100 rounded-lg border border-[#977DFF]/40 hover:from-blue-200 hover:to-slate-100 transition-all duration-300">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-2xl font-bold text-[#977DFF]">
                           3
                         </span>
@@ -161,10 +161,10 @@ export default function GioiThieuPage() {
               </Card>
 
               {/* Formation History */}
-              <Card className="border-[#977DFF]/40 shadow-lg bg-white">
+              <Card className="border-slate-200 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center">
                       <History className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-[#0033FF]">
@@ -174,7 +174,7 @@ export default function GioiThieuPage() {
                   <div className="space-y-6">
                     <div className="flex gap-4">
                       <div className="flex-shrink-0">
-                        <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#F2E6EE] text-[#0033FF] px-3 py-1 border-0 font-semibold">
+                        <Badge className="bg-gradient-to-r from-blue-100 to-indigo-100 text-[#0033FF] px-3 py-1 border-0 font-semibold">
                           {t("aboutUs.about.history.items.founding.year")}
                         </Badge>
                       </div>
@@ -189,7 +189,7 @@ export default function GioiThieuPage() {
                     </div>
                     <div className="flex gap-4">
                       <div className="flex-shrink-0">
-                        <Badge className="bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-3 py-1 border-0 font-semibold">
+                        <Badge className="bg-gradient-to-r from-indigo-100 to-blue-100 text-[#0033FF] px-3 py-1 border-0 font-semibold">
                           {t("aboutUs.about.history.items.expansion.year")}
                         </Badge>
                       </div>
@@ -211,16 +211,16 @@ export default function GioiThieuPage() {
           {/* Ban Chấp hành Section */}
           {activeTab === "executive" && (
             <div className="animate-in fade-in duration-500">
-              <Card className="border-[#FFCCF2]/40 shadow-lg bg-white">
+              <Card className="border-slate-200 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     {t("aboutUs.executive.title")}
                   </h3>
-                  <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-8 rounded-lg border border-[#FFCCF2]/40">
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-lg border border-slate-200">
                     <div className="text-center space-y-8">
                       {/* Chủ tịch */}
                       <div className="flex justify-center">
-                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] text-white px-6 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white px-6 py-4 rounded-lg shadow-lg">
                           <div className="font-bold text-lg">
                             {t("aboutUs.executive.chairman.title")}
                           </div>
@@ -242,7 +242,7 @@ export default function GioiThieuPage() {
                             )}
                           </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-6 py-4 rounded-lg shadow-lg border border-[#FFCCF2]/40">
+                        <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] px-6 py-4 rounded-lg shadow-lg border border-slate-200">
                           <div className="font-bold">
                             {t("aboutUs.executive.viceChairman.partTime.title")}
                           </div>
@@ -256,7 +256,7 @@ export default function GioiThieuPage() {
 
                       {/* Các ban chuyên môn */}
                       <div className="grid md:grid-cols-3 gap-4">
-                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
+                        <div className="bg-gradient-to-br from-blue-100 to-indigo-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
                           <div className="font-semibold">
                             {t("aboutUs.executive.departments.research.title")}
                           </div>
@@ -266,7 +266,7 @@ export default function GioiThieuPage() {
                             )}
                           </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
+                        <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
                           <div className="font-semibold">
                             {t(
                               "aboutUs.executive.departments.international.title"
@@ -278,7 +278,7 @@ export default function GioiThieuPage() {
                             )}
                           </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
                           <div className="font-semibold">
                             {t(
                               "aboutUs.executive.departments.communication.title"
@@ -313,16 +313,16 @@ export default function GioiThieuPage() {
           {/* Ban Thường vụ Section */}
           {activeTab === "standing" && (
             <div className="animate-in fade-in duration-500">
-              <Card className="border-[#977DFF]/40 shadow-lg bg-white">
+              <Card className="border-slate-200 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     {t("aboutUs.standing.title")}
                   </h3>
-                  <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-8 rounded-lg border border-[#FFCCF2]/40">
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-lg border border-slate-200">
                     <div className="text-center space-y-6">
                       {/* Trưởng ban */}
                       <div className="flex justify-center">
-                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] text-white px-8 py-4 rounded-lg shadow-lg">
+                        <div className="bg-gradient-to-br from-[#0033FF] to-[#977DFF] text-white px-8 py-4 rounded-lg shadow-lg">
                           <div className="font-bold text-lg">
                             {t("aboutUs.standing.head.title")}
                           </div>
@@ -334,7 +334,7 @@ export default function GioiThieuPage() {
 
                       {/* Các thành viên thường vụ */}
                       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
+                        <div className="bg-gradient-to-br from-slate-100 to-blue-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
                           <div className="font-semibold text-sm">
                             {t("aboutUs.standing.members.viceChairman.title")}
                           </div>
@@ -344,7 +344,7 @@ export default function GioiThieuPage() {
                             )}
                           </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#FFCCF2] to-[#F2E6EE] text-[#0033FF] px-4 py-3 rounded-lg shadow border border-[#FFCCF2]/40">
+                        <div className="bg-gradient-to-br from-blue-100 to-indigo-100 text-[#0033FF] px-4 py-3 rounded-lg shadow border border-slate-200">
                           <div className="font-semibold text-sm">
                             {t("aboutUs.standing.members.secretary.title")}
                           </div>
@@ -352,7 +352,7 @@ export default function GioiThieuPage() {
                             {t("aboutUs.standing.members.secretary.subtitle")}
                           </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#F2E6EE] to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-slate-100 to-[#977DFF] text-white px-4 py-3 rounded-lg shadow">
                           <div className="font-semibold text-sm">
                             {t("aboutUs.standing.members.viceSecretary.title")}
                           </div>
@@ -362,7 +362,7 @@ export default function GioiThieuPage() {
                             )}
                           </div>
                         </div>
-                        <div className="bg-gradient-to-br from-[#977DFF] to-[#FFCCF2] text-white px-4 py-3 rounded-lg shadow">
+                        <div className="bg-gradient-to-br from-[#977DFF] to-blue-100 text-white px-4 py-3 rounded-lg shadow">
                           <div className="font-semibold text-sm">
                             {t("aboutUs.standing.members.member.title")}
                           </div>
@@ -373,7 +373,7 @@ export default function GioiThieuPage() {
                       </div>
 
                       {/* Nhiệm vụ */}
-                      <div className="bg-white p-6 rounded-lg shadow border-2 border-[#FFCCF2]/40">
+                      <div className="bg-white p-6 rounded-lg shadow border-2 border-slate-200">
                         <h4 className="font-bold text-[#0033FF] mb-4">
                           {t("aboutUs.standing.tasks.title")}
                         </h4>
@@ -410,7 +410,7 @@ export default function GioiThieuPage() {
           {/* Điều lệ NDA Section */}
           {activeTab === "charter" && (
             <div className="animate-in fade-in duration-500">
-              <Card className="border-[#FFCCF2]/40 shadow-lg bg-white">
+              <Card className="border-slate-200 shadow-lg bg-white">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold text-[#0033FF] mb-6 text-center">
                     {t("aboutUs.charter.title")}
@@ -422,7 +422,7 @@ export default function GioiThieuPage() {
                       <h4 className="text-lg font-semibold text-[#0033FF]">
                         {t("aboutUs.charter.preview.title")}
                       </h4>
-                      <div className="border-2 border-[#FFCCF2]/40 rounded-lg p-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/20">
+                      <div className="border-2 border-slate-200 rounded-lg p-4 bg-gradient-to-br from-slate-100 to-blue-100/20">
                         <Image
                           src="/vietnamese-legal-document.svg"
                           alt="Điều lệ NDA - Trang 1"
@@ -438,7 +438,7 @@ export default function GioiThieuPage() {
                       <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
                         {t("aboutUs.charter.info.title")}
                       </h4>
-                      <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-6 rounded-lg border border-[#FFCCF2]/40">
+                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-slate-200">
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between">
                             <span className="font-medium text-[#0033FF]">
@@ -475,7 +475,7 @@ export default function GioiThieuPage() {
                         </div>
                       </div>
 
-                      <div className="bg-gradient-to-br from-[#FFCCF2]/20 to-[#F2E6EE] p-6 rounded-lg border border-[#FFCCF2]/40">
+                      <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-lg border border-slate-200">
                         <h4 className="text-lg font-semibold text-[#0033FF] mb-4">
                           {t("aboutUs.charter.content.title")}
                         </h4>
@@ -505,7 +505,7 @@ export default function GioiThieuPage() {
                       </div>
 
                       <div className="text-center">
-                        <Button className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-8 py-3 border-0 transition-all duration-300">
+                        <Button className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-8 py-3 border-0 transition-all duration-300">
                           <Download className="w-5 h-5 mr-2" />
                           {t("aboutUs.charter.download.button")}
                         </Button>

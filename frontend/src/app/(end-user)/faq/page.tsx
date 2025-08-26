@@ -72,7 +72,7 @@ export default function FAQHomePage() {
   // Loading state
   if (categoriesLoading && !isSearching) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center text-white">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
           <p>{t("faq.loading")}</p>
@@ -99,7 +99,7 @@ export default function FAQHomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2]">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="max-w-4xl mx-auto px-4 py-16 text-center text-white">
         <h1 className="text-4xl font-bold mb-4">{t("faq.title")}</h1>
@@ -181,14 +181,14 @@ export default function FAQHomePage() {
               <Link key={category.id} href={`/faq/${category.id}`}>
                 <Card className="p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer bg-white/95 backdrop-blur-sm border-0 hover:bg-white">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
                       <h2 className="text-lg font-semibold text-[#0033FF] mb-1 line-clamp-2 min-h-[2.5rem]">
                         {truncateText(category.content, 60)}
                       </h2>
-                      <span className="text-xs text-[#977DFF] font-medium bg-[#FFCCF2]/30 px-2 py-1 rounded-full">
+                      <span className="text-xs text-[#977DFF] font-medium bg-blue-100 px-2 py-1 rounded-full">
                         {t("faq.questionLabel")}
                       </span>
                     </div>

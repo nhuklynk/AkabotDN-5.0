@@ -93,8 +93,8 @@ export function RelatedPosts({
 
   if (loading) {
     return (
-      <Card>
-        <CardContent className="p-6">
+      <Card className="border-slate-200 shadow-lg">
+        <CardContent className="p-6 border-slate-200 shadow-lg">
           <h3 className="font-semibold text-slate-900 mb-4">
             {t("posts.detail.relatedPosts.title")}
           </h3>
@@ -108,8 +108,8 @@ export function RelatedPosts({
 
   if (error) {
     return (
-      <Card>
-        <CardContent className="p-6">
+      <Card className="border-slate-200 shadow-lg">
+        <CardContent className="p-6 border-slate-200 shadow-lg">
           <h3 className="font-semibold text-slate-900 mb-4">
             {t("posts.detail.relatedPosts.title")}
           </h3>
@@ -123,8 +123,8 @@ export function RelatedPosts({
 
   if (relatedPosts.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
+      <Card className="border-slate-200 shadow-lg">
+        <CardContent className="p-6 border-slate-200 shadow-lg">
           <h3 className="font-semibold text-slate-900 mb-4">
             {t("posts.detail.relatedPosts.title")}
           </h3>

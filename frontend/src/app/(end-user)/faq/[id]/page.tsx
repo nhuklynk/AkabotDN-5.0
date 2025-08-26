@@ -45,7 +45,7 @@ export default function FAQCategoryPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center text-white">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
           <p>{t("faq.loadingQuestion")}</p>
@@ -57,7 +57,7 @@ export default function FAQCategoryPage() {
   // Error state
   if (error || !category) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center text-white">
           <p className="text-red-200 mb-4">
             {error || t("faq.error.notFound")}
@@ -74,7 +74,7 @@ export default function FAQCategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2]">
+    <div className="min-h-screen bg-white">
       {/* Navigation Header */}
       <div className="bg-white/10 backdrop-blur-sm border-b border-white/20">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -119,10 +119,10 @@ export default function FAQCategoryPage() {
                   {childFaqs.map((childFaq, index) => (
                     <div
                       key={childFaq.id}
-                      className="border-b border-[#FFCCF2]/40 pb-6 last:border-0 last:pb-0"
+                      className="border-b border-slate-200 pb-6 last:border-0 last:pb-0"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center text-white font-bold text-sm">
                           {index + 1}
                         </div>
                         <div className="flex-1">
@@ -150,12 +150,12 @@ export default function FAQCategoryPage() {
                 {t("faq.questionLabel")}
               </h2>
               <div className="mb-6">
-                <div className="bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 p-6 rounded-lg border border-[#FFCCF2]/40">
+                <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-lg border border-slate-200">
                   <p className="text-[#0600AF]/80 leading-relaxed text-lg">
                     {category.content}
                   </p>
 
-                  <div className="mt-4 pt-4 border-t border-[#FFCCF2]/40">
+                  <div className="mt-4 pt-4 border-t border-slate-200">
                     <Link
                       href="/faq"
                       className="text-[#977DFF] hover:text-[#0033FF] font-medium transition-colors"
@@ -169,7 +169,7 @@ export default function FAQCategoryPage() {
           )}
 
           {/* Contact Section */}
-          <div className="mt-8 p-6 bg-gradient-to-r from-[#0033FF]/10 to-[#977DFF]/10 rounded-lg border border-[#FFCCF2]/40">
+          <div className="mt-8 p-6 bg-gradient-to-r from-[#0033FF]/10 to-[#977DFF]/10 rounded-lg border border-slate-200">
             <h3 className="text-lg font-semibold text-[#0033FF] mb-2">
               {t("faq.contact.title")}
             </h3>
@@ -178,7 +178,7 @@ export default function FAQCategoryPage() {
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-6 py-2 rounded-full font-medium transition-all duration-300"
+              className="inline-block bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white px-6 py-2 rounded-full font-medium transition-all duration-300"
             >
               {t("faq.contact.button")}
             </Link>
