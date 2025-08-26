@@ -8,6 +8,7 @@ import { TagQueryDto } from './dto/tag-query.dto';
 import { plainToClass } from 'class-transformer';
 import { Tag } from './entity/tag.entity';
 import { Status } from 'src/config/base-audit.entity';
+import { PaginatedData } from 'src/common/interfaces/api-response.interface';
 
 @Injectable()
 export class TagService {
@@ -31,12 +32,62 @@ export class TagService {
     return plainToClass(TagResponseDto, savedTag, { excludeExtraneousValues: true });
   }
 
-  async findAll(): Promise<TagResponseDto[]> {
-    const tags = await this.tagRepository.find({
-      order: { created_at: 'DESC' },
-    });
-    return tags.map(tag => plainToClass(TagResponseDto, tag, { excludeExtraneousValues: true }));
+  async findAll(query: TagQueryDto): Promise<PaginatedData<TagResponseDto>> {
+    const { page = 1, limit = 10, name, slug, search, date_from, date_to } = query;
+    const skip = (page - 1) * limit;
+  
+    const qb = this.tagRepository
+      .createQueryBuilder('tag')
+      .orderBy('tag.created_at', 'DESC')
+      .skip(skip)
+      .take(limit);
+  
+    // Lọc theo name (case-insensitive)
+    if (name) {
+      qb.andWhere('LOWER(tag.name) LIKE LOWER(:name)', { name: `%${name}%` });
+    }
+  
+    // Lọc theo slug (case-insensitive)
+    if (slug) {
+      qb.andWhere('LOWER(tag.slug) LIKE LOWER(:slug)', { slug: `%${slug}%` });
+    }
+  
+    // Search nhiều field (name, slug, description)
+    if (search) {
+      qb.andWhere(
+        '(LOWER(tag.name) LIKE LOWER(:search) OR LOWER(tag.slug) LIKE LOWER(:search) OR LOWER(tag.description) LIKE LOWER(:search))',
+        { search: `%${search}%` }
+      );
+    }
+  
+    // Lọc theo khoảng thời gian
+    if (date_from && date_to) {
+      qb.andWhere('tag.created_at BETWEEN :date_from AND :date_to', {
+        date_from,
+        date_to,
+      });
+    } else if (date_from) {
+      qb.andWhere('tag.created_at >= :date_from', { date_from });
+    } else if (date_to) {
+      qb.andWhere('tag.created_at <= :date_to', { date_to });
+    }
+  
+    const [tags, total] = await qb.getManyAndCount();
+    const totalPages = Math.ceil(total / limit);
+  
+    const responseDtos = tags.map(tag =>
+      plainToClass(TagResponseDto, tag, { excludeExtraneousValues: true })
+    );
+  
+    return {
+      items: responseDtos,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
+  
 
   async findPaginated(skip: number, take: number): Promise<[TagResponseDto[], number]> {
     const [tags, total] = await this.tagRepository.findAndCount({

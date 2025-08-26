@@ -4,6 +4,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  OneToOne,
   Index,
 } from 'typeorm';
 import { Role } from './role.entity';
@@ -50,6 +51,6 @@ export class User extends BaseAuditEntity {
   @OneToMany(() => Comment, (comment) => comment.author)
   comments: Comment[];
 
-  @OneToMany(() => Member, (member) => member.user)
-  memberships: Member[];
+  @OneToOne(() => Member, (member) => member.user)
+  member: Member;
 }

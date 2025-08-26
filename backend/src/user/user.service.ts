@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { User } from './entity/user.entity';
@@ -40,18 +40,42 @@ export class UserService {
       }
     }
 
+    // Validate role_id is provided
+    if (!createUserDto.role_id) {
+      throw new BadRequestException('Role ID is required when creating a user');
+    }
+
+    // Check if role exists
+    const role = await this.roleRepository.findOne({
+      where: { id: createUserDto.role_id }
+    });
+    
+    if (!role) {
+      throw new BadRequestException(`Role with ID ${createUserDto.role_id} not found`);
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     const user = this.userRepository.create({
       ...createUserDto,
       password_hash: hashedPassword,
-      created_by: 'system', // hoặc user ID nếu có authentication
+      status: (createUserDto.status as any) || Status.ACTIVE,
+      created_by: 'system',
       modified_by: 'system',
     });
 
     const savedUser = await this.userRepository.save(user);
-    return plainToClass(UserResponseDto, savedUser);
+
+    // Assign role (role is guaranteed to exist at this point)
+    await this.userRepository
+      .createQueryBuilder()
+      .relation(User, 'roles')
+      .of(savedUser)
+      .add(role);
+
+    // Return user with roles
+    return this.findOne(savedUser.id);
   }
 
   async findAll(): Promise<UserResponseDto[]> {
@@ -108,6 +132,7 @@ export class UserService {
         id: true,
         email: true,
         full_name: true,
+        password_hash: true,
         created_at: true,
         avatar: true,
         phone: true,
@@ -213,6 +238,29 @@ export class UserService {
   }
 
   async validatePassword(user: User, password: string): Promise<boolean> {
+    if (!user.password_hash) {
+      return false;
+    }
     return bcrypt.compare(password, user.password_hash);
+  }
+
+  
+  async findByRole(roleId: string): Promise<UserResponseDto[]> {
+    const users = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role')
+      .where('role.id = :roleId', { roleId })
+      .select([
+        'user.id',
+        'user.email',
+        'user.full_name',
+        'user.created_at',
+        'user.avatar',
+        'user.phone',
+        'user.status',
+      ])
+      .getMany();
+
+    return users.map(user => plainToClass(UserResponseDto, user));
   }
 }

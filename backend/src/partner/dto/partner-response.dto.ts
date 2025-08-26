@@ -20,6 +20,15 @@ export class PartnerResponseDto {
   @Expose()
   created_at: Date;
 
+  @Expose()
+  modified_at: Date;
+
+  @Expose()
+  created_by: string;
+
+  @Expose()
+  modified_by: string;
+
   constructor(partial: Partial<PartnerResponseDto>) {
     Object.assign(this, partial);
   }

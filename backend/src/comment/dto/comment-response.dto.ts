@@ -15,6 +15,15 @@ export class CommentResponseDto {
   created_at: Date;
 
   @Expose()
+  modified_at: Date;
+
+  @Expose()
+  created_by: string;
+
+  @Expose()
+  modified_by: string;
+
+  @Expose()
   @Type(() => Object)
   post?: any;
 

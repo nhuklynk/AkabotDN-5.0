@@ -7,19 +7,48 @@ import { UpdateMediaDto } from './dto/update-media.dto';
 import { MediaResponseDto } from './dto/media-response.dto';
 import { plainToClass } from 'class-transformer';
 import { Status } from 'src/config/base-audit.entity';
+import { MediaQueryDto } from './dto/media-query.dto';
+import { PaginatedData } from 'src/common/interfaces/api-response.interface';
+import { StorageService } from 'src/storage';
 
 @Injectable()
 export class MediaService {
   constructor(
     @InjectRepository(Media)
     private mediaRepository: Repository<Media>,
+    private storageService: StorageService,
   ) {}
 
-  async findAll(): Promise<MediaResponseDto[]> {
-    const media = await this.mediaRepository.find();
-    return media.map(media => plainToClass(MediaResponseDto, media, { excludeExtraneousValues: true }));
+  async findAll(query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
+    const { page = 1, limit = 10, search } = query;
+    const skip = (page - 1) * limit;
+  
+    const queryBuilder = this.mediaRepository
+      .createQueryBuilder('media')
+      .orderBy('media.created_at', 'DESC')
+      .skip(skip)
+      .take(limit);
+  
+    // Search ignoring case
+    if (search) {
+      queryBuilder.andWhere(
+        '(LOWER(media.file_name) LIKE LOWER(:search) OR LOWER(media.mime_type) LIKE LOWER(:search))',
+        { search: `%${search}%` },
+      );
+    }
+  
+    const [items, total] = await queryBuilder.getManyAndCount();
+    const totalPages = Math.ceil(total / limit);
+  
+    return {
+      items: items.map(m => plainToClass(MediaResponseDto, m, { excludeExtraneousValues: true })),
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
-
+  
   async findOne(id: string): Promise<MediaResponseDto> {
     const media = await this.mediaRepository.findOne({
       where: { id: id },
@@ -46,7 +75,7 @@ export class MediaService {
     });
 
     const savedMedia = await this.mediaRepository.save(media);
-    return this.findOne(savedMedia.id);
+    return plainToClass(MediaResponseDto, savedMedia, { excludeExtraneousValues: true });
   }
 
   async update(id: string, updateMediaDto: UpdateMediaDto): Promise<MediaResponseDto> {
@@ -58,8 +87,8 @@ export class MediaService {
       throw new NotFoundException(`Media with ID ${id} not found`);
     }
 
-    await this.mediaRepository.update(id, updateMediaDto);
-    return this.findOne(id);
+    const updatedMedia = await this.mediaRepository.update(id, updateMediaDto);
+    return plainToClass(MediaResponseDto, updatedMedia, { excludeExtraneousValues: true });
   }
 
   async remove(id: string): Promise<void> {
@@ -71,5 +100,17 @@ export class MediaService {
       media.status = Status.INACTIVE;
       await this.mediaRepository.save(media);
     }
+  }
+
+  async download(id: string) {
+    const media = await this.mediaRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!media) {
+      throw new NotFoundException(`Media with ID ${id} not found`);
+    }
+
+    return this.storageService.getDownloadUrl(media.file_path);
   }
 }

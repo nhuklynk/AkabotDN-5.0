@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { MediaService } from './media.service';
 import { CreateMediaDto } from './dto/create-media.dto';
@@ -23,6 +24,8 @@ import {
   ApiBody,
   ApiQuery,
 } from '@nestjs/swagger';
+import { MediaQueryDto } from './dto/media-query.dto';
+import { PaginatedData } from 'src/common/interfaces/api-response.interface';
 
 // Helper function to validate UUID
 function validateUUID(uuid: string): boolean {
@@ -42,8 +45,8 @@ export class MediaController {
     description: 'List of all media files',
     type: [MediaResponseDto],
   })
-  async findAll(): Promise<MediaResponseDto[]> {
-    return this.mediaService.findAll();
+  async findAll(@Query() query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
+    return this.mediaService.findAll(query);
   }
 
   @Get(':id')
@@ -146,6 +149,20 @@ export class MediaController {
       throw new BadRequestException('Invalid UUID format for media ID');
     }
     return this.mediaService.remove(id);
+  }
+
+  @Get('download/:id')
+  @ApiOperation({ summary: 'Download media by ID' })
+  @ApiParam({ name: 'id', description: 'Media ID (UUID)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Media downloaded successfully',
+  })
+  async download(@Param('id') id: string): Promise<any> {
+    if (!validateUUID(id)) {
+      throw new BadRequestException('Invalid UUID format for media ID');
+    }
+    return this.mediaService.download(id);
   }
 }
 

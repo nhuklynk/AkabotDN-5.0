@@ -1,7 +1,6 @@
 import { IsString, IsOptional, IsUUID, IsEnum, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostStatus } from '../entity/post.entity';
-import { Status } from '../../config/base-audit.entity';
 
 export class CreatePostFormdataDto {
   @ApiProperty({
@@ -14,21 +13,21 @@ export class CreatePostFormdataDto {
   title: string;
 
   @ApiProperty({
-    description: 'Post slug (URL-friendly version of title)',
-    example: 'getting-started-with-nestjs',
-    minLength: 1,
-    maxLength: 255
-  })
-  @IsString()
-  slug: string;
-
-  @ApiProperty({
     description: 'Post content',
     example: 'This is the main content of the post...',
     minLength: 1
   })
   @IsString()
   content: string;
+
+  @ApiProperty({
+    description: 'Post slug',
+    example: 'getting-started-with-nestjs',
+    minLength: 1,
+    maxLength: 255
+  })
+  @IsString()
+  slug: string;
 
   @ApiProperty({
     description: 'Post status',
@@ -79,17 +78,6 @@ export class CreatePostFormdataDto {
   tag_ids?: string;
 
   @ApiProperty({
-    description: 'Entity status',
-    enum: Status,
-    example: Status.ACTIVE,
-    required: false,
-    default: Status.ACTIVE
-  })
-  @IsOptional()
-  @IsEnum(Status)
-  status?: Status;
-
-  @ApiProperty({
     description: 'Post featured image',
     type: 'string',
     format: 'binary',
@@ -97,4 +85,12 @@ export class CreatePostFormdataDto {
   })
   @IsOptional()
   featured_image?: any;
+
+  @ApiProperty({
+    description: 'User ID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    required: true
+  })
+  @IsUUID()
+  user_id: string;
 }

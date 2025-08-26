@@ -19,15 +19,10 @@ export class CategoryResponseDto {
   @Expose()
   description: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, type: [CategoryResponseDto] })
   @Expose()
-  @Type(() => Object)
-  parent?: any;
-
-  @ApiProperty({ required: false })
-  @Expose()
-  @Type(() => Array)
-  children?: any[];
+  @Type(() => CategoryResponseDto)
+  children?: CategoryResponseDto[];
 
   @ApiProperty()
   @Expose()

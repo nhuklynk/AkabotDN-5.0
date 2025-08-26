@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { databaseConfig } from './database/database.config';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
@@ -19,6 +20,8 @@ import { AuditSubscriber } from './config/audit.subscriber';
 import { CommonModule } from './common/common.module';
 import { StorageModule } from './storage/storage.module';
 import { SwaggerExportController } from './config/swagger-export.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
 
 @Module({
   imports: [
@@ -29,6 +32,7 @@ import { SwaggerExportController } from './config/swagger-export.controller';
     TypeOrmModule.forRoot(databaseConfig),
     CommonModule,
     UserModule,
+    AuthModule,
     PostModule,
     CategoryModule,
     TagModule,
@@ -42,6 +46,14 @@ import { SwaggerExportController } from './config/swagger-export.controller';
     StorageModule,
   ],
   controllers: [AppController, SwaggerExportController],
-  providers: [AppService, AuditSubscriber],
+  providers: [
+    AppService,
+    AuditSubscriber,
+    {
+      provide: APP_GUARD,
+      useClass: GlobalJwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
+

@@ -42,13 +42,6 @@ export class Event extends BaseAuditEntity {
   @Column({ type: 'boolean', default: false })
   countdown_enabled: boolean;
 
-  @Column({ 
-    type: 'enum', 
-    enum: EventStatus, 
-    default: EventStatus.DRAFT
-  })
-  public_status: EventStatus;
-
   @ManyToMany(() => Tag, (tag) => tag.events, { cascade: true })
   @JoinTable({
     name: 'event_tags',

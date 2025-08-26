@@ -103,7 +103,7 @@ export class StorageService {
       throw new BadRequestException('Upload options are required');
     }
     
-    const { bucket, fileName, scope, expiresInSeconds = 60 * 60 } = options;
+    const { bucket, scope, expiresInSeconds = 60 * 60 } = options;
     
     if (!bucket) {
       throw new BadRequestException('Bucket is required');
@@ -117,17 +117,11 @@ export class StorageService {
     const maxSizeInMb = this.storageOptions.maxSizeInMb;
     const maxSizeInBytes = maxSizeInMb * 1024 * 1024;
 
-    const metadata = {
-      'x-amz-meta-file-name': fileName ?? '',
-    };
-
     const postPolicy = await createPresignedPost(this.s3Client, {
       Bucket: bucket,
       Key: objectName,
       Conditions: [['content-length-range', 1, maxSizeInBytes]],
-      Fields: {
-        ...metadata,
-      },
+      Fields: {},
       Expires: expiresInSeconds,
     });
 
@@ -183,6 +177,7 @@ export class StorageService {
        * File buffer data or path to the file to upload.
        */
       file: Buffer | string;
+      fileName: string;
       fileSize?: number;
       contentType?: string;
     } & UploadOptions,
@@ -219,10 +214,12 @@ export class StorageService {
       Body: fileBuffer,
       ContentType: contentType,
       Metadata: {
-        'file-name': fileName ? encodeURIComponent(fileName) : '',
-        'file-size': fileSize ? fileSize.toString() : '',
+        'x-file-name': fileName ? encodeURIComponent(fileName) : '',
+        'x-file-size': fileSize ? fileSize.toString() : '',
       },
     });
+
+    // Debug logging
 
     await this.s3Client.send(command);
 
