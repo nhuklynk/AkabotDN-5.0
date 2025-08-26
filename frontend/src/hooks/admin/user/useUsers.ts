@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import getAllUser, { GetAllUserResponse, UserListItem, UserQuery } from "@/services/admin/users/getAllUser";
+import getAllUser, { GetAllUserResponse, UserListItem, UserQuery, getUsersByRolesUnion } from "@/services/admin/users/getAllUser";
 import getUserById from "@/services/admin/users/getUserById";
 import createUser, { CreateUserPayload } from "@/services/admin/users/createUser";
 import updateUser, { UpdateUserPayload } from "@/services/admin/users/updateUser";
@@ -18,19 +18,23 @@ export function useUsers(options: UseUsersOptions = {}) {
   const [data, setData] = useState<GetAllUserResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [roleIds, setRoleIds] = useState<string[] | null>(null);
 
   const fetchUsers = useCallback(async (override?: UserQuery) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await getAllUser({ ...query, ...override });
+      const effectiveQuery = { ...query, ...override };
+      const res = roleIds && roleIds.length > 0
+        ? await getUsersByRolesUnion(roleIds, effectiveQuery)
+        : await getAllUser(effectiveQuery);
       setData(res);
     } catch (e: any) {
       setError(e?.message || "Failed to load users");
     } finally {
       setLoading(false);
     }
-  }, [query]);
+  }, [query, roleIds]);
 
   useEffect(() => {
     if (autoFetch) fetchUsers();
@@ -61,6 +65,8 @@ export function useUsers(options: UseUsersOptions = {}) {
   return {
     query,
     setQuery,
+    roleIds,
+    setRoleIds,
     data,
     items,
     total: data?.total ?? 0,

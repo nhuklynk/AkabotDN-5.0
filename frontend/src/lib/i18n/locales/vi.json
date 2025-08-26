@@ -29,7 +29,11 @@
     "deleteWarningLong": "Thao tác này không thể hoàn tác. Danh mục sẽ bị xóa vĩnh viễn và có thể ảnh hưởng đến nội dung liên quan.",
     "preview": "Xem trước",
     "view": "Xem",
-    "viewLive": "Xem trực tiếp"
+    "viewLive": "Xem trực tiếp",
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Ngưng hoạt động"
+    }
   },
   "editor": {
     "bold": "B",
@@ -170,6 +174,25 @@
     "add": "Tạo bài viết",
     "searchPlaceholder": "Tìm kiếm bài viết...",
     "countSummary": "{{filtered}} / {{total}} bài viết",
+    "filters": {
+      "status": "Trạng thái",
+      "category": "Danh mục",
+      "type": "Loại bài",
+      "filterByTag": "Lọc theo tag",
+      "all": "Tất cả",
+      "allCategories": "Tất cả danh mục",
+      "allTypes": "Tất cả loại",
+      "published": "Đã xuất bản",
+      "review": "Chờ duyệt",
+      "rejected": "Từ chối",
+      "archived": "Lưu trữ",
+      "draft": "Bản nháp",
+      "scheduled": "Đã lên lịch",
+      "article": "Bài viết",
+      "news": "Tin tức",
+      "event": "Sự kiện",
+      "guide": "Hướng dẫn"
+    },
     "table": {
       "post": "Bài viết",
       "author": "Tác giả",
@@ -186,6 +209,41 @@
       "editDesc": "Cập nhật nội dung và cài đặt.",
       "createCta": "Tạo bài viết",
       "updateCta": "Cập nhật bài viết"
+    },
+    "form": {
+      "title": "Tiêu đề",
+      "titlePlaceholder": "Nhập tiêu đề",
+      "slug": "Slug",
+      "slugPlaceholder": "post-slug",
+      "summary": "Tóm tắt",
+      "summaryPlaceholder": "Nhập tóm tắt",
+      "content": "Nội dung",
+      "author": "Tác giả",
+      "authorPlaceholder": "Chọn tác giả",
+      "mediaId": "Media ID",
+      "mediaIdPlaceholder": "Nhập media_id (tuỳ chọn)",
+      "postStatus": "Trạng thái bài viết",
+      "postStatusPlaceholder": "Chọn trạng thái",
+      "publishedAt": "Ngày xuất bản",
+      "postType": "Loại bài viết",
+      "postTypePlaceholder": "Chọn loại",
+      "recordStatus": "Trạng thái bản ghi",
+      "recordStatusPlaceholder": "Chọn trạng thái",
+      "statusHistory": "Lịch sử trạng thái"
+    },
+    "status": {
+      "draft": "Nháp",
+      "review": "Duyệt",
+      "published": "Xuất bản",
+      "rejected": "Từ chối",
+      "archived": "Lưu trữ",
+      "scheduled": "Lên lịch"
+    },
+    "type": {
+      "article": "Bài viết",
+      "news": "Tin tức",
+      "event": "Sự kiện",
+      "guide": "Hướng dẫn"
     }
   },
   "resource": {
@@ -200,7 +258,11 @@
       "image": "Hình ảnh",
       "video": "Video",
       "audio": "Âm thanh",
-      "archive": "Lưu trữ"
+      "archive": "Lưu trữ",
+      "post": "Bài viết",
+      "event": "Sự kiện",
+      "member": "Hội viên",
+      "other": "Khác"
     },
     "countSummary": "{{filtered}} / {{total}} tài nguyên",
     "download": "Tải xuống",

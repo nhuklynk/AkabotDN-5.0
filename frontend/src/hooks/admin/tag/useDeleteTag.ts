@@ -12,6 +12,9 @@ export function useDeleteTag() {
       return true;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-tags"] }),
+    onError: (error) => {
+      console.error('Error deleting tag:', error);
+    },
   });
 
   const mutate = useCallback((id: string | number) => mutation.mutateAsync(id), [mutation]);

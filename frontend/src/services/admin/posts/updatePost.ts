@@ -1,12 +1,21 @@
 import apiClient from "@/services/apiClient";
-import { CreatePostPayload } from "./createPost";
 
-export type UpdatePostPayload = Partial<CreatePostPayload> & { id: number | string };
-
-export async function updatePost(id: number | string, payload: Partial<CreatePostPayload>) {
-  return apiClient.put(`/posts/${id}`, payload);
+export interface UpdatePostPayload {
+  title?: string;
+  summary?: string;
+  content?: string;
+  post_status?: string;
+  user_id: string;
+  category_ids?: string;
+  tag_ids?: string;
+  published_at?: string;
+  featured_image?: any;
 }
 
-export default updatePost;
-
-
+export const updatePost = async (
+  id: string | number,
+  payload: UpdatePostPayload
+) => {
+  const response = await apiClient.patch(`/posts/${id}`, payload);
+  return response?.data ?? response;
+};

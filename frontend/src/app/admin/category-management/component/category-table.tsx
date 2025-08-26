@@ -16,6 +16,7 @@ type Category = {
   color: string
   status: string
   parentId: number | string | null
+  level: number
   postCount: number
   createdAt?: string
 }
@@ -69,10 +70,10 @@ export default function CategoryTable({
               </TableCell>
               <TableCell className="font-mono text-sm">{category.slug}</TableCell>
               <TableCell>
-                {getParentName(category.parentId) ? (
-                  <Badge variant="outline">{getParentName(category.parentId)}</Badge>
-                ) : (
+                {category.level === 0 ? (
                   <span className="text-muted-foreground">{t("category.table.root")}</span>
+                ) : (
+                  <Badge variant="outline">Level {category.level}</Badge>
                 )}
               </TableCell>
               <TableCell>

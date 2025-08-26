@@ -12,6 +12,9 @@ export function useDeleteUser() {
       return true;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-users"] }),
+    onError: (error) => {
+      console.error('Error deleting user:', error);
+    },
   });
 
   const mutate = useCallback((id: string | number) => mutation.mutateAsync(id), [mutation]);
