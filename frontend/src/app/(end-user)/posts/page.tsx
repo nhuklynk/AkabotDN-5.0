@@ -11,8 +11,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useLocale } from "@/hooks/useLocale";
 
 export default function PostsPage() {
+  const { t } = useLocale();
   const [paginationInfo, setPaginationInfo] = useState({
     totalPosts: 0,
     currentPage: 1,
@@ -38,20 +40,23 @@ export default function PostsPage() {
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/home">Trang chủ</BreadcrumbLink>
+              <BreadcrumbLink href="/home">
+                {t("posts.breadcrumb.home")}
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Bài đăng</BreadcrumbPage>
+              <BreadcrumbPage>{t("posts.breadcrumb.posts")}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-4">Bài đăng</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            {t("posts.title")}
+          </h1>
           <p className="text-muted-foreground text-lg max-w-2xl">
-            Cập nhật những tin tức mới nhất về hoạt động của Hiệp hội Dữ liệu
-            Quốc gia Việt Nam và các sự kiện quan trọng trong lĩnh vực dữ liệu.
+            {t("posts.description")}
           </p>
         </div>
 

@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import UserTable from "./component/user-table"
-import UserFormDialog from "./component/user-form-dialog"
-import { Pagination } from "@/components/pagination-component"
-import { useLocale } from "@/hooks/useLocale"
- 
-import { Plus, Search } from "lucide-react"
-import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import UserTable from "./component/user-table";
+import UserFormDialog from "./component/user-form-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Pagination } from "@/components/pagination-component";
+import { useLocale } from "@/hooks/useLocale";
+
+import { Plus, Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 // Mock data for users
 const initialUsers = [
@@ -62,50 +63,57 @@ const initialUsers = [
     status: "active",
     created_at: "2024-03-05",
   },
-]
+];
 
 type User = {
-  id: number
-  full_name: string
-  email: string
-  phone?: string
-  status: string
-  created_at: string
-}
+  id: number;
+  full_name: string;
+  email: string;
+  phone?: string;
+  status: string;
+  created_at: string;
+};
 
 export default function UsersPage() {
-  const { t } = useLocale()
-  const searchParams = useSearchParams()
-  const tab = searchParams.get("tab")
-  const [users, setUsers] = useState<User[]>(initialUsers)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [editingUser, setEditingUser] = useState<User | null>(null)
-  const [formData, setFormData] = useState<{ full_name: string; email: string; phone?: string; status: string }>({
+  const { t } = useLocale();
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab");
+  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [formData, setFormData] = useState<{
+    full_name: string;
+    email: string;
+    phone?: string;
+    status: string;
+  }>({
     full_name: "",
     email: "",
     phone: "",
     status: "active",
-  })
+  });
 
   const filteredUsers = users
     .filter(
       (user) =>
         user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter(() => true)
+    .filter(() => true);
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize))
-  const paginatedUsers = filteredUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   useEffect(() => {
-    setCurrentPage(1)
-  }, [searchTerm])
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   const handleCreateUser = () => {
     const newUser: User = {
@@ -115,74 +123,104 @@ export default function UsersPage() {
       phone: formData.phone,
       status: formData.status,
       created_at: new Date().toISOString().split("T")[0],
-    }
-    setUsers([...users, newUser])
-    setFormData({ full_name: "", email: "", phone: "", status: "active" })
-    setIsCreateDialogOpen(false)
-  }
+    };
+    setUsers([...users, newUser]);
+    setFormData({ full_name: "", email: "", phone: "", status: "active" });
+  };
 
   const handleEditUser = (user: User) => {
-    setEditingUser(user)
+    setEditingUser(user);
     setFormData({
       full_name: user.full_name,
       email: user.email,
       phone: user.phone || "",
       status: user.status,
-    })
-    setIsEditDialogOpen(true)
-  }
+    });
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
+  };
 
   const handleUpdateUser = () => {
     if (editingUser) {
-      setUsers(users.map((user) => (user.id === editingUser.id ? { ...user, ...formData, created_at: user.created_at } : user)))
-      setIsEditDialogOpen(false)
-      setEditingUser(null)
-      setFormData({ full_name: "", email: "", phone: "", status: "active" })
+      setUsers(
+        users.map((user) =>
+          user.id === editingUser.id
+            ? { ...user, ...formData, created_at: user.created_at }
+            : user
+        )
+      );
+      setEditingUser(null);
+      setFormData({ full_name: "", email: "", phone: "", status: "active" });
+      setDialogOpen(false);
     }
-  }
+  };
 
   const handleDeleteUser = (userId: number) => {
-    setUsers(users.filter((user) => user.id !== userId))
-  }
+    setUsers(users.filter((user) => user.id !== userId));
+  };
 
   const getRoleColor = (role: string) => {
     switch (role) {
       case "admin":
-        return "bg-destructive text-destructive-foreground"
+        return "bg-destructive text-destructive-foreground";
       case "editor":
-        return "bg-primary text-primary-foreground"
+        return "bg-primary text-primary-foreground";
       case "member":
-        return "bg-indigo-500 text-white"
+        return "bg-indigo-500 text-white";
       case "expert":
-        return "bg-amber-500 text-white"
+        return "bg-amber-500 text-white";
       case "user":
-        return "bg-secondary text-secondary-foreground"
+        return "bg-secondary text-secondary-foreground";
       default:
-        return "bg-muted text-muted-foreground"
+        return "bg-muted text-muted-foreground";
     }
-  }
+  };
 
-  const getStatusColor = (_status: string) => "bg-secondary text-secondary-foreground"
+  const getStatusColor = (_status: string) =>
+    "bg-secondary text-secondary-foreground";
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">{t("user.title")}</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            {t("user.title")}
+          </h1>
           <p className="text-muted-foreground">{t("user.subtitle")}</p>
         </div>
-        <Button className="flex items-center gap-2" onClick={() => setIsCreateDialogOpen(true)}>
+        <Button
+          className="flex items-center gap-2"
+          onClick={() => { setDialogMode("create"); setDialogOpen(true); }}
+        >
           <Plus className="h-4 w-4" />
           {t("user.add")}
         </Button>
-        <UserFormDialog
-          open={isCreateDialogOpen}
-          onOpenChange={setIsCreateDialogOpen}
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleCreateUser}
-          mode="create"
-        />
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open);
+            if (!open) {
+              setEditingUser(null);
+              setFormData({ full_name: "", email: "", phone: "", status: "active" });
+            }
+          }}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{dialogMode === "create" ? t("user.dialog.createTitle") : t("user.dialog.editTitle")}</DialogTitle>
+              <DialogDescription>{dialogMode === "create" ? t("user.dialog.createDesc") : t("user.dialog.editDesc")}</DialogDescription>
+            </DialogHeader>
+
+            <UserFormDialog formData={formData} setFormData={setFormData} mode={dialogMode} />
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("common.cancel")}</Button>
+              <Button onClick={dialogMode === "create" ? handleCreateUser : handleUpdateUser}>
+                {dialogMode === "create" ? t("user.dialog.createCta") : t("user.dialog.updateCta")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card className="border-0 shadow-none">
@@ -198,7 +236,10 @@ export default function UsersPage() {
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {t("user.countSummary", { filtered: filteredUsers.length, total: users.length })}
+              {t("user.countSummary", {
+                filtered: filteredUsers.length,
+                total: users.length,
+              })}
             </div>
           </div>
 
@@ -218,15 +259,7 @@ export default function UsersPage() {
         </CardContent>
       </Card>
 
-      {/* Edit User Dialog */}
-      <UserFormDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={handleUpdateUser}
-        mode="edit"
-      />
+      {/* Single dialog instance above handles both create and edit */}
     </div>
-  )
+  );
 }

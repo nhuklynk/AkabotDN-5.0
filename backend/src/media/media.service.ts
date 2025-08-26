@@ -9,12 +9,14 @@ import { plainToClass } from 'class-transformer';
 import { Status } from 'src/config/base-audit.entity';
 import { MediaQueryDto } from './dto/media-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
+import { StorageService } from 'src/storage';
 
 @Injectable()
 export class MediaService {
   constructor(
     @InjectRepository(Media)
     private mediaRepository: Repository<Media>,
+    private storageService: StorageService,
   ) {}
 
   async findAll(query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
@@ -27,7 +29,7 @@ export class MediaService {
       .skip(skip)
       .take(limit);
   
-    // Search không phân biệt hoa thường
+    // Search ignoring case
     if (search) {
       queryBuilder.andWhere(
         '(LOWER(media.file_name) LIKE LOWER(:search) OR LOWER(media.mime_type) LIKE LOWER(:search))',
@@ -98,5 +100,17 @@ export class MediaService {
       media.status = Status.INACTIVE;
       await this.mediaRepository.save(media);
     }
+  }
+
+  async download(id: string) {
+    const media = await this.mediaRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!media) {
+      throw new NotFoundException(`Media with ID ${id} not found`);
+    }
+
+    return this.storageService.getDownloadUrl(media.file_path);
   }
 }

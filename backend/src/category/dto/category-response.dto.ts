@@ -1,37 +1,38 @@
 import { Expose, Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import { Status } from 'src/config/base-audit.entity';
 
 export class CategoryResponseDto {
+  @ApiProperty()
   @Expose()
   id: string;
 
+  @ApiProperty()
   @Expose()
   name: string;
 
+  @ApiProperty()
   @Expose()
   slug: string;
 
+  @ApiProperty()
   @Expose()
   description: string;
 
+  @ApiProperty({ required: false, type: [CategoryResponseDto] })
   @Expose()
-  @Type(() => Object)
-  parent?: any;
+  @Type(() => CategoryResponseDto)
+  children?: CategoryResponseDto[];
 
-  @Expose()
-  @Type(() => Array)
-  children?: any[];
-
+  @ApiProperty()
   @Expose()
   created_at: Date;
 
+  @ApiProperty()
   @Expose()
-  updated_at: Date;
+  modified_at: Date;
 
+  @ApiProperty()
   @Expose()
   status: Status;
-
-  constructor(partial: Partial<CategoryResponseDto>) {
-    Object.assign(this, partial);
-  }
 }

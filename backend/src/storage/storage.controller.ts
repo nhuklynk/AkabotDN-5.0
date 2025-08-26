@@ -54,13 +54,20 @@ export class StorageController {
     file: Express.Multer.File,
     @Body() uploadOptions: UploadOptions,
   ) {
-    const { bucket, scope, fileName } = uploadOptions;
+    const { bucket, scope } = uploadOptions;
+    
+    // Debug logging
+    console.log('Upload request:', {
+      originalFileName: file.originalname,
+      bucket,
+      scope
+    });
     
     const arn = await this.storageService.uploadFile({
       file: file.buffer,
       bucket,
       scope,
-      fileName: fileName || file.originalname,
+      fileName: file.originalname,
       fileSize: file.size,
       contentType: file.mimetype,
     });
@@ -71,7 +78,7 @@ export class StorageController {
         arn,
         bucket,
         scope,
-        fileName: fileName || file.originalname,
+        fileName: file.originalname,
         fileSize: file.size,
         contentType: file.mimetype,
       },

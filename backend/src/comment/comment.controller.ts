@@ -14,6 +14,7 @@ import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentResponseDto } from './dto/comment-response.dto';
+import { NestedCommentResponseDto } from './dto/nested-comment-response.dto';
 import { CommentQueryDto } from './dto/comment-query.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { PaginationService } from '../common/services/pagination.service';
@@ -30,6 +31,7 @@ import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
+import { CommentType } from './entity/comment.entity';
 
 @Controller('comments')
 @ApiTags('comments')
@@ -162,46 +164,30 @@ export class CommentController {
     );
   }
 
-  @Get('post/:post_id')
+  @Get('type/:comment_type/id/:comment_type_id/nested')
   @ApiOperation({
-    summary: 'Get comments by post ID',
-    description: 'Retrieves all comments for a specific post. This endpoint is useful for displaying comments on a blog post page.'
+    summary: 'Get nested comments tree by type and ID',
+    description: 'Retrieves all comments for a specific content in a nested tree structure where replies are contained within their parent comments. This provides a hierarchical view of the comment thread.'
   })
   @ApiParam({
-    name: 'post_id',
-    description: 'The UUID of the post to get comments for',
+    name: 'comment_type',
+    description: 'The type of content (e.g., "post", "event")',
+    example: 'post'
+  })
+  @ApiParam({
+    name: 'comment_type_id',
+    description: 'The UUID of the specific content item',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiOkResponse({
-    description: 'List of comments for the specified post retrieved successfully.',
-    type: [CommentResponseDto]
+    description: 'Nested comment tree for the specified type and ID retrieved successfully. Each root comment contains its replies in a hierarchical structure.',
+    type: [NestedCommentResponseDto]
   })
-  @ApiNotFoundResponse({
-    description: 'Post not found. No post exists with the specified ID.'
-  })
-  async findByPost(@Param('post_id') post_id: string): Promise<CommentResponseDto[]> {
-    return this.commentService.findByPost(post_id);
-  }
-
-  @Get('post/:post_id/root')
-  @ApiOperation({
-    summary: 'Get root comments by post ID',
-    description: 'Retrieves only root-level comments (top-level comments without parent) for a specific post. This is useful for displaying the main comment thread.'
-  })
-  @ApiParam({
-    name: 'post_id',
-    description: 'The UUID of the post to get root comments for',
-    example: '123e4567-e89b-12d3-a456-426614174000'
-  })
-  @ApiOkResponse({
-    description: 'List of root comments for the specified post retrieved successfully.',
-    type: [CommentResponseDto]
-  })
-  @ApiNotFoundResponse({
-    description: 'Post not found. No post exists with the specified ID.'
-  })
-  async findRootComments(@Param('post_id') post_id: string): Promise<CommentResponseDto[]> {
-    return this.commentService.findRootComments(post_id);
+  async findNestedCommentsByTypeAndId(
+    @Param('comment_type') comment_type: CommentType,
+    @Param('comment_type_id') comment_type_id: string
+  ): Promise<NestedCommentResponseDto[]> {
+    return this.commentService.findByCommentTypeAndId(comment_type, comment_type_id);
   }
 
   @Get(':id/replies')

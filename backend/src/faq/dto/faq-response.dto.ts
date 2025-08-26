@@ -11,7 +11,13 @@ export class FaqResponseDto {
   created_at: Date;
 
   @Expose()
-  updated_at: Date;
+  modified_at: Date;
+
+  @Expose()
+  created_by: string;
+
+  @Expose()
+  modified_by: string;
 
   @Expose()
   @Type(() => Object)

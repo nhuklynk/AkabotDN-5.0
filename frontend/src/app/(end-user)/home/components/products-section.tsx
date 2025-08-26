@@ -28,7 +28,7 @@ export function ProductsSection() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-[#F2E6EE]">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl lg:text-4xl font-bold text-[#0033FF] mb-4">
@@ -63,7 +63,7 @@ export function ProductsSection() {
                     {product.features.map((feature, featureIndex) => (
                       <span
                         key={featureIndex}
-                        className="px-3 py-1 bg-[#FFCCF2]/20 text-[#0033FF] rounded-full text-sm font-medium border border-[#FFCCF2]/30"
+                        className="px-3 py-1 bg-blue-100 text-[#0033FF] rounded-full text-sm font-medium border border-slate-200"
                       >
                         {feature}
                       </span>
@@ -71,7 +71,7 @@ export function ProductsSection() {
                   </div>
                   <Button
                     variant="ghost"
-                    className="mt-4 text-[#0033FF] hover:text-[#0600AF] hover:bg-[#FFCCF2]/10"
+                    className="mt-4 text-[#0033FF] hover:text-[#0600AF] hover:bg-blue-50"
                   >
                     Tìm hiểu thêm
                     <ArrowRight className="ml-2 h-4 w-4" />

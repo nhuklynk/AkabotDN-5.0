@@ -174,12 +174,12 @@ const cooperations = [
 
 export default function HoatDongPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] to-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r bg-[#0033FF] text-white py-16">
+      <section className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Hoạt động của Hiệp hội
             </h1>
             <p className="text-xl text-white mb-8">
@@ -231,7 +231,7 @@ export default function HoatDongPage() {
         {/* Sự kiện */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-lg flex items-center justify-center mr-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-lg flex items-center justify-center mr-3">
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-[#0033FF]">Sự kiện</h2>
@@ -240,9 +240,9 @@ export default function HoatDongPage() {
             {events.map((event, index) => (
               <Card
                 key={event.id}
-                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-slate-200 "
               >
-                <div className="aspect-video bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-t-lg flex items-center justify-center">
+                <div className="aspect-video bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg flex items-center justify-center">
                   <img
                     src={event.image || "/icons/activities-placeholder.svg"}
                     alt={event.title}
@@ -257,7 +257,7 @@ export default function HoatDongPage() {
                       }
                       className={
                         event.status === "Đã diễn ra"
-                          ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0"
+                          ? "bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white border-0"
                           : "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0"
                       }
                     >
@@ -278,7 +278,7 @@ export default function HoatDongPage() {
                   <p className="text-[#0033FF]/90 mb-4">{event.description}</p>
                   <Button
                     variant="outline"
-                    className="w-full bg-transparent border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                    className="w-full bg-transparent border-slate-300 text-[#0033FF] hover:bg-gradient-to-r hover:from-[#0033FF] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
                   >
                     Xem chi tiết
                   </Button>
@@ -302,10 +302,10 @@ export default function HoatDongPage() {
             {experts.map((expert, index) => (
               <Card
                 key={expert.id}
-                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-slate-200 "
               >
                 <CardHeader className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2]/30 rounded-full flex items-center justify-center border border-[#FFCCF2]/40">
+                  <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center border border-slate-300/40">
                     <img
                       src={expert.image || "/icons/expert-placeholder.svg"}
                       alt={expert.name}
@@ -320,7 +320,7 @@ export default function HoatDongPage() {
                   </CardDescription>
                   <Badge
                     variant="outline"
-                    className="w-fit mx-auto mt-2 border-[#FFCCF2] text-[#0033FF] bg-gradient-to-r from-[#FFCCF2]/20 to-[#F2E6EE]"
+                    className="w-fit mx-auto mt-2 border-slate-300 text-[#0033FF] bg-gradient-to-r from-blue-50 to-slate-50"
                   >
                     🌍 {expert.country}
                   </Badge>
@@ -334,7 +334,7 @@ export default function HoatDongPage() {
                   </div>
                   <Button
                     variant="outline"
-                    className="w-full mt-4 bg-transparent border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                    className="w-full mt-4 bg-transparent border-slate-300 text-[#0033FF] hover:bg-gradient-to-r hover:from-[#0033FF] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
                   >
                     Xem hồ sơ
                   </Button>
@@ -356,13 +356,13 @@ export default function HoatDongPage() {
             {trainings.map((training, index) => (
               <Card
                 key={training.id}
-                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-slate-200 "
               >
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <Badge
                       variant="outline"
-                      className="border-[#FFCCF2] text-[#0033FF] bg-gradient-to-r from-[#FFCCF2]/20 to-[#F2E6EE]"
+                      className="border-slate-300 text-[#0033FF] bg-gradient-to-r from-blue-50 to-slate-50"
                     >
                       {training.level}
                     </Badge>
@@ -381,12 +381,12 @@ export default function HoatDongPage() {
                   <p className="text-[#0033FF]/90 mb-4">
                     {training.description}
                   </p>
-                  <div className="bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/30 p-3 rounded-lg mb-4 border border-[#FFCCF2]/40">
+                  <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-3 rounded-lg mb-4 border border-slate-200">
                     <p className="text-sm text-[#0033FF] font-semibold">
                       <strong>Khóa tiếp theo:</strong> {training.nextSession}
                     </p>
                   </div>
-                  <Button className="w-full bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0 transition-all duration-300">
+                  <Button className="w-full bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0 transition-all duration-300">
                     Đăng ký ngay
                   </Button>
                 </CardContent>
@@ -398,7 +398,7 @@ export default function HoatDongPage() {
         {/* Chính sách - Pháp luật */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#FFCCF2] to-[#0033FF] rounded-lg flex items-center justify-center mr-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-[#0033FF] rounded-lg flex items-center justify-center mr-3">
               <FileText className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-[#0033FF]">
@@ -409,7 +409,7 @@ export default function HoatDongPage() {
             {policies.map((policy, index) => (
               <Card
                 key={policy.id}
-                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-[#FFCCF2]/30 "
+                className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all bg-white border-slate-200 "
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -417,7 +417,7 @@ export default function HoatDongPage() {
                       <div className="flex items-center gap-3 mb-2">
                         <Badge
                           variant="outline"
-                          className="border-[#F2E6EE] text-[#0033FF] bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/20"
+                          className="border-slate-200 text-[#0033FF] bg-gradient-to-r from-slate-50 to-blue-50"
                         >
                           {policy.type}
                         </Badge>
@@ -429,7 +429,7 @@ export default function HoatDongPage() {
                           }
                           className={
                             policy.status === "Có hiệu lực"
-                              ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0"
+                              ? "bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white border-0"
                               : "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0"
                           }
                         >
@@ -448,7 +448,7 @@ export default function HoatDongPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                        className="border-slate-300 text-[#0033FF] hover:bg-gradient-to-r hover:from-[#0033FF] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
                       >
                         Xem chi tiết
                       </Button>
@@ -470,7 +470,7 @@ export default function HoatDongPage() {
         {/* Hợp tác Quốc tế */}
         <section className="mb-16">
           <div className="flex items-center mb-8">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#977DFF] to-[#FFCCF2] rounded-lg flex items-center justify-center mr-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#977DFF] to-blue-100 rounded-lg flex items-center justify-center mr-3">
               <Globe className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-[#0033FF]">
@@ -481,7 +481,7 @@ export default function HoatDongPage() {
             {cooperations.map((cooperation, index) => (
               <Card
                 key={cooperation.id}
-                className="hover:shadow-lg transition-shadow bg-white border-[#977DFF]/30 hover:border-[#FFCCF2]/50"
+                className="hover:shadow-lg transition-shadow bg-white border-[#977DFF]/30 hover:border-slate-300/50"
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -489,7 +489,7 @@ export default function HoatDongPage() {
                       <div className="flex items-center gap-3 mb-3">
                         <Badge
                           variant="outline"
-                          className="border-[#F2E6EE] text-[#0033FF] bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/20"
+                          className="border-slate-200 text-[#0033FF] bg-gradient-to-r from-slate-50 to-blue-50"
                         >
                           {cooperation.type}
                         </Badge>
@@ -501,7 +501,7 @@ export default function HoatDongPage() {
                           }
                           className={
                             cooperation.status === "Đang thực hiện"
-                              ? "bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0"
+                              ? "bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white border-0"
                               : "bg-gradient-to-r from-[#977DFF] to-[#0033FF] text-white border-0"
                           }
                         >
@@ -525,7 +525,7 @@ export default function HoatDongPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-[#FFCCF2] text-[#0033FF] hover:bg-gradient-to-r hover:from-[#FFCCF2] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
+                        className="border-slate-300 text-[#0033FF] hover:bg-gradient-to-r hover:from-[#0033FF] hover:to-[#977DFF] hover:text-white hover:border-0 transition-all duration-300"
                       >
                         Xem chi tiết
                       </Button>

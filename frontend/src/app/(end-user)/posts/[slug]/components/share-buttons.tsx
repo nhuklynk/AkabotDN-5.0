@@ -2,12 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLocale } from "@/hooks/useLocale";
 
 interface ShareButtonsProps {
   postTitle: string;
 }
 
 export function ShareButtons({ postTitle }: ShareButtonsProps) {
+  const { t } = useLocale();
   const handleFacebookShare = () => {
     const url = window.location.href;
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
@@ -33,9 +35,11 @@ export function ShareButtons({ postTitle }: ShareButtonsProps) {
   };
 
   return (
-    <Card>
-      <CardContent className="p-6">
-        <h3 className="font-semibold text-slate-900 mb-4">Chia sẻ bài viết</h3>
+    <Card className="border-slate-200 shadow-lg">
+      <CardContent className="p-6 border-slate-200 shadow-lg">
+        <h3 className="font-semibold text-slate-900 mb-4">
+          {t("posts.detail.share.title")}
+        </h3>
         <div className="flex gap-2">
           <Button
             variant="outline"

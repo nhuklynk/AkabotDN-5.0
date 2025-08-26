@@ -13,8 +13,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostService } from './post.service';
-import { CreatePostDto } from './dto/create-post.dto';
-import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
+import { CreatePostFormdataDto } from './dto/create-post.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { PostQueryDto } from './dto/post-query.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
@@ -65,7 +64,7 @@ export class PostController {
     description: 'Internal server error - Something went wrong on the server side.'
   })
   create(@Body() createPostFormdataDto: CreatePostFormdataDto, @UploadedFile() featuredImage?: any): Promise<PostResponseDto> {
-    return this.postService.createWithFormdata(createPostFormdataDto, featuredImage);
+    return this.postService.create(createPostFormdataDto, featuredImage);
   }
 
   @Get()
@@ -249,7 +248,7 @@ export class PostController {
     @Body() updatePostDto: UpdatePostFormdataDto,
     @UploadedFile() featuredImage?: any,
   ): Promise<PostResponseDto> {
-    return this.postService.updateWithFile(id, updatePostDto, featuredImage);
+    return this.postService.update(id, updatePostDto, featuredImage);
   }
 
   @Delete(':id')
