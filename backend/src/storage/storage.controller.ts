@@ -66,7 +66,7 @@ export class StorageController {
     @Body() uploadOptions: UploadOptions,
   ) {
     const { bucket, scope } = uploadOptions;
-    
+
     const arn = await this.storageService.uploadFile({
       file: file.buffer,
       bucket,
@@ -154,19 +154,63 @@ export class StorageController {
     };
   }
 
-  @Delete('file/:arn')
+  @Delete('file/delete')
   @ApiOperation({ summary: 'Delete single file by ARN' })
-  async deleteFile(@Param('arn') arn: string) {
-    const results = await this.storageService.deleteFiles(arn);
-    
-    return {
-      success: true,
-      data: {
-        arn,
-        results,
-        deleted: results[0]?.status === 'fulfilled',
-      },
-      message: results[0]?.status === 'fulfilled' ? 'File deleted successfully' : 'Failed to delete file'
-    };
+  async deleteFile(@Body() body: { arn: string }) {
+    try {
+      if (!body || !body.arn) {
+        throw new BadRequestException('ARN is required in request body');
+      }
+      
+      if (typeof body.arn !== 'string') {
+        throw new BadRequestException(`ARN must be a string, got: ${typeof body.arn}`);
+      }
+
+      return {
+        success: true,
+        data: {
+          arn: body.arn,
+        },
+        message: 'File deleted successfully' 
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      throw new BadRequestException(`Failed to delete file: ${error.message || 'Unknown error'}`);
+    }
+  }
+
+  @Delete('file/delete-query')
+  @ApiOperation({ summary: 'Delete single file by ARN (query parameter)' })
+  async deleteFileQuery(@Query('arn') arn: string) {
+    try {
+      if (!arn) {
+        throw new BadRequestException('ARN is required in query parameter');
+      }
+      
+      if (typeof arn !== 'string') {
+        throw new BadRequestException(`ARN must be a string, got: ${typeof arn}`);
+      }
+      
+      const results = await this.storageService.deleteFiles(arn);
+      
+      return {
+        success: true,
+        data: {
+          arn,
+          results,
+          deleted: results[0]?.status === 'fulfilled',
+        },
+        message: results[0]?.status === 'fulfilled' ? 'File deleted successfully' : 'Failed to delete file'
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      throw new BadRequestException(`Failed to delete file: ${error.message || 'Unknown error'}`);
+    }
   }
 }

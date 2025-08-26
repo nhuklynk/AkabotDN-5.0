@@ -33,13 +33,9 @@ export class StorageService {
   async ensureBucketExists(bucketName: string): Promise<void> {
     try {
       await this.s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
-      console.log(`Bucket '${bucketName}' exists`);
     } catch (err: any) {
       if (err.$metadata?.httpStatusCode === 404) {
-        console.log(`Bucket '${bucketName}' does not exist. Creating new...`);
-
         await this.s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
-        console.log(`Bucket '${bucketName}' created successfully`);
 
         const policy = {
           Version: "2012-10-17",
@@ -59,10 +55,7 @@ export class StorageService {
             Policy: JSON.stringify(policy),
           })
         );
-
-        console.log(`Bucket '${bucketName}' is public`);
       } else {
-        console.error(`Error checking bucket '${bucketName}':`, err);
         throw new Error(`Cannot check/create bucket '${bucketName}'`);
       }
     }
@@ -105,11 +98,11 @@ export class StorageService {
         try {
           fileName = decodeURIComponent(fileName);
         } catch (e) {
-          console.warn('Failed to decode filename:', fileName);
+          // If decoding fails, use as is
         }
       }
     } catch (err) {
-      console.warn('Failed to get file metadata:', err);
+      // Use fallback values
       fileName = key.split('/').pop() || key;
     }
 
@@ -233,9 +226,7 @@ export class StorageService {
       },
     });
 
-    console.log(`Uploading file to bucket: ${bucket}, key: ${objectName}, size: ${fileBuffer.length} bytes`);
     await this.s3Client.send(command);
-    console.log(`File uploaded successfully to ${bucket}:${objectName}`);
 
     return `s3:${bucket}:${objectName}`;
   }
@@ -244,15 +235,21 @@ export class StorageService {
    * Delete multiple files using their ARNs
    */
   async deleteFiles(...arnList: string[]) {
+    
     // Group by bucket to check existence once per bucket
     const bucketGroups = new Map<string, string[]>();
     
     for (const arn of arnList) {
-      const { bucket, objectName } = this.extractArn(arn);
-      if (!bucketGroups.has(bucket)) {
-        bucketGroups.set(bucket, []);
+      try {
+        const { bucket, objectName } = this.extractArn(arn);
+        
+        if (!bucketGroups.has(bucket)) {
+          bucketGroups.set(bucket, []);
+        }
+        bucketGroups.get(bucket)!.push(objectName);
+      } catch (error) {
+        throw error;
       }
-      bucketGroups.get(bucket)!.push(objectName);
     }
     
     // Ensure all buckets exist before proceeding
@@ -347,18 +344,29 @@ export class StorageService {
    * Extract ARN components
    */
   private extractArn(arn: string) {
-    const [service, bucket, objectName] = arn.split(':');
-
+    
+    if (!arn || typeof arn !== 'string') {
+      throw new BadRequestException(`Invalid ARN: ${arn}`);
+    }
+    
+    const parts = arn.split(':');
+    
+    if (parts.length !== 3) {
+      throw new BadRequestException(`Invalid ARN format. Expected format: s3:bucket:path, got: ${arn} with ${parts.length} parts`);
+    }
+    
+    const [service, bucket, objectName] = parts;
+    
     if (service !== 's3') {
-      throw new BadRequestException(`Invalid service ${service}`);
+      throw new BadRequestException(`Invalid service: ${service}. Expected: s3`);
     }
 
-    if (!objectName) {
-      throw new BadRequestException(`Invalid object name ${objectName}`);
+    if (!bucket || bucket.trim() === '') {
+      throw new BadRequestException(`Invalid bucket name: ${bucket}`);
     }
 
-    if (!bucket) {
-      throw new BadRequestException(`Invalid bucket name ${bucket}`);
+    if (!objectName || objectName.trim() === '') {
+      throw new BadRequestException(`Invalid object name: ${objectName}`);
     }
 
     return {
