@@ -23,6 +23,7 @@ export enum PostStatus {
 export enum PostType {
   MEMBER_ACTIVITY = 'MEMBER_ACTIVITY',
   ASSOCIATION_ACTIVITY = 'ASSOCIATION_ACTIVITY',
+  DIGITAL_PRODUCT = 'DIGITAL_PRODUCT',
 }
 
 @Entity('posts')
@@ -40,7 +41,7 @@ export class Post extends BaseAuditEntity {
     type: 'enum',
     enum: PostStatus,
     default: PostStatus.DRAFT,
-    name: 'post_status'
+    name: 'post_status',
   })
   post_status: PostStatus;
 
@@ -74,7 +75,7 @@ export class Post extends BaseAuditEntity {
     type: 'enum',
     enum: PostType,
     default: PostType.MEMBER_ACTIVITY,
-    name: 'post_type'
+    name: 'post_type',
   })
   post_type: PostType;
 

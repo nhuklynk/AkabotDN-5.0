@@ -51,10 +51,10 @@ export function Header() {
               {/* Text Content */}
               <div className="text-center sm:text-left">
                 <h1 className="text-xl sm:text-2xl lg:text-2xl font-bold text-[#0033FF] mb-1 leading-tight tracking-wide drop-shadow-sm">
-                  HIỆP HỘI DỮ LIỆU QUỐC GIA
+                  {t("header.title")}
                 </h1>
                 <p className="text-sm sm:text-base lg:text-lg text-[#0033FF] font-semibold tracking-wider drop-shadow-sm">
-                  NATIONAL DATA ASSOCIATION
+                  {t("header.subtitle")}
                 </p>
               </div>
             </div>
