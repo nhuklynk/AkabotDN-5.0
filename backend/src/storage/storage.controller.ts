@@ -213,4 +213,34 @@ export class StorageController {
       throw new BadRequestException(`Failed to delete file: ${error.message || 'Unknown error'}`);
     }
   }
+
+  @Post('export-zip')
+  @ApiOperation({ summary: 'Export multiple files as ZIP' })
+  async exportFilesAsZip(@Body() body: { arns: string[], filename?: string }) {
+    try {
+      if (!body.arns || !Array.isArray(body.arns) || body.arns.length === 0) {
+        throw new BadRequestException('ARNs array is required and must not be empty');
+      }
+
+      const zipBuffer = await this.storageService.exportFilesAsZip(body.arns, body.filename);
+      const filename = body.filename || `export-${Date.now()}.zip`;
+      
+      return {
+        success: true,
+        data: {
+          filename,
+          fileSize: zipBuffer.length,
+          downloadUrl: `data:application/zip;base64,${zipBuffer.toString('base64')}`,
+          arns: body.arns
+        },
+        message: 'ZIP file generated successfully'
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      
+      throw new BadRequestException(`Failed to generate ZIP: ${error.message || 'Unknown error'}`);
+    }
+  }
 }

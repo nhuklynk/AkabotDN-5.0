@@ -9,12 +9,39 @@ import {
   PutBucketPolicyCommand,
   PutObjectCommand,
   S3Client,
+  ListObjectsV2Command,
+  CopyObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { AWS_S3_CLIENT, STORAGE_OPTIONS } from './constants';
 import * as fs from 'fs';
 import type { StorageOptions, UploadOptions } from './types';
+
+export interface FileInfo {
+  arn: string;
+  bucket: string;
+  key: string;
+  fileName: string;
+  contentType: string;
+  fileSize: number;
+  downloadUrl: any;
+}
+
+export interface FileItem {
+  key: string;
+  fileName: string;
+  size: number;
+  lastModified: Date | undefined;
+  etag: string | undefined;
+  arn: string;
+}
+
+export interface FolderItem {
+  prefix: string;
+  folderName: string;
+  arn: string;
+}
 
 // ARN: [service]:[bucket]:[objectName], e.g. s3:knowledge:example.txt
 @Injectable()
@@ -338,6 +365,72 @@ export class StorageService {
       fileName: decodeURIComponent(fileName),
       contentType,
     };
+  }
+
+  /**
+   * Export multiple files as a ZIP archive
+   */
+  async exportFilesAsZip(arnList: string[], zipFileName?: string): Promise<Buffer> {
+    // Import JSZip dynamically to avoid build issues
+    const JSZip = require('jszip');
+    const zip = new JSZip();
+    
+    for (const arn of arnList) {
+      try {
+        const { bucket, objectName } = this.extractArn(arn);
+        await this.ensureBucketExists(bucket);
+
+        // Get file content
+        const getCommand = new GetObjectCommand({
+          Bucket: bucket,
+          Key: objectName,
+        });
+        const result = await this.s3Client.send(getCommand);
+
+        if (!result.Body) {
+          throw new BadRequestException(`Could not get file content for ARN: ${arn}`);
+        }
+
+        // Get file metadata for filename
+        const headCommand = new HeadObjectCommand({
+          Bucket: bucket,
+          Key: objectName,
+        });
+        const headResult = await this.s3Client.send(headCommand);
+        
+        const fileName = 
+          (headResult as any).Metadata?.['x-file-name'] ||
+          (headResult as any).Metadata?.['file-name'] ||
+          objectName.split('/').pop() || 
+          objectName;
+
+        // Convert stream to buffer
+        const streamToBuffer = (stream: any) =>
+          new Promise<Buffer>((resolve, reject) => {
+            const chunks: Buffer[] = [];
+            stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+            stream.on('end', () => resolve(Buffer.concat(chunks)));
+            stream.on('error', reject);
+          });
+
+        const fileBuffer = await streamToBuffer(result.Body);
+        
+        // Add file to ZIP with proper filename
+        zip.file(decodeURIComponent(fileName), fileBuffer);
+        
+      } catch (error) {
+        throw new BadRequestException(`Error processing file ${arn}: ${error.message}`);
+      }
+    }
+
+    // Generate ZIP as buffer
+    const zipBuffer = await zip.generateAsync({ 
+      type: 'nodebuffer',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 6 }
+    });
+
+    return zipBuffer;
   }
 
   /**
