@@ -7,6 +7,7 @@ import { Pagination } from "@/components/pagination-component";
 import { Building, User, Phone, Search, Loader2 } from "lucide-react";
 import { Member } from "@/services/end-user/types/member";
 import { memberService } from "@/services/end-user/memberService";
+import { useLocale } from "@/hooks/useLocale";
 
 interface MemberData {
   items: Member[];
@@ -21,6 +22,7 @@ interface MembersPageClientProps {
 }
 
 export function MembersPageClient({ initialData }: MembersPageClientProps) {
+  const { t } = useLocale();
   const [memberData, setMemberData] = useState<MemberData>(initialData);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -84,8 +86,10 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building className="w-5 h-5" />
-            Danh sách {memberData.total} hội viên ({memberData.items.length}{" "}
-            trên trang này)
+            {t("members.list.tableTitle", {
+              total: memberData.total,
+              current: memberData.items.length,
+            })}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
@@ -101,19 +105,19 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
                 <thead className="border-0">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 w-16">
-                      STT
+                      {t("members.list.table.headers.index")}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      THÔNG TIN
+                      {t("members.list.table.headers.info")}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      CÔNG TY/TỔ CHỨC
+                      {t("members.list.table.headers.company")}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      LOẠI THÀNH VIÊN
+                      {t("members.list.table.headers.memberType")}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                      TRÌNH ĐỘ
+                      {t("members.list.table.headers.expertise")}
                     </th>
                   </tr>
                 </thead>
@@ -149,7 +153,7 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
                             <span className="text-sm text-gray-900">
                               {member.company?.name ||
                                 member.work_unit ||
-                                "Cá nhân"}
+                                t("members.list.defaultCompany")}
                             </span>
                             {member.company?.email && (
                               <p className="text-xs text-gray-500 mt-1">
@@ -171,10 +175,10 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
                           }`}
                         >
                           {member.membership_type === "corporate"
-                            ? "Tổ chức"
+                            ? t("members.list.memberTypes.corporate")
                             : member.membership_type === "individual"
-                            ? "Cá nhân"
-                            : "Sinh viên"}
+                            ? t("members.list.memberTypes.individual")
+                            : t("members.list.memberTypes.student")}
                         </Badge>
                       </td>
                       <td className="px-6 py-4">
@@ -191,12 +195,12 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
                           }`}
                         >
                           {member.expertise_level === "expert"
-                            ? "Chuyên gia"
+                            ? t("members.list.expertiseLevels.expert")
                             : member.expertise_level === "advanced"
-                            ? "Nâng cao"
+                            ? t("members.list.expertiseLevels.advanced")
                             : member.expertise_level === "intermediate"
-                            ? "Trung cấp"
-                            : "Mới bắt đầu"}
+                            ? t("members.list.expertiseLevels.intermediate")
+                            : t("members.list.expertiseLevels.beginner")}
                         </Badge>
                       </td>
                     </tr>
@@ -227,14 +231,18 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
             <p className="text-2xl font-bold text-gray-900">
               {memberData.total}
             </p>
-            <p className="text-sm text-gray-600">Tổng thành viên</p>
+            <p className="text-sm text-gray-600">
+              {t("members.list.stats.totalMembers")}
+            </p>
           </CardContent>
         </Card>
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Building className="w-8 h-8 text-blue-600 mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{corporateCount}</p>
-            <p className="text-sm text-gray-600">Tổ chức</p>
+            <p className="text-sm text-gray-600">
+              {t("members.list.stats.organizations")}
+            </p>
           </CardContent>
         </Card>
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
@@ -243,14 +251,18 @@ export function MembersPageClient({ initialData }: MembersPageClientProps) {
             <p className="text-2xl font-bold text-gray-900">
               {individualCount}
             </p>
-            <p className="text-sm text-gray-600">Cá nhân</p>
+            <p className="text-sm text-gray-600">
+              {t("members.list.stats.individuals")}
+            </p>
           </CardContent>
         </Card>
         <Card className="hover:bg-white transform hover:-translate-y-2 hover:shadow-2xl transition-all border-0">
           <CardContent className="p-6 text-center">
             <Phone className="w-8 h-8 text-purple-600 mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{studentCount}</p>
-            <p className="text-sm text-gray-600">Sinh viên</p>
+            <p className="text-sm text-gray-600">
+              {t("members.list.stats.students")}
+            </p>
           </CardContent>
         </Card>
       </div>

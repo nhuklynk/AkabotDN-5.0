@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 import { postService, Post } from "@/services/end-user/postService";
 import { formatDate } from "@/utils/dateUtils";
 import { truncateText } from "@/utils/textUtils";
+import { useLocale } from "@/hooks/useLocale";
 
 interface RelatedPostsProps {
   currentPostId: string;
@@ -19,6 +20,7 @@ export function RelatedPosts({
   currentPostCategories,
   currentPostTags,
 }: RelatedPostsProps) {
+  const { t } = useLocale();
   const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +82,7 @@ export function RelatedPosts({
         setRelatedPosts(posts.slice(0, 3)); // Show max 3 related posts
       } catch (err) {
         console.error("Error fetching related posts:", err);
-        setError("Không thể tải bài viết liên quan");
+        setError(t("posts.detail.relatedPosts.error"));
       } finally {
         setLoading(false);
       }
@@ -91,10 +93,10 @@ export function RelatedPosts({
 
   if (loading) {
     return (
-      <Card>
-        <CardContent className="p-6">
+      <Card className="border-slate-200 shadow-lg">
+        <CardContent className="p-6 border-slate-200 shadow-lg">
           <h3 className="font-semibold text-slate-900 mb-4">
-            Bài viết liên quan
+            {t("posts.detail.relatedPosts.title")}
           </h3>
           <div className="flex justify-center py-4">
             <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
@@ -106,10 +108,10 @@ export function RelatedPosts({
 
   if (error) {
     return (
-      <Card>
-        <CardContent className="p-6">
+      <Card className="border-slate-200 shadow-lg">
+        <CardContent className="p-6 border-slate-200 shadow-lg">
           <h3 className="font-semibold text-slate-900 mb-4">
-            Bài viết liên quan
+            {t("posts.detail.relatedPosts.title")}
           </h3>
           <div className="text-center py-4">
             <p className="text-sm text-muted-foreground">{error}</p>
@@ -121,14 +123,14 @@ export function RelatedPosts({
 
   if (relatedPosts.length === 0) {
     return (
-      <Card>
-        <CardContent className="p-6">
+      <Card className="border-slate-200 shadow-lg">
+        <CardContent className="p-6 border-slate-200 shadow-lg">
           <h3 className="font-semibold text-slate-900 mb-4">
-            Bài viết liên quan
+            {t("posts.detail.relatedPosts.title")}
           </h3>
           <div className="text-center py-4">
             <p className="text-sm text-muted-foreground">
-              Chưa có bài viết liên quan
+              {t("posts.detail.relatedPosts.noRelated")}
             </p>
           </div>
         </CardContent>

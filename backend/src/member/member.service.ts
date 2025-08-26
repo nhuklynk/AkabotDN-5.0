@@ -130,7 +130,7 @@ export class MemberService {
     }
 
     if (query.status) {
-      whereConditions.membership_status = query.status;
+      whereConditions.status = query.status;
     }
 
     const [members, total] = await this.memberRepository.findAndCount({

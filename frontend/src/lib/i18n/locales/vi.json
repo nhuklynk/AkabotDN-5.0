@@ -90,13 +90,15 @@
       "statusPlaceholder": "Chọn trạng thái",
       "description": "Mô tả"
     }
-  }
-  ,
+  },
   "dashboard": {
     "title": "Bảng điều khiển",
     "subtitle": "Tổng quan số liệu quản trị và thao tác nhanh.",
     "stats": {
-      "users": { "title": "Tổng người dùng", "desc": "+12% so với tháng trước" },
+      "users": {
+        "title": "Tổng người dùng",
+        "desc": "+12% so với tháng trước"
+      },
       "resources": { "title": "Tài nguyên", "desc": "+8% so với tháng trước" },
       "categories": { "title": "Danh mục", "desc": "+3 mới tháng này" },
       "posts": { "title": "Bài viết", "desc": "+18% so với tháng trước" }
@@ -134,7 +136,7 @@
       "updateCta": "Cập nhật sự kiện"
     }
   },
-  "faq": {
+  "faqManagement": {
     "title": "Quản lý FAQ",
     "subtitle": "Tạo, chỉnh sửa và quản lý các câu hỏi thường gặp.",
     "add": "Thêm FAQ",
@@ -281,7 +283,626 @@
       "active": "Hoạt động",
       "inactive": "Ngưng hoạt động"
     }
+  },
+  "header": {
+    "title": "HIỆP HỘI DỮ LIỆU QUỐC GIA",
+    "subtitle": "VIỆT NAM",
+    "nav": {
+      "about": "GIỚI THIỆU",
+      "products": "SẢN PHẨM & DỊCH VỤ",
+      "posts": "BÀI ĐĂNG",
+      "members": "HỘI VIÊN",
+      "support": "HỖ TRỢ",
+      "search": "Tìm kiếm"
+    },
+    "dropdown": {
+      "products": {
+        "activities": {
+          "title": "Hoạt động Hiệp hội",
+          "desc": "Các chương trình và sự kiện"
+        },
+        "digitalProducts": {
+          "title": "Sản phẩm Số",
+          "desc": "Giải pháp công nghệ"
+        },
+        "documents": {
+          "title": "Tư liệu",
+          "desc": "Tài liệu và báo cáo"
+        }
+      },
+      "members": {
+        "list": {
+          "title": "Danh sách hội viên",
+          "desc": "Xem thông tin hội viên"
+        },
+        "register": {
+          "title": "Đăng ký hội viên",
+          "desc": "Tham gia hiệp hội"
+        }
+      },
+      "support": {
+        "faq": {
+          "title": "FAQ",
+          "desc": "Câu hỏi thường gặp"
+        },
+        "contact": {
+          "title": "Liên hệ",
+          "desc": "Thông tin liên lạc"
+        }
+      }
+    },
+    "mobile": {
+      "language": "Ngôn ngữ:"
+    }
+  },
+  "footer": {
+    "organization": {
+      "name": "HIỆP HỘI DỮ LIỆU",
+      "subtitle": "QUỐC GIA VIỆT NAM",
+      "description": "Tổ chức tiên phong trong việc phát triển hệ sinh thái dữ liệu quốc gia, thúc đẩy chuyển đổi số toàn diện tại Việt Nam."
+    },
+    "quickLinks": {
+      "title": "Liên kết nhanh",
+      "about": "Giới thiệu",
+      "leadership": "Ban lãnh đạo",
+      "executive": "Ban chấp hành",
+      "documents": "Văn bản hiệp hội"
+    },
+    "services": {
+      "title": "Dịch vụ",
+      "digitalProducts": "Sản phẩm số",
+      "memberRegistration": "Đăng ký hội viên",
+      "activities": "Hoạt động hiệp hội",
+      "events": "Sự kiện"
+    },
+    "contact": {
+      "title": "Liên hệ",
+      "address": "Hà Nội, Việt Nam",
+      "phone": "+84 (24) 1234 5678",
+      "email": "info@vda.gov.vn"
+    },
+    "newsletter": {
+      "title": "Đăng ký nhận tin",
+      "placeholder": "Email của bạn",
+      "button": "Đăng ký"
+    },
+    "copyright": "© 2025 Hiệp hội Dữ liệu Quốc gia Việt Nam. Tất cả quyền được bảo lưu."
+  },
+  "landing": {
+    "banner": {
+      "slides": [
+        {
+          "title": "Xây dựng Tương lai Số Việt Nam",
+          "subtitle": "Hiệp hội Dữ liệu Quốc gia Việt Nam",
+          "description": "Nơi kết nối, chia sẻ và phát triển hệ sinh thái dữ liệu vì một Việt Nam số mạnh mẽ và bền vững.",
+          "ctaText": "Khám phá ngay"
+        },
+        {
+          "title": "Kết nối Chuyên gia Toàn cầu",
+          "subtitle": "Mạng lưới Công nghệ Quốc tế",
+          "description": "Tham gia cộng đồng chuyên gia công nghệ hàng đầu thế giới và chia sẻ kiến thức, kinh nghiệm.",
+          "ctaText": "Tham gia ngay"
+        },
+        {
+          "title": "Đổi mới Sáng tạo",
+          "subtitle": "Công nghệ Tiên tiến",
+          "description": "Ứng dụng AI, Blockchain và các công nghệ tiên tiến trong quản lý dữ liệu quốc gia.",
+          "ctaText": "Tìm hiểu thêm"
+        }
+      ],
+      "learnMore": "Tìm hiểu thêm"
+    },
+    "stats": {
+      "title": "Những con số ấn tượng",
+      "subtitle": "Thành tựu và sự phát triển của chúng tôi",
+      "items": [
+        {
+          "number": "150+",
+          "label": "Thành viên"
+        },
+        {
+          "number": "200+",
+          "label": "Dự án"
+        },
+        {
+          "number": "85+",
+          "label": "Đối tác"
+        },
+        {
+          "number": "98%",
+          "label": "Hài lòng"
+        }
+      ]
+    },
+    "mission": {
+      "title": "Sứ mệnh & Tầm nhìn",
+      "subtitle": "Định hướng phát triển bền vững",
+      "items": {
+        "mission": {
+          "title": "Sứ mệnh",
+          "content": "Xây dựng và phát triển hệ sinh thái dữ liệu quốc gia, kết nối các tổ chức, doanh nghiệp và chuyên gia để tạo ra giá trị bền vững cho xã hội và nền kinh tế số Việt Nam."
+        },
+        "vision": {
+          "title": "Tầm nhìn",
+          "content": "Trở thành tổ chức hàng đầu trong việc thúc đẩy chuyển đổi số quốc gia, định hướng phát triển công nghệ dữ liệu và kết nối Việt Nam với cộng đồng quốc tế."
+        },
+        "values": {
+          "title": "Giá trị cốt lõi",
+          "content": "Đổi mới - Kết nối - Chia sẻ - Phát triển bền vững. Chúng tôi tin vào sức mạnh của dữ liệu và công nghệ để tạo ra những thay đổi tích cực cho cộng đồng."
+        }
+      },
+      "labels": {
+        "globalConnection": "Kết nối toàn cầu",
+        "dataSecurity": "An toàn dữ liệu",
+        "dataSync": "Đồng bộ dữ liệu",
+        "ai": "Trí tuệ nhân tạo"
+      }
+    },
+    "features": {
+      "title": "Tại sao chọn chúng tôi?",
+      "subtitle": "Chúng tôi cam kết mang đến những giải pháp dữ liệu hàng đầu, đáp ứng mọi nhu cầu của doanh nghiệp và tổ chức.",
+      "items": [
+        {
+          "title": "Quản lý Dữ liệu Quốc gia",
+          "description": "Xây dựng hệ thống quản lý dữ liệu tập trung, an toàn và hiệu quả"
+        },
+        {
+          "title": "Bảo mật & Tuân thủ",
+          "description": "Đảm bảo an toàn thông tin và tuân thủ các quy định pháp luật"
+        },
+        {
+          "title": "Hợp tác Quốc tế",
+          "description": "Kết nối và chia sẻ kinh nghiệm với các tổ chức dữ liệu toàn cầu"
+        },
+        {
+          "title": "Đổi mới Sáng tạo",
+          "description": "Thúc đẩy ứng dụng công nghệ mới trong quản lý dữ liệu"
+        }
+      ],
+      "video": {
+        "title": "Hệ sinh thái dữ liệu Việt Nam",
+        "description": "Khám phá công nghệ tiên tiến và mạng lưới dữ liệu quốc gia"
+      }
+    },
+    "events": {
+      "title": "Sự kiện sắp diễn ra",
+      "subtitle": "Tham gia các hoạt động và sự kiện của Hiệp hội",
+      "items": [
+        {
+          "title": "Hội thảo Dữ liệu Du lịch 2025",
+          "date": "25/09/2025",
+          "location": "Hà Nội",
+          "type": "Hội thảo"
+        },
+        {
+          "title": "Workshop Blockchain & AI",
+          "date": "30/09/2025",
+          "location": "TP.HCM",
+          "type": "Đào tạo"
+        },
+        {
+          "title": "Triển lãm Công nghệ Dữ liệu",
+          "date": "15/10/2025",
+          "location": "Đà Nẵng",
+          "type": "Triển lãm"
+        }
+      ],
+      "registerButton": "Đăng ký tham gia"
+    },
+    "testimonials": {
+      "title": "Đánh giá từ chuyên gia",
+      "subtitle": "Những gì các chuyên gia nói về chúng tôi",
+      "items": [
+        {
+          "name": "TS. Nguyễn Văn Long",
+          "position": "Thứ trưởng Bộ Công an",
+          "content": "Hiệp hội đã đóng góp tích cực vào việc xây dựng hệ sinh thái dữ liệu quốc gia."
+        },
+        {
+          "name": "Prof. Michael Chen",
+          "position": "Chuyên gia Quốc tế",
+          "content": "Việt Nam đang đi đúng hướng trong việc phát triển nền tảng dữ liệu số."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Sẵn sàng tham gia cùng chúng tôi?",
+      "subtitle": "Hãy trở thành một phần của cộng đồng dữ liệu hàng đầu Việt Nam",
+      "memberButton": "Đăng ký thành viên",
+      "contactButton": "Liên hệ tư vấn"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Liên hệ với chúng tôi",
+      "subtitle": "Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn",
+      "phone": "0931.399.883",
+      "email": "vanphongNDA@nda.org.vn",
+      "address": "Hà Nội, Việt Nam"
+    },
+    "info": {
+      "title": "Thông tin liên hệ",
+      "contactPerson": {
+        "title": "Người phụ trách",
+        "name": "Trương T. Phương Thảo",
+        "position": "Trưởng phòng Văn phòng"
+      },
+      "office": {
+        "title": "Địa chỉ văn phòng",
+        "address": "Cung thanh niên\n37 Trần Bình Trọng\nNguyễn Du, Hai Bà Trưng\nHà Nội, Việt Nam"
+      },
+      "phone": {
+        "title": "Điện thoại",
+        "number": "0931.399.883"
+      },
+      "email": {
+        "title": "Email",
+        "primary": "vanphongNDA@nda.org.vn",
+        "secondary": "thaottp@nda.org.vn"
+      },
+      "workingHours": {
+        "title": "Giờ làm việc",
+        "weekdays": "Thứ Hai - Thứ Sáu: 8:00 - 17:00",
+        "saturday": "Thứ Bảy: 8:00 - 12:00",
+        "sunday": "Chủ Nhật: Nghỉ"
+      }
+    },
+    "quickContact": {
+      "title": "Liên hệ nhanh",
+      "call": "Gọi điện ngay",
+      "email": "Gửi email"
+    },
+    "map": {
+      "title": "Vị trí văn phòng",
+      "subtitle": "Chúng tôi tọa lạc tại trung tâm Hà Nội, giao thông thuận tiện",
+      "fullAddress": {
+        "title": "Địa chỉ đầy đủ",
+        "content": "Cung văn hóa thanh niên\n37 Trần Bình Trọng, Nguyễn Du\nHai Bà Trưng, Hà Nội"
+      },
+      "transportation": {
+        "title": "Giao thông",
+        "content": "Gần ga tàu điện ngầm\nNhiều tuyến xe buýt\nBãi đỗ xe thuận tiện"
+      },
+      "postalCode": {
+        "title": "Mã bưu chính",
+        "content": "100000\nQuận Hai Bà Trưng\nThành phố Hà Nội"
+      }
+    }
+  },
+  "aboutUs": {
+    "header": {
+      "title": "Giới thiệu Hiệp hội Dữ liệu Quốc gia Việt Nam",
+      "subtitle": "Tìm hiểu về sứ mệnh, tầm nhìn và cơ cấu tổ chức của Hiệp hội Dữ liệu Quốc gia Việt Nam"
+    },
+    "menu": {
+      "about": "Về NDA",
+      "executive": "Ban Chấp hành",
+      "standing": "Ban Thường vụ",
+      "charter": "Điều lệ NDA"
+    },
+    "about": {
+      "mission": {
+        "title": "Sứ mệnh",
+        "content": "Kết nối các cơ quan quản lý, doanh nghiệp, tổ chức trong lĩnh vực dữ liệu và khoa học công nghệ. Xây dựng các hoạt động thiết thực nhằm lan tỏa tri thức, kết nối cộng đồng, thúc đẩy phát triển hệ sinh thái dữ liệu Việt Nam trong kỷ nguyên số."
+      },
+      "vision": {
+        "title": "Tầm nhìn",
+        "content": "Trở thành tổ chức hàng đầu trong việc kiến thiết hệ sinh thái dữ liệu Việt Nam, góp phần xây dựng nền kinh tế số phát triển bền vững và nâng cao năng lực cạnh tranh quốc gia trong thời đại công nghệ 4.0."
+      },
+      "coreValues": {
+        "title": "Giá trị cốt lõi",
+        "items": {
+          "transparency": {
+            "title": "Minh bạch",
+            "content": "Đảm bảo tính minh bạch trong mọi hoạt động và quy trình xử lý dữ liệu"
+          },
+          "innovation": {
+            "title": "Đổi mới",
+            "content": "Tiên phong trong việc ứng dụng công nghệ và phương pháp mới"
+          },
+          "cooperation": {
+            "title": "Hợp tác",
+            "content": "Xây dựng mối quan hệ đối tác bền vững và hiệu quả"
+          }
+        }
+      },
+      "history": {
+        "title": "Lịch sử hình thành",
+        "items": {
+          "founding": {
+            "year": "2024",
+            "title": "Thành lập Hiệp hội",
+            "content": "Hiệp hội Dữ liệu Quốc gia Việt Nam được thành lập với sự tham gia của các cơ quan, tổ chức hàng đầu trong lĩnh vực dữ liệu và công nghệ thông tin."
+          },
+          "expansion": {
+            "year": "2025",
+            "title": "Mở rộng hoạt động",
+            "content": "Triển khai các chương trình hợp tác quốc tế, xây dựng các sản phẩm dữ liệu tiên phong và tổ chức các sự kiện chuyên ngành quy mô lớn."
+          }
+        }
+      }
+    },
+    "executive": {
+      "title": "Sơ đồ tổ chức Ban Chấp hành",
+      "chairman": {
+        "title": "CHỦ TỊCH HIỆP HỘI",
+        "name": "Trung tướng Nguyễn Văn Long"
+      },
+      "viceChairman": {
+        "fullTime": {
+          "title": "PHÓ CHỦ TỊCH",
+          "subtitle": "Thường trực"
+        },
+        "partTime": {
+          "title": "PHÓ CHỦ TỊCH",
+          "subtitle": "Kiêm nhiệm"
+        }
+      },
+      "departments": {
+        "research": {
+          "title": "Ban Nghiên cứu",
+          "subtitle": "& Phát triển"
+        },
+        "international": {
+          "title": "Ban Hợp tác",
+          "subtitle": "Quốc tế"
+        },
+        "communication": {
+          "title": "Ban Truyền thông",
+          "subtitle": "& Sự kiện"
+        }
+      },
+      "office": {
+        "title": "VĂN PHÒNG HIỆP HỘI",
+        "subtitle": "Điều hành hoạt động hàng ngày"
+      }
+    },
+    "standing": {
+      "title": "Sơ đồ tổ chức Ban Thường vụ",
+      "head": {
+        "title": "TRƯỞNG BAN THƯỜNG VỤ",
+        "subtitle": "Chủ tịch Hiệp hội"
+      },
+      "members": {
+        "viceChairman": {
+          "title": "Phó Chủ tịch",
+          "subtitle": "Thường trực"
+        },
+        "secretary": {
+          "title": "Tổng Thư ký",
+          "subtitle": "Điều hành"
+        },
+        "viceSecretary": {
+          "title": "Phó Tổng Thư ký",
+          "subtitle": "Hỗ trợ"
+        },
+        "member": {
+          "title": "Ủy viên",
+          "subtitle": "Thường vụ"
+        }
+      },
+      "tasks": {
+        "title": "Nhiệm vụ chính",
+        "items": {
+          "daily": "• Điều hành hoạt động hàng ngày của Hiệp hội",
+          "resolutions": "• Thực hiện các nghị quyết của Ban Chấp hành",
+          "cooperation": "• Phối hợp với các cơ quan, tổ chức thành viên",
+          "activities": "• Tổ chức các hoạt động chuyên môn",
+          "management": "• Quản lý tài chính và nhân sự",
+          "reports": "• Báo cáo định kỳ với Ban Chấp hành"
+        }
+      }
+    },
+    "charter": {
+      "title": "Điều lệ Hiệp hội Dữ liệu Quốc gia Việt Nam",
+      "preview": {
+        "title": "Trang đầu Điều lệ"
+      },
+      "info": {
+        "title": "Thông tin Điều lệ",
+        "document": "Điều lệ Hiệp hội Dữ liệu Quốc gia Việt Nam",
+        "issueDate": "15/03/2024",
+        "pages": "24 trang",
+        "format": "PDF",
+        "fields": {
+          "name": "Tên tài liệu:",
+          "date": "Ngày ban hành:",
+          "pages": "Số trang:",
+          "format": "Định dạng:"
+        }
+      },
+      "content": {
+        "title": "Nội dung chính",
+        "chapters": {
+          "general": "• Chương I: Những quy định chung",
+          "objectives": "• Chương II: Mục tiêu, nhiệm vụ và quyền hạn",
+          "members": "• Chương III: Thành viên Hiệp hội",
+          "structure": "• Chương IV: Cơ cấu tổ chức",
+          "finance": "• Chương V: Tài chính và tài sản",
+          "relations": "• Chương VI: Quan hệ với các tổ chức khác",
+          "others": "• Chương VII: Những quy định khác"
+        }
+      },
+      "download": {
+        "button": "Tải xuống Điều lệ đầy đủ (PDF)",
+        "info": "Kích thước: 2.4 MB • Cập nhật: 15/03/2024"
+      }
+    }
+  },
+  "members": {
+    "register": {
+      "title": "ĐĂNG KÝ HỘI VIÊN",
+      "membershipType": {
+        "individual": "Hội viên cá nhân",
+        "corporate": "Hội viên doanh nghiệp"
+      },
+      "forms": {
+        "accountInfo": {
+          "title": "THÔNG TIN TÀI KHOẢN",
+          "email": "Email",
+          "fullName": "Họ và tên",
+          "phone": "Số điện thoại",
+          "password": "Mật khẩu",
+          "confirmPassword": "Xác nhận mật khẩu",
+          "placeholders": {
+            "email": "john@example.com",
+            "fullName": "Nguyễn Văn A",
+            "phone": "0123456789",
+            "password": "Nhập mật khẩu",
+            "confirmPassword": "Nhập lại mật khẩu"
+          }
+        },
+        "memberInfo": {
+          "title": "THÔNG TIN HỘI VIÊN",
+          "jobTitle": "Chức vụ/Vị trí công việc",
+          "workUnit": "Đơn vị công tác",
+          "expertiseLevel": "Trình độ chuyên môn",
+          "assistantInfo": "Thông tin hỗ trợ",
+          "cvUrl": "Link CV/Hồ sơ",
+          "placeholders": {
+            "jobTitle": "Kỹ sư phần mềm",
+            "workUnit": "Công ty ABC",
+            "expertiseLevel": "Chọn trình độ",
+            "assistantInfo": "Thông tin bổ sung...",
+            "cvUrl": "https://..."
+          },
+          "expertiseLevels": {
+            "beginner": "Cơ bản",
+            "intermediate": "Trung cấp",
+            "advanced": "Nâng cao",
+            "expert": "Chuyên gia"
+          }
+        },
+        "companyInfo": {
+          "title": "THÔNG TIN DOANH NGHIỆP",
+          "name": "Tên công ty",
+          "taxNumber": "Mã số thuế",
+          "email": "Email công ty",
+          "phone": "Số điện thoại công ty",
+          "businessRegistrationUrl": "Link đăng ký kinh doanh",
+          "placeholders": {
+            "name": "Công ty TNHH ABC",
+            "taxNumber": "0123456789",
+            "email": "info@company.com",
+            "phone": "024.1234.5678",
+            "businessRegistrationUrl": "https://..."
+          }
+        }
+      },
+      "messages": {
+        "success": "Đăng ký thành công! Vui lòng chờ phê duyệt.",
+        "passwordMismatch": "Mật khẩu xác nhận không khớp",
+        "missingRequiredFields": "Vui lòng điền đầy đủ thông tin bắt buộc",
+        "missingCompanyInfo": "Vui lòng điền đầy đủ thông tin công ty",
+        "genericError": "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại."
+      },
+      "buttons": {
+        "register": "Đăng ký hội viên",
+        "processing": "Đang xử lý..."
+      },
+      "contactInfo": {
+        "title": "THÔNG TIN LIÊN HỆ HIỆP HỘI",
+        "support": "Liên hệ hỗ trợ:",
+        "address": "Địa chỉ:",
+        "addressDetails": "Cung thanh niên\n37 Trần Bình Trọng, Nguyễn Du\nHai Bà Trưng, Hà Nội"
+      },
+      "required": "*"
+    },
+    "list": {
+      "title": "DANH SÁCH HỘI VIÊN",
+      "subtitle": "Danh sách hội viên tổ chức",
+      "loading": "Đang tải danh sách hội viên...",
+      "error": "Lỗi khi tải danh sách hội viên. Vui lòng thử lại sau.",
+      "tableTitle": "Danh sách {{total}} hội viên ({{current}} trên trang này)",
+      "table": {
+        "headers": {
+          "index": "STT",
+          "info": "THÔNG TIN",
+          "company": "CÔNG TY/TỔ CHỨC",
+          "memberType": "LOẠI THÀNH VIÊN",
+          "expertise": "TRÌNH ĐỘ"
+        }
+      },
+      "memberTypes": {
+        "corporate": "Tổ chức",
+        "individual": "Cá nhân",
+        "student": "Sinh viên"
+      },
+      "expertiseLevels": {
+        "expert": "Chuyên gia",
+        "advanced": "Nâng cao",
+        "intermediate": "Trung cấp",
+        "beginner": "Mới bắt đầu"
+      },
+      "stats": {
+        "totalMembers": "Tổng thành viên",
+        "organizations": "Tổ chức",
+        "individuals": "Cá nhân",
+        "students": "Sinh viên"
+      },
+      "defaultCompany": "Cá nhân"
+    }
+  },
+  "posts": {
+    "title": "Bài đăng",
+    "description": "Cập nhật những tin tức mới nhất về hoạt động của Hiệp hội Dữ liệu Quốc gia Việt Nam và các sự kiện quan trọng trong lĩnh vực dữ liệu.",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "posts": "Bài đăng"
+    },
+    "loading": "Đang tải bài viết...",
+    "error": "Có lỗi xảy ra khi tải bài viết",
+    "retry": "Thử lại",
+    "noPosts": "Chưa có bài viết nào.",
+    "noDescription": "Không có mô tả",
+    "author": "Tác giả",
+    "unknownDate": "Không rõ ngày",
+    "readingTime": "{{minutes}} phút đọc",
+    "calculating": "Đang tính...",
+    "info": {
+      "totalPosts": "Tổng số bài viết: {{total}}",
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} bài viết",
+      "page": "Trang {{current}} / {{total}}"
+    },
+    "detail": {
+      "backToList": "Quay lại danh sách bài đăng",
+      "noTitle": "Không có tiêu đề",
+      "contentUpdating": "Nội dung bài viết đang được cập nhật...",
+      "tableOfContents": "Mục lục",
+      "relatedPosts": {
+        "title": "Bài viết liên quan",
+        "loading": "Đang tải bài viết liên quan...",
+        "error": "Không thể tải bài viết liên quan",
+        "noRelated": "Chưa có bài viết liên quan"
+      },
+      "share": {
+        "title": "Chia sẻ bài viết"
+      }
+    }
+  },
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "description": "Thông tin cơ bản về Hiệp hội Dữ liệu Quốc gia",
+    "searchPlaceholder": "Tìm kiếm câu hỏi...",
+    "searching": "Đang tìm kiếm...",
+    "loading": "Đang tải câu hỏi thường gặp...",
+    "loadingQuestion": "Đang tải câu hỏi...",
+    "retry": "Thử lại",
+    "backToList": "Quay lại",
+    "backToListFull": "Quay lại danh sách câu hỏi",
+    "backToFAQ": "Quay lại danh sách FAQ",
+    "noResults": "Không tìm thấy kết quả nào cho \"{{searchTerm}}\"",
+    "questionLabel": "Câu hỏi",
+    "questionInCategory": "Câu hỏi trong danh mục",
+    "createdDate": "Tạo ngày: {{date}}",
+    "error": {
+      "loadFailed": "Không thể tải thông tin câu hỏi",
+      "notFound": "Không tìm thấy câu hỏi"
+    },
+    "contact": {
+      "title": "Không tìm thấy câu trả lời bạn cần?",
+      "description": "Hãy liên hệ với chúng tôi để được hỗ trợ trực tiếp từ đội ngũ chuyên gia.",
+      "button": "Liên hệ hỗ trợ"
+    }
   }
 }
-
-
