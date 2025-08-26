@@ -138,3 +138,99 @@ export class PostQueryDto {
   @IsString()
   type?: string;
 }
+
+export class TagPostQueryDto {
+  @ApiPropertyOptional({
+    description:
+      'Page number for pagination (starts from 1). Default is 1 if not specified.',
+    example: 1,
+    minimum: 1,
+    default: 1,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  page?: number = 1;
+
+  @ApiPropertyOptional({
+    description:
+      'Number of posts per page (maximum 100). Default is 10 if not specified.',
+    example: 10,
+    minimum: 1,
+    maximum: 100,
+    default: 10,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  limit?: number = 10;
+
+  @ApiPropertyOptional({
+    description:
+      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
+    example: '2024-01-01',
+  })
+  @IsOptional()
+  @IsString()
+  date_from?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
+    example: '2024-12-31',
+  })
+  @IsOptional()
+  @IsString()
+  date_to?: string;
+}
+
+export class CategoryPostQueryDto {
+  @ApiPropertyOptional({
+    description:
+      'Page number for pagination (starts from 1). Default is 1 if not specified.',
+    example: 1,
+    minimum: 1,
+    default: 1,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  page?: number = 1;
+
+  @ApiPropertyOptional({
+    description:
+      'Number of posts per page (maximum 100). Default is 10 if not specified.',
+    example: 10,
+    minimum: 1,
+    maximum: 100,
+    default: 10,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @Max(100)
+  limit?: number = 10;
+
+  @ApiPropertyOptional({
+    description:
+      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
+    example: '2024-01-01',
+  })
+  @IsOptional()
+  @IsString()
+  date_from?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
+    example: '2024-12-31',
+  })
+  @IsOptional()
+  @IsString()
+  date_to?: string;
+}

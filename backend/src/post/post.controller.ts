@@ -10,14 +10,16 @@ import {
   HttpStatus,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostService } from './post.service';
 import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
 import { PostResponseDto } from './dto/post-response.dto';
-import { PostQueryDto } from './dto/post-query.dto';
+import { PostQueryDto, TagPostQueryDto, CategoryPostQueryDto } from './dto/post-query.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { PaginationService } from '../common/services/pagination.service';
+import { PaginatedData } from '../common/interfaces/api-response.interface';
 import {
   ApiTags,
   ApiOperation,
@@ -33,6 +35,14 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger';
 import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
+import { 
+  PostStatisticsDto, 
+  PostTypeStatisticsResponseDto,
+  PostAuthorStatisticsDto,
+  MonthlyPostStatisticsDto,
+  PostTypeDetailedStatisticsDto
+} from './dto/post-statistics.dto';
+import { PostType } from './entity/post.entity';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -265,6 +275,60 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
+  @Get('tag/:tagId')
+  @ApiOperation({
+    summary: 'Get posts by tag ID',
+    description: 'Retrieve all posts associated with a specific tag, with optional filtering and pagination.',
+  })
+  @ApiParam({
+    name: 'tagId',
+    description: 'Tag UUID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiQuery({ name: 'page', required: false, description: 'Page number (default: 1)' })
+  @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
+  @ApiQuery({ name: 'date_from', required: false, description: 'Filter posts from this date (YYYY-MM-DD)' })
+  @ApiQuery({ name: 'date_to', required: false, description: 'Filter posts to this date (YYYY-MM-DD)' })
+  @ApiOkResponse({
+    description: 'Posts retrieved successfully',
+  })
+  @ApiNotFoundResponse({
+    description: 'Tag not found or no posts found for this tag',
+  })
+  async findByTagId(
+    @Param('tagId') tagId: string,
+    @Query() query: TagPostQueryDto,
+  ): Promise<PaginatedData<PostResponseDto>> {
+    return this.postService.findByTagId(tagId, query);
+  }
+
+  @Get('category/:categoryId')
+  @ApiOperation({
+    summary: 'Get posts by category ID',
+    description: 'Retrieve all posts associated with a specific category, with optional filtering and pagination.',
+  })
+  @ApiParam({
+    name: 'categoryId',
+    description: 'Category UUID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiQuery({ name: 'page', required: false, description: 'Page number (default: 1)' })
+  @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
+  @ApiQuery({ name: 'date_from', required: false, description: 'Filter posts from this date (YYYY-MM-DD)' })
+  @ApiQuery({ name: 'date_to', required: false, description: 'Filter posts to this date (YYYY-MM-DD)' })
+  @ApiOkResponse({
+    description: 'Posts retrieved successfully',
+  })
+  @ApiNotFoundResponse({
+    description: 'Category not found or no posts found for this category',
+  })
+  async findByCategoryId(
+    @Param('categoryId') categoryId: string,
+    @Query() query: CategoryPostQueryDto,
+  ): Promise<PaginatedData<PostResponseDto>> {
+    return this.postService.findByCategoryId(categoryId, query);
+  }
+
   @Patch(':id')
   @UseInterceptors(FileInterceptor('featured_image'))
   @ApiOperation({
@@ -331,5 +395,119 @@ export class PostController {
   })
   remove(@Param('id') id: string): Promise<void> {
     return this.postService.remove(id);
+  }
+
+  @Get('statistics/overview')
+  @ApiOperation({
+    summary: 'Get general post statistics',
+    description: 'Retrieves comprehensive statistics about posts including total counts, status distribution, and recent activity metrics.'
+  })
+  @ApiOkResponse({
+    description: 'Post statistics retrieved successfully',
+    type: PostStatisticsDto
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
+  })
+  async getPostStatistics(): Promise<PostStatisticsDto> {
+    return this.postService.getPostStatistics();
+  }
+
+  @Get('statistics/by-type')
+  @ApiOperation({
+    summary: 'Get post statistics by type',
+    description: 'Retrieves statistics showing the distribution of posts across different post types (MEMBER_ACTIVITY, ASSOCIATION_ACTIVITY, DIGITAL_PRODUCT).'
+  })
+  @ApiOkResponse({
+    description: 'Post type statistics retrieved successfully',
+    type: PostTypeStatisticsResponseDto
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
+  })
+  async getPostTypeStatistics(): Promise<PostTypeStatisticsResponseDto> {
+    return this.postService.getPostTypeStatistics();
+  }
+
+  @Get('statistics/by-type/:postType')
+  @ApiOperation({
+    summary: 'Get detailed statistics for a specific post type',
+    description: 'Retrieves comprehensive statistics for a specific post type including counts, status distribution, recent activity, and monthly breakdown.'
+  })
+  @ApiParam({
+    name: 'postType',
+    description: 'The post type to get statistics for',
+    enum: PostType,
+    example: PostType.MEMBER_ACTIVITY
+  })
+  @ApiOkResponse({
+    description: 'Detailed post type statistics retrieved successfully',
+    type: PostTypeDetailedStatisticsDto
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid post type provided'
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
+  })
+  async getPostTypeDetailedStatistics(
+    @Param('postType') postType: PostType
+  ): Promise<PostTypeDetailedStatisticsDto> {
+    // Validate post type
+    if (!Object.values(PostType).includes(postType)) {
+      throw new BadRequestException('Invalid post type');
+    }
+    return this.postService.getPostTypeDetailedStatistics(postType);
+  }
+
+  @Get('statistics/by-author')
+  @ApiOperation({
+    summary: 'Get post statistics by author',
+    description: 'Retrieves statistics showing the most prolific authors and their post counts. Results are ordered by post count in descending order.'
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Maximum number of authors to return (default: 10, max: 50)',
+    example: 10
+  })
+  @ApiOkResponse({
+    description: 'Author statistics retrieved successfully',
+    type: [PostAuthorStatisticsDto]
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
+  })
+  async getPostAuthorStatistics(
+    @Query('limit') limit?: number
+  ): Promise<PostAuthorStatisticsDto[]> {
+    const authorLimit = Math.min(limit || 10, 50);
+    return this.postService.getPostAuthorStatistics(authorLimit);
+  }
+
+  @Get('statistics/monthly')
+  @ApiOperation({
+    summary: 'Get monthly post statistics',
+    description: 'Retrieves post creation statistics grouped by month for a specific year. Shows post count for each month of the year.'
+  })
+  @ApiQuery({
+    name: 'year',
+    required: false,
+    type: Number,
+    description: 'Year to get statistics for (default: current year)',
+    example: 2024
+  })
+  @ApiOkResponse({
+    description: 'Monthly statistics retrieved successfully',
+    type: [MonthlyPostStatisticsDto]
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error - Something went wrong on the server side.'
+  })
+  async getMonthlyPostStatistics(
+    @Query('year') year?: number
+  ): Promise<MonthlyPostStatisticsDto[]> {
+    return this.postService.getMonthlyPostStatistics(year);
   }
 }

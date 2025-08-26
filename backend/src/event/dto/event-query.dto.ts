@@ -69,3 +69,39 @@ export class EventQueryDto extends PaginationQueryDto {
   @IsOptional()
   countdown_enabled?: boolean;
 }
+
+export class TagEventQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    description: 'Filter events starting from this date',
+    example: '2024-12-01T00:00:00.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  start_date?: string;
+
+  @ApiPropertyOptional({
+    description: 'Filter events starting before this date',
+    example: '2024-12-31T23:59:59.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  end_date?: string;
+}
+
+export class CategoryEventQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    description: 'Filter events starting from this date',
+    example: '2024-12-01T00:00:00.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  start_date?: string;
+
+  @ApiPropertyOptional({
+    description: 'Filter events starting before this date',
+    example: '2024-12-31T23:59:59.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  end_date?: string;
+}
