@@ -29,7 +29,11 @@
     "deleteWarningLong": "This action cannot be undone. The category will be permanently deleted and may affect related content.",
     "preview": "Preview",
     "view": "View",
-    "viewLive": "View live"
+    "viewLive": "View live",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   },
   "editor": {
     "bold": "B",
@@ -167,6 +171,25 @@
     "add": "Create post",
     "searchPlaceholder": "Search posts...",
     "countSummary": "{{filtered}} / {{total}} posts",
+    "filters": {
+      "status": "Status",
+      "category": "Category",
+      "type": "Post Type",
+      "filterByTag": "Filter by tag",
+      "all": "All",
+      "allCategories": "All categories",
+      "allTypes": "All types",
+      "published": "Published",
+      "review": "Under review",
+      "rejected": "Rejected",
+      "archived": "Archived",
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "article": "Article",
+      "news": "News",
+      "event": "Event",
+      "guide": "Guide"
+    },
     "table": {
       "post": "Post",
       "author": "Author",
@@ -183,6 +206,41 @@
       "editDesc": "Update content and settings.",
       "createCta": "Create post",
       "updateCta": "Update post"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter title",
+      "slug": "Slug",
+      "slugPlaceholder": "post-slug",
+      "summary": "Summary",
+      "summaryPlaceholder": "Enter summary",
+      "content": "Content",
+      "author": "Author",
+      "authorPlaceholder": "Select author",
+      "mediaId": "Media ID",
+      "mediaIdPlaceholder": "Enter media_id (optional)",
+      "postStatus": "Post Status",
+      "postStatusPlaceholder": "Select status",
+      "publishedAt": "Published Date",
+      "postType": "Post Type",
+      "postTypePlaceholder": "Select type",
+      "recordStatus": "Record Status",
+      "recordStatusPlaceholder": "Select status",
+      "statusHistory": "Status History"
+    },
+    "status": {
+      "draft": "Draft",
+      "review": "Review",
+      "published": "Published",
+      "rejected": "Rejected",
+      "archived": "Archived",
+      "scheduled": "Scheduled"
+    },
+    "type": {
+      "article": "Article",
+      "news": "News",
+      "event": "Event",
+      "guide": "Guide"
     }
   },
   "resource": {
@@ -197,7 +255,11 @@
       "image": "Image",
       "video": "Video",
       "audio": "Audio",
-      "archive": "Archive"
+      "archive": "Archive",
+      "post": "Post",
+      "event": "Event",
+      "member": "Member",
+      "other": "Other"
     },
     "countSummary": "{{filtered}} / {{total}} resources",
     "download": "Download",
@@ -578,49 +640,120 @@
       "charter": "NDA Charter"
     },
     "about": {
+      "stats": {
+        "title": "National Data Association - Outstanding Achievements",
+        "subtitle": "Officially launched on March 22, 2025 at the Ministry of Public Security Hall",
+        "members": "Members",
+        "fields": "Active Fields",
+        "partners": "Trusted Partners"
+      },
       "mission": {
         "title": "Mission",
-        "content": "Connect management agencies, enterprises, and organizations in the field of data and science and technology. Build practical activities to spread knowledge, connect communities, and promote the development of Vietnam's data ecosystem in the digital era."
+        "content1": "The National Data Association is a socio-professional organization of Vietnamese organizations and citizens operating in the data field, aiming to unite, rally members, and protect legitimate rights and interests of members.",
+        "content2": "Pioneer in implementing Resolution No. 57-NQ/TW on breakthrough in science, technology, innovation and national digital transformation into daily life.",
+        "content3": "Become the \"Common House of Digital Knights\", making Vietnam a digital nation with \"accurate - sufficient - clean - living\" data."
       },
-      "vision": {
-        "title": "Vision",
-        "content": "To become a leading organization in building Vietnam's data ecosystem, contributing to building a sustainable digital economy and enhancing national competitiveness in the era of Industry 4.0 technology."
+      "tasks": {
+        "title": "Key Tasks",
+        "legal": "Participate in contributing opinions to legal documents related to data",
+        "data": "Build, develop, exploit national data (4 pillars: people, location, activities, products)",
+        "technology": "Master AI, Big Data, Blockchain, Cloud Computing technologies",
+        "promotion": "Coordinate in promoting data policies and laws",
+        "support": "Support functional agencies when requested"
       },
-      "coreValues": {
-        "title": "Core Values",
-        "items": {
-          "transparency": {
-            "title": "Transparency",
-            "content": "Ensure transparency in all activities and data processing procedures"
-          },
-          "innovation": {
-            "title": "Innovation",
-            "content": "Pioneer in applying new technologies and methods"
-          },
-          "cooperation": {
-            "title": "Cooperation",
-            "content": "Build sustainable and effective partnerships"
-          }
+      "development": {
+        "title": "Development Orientation under the Direction of General Secretary To Lam",
+        "market": {
+          "title": "Data Market Development",
+          "content": "Build national data market, deploy data platforms to serve research, startup development, and innovation."
+        },
+        "ai": {
+          "title": "Build Open AI Platform",
+          "content": "Help businesses easily access AI applications, especially Vietnamese AI."
+        },
+        "education": {
+          "title": "Popularize Data Knowledge",
+          "content": "Raise awareness, knowledge and data skills for the whole society."
+        },
+        "competition": {
+          "title": "Organize Innovation Competitions",
+          "content": "Create playground to maximize human potential in science and technology."
+        },
+        "autonomy": {
+          "title": "Data Technology Autonomy",
+          "content": "Create mechanisms for \"Made in Vietnam\" products to compete fairly in the market."
+        },
+        "infrastructure": {
+          "title": "Build Data Infrastructure",
+          "content": "Support building advanced data infrastructure, including state and private data centers."
+        },
+        "cooperation": {
+          "title": "International Cooperation",
+          "content": "Strengthen cooperation, learn experiences, attract resources and participate in global initiatives."
+        },
+        "security": {
+          "title": "Data Security",
+          "content": "Build product protection systems, data security standards, form data protection industry."
         }
+      },
+      "leadership": {
+        "title": "Standing Committee of National Data Association (2025-2030)",
+        "chairman": {
+          "title": "CHAIRMAN",
+          "name": "General Luong Tam Quang",
+          "position": "Minister of Public Security"
+        },
+        "viceChairmanPermanent": {
+          "title": "PERMANENT VICE CHAIRMAN",
+          "name": "Lieutenant General Nguyen Van Long",
+          "position": "Deputy Minister of Public Security"
+        },
+        "viceChairmen": {
+          "title": "VICE CHAIRMAN",
+          "nguyen_ngoc_cuong": {
+            "name": "Major General Nguyen Ngoc Cuong",
+            "position": "Director of National Data Center, Ministry of Public Security"
+          },
+          "tran_minh_son": {
+            "name": "Mr. Tran Minh Son",
+            "position": "Vice Chairman of Sun Group"
+          },
+          "nguyen_thieu_nam": {
+            "name": "Mr. Nguyen Thieu Nam",
+            "position": "Deputy General Director of Masan Group"
+          },
+          "truong_gia_binh": {
+            "name": "Assoc. Prof. Dr. Truong Gia Binh",
+            "position": "Chairman of FPT Corporation"
+          }
+        },
+        "secretaryGeneral": {
+          "title": "GENERAL SECRETARY",
+          "name": "Major Dao Duc Trieu",
+          "position1": "Director of Center for Data Innovation and Exploitation",
+          "position2": "National Data Center, Ministry of Public Security"
+        },
+        "organizationChart": "Standing Committee Organization Chart"
       },
       "history": {
         "title": "Formation History",
-        "items": {
-          "founding": {
-            "year": "2024",
-            "title": "Association Establishment",
-            "content": "Vietnam National Data Association was established with the participation of leading agencies and organizations in the field of data and information technology."
-          },
-          "expansion": {
-            "year": "2025",
-            "title": "Activity Expansion",
-            "content": "Deploy international cooperation programs, build pioneering data products and organize large-scale professional events."
-          }
+        "establishment": {
+          "title": "Establishment Decision",
+          "content": "The National Data Association was established according to Decision No. 10/QD-BNV of the Ministry of Home Affairs, aiming to connect management agencies, enterprises, organizations and individuals operating in the data field."
+        },
+        "launch": {
+          "title": "Official Launch Ceremony",
+          "content": "At the Ministry of Public Security Hall (30 Tran Binh Trong, Hanoi), the National Data Association (NDA) was officially launched, marking an important beginning in building a strong data ecosystem for Vietnam."
+        },
+        "firstTerm": {
+          "title": "First Term",
+          "content": "The Association aims to build a strong data ecosystem, contributing to promoting digital economy development and increasing data value in the national economy."
         }
       }
     },
     "executive": {
       "title": "Executive Board Organization Chart",
+      "organizationChart": "Organization Chart of Professional Departments",
       "chairman": {
         "title": "ASSOCIATION CHAIRMAN",
         "name": "Lieutenant General Nguyen Van Long"
@@ -692,14 +825,15 @@
     },
     "charter": {
       "title": "Charter of Vietnam National Data Association",
+      "subtitle": "Modern document reading experience with 3D page-flipping technology",
       "preview": {
         "title": "Charter Front Page"
       },
       "info": {
-        "title": "Charter Information",
-        "document": "Charter of Vietnam National Data Association",
-        "issueDate": "March 15, 2024",
-        "pages": "24 pages",
+        "title": "Document Information",
+        "document": "NDA Charter",
+        "issueDate": "May 09, 2025",
+        "pages": "21 pages",
         "format": "PDF",
         "fields": {
           "name": "Document Name:",
@@ -711,19 +845,120 @@
       "content": {
         "title": "Main Content",
         "chapters": {
-          "general": "• Chapter I: General Provisions",
-          "objectives": "• Chapter II: Objectives, Tasks and Powers",
-          "members": "• Chapter III: Association Members",
-          "structure": "• Chapter IV: Organizational Structure",
-          "finance": "• Chapter V: Finance and Assets",
-          "relations": "• Chapter VI: Relations with Other Organizations",
-          "others": "• Chapter VII: Other Provisions"
+          "general": "Chapter I: GENERAL PROVISIONS",
+          "responsibilities": "Chapter II: RIGHTS, DUTIES, RESPONSIBILITIES OF THE ASSOCIATION",
+          "members": "Chapter III: MEMBERS",
+          "rewards": "Chapter VI: REWARDS AND DISCIPLINE",
+          "implementation": "Chapter VII: IMPLEMENTATION PROVISIONS"
         }
       },
       "download": {
-        "button": "Download Full Charter (PDF)",
-        "info": "Size: 2.4 MB • Updated: March 15, 2024"
+        "button": "Download PDF",
+        "info": "Full PDF file with all chapters and detailed provisions"
+      },
+      "stats": {
+        "members": "Members",
+        "fields": "Active Fields",
+        "partners": "Trusted Partners"
+      },
+      "mission": {
+        "title": "Mission",
+        "content1": "The National Data Association is a socio-professional organization of Vietnamese organizations and citizens operating in the data field, aiming to unite, rally members, and protect legitimate rights and interests of members.",
+        "content2": "Pioneer in implementing Resolution No. 57-NQ/TW on breakthrough in science, technology, innovation and national digital transformation into daily life.",
+        "content3": "Become the \"Common House of Digital Knights\", making Vietnam a digital nation with \"accurate - sufficient - clean - living\" data."
+      },
+      "tasks": {
+        "title": "Key Tasks",
+        "legal": "Participate in contributing opinions to legal documents related to data",
+        "data": "Build, develop, exploit national data (4 pillars: people, location, activities, products)",
+        "technology": "Master AI, Big Data, Blockchain, Cloud Computing technologies",
+        "promotion": "Coordinate in promoting data policies and laws",
+        "support": "Support functional agencies when requested"
+      },
+      "development": {
+        "title": "Development Orientation under the Direction of General Secretary To Lam",
+        "market": {
+          "title": "Data Market Development",
+          "content": "Build national data market, deploy data platforms to serve research, startup development, and innovation."
+        },
+        "ai": {
+          "title": "Build Open AI Platform",
+          "content": "Help businesses easily access AI applications, especially Vietnamese AI."
+        },
+        "education": {
+          "title": "Popularize Data Knowledge",
+          "content": "Raise awareness, knowledge and data skills for the whole society."
+        },
+        "competition": {
+          "title": "Organize Innovation Competitions",
+          "content": "Create playground to maximize human potential in science and technology."
+        },
+        "autonomy": {
+          "title": "Data Technology Autonomy",
+          "content": "Create mechanisms for \"Made in Vietnam\" products to compete fairly in the market."
+        },
+        "infrastructure": {
+          "title": "Build Data Infrastructure",
+          "content": "Support building advanced data infrastructure, including state and private data centers."
+        },
+        "cooperation": {
+          "title": "International Cooperation",
+          "content": "Strengthen cooperation, learn experiences, attract resources and participate in global initiatives."
+        },
+        "security": {
+          "title": "Data Security",
+          "content": "Build product protection systems, data security standards, form data protection industry."
+        }
+      },
+      "leadership": {
+        "title": "Standing Committee of National Data Association (2025-2030)",
+        "chairman": "General Luong Tam Quang - Minister of Public Security",
+        "viceChairmanPermanent": "Lieutenant General Nguyen Van Long - Deputy Minister of Public Security",
+        "secretaryGeneral": "Major Dao Duc Trieu - Director of Center for Data Innovation and Exploitation"
+      },
+      "formation": {
+        "title": "Formation History",
+        "decision": {
+          "title": "Establishment Decision",
+          "content": "The National Data Association was established according to Decision No. 10/QD-BNV of the Ministry of Home Affairs, aiming to connect management agencies, enterprises, organizations and individuals operating in the data field."
+        },
+        "launch": {
+          "title": "Official Launch Ceremony",
+          "content": "At the Ministry of Public Security Hall (30 Tran Binh Trong, Hanoi), the National Data Association (NDA) was officially launched, marking an important beginning in building a strong data ecosystem for Vietnam."
+        },
+        "term": {
+          "title": "First Term",
+          "content": "The Association aims to build a strong data ecosystem, contributing to promoting digital economy development and increasing data value in the national economy."
+        }
       }
+    },
+    "flipbook": {
+      "title": "Charter of National Data Association",
+      "controls": {
+        "zoomIn": "Zoom In",
+        "zoomOut": "Zoom Out",
+        "reset": "Reset",
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit Fullscreen"
+      },
+      "navigation": {
+        "previousPage": "Previous Page",
+        "nextPage": "Next Page",
+        "goTo": "Go to:",
+        "pageOf": "/"
+      },
+      "instructions": {
+        "title": "FlipBook Usage Guide",
+        "click": "• Click on page to flip to next page",
+        "arrows": "• Use left/right arrow keys to navigate",
+        "space": "• Press Space key to flip page",
+        "zoom": "• Use zoom buttons to zoom in/out",
+        "fullscreen": "• Press fullscreen button for better viewing",
+        "indicators": "• Click on dots to quickly jump to pages",
+        "escape": "• Press Esc to exit fullscreen mode"
+      },
+      "loading": "Loading document...",
+      "error": "Error loading document. Please try again."
     }
   },
   "members": {
@@ -875,6 +1110,29 @@
       "share": {
         "title": "Share Article"
       }
+    }
+  },
+  "digitalProducts": {
+    "title": "Digital Products",
+    "description": "Explore advanced technology solutions from Vietnam National Data Association, contributing to national digital transformation.",
+    "breadcrumb": {
+      "home": "Home",
+      "products": "Digital Products"
+    },
+    "loading": "Loading digital products...",
+    "retry": "Retry",
+    "noProducts": "No digital products available yet.",
+    "noDescription": "No description",
+    "author": "Author",
+    "unknownDate": "Unknown date",
+    "badge": "Digital Product",
+    "errors": {
+      "fetchFailed": "Unable to load digital products data"
+    },
+    "info": {
+      "totalProducts": "Total products: {{total}}",
+      "showing": "Showing {{start}}-{{end}} of {{total}} products",
+      "page": "Page {{current}} / {{total}}"
     }
   },
   "faq": {

@@ -11,23 +11,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import ResourceTable from "./component/resource-table";
 import {
   Select,
@@ -37,36 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Plus,
   Search,
-  Edit,
-  Trash2,
-  MoreHorizontal,
   FileText,
   ImageIcon,
   Video,
   Music,
   Archive,
-  Download,
-  Eye,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
 import { useMediaList } from "@/hooks/admin/media/useMediaList";
@@ -102,14 +65,16 @@ export default function ResourcesPage() {
   });
   const apiResources: Resource[] = useMemo(
     () =>
-      items.map((m) => ({
-        id: m.id,
-        filename: m.file_name,
-        media_type: m.media_type,
-        size: `${Math.round((m.file_size || 0) / 1024)} KB`,
-        createdAt: m.created_at || "",
-        url: m.file_path,
-      })),
+      items
+        .filter((m) => m.status === "active") // Only show active items
+        .map((m) => ({
+          id: m.id,
+          filename: m.file_name || "",
+          media_type: m.media_type,
+          size: `${Math.round((m.file_size || 0) / 1024)} KB`,
+          createdAt: m.created_at || "",
+          url: m.file_path,
+        })),
     [items]
   );
 
@@ -151,10 +116,10 @@ export default function ResourcesPage() {
     try {
       await createMedia({
         file: formData.file,
-        file_name: formData.filename || formData.file.name,
         media_type: formData.media_type,
       });
       setFormData({ file: null, filename: "", media_type: "other" });
+      setDialogOpen(false);
       refetch();
     } catch (error) {
       console.error("Failed to create resource:", error);
@@ -176,11 +141,11 @@ export default function ResourcesPage() {
     if (!editingResource) return;
     try {
       await updateMedia(editingResource.id, {
-        file_name: formData.filename,
         media_type: formData.media_type,
       });
       setEditingResource(null);
       setFormData({ file: null, filename: "", media_type: "other" });
+      setDialogOpen(false); // Close dialog after successful update
       refetch();
     } catch (error) {
       console.error("Failed to update resource:", error);
@@ -188,8 +153,13 @@ export default function ResourcesPage() {
   };
 
   const handleDeleteResource = async (resourceId: any) => {
-    await deleteMedia(resourceId);
-    refetch();
+    try {
+      await deleteMedia(resourceId);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting resource:", error);
+      // Don't refetch on error
+    }
   };
 
   const getTypeIcon = (type: string) => {
@@ -305,14 +275,20 @@ export default function ResourcesPage() {
             </div>
             <Select value={filterType} onValueChange={setFilterType}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by type" />
+                <SelectValue placeholder={t("resource.filterByType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="post">Post</SelectItem>
-                <SelectItem value="event">Event</SelectItem>
-                <SelectItem value="member">Member</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="all">{t("resource.all")}</SelectItem>
+                <SelectItem value="post">{t("resource.types.post")}</SelectItem>
+                <SelectItem value="event">
+                  {t("resource.types.event")}
+                </SelectItem>
+                <SelectItem value="member">
+                  {t("resource.types.member")}
+                </SelectItem>
+                <SelectItem value="other">
+                  {t("resource.types.other")}
+                </SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">

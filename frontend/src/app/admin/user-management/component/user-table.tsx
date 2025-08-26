@@ -7,15 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Edit, MoreHorizontal, Trash2 } from "lucide-react"
 import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
+import type { UserListItem } from "@/services/admin/users/getAllUser"
 
-type User = {
-  id: number
-  full_name: string
-  email: string
-  phone?: string
-  status: string
-  created_at: string
-}
+type User = UserListItem
 
 export default function UserTable({
   items,
@@ -28,7 +22,7 @@ export default function UserTable({
   getRoleColor: (role: string) => string
   getStatusColor: (status: string) => string
   onEdit: (u: User) => void
-  onDelete: (id: number) => void
+  onDelete: (id: number | string) => void
 }) {
   const { t } = useLocale()
   return (

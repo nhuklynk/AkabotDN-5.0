@@ -158,5 +158,13 @@ INSERT INTO faqs (id, content, parent_id, status, created_by, created_at, modifi
 ('550e8400-e29b-41d4-a716-446655441006', 'Content submission is available to registered members through our content management system.', '550e8400-e29b-41d4-a716-446655441003', 'active', 'system', NOW(), 'system', NOW());
 
 -- =====================================================
+-- Insert Events
+-- =====================================================
+INSERT INTO events (id, title, slug, description, location, start_time, end_time, countdown_enabled, thumbnail_url_id, status, created_by, created_at, modified_by, modified_at) VALUES
+('56faa209-7c3f-4e8a-9b2c-1d3e4f5a6b7c', 'Music Festival', 'music-festival-2025-seed', 'A large open-air music festival featuring top artists from around the world', 'Central Park, NY', '2025-09-01 18:00:00', '2025-09-01 23:59:59', true, '2f14c5ab-90f4-4e8a-9b2c-1d3e4f5a6b7c', 'published', 'f50ae3bd-0de6-4eab-9b2c-1d3e4f5a6b7c', '2025-08-26 17:05:54.139', 'b521c16c-5648-430c-97a1-2d3e4f5a6b7c', '2025-08-26 17:05:54.139'),
+('5fc311c4-b3eb-4e8a-9b2c-1d3e4f5a6b7c', 'Tech Conference', 'tech-conference-2025-seed', 'Annual tech conference showcasing the latest innovations in technology', 'Silicon Valley Convention Center', '2025-10-10 09:00:00', '2025-10-12 17:00:00', true, 'd98a8ac1-108d-4e8a-9b2c-1d3e4f5a6b7c', 'draft', '08f75387-df4e-4f27-a1b2-3c4d5e6f7a8b', '2025-08-26 17:05:54.139', '0b373866-391f-4ae5-87a1-2d3e4f5a6b7c', '2025-08-26 17:05:54.139'),
+('1fabfd02-7e6a-4e8a-9b2c-1d3e4f5a6b7c', 'Art Expo', 'art-expo-2025-seed', 'Exhibition of modern art featuring works from contemporary artists', 'Paris Art Museum', '2025-11-05 10:00:00', '2025-11-10 18:00:00', false, 'b88e6f14-439c-4e8a-9b2c-1d3e4f5a6b7c', 'published', '9ab8792c-bd48-4395-a1b2-3c4d5e6f7a8b', '2025-08-26 17:05:54.139', '961a686b-38c1-4bfe-89a1-2d3e4f5a6b7c', '2025-08-26 17:05:54.139');
+
+-- =====================================================
 -- End of Seeding Script
 -- =====================================================

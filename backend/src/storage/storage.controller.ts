@@ -45,7 +45,7 @@ export class StorageController {
     return {
       success: true,
       data: result,
-      message: 'Upload policy generated successfully'
+      message: 'Upload policy generated successfully',
     };
   }
 
@@ -58,7 +58,6 @@ export class StorageController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB
-          new FileTypeValidator({ fileType: '.(jpg|jpeg|png|gif|pdf|doc|docx|xls|xlsx|txt)' }),
         ],
       }),
     )
@@ -75,7 +74,7 @@ export class StorageController {
       fileSize: file.size,
       contentType: file.mimetype,
     });
-    
+
     return {
       success: true,
       data: {
@@ -86,7 +85,7 @@ export class StorageController {
         fileSize: file.size,
         contentType: file.mimetype,
       },
-      message: 'File uploaded successfully'
+      message: 'File uploaded successfully',
     };
   }
 
@@ -122,8 +121,10 @@ export class StorageController {
   @Post('file')
   @ApiOperation({ summary: 'Download file content by ARN' })
   async downloadFileByArn(@Body() downloadFileDto: DownloadFileDto) {
-    const result = await this.storageService.downloadFileByArn(downloadFileDto.arn);
-    
+    const result = await this.storageService.downloadFileByArn(
+      downloadFileDto.arn,
+    );
+
     return {
       success: true,
       data: {
@@ -133,7 +134,7 @@ export class StorageController {
         fileSize: result.fileContent.length,
         downloadUrl: `data:${result.contentType};base64,${result.fileContent.toString('base64')}`,
       },
-      message: 'File downloaded successfully'
+      message: 'File downloaded successfully',
     };
   }
 
@@ -141,16 +142,16 @@ export class StorageController {
   @ApiOperation({ summary: 'Delete multiple files by ARNs' })
   async deleteFiles(@Body() body: { arns: string[] }) {
     const results = await this.storageService.deleteFiles(...body.arns);
-    
+
     return {
       success: true,
       data: {
         arns: body.arns,
         results,
-        deletedCount: results.filter(r => r.status === 'fulfilled').length,
-        failedCount: results.filter(r => r.status === 'rejected').length,
+        deletedCount: results.filter((r) => r.status === 'fulfilled').length,
+        failedCount: results.filter((r) => r.status === 'rejected').length,
       },
-      message: `Deleted ${results.filter(r => r.status === 'fulfilled').length} files successfully`
+      message: `Deleted ${results.filter((r) => r.status === 'fulfilled').length} files successfully`,
     };
   }
 

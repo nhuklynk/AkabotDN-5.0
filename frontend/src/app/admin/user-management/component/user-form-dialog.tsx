@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import apiClient from "@/services/apiClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +20,8 @@ type UserFormData = {
   phone?: string;
   avatar?: string;
   status: string;
+  password?: string;
+  role_id?: string;
 };
 
 type Props = {
@@ -33,6 +36,33 @@ export default function UserFormDialog({
   mode,
 }: Props) {
   const { t } = useLocale();
+  const tOr = React.useCallback(
+    (key: string, fallback: string) => {
+      const val = t(key);
+      return val === key ? fallback : val;
+    },
+    [t]
+  );
+  const [roles, setRoles] = React.useState<Array<{ id: string; name: string }>>([]);
+
+  React.useEffect(() => {
+    if (mode !== "create") return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res: any = await apiClient.get("/roles");
+        const payload = res?.data ?? res;
+        const items = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+        if (!cancelled) setRoles(items);
+      } catch {
+        // ignore
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [mode]);
 
   return (
         <div className="space-y-4">
@@ -57,6 +87,7 @@ export default function UserFormDialog({
                 setFormData((d) => ({ ...d, email: e.target.value }))
               }
               placeholder={t("user.form.emailPlaceholder")}
+              disabled={mode === "edit"}
             />
           </div>
           <div>
@@ -81,6 +112,40 @@ export default function UserFormDialog({
               placeholder="https://..."
             />
           </div>
+          {mode === "create" && (
+            <div>
+              <Label htmlFor="password">{tOr("user.form.password", "Password")}</Label>
+              <Input
+                id="password"
+                type="password"
+                value={formData.password || ""}
+                onChange={(e) =>
+                  setFormData((d) => ({ ...d, password: e.target.value }))
+                }
+                placeholder={tOr("user.form.passwordPlaceholder", "At least 6 characters")}
+              />
+            </div>
+          )}
+          {mode === "create" && (
+            <div>
+              <Label htmlFor="role">{tOr("user.form.role", "Role")}</Label>
+              <Select
+                value={formData.role_id || ""}
+                onValueChange={(value) => setFormData((d) => ({ ...d, role_id: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={tOr("user.form.rolePlaceholder", "Select a role")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {roles.map((r) => (
+                    <SelectItem key={r.id} value={r.id}>
+                      {r.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div>
             <Label htmlFor="status">{t("user.form.status")}</Label>
             <Select

@@ -1,16 +1,17 @@
 "use client"
 
+import * as React from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { Edit, ExternalLink, MoreHorizontal, Trash2, Star } from "lucide-react"
 import Image from "next/image"
-import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Post = {
-  id: number
+  id: string | number
   title: string
   excerpt: string
   author: string
@@ -43,9 +44,11 @@ export default function PostTable({
   getStatusColor: (status: string) => string
   formatDate: (d: string | null) => string
   onEdit: (p: Post) => void
-  onDelete: (id: number) => void
+  onDelete: (id: string | number) => void
 }) {
   const { t } = useLocale()
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
+  const [deleteItemId, setDeleteItemId] = React.useState<string | number | null>(null)
   return (
     <div className="rounded-md border">
       <Table>
@@ -108,11 +111,16 @@ export default function PostTable({
                     <DropdownMenuItem onClick={() => onEdit(post)}>
                       <Edit className="h-4 w-4 mr-2" /> {t("common.edit")}
                     </DropdownMenuItem>
-                    <DeleteConfirmDialog onConfirm={() => onDelete(post.id)}>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Trash2 className="h-4 w-4 mr-2" /> {t("common.delete")}
-                      </DropdownMenuItem>
-                    </DeleteConfirmDialog>
+                    <DropdownMenuItem 
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        // Use controlled dialog
+                        setDeleteDialogOpen(true);
+                        setDeleteItemId(post.id);
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" /> {t("common.delete")}
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
@@ -120,6 +128,20 @@ export default function PostTable({
           ))}
         </TableBody>
       </Table>
+      
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={async () => {
+          if (deleteItemId) {
+            await onDelete(deleteItemId);
+            setDeleteItemId(null);
+          }
+        }}
+      >
+        <div style={{ display: 'none' }} />
+      </DeleteConfirmDialog>
     </div>
   )
 }

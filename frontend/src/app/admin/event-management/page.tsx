@@ -10,35 +10,13 @@ import EventTable, { EventItem } from "./component/event-table";
 import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
+import { useEvents } from "@/hooks/admin/event/useEvents";
+import { CreateEventPayload, UpdateEventPayload } from "@/services/admin/events";
 
-const initialEvents: EventItem[] = [
-  {
-    id: 1,
-    title: "Hội thảo Công nghệ 2025",
-    content: "<p>Giới thiệu xu hướng công nghệ mới.</p>",
-    location: "Hội trường A",
-    startAt: new Date(Date.now() + 86400000).toISOString(),
-    endAt: new Date(Date.now() + 2 * 86400000).toISOString(),
-    enableCountdown: true,
-    status: "active",
-    createdAt: "2025-01-01",
-  },
-  {
-    id: 2,
-    title: "Hoạt động thiện nguyện",
-    content: "<p>Chung tay vì cộng đồng.</p>",
-    location: "Quận 1",
-    startAt: new Date(Date.now() + 5 * 3600000).toISOString(),
-    endAt: undefined,
-    enableCountdown: false,
-    status: "inactive",
-    createdAt: "2025-01-02",
-  },
-];
+// Removed mock data - using API data instead
 
 export default function EventManagementPage() {
   const { t } = useLocale();
-  const [events, setEvents] = useState<EventItem[]>(initialEvents);
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
@@ -52,6 +30,24 @@ export default function EventManagementPage() {
     enableCountdown: true,
     status: "active",
   });
+
+  const { items: apiEvents, loading, error, create, update, remove, setQuery } = useEvents({
+    initialQuery: { page: 1, limit: 10 }
+  });
+
+  const events: EventItem[] = useMemo(() => {
+    return apiEvents.map((event) => ({
+      id: Number(event.id),
+      title: event.title,
+      content: event.description,
+      location: event.location,
+      startAt: event.start_time,
+      endAt: event.end_time,
+      enableCountdown: event.countdown_enabled,
+      status: event.status as "active" | "inactive",
+      createdAt: event.created_at,
+    }));
+  }, [apiEvents]);
 
   const filtered = useMemo(() => {
     const term = searchTerm.toLowerCase();
@@ -68,6 +64,15 @@ export default function EventManagementPage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
+
+  // Handle search
+  useEffect(() => {
+    setQuery({
+      page: currentPage,
+      limit: pageSize,
+      search: searchTerm || undefined,
+    });
+  }, [currentPage, pageSize, searchTerm, setQuery]);
 
   const toDateTimeLocal = (iso?: string) => {
     if (!iso) return "";
@@ -96,21 +101,26 @@ export default function EventManagementPage() {
     setDialogOpen(true);
   };
 
-  const handleCreate = () => {
-    setEvents((prev) => [
-      {
-        id: prev.length ? Math.max(...prev.map((x) => x.id)) + 1 : 1,
+  const handleCreate = async () => {
+    try {
+      const payload: CreateEventPayload = {
         title: formData.title,
         content: formData.content,
         location: formData.location,
-        startAt: new Date(formData.startAt).toISOString(),
-        endAt: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
-        enableCountdown: formData.enableCountdown,
+        start_time: new Date(formData.startAt).toISOString(),
+        end_time: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
+        countdown_enabled: formData.enableCountdown,
         status: formData.status,
-        createdAt: new Date().toISOString().slice(0, 10),
-      },
-      ...prev,
-    ]);
+      };
+      await create(payload);
+      setDialogOpen(false);
+      setFormData({
+        title: "", content: "", location: "", startAt: "", endAt: "",
+        enableCountdown: false, status: "active"
+      });
+    } catch (error) {
+      console.error("Failed to create event:", error);
+    }
   };
 
   const openEdit = (e: EventItem) => {
@@ -128,29 +138,37 @@ export default function EventManagementPage() {
     setTimeout(() => setDialogOpen(true), 0);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!editingEvent) return;
-    setEvents((prev) =>
-      prev.map((ev) =>
-        ev.id !== editingEvent.id
-          ? ev
-          : {
-              ...ev,
-              title: formData.title,
-              content: formData.content,
-              location: formData.location,
-              startAt: new Date(formData.startAt).toISOString(),
-              endAt: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
-              enableCountdown: formData.enableCountdown,
-              status: formData.status,
-            }
-      )
-    );
-    setEditingEvent(null);
+    try {
+      const payload: UpdateEventPayload = {
+        title: formData.title,
+        content: formData.content,
+        location: formData.location,
+        start_time: new Date(formData.startAt).toISOString(),
+        end_time: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
+        countdown_enabled: formData.enableCountdown,
+        status: formData.status,
+      };
+      await update(editingEvent.id, payload);
+      setDialogOpen(false);
+      setEditingEvent(null);
+      setFormData({
+        title: "", content: "", location: "", startAt: "", endAt: "",
+        enableCountdown: false, status: "active"
+      });
+    } catch (error) {
+      console.error("Failed to update event:", error);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setEvents((prev) => prev.filter((e) => e.id !== id));
+  const handleDelete = async (id: number) => {
+    try {
+      await remove(id);
+    } catch (error) {
+      console.error("Delete failed:", error);
+      throw error; // Re-throw to let DeleteConfirmDialog handle it
+    }
   };
 
   return (
@@ -214,7 +232,25 @@ export default function EventManagementPage() {
             </div>
           </div>
 
-          <EventTable items={paginated} onEdit={openEdit} onDelete={handleDelete} />
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Đang tải...</p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <p className="text-destructive mb-4">{error}</p>
+                <Button variant="outline" onClick={() => window.location.reload()}>
+                  Thử lại
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <EventTable items={paginated} onEdit={openEdit} onDelete={handleDelete} />
+          )}
 
           <div className="mt-6">
             <Pagination
