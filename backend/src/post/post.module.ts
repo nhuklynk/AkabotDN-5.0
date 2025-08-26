@@ -11,9 +11,10 @@ import { CommonModule } from '../common/common.module';
 import { StorageModule } from 'src/storage';
 import { MediaModule } from 'src/media/media.module';
 import { UserModule } from 'src/user/user.module';
+import { PostViewModule } from 'src/post-view/post-view.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule, StorageModule, MediaModule, UserModule],
+  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule, StorageModule, MediaModule, UserModule, PostViewModule],
   controllers: [PostController],
   providers: [PostService],
   exports: [PostService],

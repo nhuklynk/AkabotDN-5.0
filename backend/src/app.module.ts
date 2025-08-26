@@ -16,6 +16,7 @@ import { FaqModule } from './faq/faq.module';
 import { PartnerModule } from './partner/partner.module';
 import { PostViewModule } from './post-view/post-view.module';
 import { EventModule } from './event/event.module';
+import { ExecutiveBoardModule } from './executive-board/executive-board.module';
 import { AuditSubscriber } from './config/audit.subscriber';
 import { CommonModule } from './common/common.module';
 import { StorageModule } from './storage/storage.module';
@@ -43,6 +44,7 @@ import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
     PartnerModule,
     PostViewModule,
     EventModule,
+    ExecutiveBoardModule,
     StorageModule,
   ],
   controllers: [AppController, SwaggerExportController],

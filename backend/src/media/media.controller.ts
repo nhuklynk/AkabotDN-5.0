@@ -3,17 +3,24 @@ import {
   Get,
   Post,
   Body,
-  Put,
   Param,
   Delete,
   HttpCode,
   HttpStatus,
   BadRequestException,
   Query,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  Patch,
+  ParseUUIDPipe,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
 import { CreateMediaDto } from './dto/create-media.dto';
-import { UpdateMediaDto } from './dto/update-media.dto';
+import { CreateMediaFormDataDto } from './dto/create-media-formdata.dto';
+import { UpdateMediaFormDataDto } from './dto/update-media-formdata.dto';
 import { MediaResponseDto } from './dto/media-response.dto';
 import { MediaType } from './entity/media.entity';
 import {
@@ -23,6 +30,7 @@ import {
   ApiParam,
   ApiBody,
   ApiQuery,
+  ApiConsumes,
 } from '@nestjs/swagger';
 import { MediaQueryDto } from './dto/media-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
@@ -86,25 +94,73 @@ export class MediaController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Create a new media file' })
-  @ApiBody({ type: CreateMediaDto })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Upload media file with form data' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Media file to upload',
+        },
+        media_type: {
+          type: 'string',
+          enum: ['post', 'event', 'member', 'other'],
+          description: 'Media type classification',
+        }
+      },
+      required: ['file'],
+    },
+  })
   @ApiResponse({
     status: 201,
-    description: 'Media created successfully',
+    description: 'Media uploaded successfully',
     type: MediaResponseDto,
   })
   @ApiResponse({
     status: 400,
-    description: 'Bad request - Invalid input data',
+    description: 'Bad request - Invalid file or input data',
   })
-  async create(@Body() createMediaDto: CreateMediaDto): Promise<MediaResponseDto> {
-    return this.mediaService.create(createMediaDto);
+  async uploadMedia(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
+        ],
+        fileIsRequired: true,
+      }),
+    )
+    file: Express.Multer.File,
+    @Body() createMediaFormDataDto: CreateMediaFormDataDto,
+  ): Promise<MediaResponseDto> {
+    return this.mediaService.createFromFormData(file, createMediaFormDataDto);
   }
 
-  @Put(':id')
-  @ApiOperation({ summary: 'Update media by ID' })
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Update media by ID with optional file upload' })
   @ApiParam({ name: 'id', description: 'Media ID (UUID)' })
-  @ApiBody({ type: UpdateMediaDto })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'New media file to upload (optional - replaces existing file)',
+        },
+        media_type: {
+          type: 'string',
+          enum: Object.values(MediaType),
+          description: 'Media type classification',
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: 200,
     description: 'Media updated successfully',
@@ -119,13 +175,11 @@ export class MediaController {
     description: 'Media not found',
   })
   async update(
-    @Param('id') id: string,
-    @Body() updateMediaDto: UpdateMediaDto,
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() updateMediaFormDataDto: UpdateMediaFormDataDto,
+    @UploadedFile() file?: Express.Multer.File,
   ): Promise<MediaResponseDto> {
-    if (!validateUUID(id)) {
-      throw new BadRequestException('Invalid UUID format for media ID');
-    }
-    return this.mediaService.update(id, updateMediaDto);
+    return this.mediaService.updateFromFormData(id, file, updateMediaFormDataDto);
   }
 
   @Delete(':id')
