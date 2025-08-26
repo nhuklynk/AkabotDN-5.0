@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   CreateBucketCommand,
@@ -65,6 +65,14 @@ export class StorageService {
     return await getSignedUrl(this.s3Client, command, {
       expiresIn: Math.max(expiresInSeconds, 10),
     });
+  }
+
+  async getFileUrl(arn: string): Promise<string> {
+    const [s3, bucket, key] = arn.split(':');
+    if (!bucket || !key) throw new NotFoundException('Invalid ARN');
+    const expiresIn = this.configService.get<number>('SIGNED_URL_EXPIRES_IN', 300);
+    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+    return await getSignedUrl(this.s3Client, command, { expiresIn });
   }
 
   private extractArn(arn: string) {

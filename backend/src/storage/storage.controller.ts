@@ -25,6 +25,13 @@ import { DownloadUrlDto } from './dto/download-url.dto';
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
+  @Get('file-url')
+  @ApiOperation({ summary: 'Get file URL by ARN' })
+  async getFileUrl(@Query('arn') arn: string) {
+    const url = await this.storageService.getFileUrl(arn);
+    return { url };
+  }
+
   @Post('upload-policy')
   @ApiOperation({ summary: 'Get upload policy for direct S3 upload' })
   async getUploadPolicy(
