@@ -1,6 +1,9 @@
 import { useState, useCallback } from "react";
 import { useEvents } from "./useEvents";
-import { CreateEventPayload, UpdateEventPayload } from "@/services/admin/events";
+import {
+  CreateEventPayload,
+  UpdateEventPayload,
+} from "@/services/admin/events";
 import type { EventItem } from "@/app/admin/event-management/component/event-table";
 
 export type EventFormData = {
@@ -28,20 +31,28 @@ export function useEventManagement() {
     status: "active",
   });
 
-  const { items: apiEvents, loading, error, create, update, remove, setQuery } = useEvents({
-    initialQuery: { page: 1, limit: 10 }
+  const {
+    items: apiEvents,
+    loading,
+    error,
+    create,
+    update,
+    remove,
+    setQuery,
+  } = useEvents({
+    initialQuery: { page: 1, limit: 10 },
   });
 
   // Map API events to EventItem format
   const events: EventItem[] = apiEvents.map((event) => ({
     id: Number(event.id),
     title: event.title,
-    content: event.content,
+    content: event.description, // EventListItem has 'description', EventItem expects 'content'
     location: event.location,
     startAt: event.start_time,
     endAt: event.end_time,
     enableCountdown: event.countdown_enabled,
-    status: event.public_status as "active" | "inactive",
+    status: event.status as "active" | "inactive", // Use 'status' instead of 'public_status'
     createdAt: event.created_at,
   }));
 
@@ -94,15 +105,22 @@ export function useEventManagement() {
         content: formData.content,
         location: formData.location,
         start_time: new Date(formData.startAt).toISOString(),
-        end_time: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
+        end_time: formData.endAt
+          ? new Date(formData.endAt).toISOString()
+          : undefined,
         countdown_enabled: formData.enableCountdown,
-        public_status: formData.status,
+        status: formData.status,
       };
       await create(payload);
       setDialogOpen(false);
       setFormData({
-        title: "", content: "", location: "", startAt: "", endAt: "",
-        enableCountdown: false, status: "active"
+        title: "",
+        content: "",
+        location: "",
+        startAt: "",
+        endAt: "",
+        enableCountdown: false,
+        status: "active",
       });
     } catch (error) {
       console.error("Failed to create event:", error);
@@ -118,16 +136,23 @@ export function useEventManagement() {
         content: formData.content,
         location: formData.location,
         start_time: new Date(formData.startAt).toISOString(),
-        end_time: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
+        end_time: formData.endAt
+          ? new Date(formData.endAt).toISOString()
+          : undefined,
         countdown_enabled: formData.enableCountdown,
-        public_status: formData.status,
+        status: formData.status,
       };
       await update(editingEvent.id, payload);
       setDialogOpen(false);
       setEditingEvent(null);
       setFormData({
-        title: "", content: "", location: "", startAt: "", endAt: "",
-        enableCountdown: false, status: "active"
+        title: "",
+        content: "",
+        location: "",
+        startAt: "",
+        endAt: "",
+        enableCountdown: false,
+        status: "active",
       });
     } catch (error) {
       console.error("Failed to update event:", error);
@@ -135,30 +160,41 @@ export function useEventManagement() {
     }
   }, [formData, editingEvent, update]);
 
-  const handleDelete = useCallback(async (id: number) => {
-    try {
-      await remove(id);
-    } catch (error) {
-      console.error("Delete failed:", error);
-      throw error;
-    }
-  }, [remove]);
+  const handleDelete = useCallback(
+    async (id: number) => {
+      try {
+        await remove(id);
+      } catch (error) {
+        console.error("Delete failed:", error);
+        throw error;
+      }
+    },
+    [remove]
+  );
 
-  const handleSearch = useCallback((term: string) => {
-    setSearchTerm(term);
-    setQuery({
-      page: 1,
-      limit: 10,
-      search: term || undefined,
-    });
-  }, [setQuery]);
+  const handleSearch = useCallback(
+    (term: string) => {
+      setSearchTerm(term);
+      setQuery({
+        page: 1,
+        limit: 10,
+        search: term || undefined,
+      });
+    },
+    [setQuery]
+  );
 
   const closeDialog = useCallback(() => {
     setDialogOpen(false);
     setEditingEvent(null);
     setFormData({
-      title: "", content: "", location: "", startAt: "", endAt: "",
-      enableCountdown: false, status: "active"
+      title: "",
+      content: "",
+      location: "",
+      startAt: "",
+      endAt: "",
+      enableCountdown: false,
+      status: "active",
     });
   }, []);
 
@@ -172,7 +208,7 @@ export function useEventManagement() {
     formData,
     loading,
     error,
-    
+
     // Actions
     setFormData,
     setSearchTerm,
