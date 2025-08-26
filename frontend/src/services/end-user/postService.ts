@@ -9,6 +9,12 @@ export enum Status {
   PENDING = "pending", //for update/create
 }
 
+export enum PostType {
+  MEMBER_ACTIVITY = "MEMBER_ACTIVITY",
+  ASSOCIATION_ACTIVITY = "ASSOCIATION_ACTIVITY",
+  DIGITAL_PRODUCT = "DIGITAL_PRODUCT",
+}
+
 // Types based on the backend API
 export interface Post {
   id: string;
@@ -44,6 +50,7 @@ export interface PostQueryParams {
   page?: number;
   limit?: number;
   status?: Status;
+  type?: PostType;
   category?: string;
   tag?: string;
   search?: string;
@@ -106,6 +113,7 @@ class PostService {
     if (params.page) queryParams.append("page", params.page.toString());
     if (params.limit) queryParams.append("limit", params.limit.toString());
     if (params.status) queryParams.append("status", params.status);
+    if (params.type) queryParams.append("type", params.type);
     if (params.category) queryParams.append("category", params.category);
     if (params.tag) queryParams.append("tag", params.tag);
     if (params.search) queryParams.append("search", params.search);
@@ -274,6 +282,21 @@ class PostService {
     // This could be implemented based on your business logic
     // For now, returning recent posts
     return this.getRecentPosts(limit);
+  }
+
+  /**
+   * Get digital product posts
+   */
+  async getDigitalProducts(
+    page: number = 1,
+    limit: number = 10
+  ): Promise<PaginatedResponse<Post>> {
+    return this.searchAndFilter({
+      page,
+      limit,
+      type: PostType.DIGITAL_PRODUCT,
+      status: Status.PUBLISHED,
+    });
   }
 }
 

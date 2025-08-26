@@ -3,7 +3,8 @@
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, Sphere, Html } from "@react-three/drei";
 import { TextureLoader } from "three";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import React from "react";
 import * as THREE from "three";
 
 // City coordinates (latitude, longitude)
@@ -101,7 +102,8 @@ function CityMarker({ city }: { city: (typeof cities)[0] }) {
   );
 }
 
-function RotatingGlobe() {
+// Earth component with texture - separate for better error handling
+function EarthWithTexture() {
   const meshRef = useRef<THREE.Mesh>(null);
   const earthTexture = useLoader(TextureLoader, "/images/earth-texture.jpg");
 
@@ -112,17 +114,46 @@ function RotatingGlobe() {
   });
 
   return (
+    <Sphere ref={meshRef} args={[2, 64, 64]}>
+      <meshStandardMaterial
+        map={earthTexture}
+        roughness={0.6}
+        metalness={0.1}
+      />
+    </Sphere>
+  );
+}
+
+// Fallback Earth component
+function EarthFallback() {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.005;
+    }
+  });
+
+  return (
+    <Sphere ref={meshRef} args={[2, 64, 64]}>
+      <meshStandardMaterial color="#1e40af" roughness={0.4} metalness={0.2} />
+    </Sphere>
+  );
+}
+
+function RotatingGlobe() {
+  const [useTexture, setUseTexture] = useState(true);
+
+  return (
     <group>
-      {/* Main globe */}
-      <Sphere ref={meshRef} args={[2, 64, 64]}>
-        <meshStandardMaterial
-          map={earthTexture}
-          roughness={0.8}
-          metalness={0.1}
-          transparent={false}
-          opacity={1}
-        />
-      </Sphere>
+      {/* Main globe with error boundary */}
+      {useTexture ? (
+        <React.Suspense fallback={<EarthFallback />}>
+          <EarthWithTexture />
+        </React.Suspense>
+      ) : (
+        <EarthFallback />
+      )}
 
       {/* City markers */}
       {cities.map((city, index) => (
@@ -188,10 +219,27 @@ export function Globe3D({
   showBackground = true,
   className = "",
 }: Globe3DProps = {}) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const containerClasses =
     mode === "fullscreen"
       ? "w-full h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden"
       : `w-full h-full relative ${className}`;
+
+  // Show loading state on server/before client hydration
+  if (!isClient) {
+    return (
+      <div className={containerClasses}>
+        <div className="flex items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={containerClasses}>

@@ -37,17 +37,24 @@ export class PostService {
 
   private normalizeIds(ids?: string): string[] | undefined {
     if (!ids) return undefined;
-    return ids.split(',').map((id) => id.trim()).filter((id) => !!id);
+    return ids
+      .split(',')
+      .map((id) => id.trim())
+      .filter((id) => !!id);
   }
 
-  async create(createPostDto: CreatePostFormdataDto, featuredImage?: Express.Multer.File): Promise<PostResponseDto> {
+  async create(
+    createPostDto: CreatePostFormdataDto,
+    featuredImage?: Express.Multer.File,
+  ): Promise<PostResponseDto> {
     const user = await this.userService.findOne(createPostDto.user_id);
     if (!user) throw new NotFoundException('User not found');
 
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostDto.slug },
     });
-    if (existingPost) throw new ConflictException('Post with this slug already exists');
+    if (existingPost)
+      throw new ConflictException('Post with this slug already exists');
 
     const categoryIds = this.normalizeIds(createPostDto.category_ids);
     const tagIds = this.normalizeIds(createPostDto.tag_ids);
@@ -65,7 +72,9 @@ export class PostService {
     });
 
     if (categoryIds?.length) {
-      const categories = await this.categoryRepository.findBy({ id: In(categoryIds) });
+      const categories = await this.categoryRepository.findBy({
+        id: In(categoryIds),
+      });
       post.categories = categories;
     }
     if (tagIds?.length) {
@@ -83,14 +92,21 @@ export class PostService {
     }
 
     const savedPost = await this.postRepository.save(post);
-    return plainToClass(PostResponseDto, savedPost, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, savedPost, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  async update(id: string, updatePostDto: UpdatePostFormdataDto, featuredImage?: Express.Multer.File): Promise<PostResponseDto> {
+  async update(
+    id: string,
+    updatePostDto: UpdatePostFormdataDto,
+    featuredImage?: Express.Multer.File,
+  ): Promise<PostResponseDto> {
     const user = updatePostDto.user_id
       ? await this.userService.findOne(updatePostDto.user_id)
       : null;
-    if (updatePostDto.user_id && !user) throw new NotFoundException('User not found');
+    if (updatePostDto.user_id && !user)
+      throw new NotFoundException('User not found');
 
     const post = await this.postRepository.findOne({
       where: { id },
@@ -102,15 +118,15 @@ export class PostService {
     const tagIds = this.normalizeIds(updatePostDto.tag_ids);
 
     if (categoryIds?.length) {
-      post.categories = await this.categoryRepository.findBy({ id: In(categoryIds) });
+      post.categories = await this.categoryRepository.findBy({
+        id: In(categoryIds),
+      });
     }
     if (tagIds?.length) {
       post.tags = await this.tagRepository.findBy({ id: In(tagIds) });
     }
 
-    if (
-      updatePostDto.status === Status.PUBLISHED
-    ) {
+    if (updatePostDto.status === Status.PUBLISHED) {
       post.published_at = new Date();
     }
 
@@ -127,7 +143,9 @@ export class PostService {
     });
 
     const updatedPost = await this.postRepository.save(post);
-    return plainToClass(PostResponseDto, updatedPost, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, updatedPost, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async remove(id: string): Promise<void> {
@@ -145,7 +163,9 @@ export class PostService {
     });
     if (!post) throw new NotFoundException(`Post with ID ${id} not found`);
     const postView = await this.postViewService.create({ post_id: id });
-    return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, post, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findBySlug(slug: string): Promise<PostResponseDto> {
@@ -154,7 +174,9 @@ export class PostService {
       relations: ['user', 'categories', 'tags'],
     });
     if (!post) throw new NotFoundException(`Post with slug ${slug} not found`);
-    return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
+    return plainToClass(PostResponseDto, post, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async findByCategory(category_id: string): Promise<PostResponseDto[]> {
@@ -185,8 +207,21 @@ export class PostService {
     );
   }
 
-    async findFilteredAndPaginated(query: PostQueryDto): Promise<[PostResponseDto[], number]> {
-    const { page = 1, limit = 10, status, search, author_id, date_from, date_to, category, tag } = query;
+  async findFilteredAndPaginated(
+    query: PostQueryDto,
+  ): Promise<[PostResponseDto[], number]> {
+    const {
+      page = 1,
+      limit = 10,
+      status,
+      search,
+      author_id,
+      date_from,
+      date_to,
+      category,
+      tag,
+      type,
+    } = query;
     const skip = (page - 1) * limit;
 
     const queryBuilder = this.postRepository
@@ -202,7 +237,7 @@ export class PostService {
     if (search) {
       queryBuilder.andWhere(
         '(post.title ILIKE :search OR post.content ILIKE :search)',
-        { search: `%${search}%` }
+        { search: `%${search}%` },
       );
     }
 
@@ -218,29 +253,30 @@ export class PostService {
       queryBuilder.andWhere('post.created_at <= :date_to', { date_to });
     }
 
-    queryBuilder
-      .skip(skip)
-      .take(limit)
-      .orderBy('post.created_at', 'DESC');
+    if (type) {
+      queryBuilder.andWhere('post.post_type = :type', { type });
+    }
+
+    queryBuilder.skip(skip).take(limit).orderBy('post.created_at', 'DESC');
 
     const [posts, total] = await queryBuilder.getManyAndCount();
 
     let filteredPosts = posts;
-    
+
     if (category) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.categories?.some(cat => cat.slug === category)
-      );
-    }
-    
-    if (tag) {
-      filteredPosts = filteredPosts.filter(post => 
-        post.tags?.some(tagItem => tagItem.slug === tag)
+      filteredPosts = filteredPosts.filter((post) =>
+        post.categories?.some((cat) => cat.slug === category),
       );
     }
 
-    const postDtos = filteredPosts.map(post => 
-      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true })
+    if (tag) {
+      filteredPosts = filteredPosts.filter((post) =>
+        post.tags?.some((tagItem) => tagItem.slug === tag),
+      );
+    }
+
+    const postDtos = filteredPosts.map((post) =>
+      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
     );
 
     return [postDtos, total];

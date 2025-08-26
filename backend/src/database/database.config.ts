@@ -11,7 +11,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   database: process.env.DB_DATABASE_NAME,
   autoLoadEntities: true,
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
-  synchronize: process.env.NODE_ENV !== 'production',
+  synchronize: true,
   logging: process.env.NODE_ENV === 'development' ? 'all' : ['error', 'warn'],
   ssl:
     process.env.DB_SSL === 'true'
