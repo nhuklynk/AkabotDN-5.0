@@ -72,10 +72,7 @@ export class PostController {
     @Body() createPostFormdataDto: CreatePostFormdataDto,
     @UploadedFile() featuredImage?: any,
   ): Promise<PostResponseDto> {
-    return this.postService.createWithFormdata(
-      createPostFormdataDto,
-      featuredImage,
-    );
+    return this.postService.create(createPostFormdataDto, featuredImage);
   }
 
   @Get()
