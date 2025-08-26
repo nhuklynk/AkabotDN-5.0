@@ -115,6 +115,14 @@ export class EventResponseDto {
   @Expose()
   modified_at: Date;
 
+  @ApiProperty({
+    description: 'Event status (draft, published, archived)',
+    example: 'published',
+    enum: ['draft', 'published', 'archived'],
+  })
+  @Expose()
+  status: string;
+
   @Expose()
   created_by: string;
 

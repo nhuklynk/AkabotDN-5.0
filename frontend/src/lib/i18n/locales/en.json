@@ -29,7 +29,11 @@
     "deleteWarningLong": "This action cannot be undone. The category will be permanently deleted and may affect related content.",
     "preview": "Preview",
     "view": "View",
-    "viewLive": "View live"
+    "viewLive": "View live",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   },
   "editor": {
     "bold": "B",
@@ -167,6 +171,25 @@
     "add": "Create post",
     "searchPlaceholder": "Search posts...",
     "countSummary": "{{filtered}} / {{total}} posts",
+    "filters": {
+      "status": "Status",
+      "category": "Category",
+      "type": "Post Type",
+      "filterByTag": "Filter by tag",
+      "all": "All",
+      "allCategories": "All categories",
+      "allTypes": "All types",
+      "published": "Published",
+      "review": "Under review",
+      "rejected": "Rejected",
+      "archived": "Archived",
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "article": "Article",
+      "news": "News",
+      "event": "Event",
+      "guide": "Guide"
+    },
     "table": {
       "post": "Post",
       "author": "Author",
@@ -183,6 +206,41 @@
       "editDesc": "Update content and settings.",
       "createCta": "Create post",
       "updateCta": "Update post"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter title",
+      "slug": "Slug",
+      "slugPlaceholder": "post-slug",
+      "summary": "Summary",
+      "summaryPlaceholder": "Enter summary",
+      "content": "Content",
+      "author": "Author",
+      "authorPlaceholder": "Select author",
+      "mediaId": "Media ID",
+      "mediaIdPlaceholder": "Enter media_id (optional)",
+      "postStatus": "Post Status",
+      "postStatusPlaceholder": "Select status",
+      "publishedAt": "Published Date",
+      "postType": "Post Type",
+      "postTypePlaceholder": "Select type",
+      "recordStatus": "Record Status",
+      "recordStatusPlaceholder": "Select status",
+      "statusHistory": "Status History"
+    },
+    "status": {
+      "draft": "Draft",
+      "review": "Review",
+      "published": "Published",
+      "rejected": "Rejected",
+      "archived": "Archived",
+      "scheduled": "Scheduled"
+    },
+    "type": {
+      "article": "Article",
+      "news": "News",
+      "event": "Event",
+      "guide": "Guide"
     }
   },
   "resource": {
@@ -197,7 +255,11 @@
       "image": "Image",
       "video": "Video",
       "audio": "Audio",
-      "archive": "Archive"
+      "archive": "Archive",
+      "post": "Post",
+      "event": "Event",
+      "member": "Member",
+      "other": "Other"
     },
     "countSummary": "{{filtered}} / {{total}} resources",
     "download": "Download",

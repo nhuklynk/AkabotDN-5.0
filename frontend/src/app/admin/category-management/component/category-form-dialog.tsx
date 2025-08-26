@@ -10,7 +10,6 @@ export type CategoryFormData = {
   name: string
   slug: string
   description: string
-  color: string
   status: string
   parentId: string | null
 }
@@ -22,7 +21,6 @@ type Props = {
   formData: CategoryFormData
   setFormData: React.Dispatch<React.SetStateAction<CategoryFormData>>
   parentCategories: ParentOption[]
-  colorOptions: ColorOption[]
   onNameChange: (name: string) => void
   mode: "create" | "edit"
 }
@@ -31,7 +29,6 @@ export default function CategoryFormDialog({
   formData,
   setFormData,
   parentCategories,
-  colorOptions,
   onNameChange,
   mode,
 }: Props) {
@@ -78,24 +75,7 @@ export default function CategoryFormDialog({
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="color">{t("category.form.color")}</Label>
-            <Select value={formData.color} onValueChange={(value) => setFormData((d) => ({ ...d, color: value }))}>
-              <SelectTrigger>
-                <SelectValue placeholder={t("category.form.colorPlaceholder")} />
-              </SelectTrigger>
-              <SelectContent>
-                {colorOptions.map((color) => (
-                  <SelectItem key={color.value} value={color.value}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full border border-border" style={{ backgroundColor: color.value }} />
-                      {color.label}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+
           <div>
             <Label htmlFor="status">{t("category.form.status")}</Label>
             <Select value={formData.status} onValueChange={(value) => setFormData((d) => ({ ...d, status: value }))}>

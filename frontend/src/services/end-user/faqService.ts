@@ -54,16 +54,11 @@ class FaqService {
 
     const url = `${this.baseUrl}?${queryParams.toString()}`;
 
-    // apiClient interceptor returns response.data directly
     const response = await apiClient.get(url);
 
-    // response is already the data structure we need
     return response as unknown as PaginatedResponse<Faq>;
   }
 
-  /**
-   * Get all FAQs with pagination
-   */
   async getAllFaqs(
     page: number = 1,
     limit: number = 20
@@ -74,18 +69,11 @@ class FaqService {
     });
   }
 
-  /**
-   * Get all FAQs (no category structure anymore)
-   */
   async getCategories(page: number = 1, limit: number = 10): Promise<Faq[]> {
     const response = await this.getAllFaqs(page, limit);
-    // Return all FAQs since there's no parent structure
     return response.data.items;
   }
 
-  /**
-   * Search FAQs by text
-   */
   async searchFaqs(
     searchTerm: string,
     page: number = 1,
@@ -98,34 +86,21 @@ class FaqService {
     });
   }
 
-  /**
-   * Get FAQ by ID
-   */
   async getFaqById(id: string): Promise<Faq> {
     const response = await apiClient.get(`${this.baseUrl}/${id}`);
-    // Extract FAQ data from the API response structure
     return response.data;
   }
 
-  /**
-   * Create a new FAQ
-   */
   async createFaq(faqData: CreateFaqData): Promise<Faq> {
     const response = await apiClient.post(this.baseUrl, faqData);
     return response.data;
   }
 
-  /**
-   * Update an existing FAQ
-   */
   async updateFaq(id: string, faqData: UpdateFaqData): Promise<Faq> {
     const response = await apiClient.patch(`${this.baseUrl}/${id}`, faqData);
     return response.data;
   }
 
-  /**
-   * Delete a FAQ
-   */
   async deleteFaq(id: string): Promise<void> {
     return apiClient.delete(`${this.baseUrl}/${id}`);
   }

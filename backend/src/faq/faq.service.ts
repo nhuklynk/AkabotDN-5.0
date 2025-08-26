@@ -21,7 +21,9 @@ export class FaqService {
   async create(createFaqDto: CreateFaqDto): Promise<FaqResponseDto> {
     const faq = this.faqRepository.create(createFaqDto);
     const savedFaq = await this.faqRepository.save(faq);
-    return plainToClass(FaqResponseDto, savedFaq, { excludeExtraneousValues: true });
+    return plainToClass(FaqResponseDto, savedFaq, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async searchAndPaginate(
@@ -82,7 +84,9 @@ export class FaqService {
     }
 
     const updatedFaq = await this.faqRepository.update(id, updateFaqDto);
-    return plainToClass(FaqResponseDto, updatedFaq, { excludeExtraneousValues: true });
+    return plainToClass(FaqResponseDto, updatedFaq, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async remove(id: string): Promise<void> {
@@ -94,6 +98,24 @@ export class FaqService {
       throw new NotFoundException(`FAQ with ID ${id} not found`);
     }
 
-    await this.faqRepository.remove(faq);
+    try {
+      await this.faqRepository.remove(faq);
+    } catch (error) {
+      if (error.message && error.message.includes('foreign key constraint')) {
+        const children = await this.faqRepository.find({
+          where: { parent: { id: id } },
+        });
+
+        if (children.length > 0) {
+          for (const child of children) {
+            await this.faqRepository.remove(child);
+          }
+        }
+
+        await this.faqRepository.remove(faq);
+      } else {
+        throw error;
+      }
+    }
   }
 }
