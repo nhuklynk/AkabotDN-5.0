@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  ManyToMany,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Post } from '../../post/entity/post.entity';
 import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
@@ -22,7 +16,7 @@ export class Category extends BaseAuditEntity {
 
   @ManyToOne(() => Category, (category) => category.id, { nullable: true })
   @JoinColumn({ name: 'parent_id' })
-  parent: Category;
+  parent: Category | null;
 
   @ManyToMany(() => Post, (post) => post.categories)
   posts: Post[];

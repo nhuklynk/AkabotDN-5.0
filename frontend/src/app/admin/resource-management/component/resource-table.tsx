@@ -83,7 +83,7 @@ export default function ResourceTable({
                     <DropdownMenuItem>
                       <Download className="h-4 w-4 mr-2" /> {t("resource.download")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onEdit(resource)}>
+                    <DropdownMenuItem onSelect={() => onEdit(resource)}>
                       <Edit className="h-4 w-4 mr-2" /> {t("common.edit")}
                     </DropdownMenuItem>
                     <DeleteConfirmDialog onConfirm={() => onDelete(resource.id)}>
