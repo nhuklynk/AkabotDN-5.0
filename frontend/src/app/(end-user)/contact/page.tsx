@@ -61,6 +61,8 @@ export default function ContactPage() {
 
     if (!formData.phoneNumber.trim()) {
       newErrors.phoneNumber = t("contact.newsletter.errors.phoneRequired");
+    } else if (!/^[0-9]+$/.test(formData.phoneNumber.trim())) {
+      newErrors.phoneNumber = t("contact.newsletter.errors.phoneInvalid");
     } else if (formData.phoneNumber.trim().length < 10) {
       newErrors.phoneNumber = t("contact.newsletter.errors.phoneMinLength");
     }

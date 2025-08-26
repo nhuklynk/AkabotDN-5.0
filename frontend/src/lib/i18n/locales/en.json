@@ -621,6 +621,7 @@
         "fullNameRequired": "Full name is required",
         "fullNameMinLength": "Full name must be at least 2 characters",
         "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Phone number must contain only numbers",
         "phoneMinLength": "Phone number must be at least 10 characters",
         "emailRequired": "Email is required",
         "emailInvalid": "Please enter a valid email address"

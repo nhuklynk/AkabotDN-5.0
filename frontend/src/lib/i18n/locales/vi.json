@@ -624,6 +624,7 @@
         "fullNameRequired": "Họ và tên là bắt buộc",
         "fullNameMinLength": "Họ và tên phải có ít nhất 2 ký tự",
         "phoneRequired": "Số điện thoại là bắt buộc",
+        "phoneInvalid": "Số điện thoại chỉ được chứa số",
         "phoneMinLength": "Số điện thoại phải có ít nhất 10 ký tự",
         "emailRequired": "Email là bắt buộc",
         "emailInvalid": "Vui lòng nhập email hợp lệ"
