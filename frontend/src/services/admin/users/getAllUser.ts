@@ -27,7 +27,7 @@ export type GetAllUserResponse = {
 export async function getAllUser(
   query: UserQuery = {}
 ): Promise<GetAllUserResponse> {
-  const params = { ...query } as Record<string, any>;
+  const params = { ...query, status: "active" } as Record<string, any>;
   const res: any = await apiClient.get("/users", { params });
   const payload = res?.data ?? res;
 
@@ -69,7 +69,7 @@ export default getAllUser;
 
 // Fetch users by a single role id
 export async function getUsersByRole(roleId: string, query: UserQuery = {}): Promise<GetAllUserResponse> {
-  const params = { ...query } as Record<string, any>;
+  const params = { ...query, status: "active" } as Record<string, any>;
   const res: any = await apiClient.get(`/users/by-role/${roleId}`, { params });
   const payload = res?.data ?? res;
 
@@ -109,11 +109,11 @@ export async function getUsersByRole(roleId: string, query: UserQuery = {}): Pro
 
 // Fetch and merge users across multiple role ids, returning a paginated union
 export async function getUsersByRolesUnion(roleIds: string[], query: UserQuery = {}): Promise<GetAllUserResponse> {
-  const params = { ...query } as Record<string, any>;
+  const params = { ...query, status: "active" } as Record<string, any>;
   const [page, limit] = [Number(params.page ?? 1), Number(params.limit ?? 10)];
 
   const results = await Promise.all(
-    roleIds.map((id) => getUsersByRole(id, { search: params.search, status: params.status }))
+    roleIds.map((id) => getUsersByRole(id, { search: params.search, status: "active" }))
   );
   const merged = results.flatMap((r) => r.items);
   const status = params.status ?? undefined;

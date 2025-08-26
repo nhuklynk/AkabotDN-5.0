@@ -68,11 +68,6 @@ export default function PostsPage() {
     initialQuery: { page: 1, limit: 10, status: "active" },
   });
 
-  console.log("Posts in component:", posts);
-  console.log("Loading:", loading);
-  console.log("Error:", error);
-  console.log("User ID from auth:", userId);
-  console.log("User ID type:", typeof userId);
   const { mutate: createPost } = useCreatePost();
   const { mutate: updatePost } = useUpdatePost();
   const { mutate: deletePost } = useDeletePost();
@@ -97,9 +92,6 @@ export default function PostsPage() {
     post_type: "article",
     category_id: "1",
   });
-
-  console.log("Form data user_id:", formData.user_id);
-  console.log("Form data user_id type:", typeof formData.user_id);
 
   const [progress, setProgress] = useState(0);
   const [badTitleWords, setBadTitleWords] = useState<string[]>([]);
@@ -147,28 +139,17 @@ export default function PostsPage() {
 
     const classification = await classifyContent(textForCheck);
 
-          const payload = {
-        title: formData.title,
-        slug: formData.slug || generateSlug(formData.title),
-        summary: formData.summary,
-        content: formData.content,
-        post_status: formData.post_status || "draft",
-        user_id: formData.user_id.toString().trim(), // Ensure it's string and trim whitespace
-        category_ids: formData.category_id || undefined, // Remove hardcoded "1"
-        tag_ids: undefined, // Remove classification labels for now
-        published_at: formData.published_at || undefined,
-      };
-
-    console.log("Create post payload:", payload);
-    console.log("User ID type:", typeof payload.user_id);
-    console.log("User ID value:", payload.user_id);
-    console.log("User ID length:", payload.user_id?.length);
-    console.log(
-      "Is valid UUID format:",
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-        payload.user_id
-      )
-    );
+    const payload = {
+      title: formData.title,
+      slug: formData.slug || generateSlug(formData.title),
+      content: formData.content,
+      excerpt: formData.summary,
+      status: formData.post_status || "draft",
+      author_id: formData.user_id.toString().trim(),
+      categories: formData.category_id ? [formData.category_id] : undefined,
+      tags: undefined,
+      featured_image: undefined,
+    };
 
     createPost(payload);
     setFormData({
@@ -252,7 +233,7 @@ export default function PostsPage() {
     try {
       await deletePost(postId);
     } catch (error) {
-      console.error('Error deleting post:', error);
+      console.error("Error deleting post:", error);
     }
   };
 

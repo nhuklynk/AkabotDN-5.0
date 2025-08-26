@@ -31,7 +31,7 @@ export type ListCategoriesResponse = {
 };
 
 export async function listCategories(query: CategoryQuery = {}): Promise<ListCategoriesResponse> {
-  const params = { ...query } as Record<string, any>;
+  const params = { ...query, status: "active" } as Record<string, any>;
   // apiClient returns response.data from Axios. Backend response shape:
   // { success, statusCode, message, data: { items, total, page, limit, totalPages }, ... }
   const res: any = await apiClient.get("/categories", { params });

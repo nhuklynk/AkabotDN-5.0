@@ -228,7 +228,7 @@ export class EventService {
     }
   
     if (public_status) {
-      queryBuilder.andWhere('event.public_status = :public_status', { public_status });
+      queryBuilder.andWhere('event.status = :status', { status: public_status });
     }
   
     if (start_date && end_date) {

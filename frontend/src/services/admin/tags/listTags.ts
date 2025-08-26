@@ -24,7 +24,7 @@ export type ListTagsResponse = {
 };
 
 export async function listTags(query: TagQuery = {}): Promise<ListTagsResponse> {
-  const params = { ...query } as Record<string, any>;
+  const params = { ...query, status: "active" } as Record<string, any>;
   return apiClient.get("/tags", { params });
 }
 

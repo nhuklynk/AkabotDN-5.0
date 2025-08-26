@@ -32,6 +32,9 @@ export class MediaResponseDto {
   @Expose()
   modified_by: string;
 
+  @Expose()
+  status: string;
+
   constructor(partial: Partial<MediaResponseDto>) {
     Object.assign(this, partial);
   }
