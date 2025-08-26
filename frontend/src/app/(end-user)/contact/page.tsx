@@ -3,10 +3,122 @@
 import { MapPin, Phone, Mail, User, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useLocale } from "@/hooks/useLocale";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useToast } from "@/components/ui/toast";
+import { useState, useEffect } from "react";
+
+interface SubscriptionFormData {
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  content: string;
+}
 
 export default function ContactPage() {
   const { t } = useLocale();
+  const { createSubscription, loading, error, clearError } = useSubscription();
+  const { show } = useToast();
+  
+  // Test toast khi component mount
+  useEffect(() => {
+    console.log("Testing toast...");
+    try {
+      show({ variant: "info", description: "Test toast notification" });
+      console.log("Toast called successfully");
+    } catch (error) {
+      console.error("Toast error:", error);
+    }
+  }, [show]);
+  
+  const [formData, setFormData] = useState<SubscriptionFormData>({
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+    content: ""
+  });
+  
+  const [formErrors, setFormErrors] = useState<Partial<SubscriptionFormData>>({});
+
+  // Clear API error when component unmounts or when error changes
+  useEffect(() => {
+    if (error) {
+      show({ variant: "destructive", description: error });
+      clearError();
+    }
+  }, [error, clearError, show]);
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<SubscriptionFormData> = {};
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = t("contact.newsletter.errors.fullNameRequired");
+    } else if (formData.fullName.trim().length < 2) {
+      newErrors.fullName = t("contact.newsletter.errors.fullNameMinLength");
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      newErrors.phoneNumber = t("contact.newsletter.errors.phoneRequired");
+    } else if (formData.phoneNumber.trim().length < 10) {
+      newErrors.phoneNumber = t("contact.newsletter.errors.phoneMinLength");
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = t("contact.newsletter.errors.emailRequired");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = t("contact.newsletter.errors.emailInvalid");
+    }
+
+    setFormErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (field: keyof SubscriptionFormData, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    const subscriptionData = {
+      fullName: formData.fullName.trim(),
+      phoneNumber: formData.phoneNumber.trim(),
+      email: formData.email.trim(),
+      content: formData.content.trim() || undefined
+    };
+
+    const result = await createSubscription(subscriptionData);
+    
+    if (result) {
+      show({ variant: "success", description: "Đăng ký nhận tin thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất." });
+      
+      // Reset form
+      setFormData({
+        fullName: "",
+        phoneNumber: "",
+        email: "",
+        content: ""
+      });
+      setFormErrors({});
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -123,28 +235,91 @@ export default function ContactPage() {
               </CardContent>
             </Card>
 
-            {/* Quick Contact Card */}
+            {/* Newsletter Subscription Card */}
             <Card className="border-slate-200 bg-white shadow-lg">
               <CardContent className="pt-6">
-                <h3 className="font-semibold text-[#0033FF] mb-3">
-                  {t("contact.quickContact.title")}
+                <h3 className="font-semibold text-[#0033FF] mb-4">
+                  {t("contact.newsletter.title")}
                 </h3>
-                <div className="space-y-3">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#0600AF] flex items-center gap-1">
+                      {t("contact.newsletter.fullName")}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      placeholder={t("contact.newsletter.fullNamePlaceholder")}
+                      value={formData.fullName}
+                      onChange={(e) => handleInputChange("fullName", e.target.value)}
+                      className={`border-[#977DFF]/30 focus:border-[#0033FF] focus:ring-[#0033FF]/20 ${
+                        formErrors.fullName ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''
+                      }`}
+                      required
+                    />
+                    {formErrors.fullName && (
+                      <p className="text-sm text-red-500">{formErrors.fullName}</p>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#0600AF] flex items-center gap-1">
+                      {t("contact.newsletter.phone")}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      placeholder={t("contact.newsletter.phonePlaceholder")}
+                      value={formData.phoneNumber}
+                      onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                      className={`border-[#977DFF]/30 focus:border-[#0033FF] focus:ring-[#0033FF]/20 ${
+                        formErrors.phoneNumber ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''
+                      }`}
+                      required
+                    />
+                    {formErrors.phoneNumber && (
+                      <p className="text-sm text-red-500">{formErrors.phoneNumber}</p>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#0600AF] flex items-center gap-1">
+                      {t("contact.newsletter.email")}
+                      <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="email"
+                      placeholder={t("contact.newsletter.emailPlaceholder")}
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      className={`border-[#977DFF]/30 focus:border-[#0033FF] focus:ring-[#0033FF]/20 ${
+                        formErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''
+                      }`}
+                      required
+                    />
+                    {formErrors.email && (
+                      <p className="text-sm text-red-500">{formErrors.email}</p>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[#0600AF]">
+                      {t("contact.newsletter.content")}
+                    </label>
+                    <Textarea
+                      placeholder={t("contact.newsletter.contentPlaceholder")}
+                      value={formData.content}
+                      onChange={(e) => handleInputChange("content", e.target.value)}
+                      className="border-[#977DFF]/30 focus:border-[#0033FF] focus:ring-[#0033FF]/20 min-h-[80px]"
+                    />
+                  </div>
+                  
                   <Button
-                    variant="outline"
-                    className="w-full justify-start border-[#977DFF]/30 text-[#0033FF] hover:bg-[#977DFF]/10"
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-[#0033FF] hover:bg-[#0033FF]/90 text-white mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Phone className="w-4 h-4 mr-2" />
-                    {t("contact.quickContact.call")}
+                    {loading ? "Đang xử lý..." : t("contact.newsletter.subscribeButton")}
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start border-[#977DFF]/30 text-[#0033FF] hover:bg-[#977DFF]/10"
-                  >
-                    <Mail className="w-4 h-4 mr-2" />
-                    {t("contact.quickContact.email")}
-                  </Button>
-                </div>
+                </form>
               </CardContent>
             </Card>
           </div>
