@@ -2,14 +2,6 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -37,26 +29,20 @@ type PostFormData = {
 type Option = { id: number; name: string }
 
 type Props = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
   formData: PostFormData
   setFormData: React.Dispatch<React.SetStateAction<PostFormData>>
   authors: Option[]
   categories: Option[]
-  onSubmit: () => void
   onTitleChange: (title: string) => void
   mode: "create" | "edit"
   statusHistory?: { status: string; at: string; by?: string; note?: string }[]
 }
 
 export default function PostFormDialog({
-  open,
-  onOpenChange,
   formData,
   setFormData,
   authors,
   categories,
-  onSubmit,
   onTitleChange,
   mode,
   statusHistory,
@@ -65,13 +51,6 @@ export default function PostFormDialog({
   const { t } = useLocale()
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{isCreate ? t("post.dialog.createTitle") : t("post.dialog.editTitle")}</DialogTitle>
-          <DialogDescription>{isCreate ? t("post.dialog.createDesc") : t("post.dialog.editDesc")}</DialogDescription>
-        </DialogHeader>
-
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -210,15 +189,6 @@ export default function PostFormDialog({
             </div>
           )}
         </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t("common.cancel")}
-          </Button>
-          <Button onClick={onSubmit}>{isCreate ? t("post.dialog.createCta") : t("post.dialog.updateCta")}</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   )
 }
 

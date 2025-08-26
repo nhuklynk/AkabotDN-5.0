@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import FaqTable from "./component/faq-table";
 import FaqFormDialog from "./component/faq-form-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
@@ -42,8 +43,8 @@ export default function FaqManagementPage() {
   const { t } = useLocale();
   const [faqs, setFaqs] = useState<Faq[]>(initialFaqs);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
   const [formData, setFormData] = useState({
     question: "",
@@ -80,7 +81,7 @@ export default function FaqManagementPage() {
     };
     setFaqs([newFaq, ...faqs]);
     setFormData({ question: "", answer: "", category: "Chung" });
-    setIsCreateOpen(false);
+    setDialogOpen(false);
   };
 
   const handleEdit = (faq: Faq) => {
@@ -90,7 +91,8 @@ export default function FaqManagementPage() {
       answer: faq.answer,
       category: faq.category,
     });
-    setIsEditOpen(true);
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
   };
 
   const handleUpdate = () => {
@@ -107,7 +109,7 @@ export default function FaqManagementPage() {
           : f
       )
     );
-    setIsEditOpen(false);
+    setDialogOpen(false);
     setEditingFaq(null);
     setFormData({ question: "", answer: "", category: "Chung" });
   };
@@ -123,7 +125,7 @@ export default function FaqManagementPage() {
         </div>
         <Button
           className="flex items-center gap-2"
-          onClick={() => setIsCreateOpen(true)}
+          onClick={() => { setDialogMode("create"); setDialogOpen(true); }}
         >
           <Plus className="h-4 w-4" /> {t("faq.add")}
         </Button>
@@ -160,23 +162,32 @@ export default function FaqManagementPage() {
         </CardContent>
       </Card>
 
-      <FaqFormDialog
-        open={isCreateOpen}
-        onOpenChange={setIsCreateOpen}
-        data={formData}
-        setData={setFormData}
-        onSubmit={handleCreate}
-        mode="create"
-      />
+      <Dialog
+        open={dialogOpen}
+        onOpenChange={(open) => {
+          setDialogOpen(open);
+          if (!open) {
+            setEditingFaq(null);
+            setFormData({ question: "", answer: "", category: "Chung" });
+          }
+        }}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{dialogMode === "create" ? t("faq.dialog.createTitle") : t("faq.dialog.editTitle")}</DialogTitle>
+            <DialogDescription>{dialogMode === "create" ? t("faq.dialog.createDesc") : t("faq.dialog.editDesc")}</DialogDescription>
+          </DialogHeader>
 
-      <FaqFormDialog
-        open={isEditOpen}
-        onOpenChange={setIsEditOpen}
-        data={formData}
-        setData={setFormData}
-        onSubmit={handleUpdate}
-        mode="edit"
-      />
+          <FaqFormDialog data={formData} setData={setFormData} mode={dialogMode} />
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("common.cancel")}</Button>
+            <Button onClick={dialogMode === "create" ? handleCreate : handleUpdate}>
+              {dialogMode === "create" ? t("faq.dialog.createCta") : t("faq.dialog.updateCta")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

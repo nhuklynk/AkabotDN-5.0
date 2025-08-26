@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ChevronRight, Edit, Folder, FolderOpen, MoreHorizontal, Trash2 } from "lucide-react"
-import DeleteConfirmDialog from "./delete-confirm-dialog"
+import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Category = {
@@ -34,6 +34,7 @@ export default function CategoryTable({
   getStatusColor: (status: string) => string
 }) {
   const { t } = useLocale()
+  const visibleItems = items.filter((c) => (c.status || "").toLowerCase() === "active")
   return (
     <div className="rounded-md border">
       <Table>
@@ -49,7 +50,7 @@ export default function CategoryTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.map((category) => (
+          {visibleItems.map((category) => (
             <TableRow key={category.id}>
               <TableCell>
                 <div className="flex items-center gap-3">

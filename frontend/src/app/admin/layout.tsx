@@ -34,6 +34,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { filterNavigation, RoleKey } from "@/lib/rbac";
 import { useLocale } from "@/hooks/useLocale";
+import { clearStuckOverlays } from "@/lib/dialog-utils";
 
 type NavItem = {
   name: string;
@@ -115,6 +116,11 @@ export default function AdminLayout({
       if (typeof n.href === "string") router.prefetch(n.href);
     });
   }, [router]);
+
+  // Clear stuck overlays on route change
+  useEffect(() => {
+    clearStuckOverlays();
+  }, [pathname]);
 
   const nameMap = useMemo(() => {
     const map = new Map<string, string>();
@@ -372,6 +378,15 @@ export default function AdminLayout({
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher compact />
+            {/* Hidden emergency button to clear stuck overlays */}
+            <button
+              onClick={clearStuckOverlays}
+              className="hidden"
+              id="emergency-clear-overlays"
+              title="Emergency: Clear stuck overlays"
+            >
+              Clear Overlays
+            </button>
           </div>
         </header>
 
@@ -379,7 +394,7 @@ export default function AdminLayout({
         <main className="flex-1 overflow-auto p-6">
           <Suspense
             fallback={
-              <div className="fixed inset-0 flex items-center justify-center">
+              <div className="fixed inset-0 z-[30] pointer-events-none flex items-center justify-center">
                 <Spinner size={36} className="text-foreground" />
               </div>
             }

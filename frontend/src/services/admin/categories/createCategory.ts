@@ -4,12 +4,13 @@ export type CreateCategoryPayload = {
   name: string;
   slug: string;
   description?: string;
-  parent_id?: number | string | null;
-  status?: string; // active/inactive
+  parent_id?: string | null;
 };
 
 export async function createCategory(payload: CreateCategoryPayload) {
-  return apiClient.post("/categories", payload);
+  const body: any = { ...payload };
+  if (!body.parent_id) delete body.parent_id; // omit when null/undefined/empty
+  return apiClient.post("/categories", body);
 }
 
 export default createCategory;
