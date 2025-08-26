@@ -21,6 +21,7 @@ import {
 } from "@/services/admin/moderationService";
 import { classifyContent } from "@/services/admin/classifierService";
 import PostFormDialog from "./component/post-form-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useLocale } from "@/hooks/useLocale";
 
 // Mock data for posts
@@ -166,8 +167,8 @@ export default function PostsPage() {
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterPostType, setFilterPostType] = useState("all");
   const [filterTag, setFilterTag] = useState("");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -227,8 +228,8 @@ export default function PostsPage() {
   };
 
   const handleCreatePost = async () => {
-    const author = authors.find((a) => a.id === formData.authorId);
-    const category = categories.find((c) => c.id === formData.categoryId);
+    const author = authors.find((a) => a.id === formData.user_id);
+    
 
     // Moderator Agent: block unsafe
     const textForCheck = `${formData.title}\n${formData.summary}\n${formData.content}`;
@@ -254,7 +255,7 @@ export default function PostsPage() {
       status: formData.post_status,
       author: author?.name || "Unknown",
       authorId: formData.user_id,
-      category: category?.name || "Uncategorized",
+      category: "Uncategorized",
       categoryId: 0,
       featuredImage: "/blog-post-concept.png",
       tags: (classification.labels || []) as string[],
@@ -283,7 +284,7 @@ export default function PostsPage() {
       published_at: "",
       post_type: "article",
     });
-    setIsCreateDialogOpen(false);
+    setDialogOpen(false);
   };
 
   const handleEditPost = (post: Post) => {
@@ -300,13 +301,14 @@ export default function PostsPage() {
       published_at: post.publishedAt || "",
       post_type: post.postType || "article",
     });
-    setIsEditDialogOpen(true);
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
   };
 
   const handleUpdatePost = async () => {
     if (editingPost) {
-      const author = authors.find((a) => a.id === formData.authorId);
-      const category = categories.find((c) => c.id === formData.categoryId);
+      const author = authors.find((a) => a.id === formData.user_id);
+      
 
       const textForCheck = `${formData.title}\n${formData.summary}\n${formData.content}`;
       const moderation = await moderateContent(textForCheck);
@@ -333,7 +335,7 @@ export default function PostsPage() {
                 status: formData.post_status,
                 author: author?.name || "Unknown",
                 authorId: formData.user_id,
-                category: category?.name || "Uncategorized",
+                category: "Uncategorized",
                 categoryId: 0,
                 featuredImage: post.featuredImage,
                 tags: classification.labels || post.tags,
@@ -349,7 +351,7 @@ export default function PostsPage() {
             : post
         )
       );
-      setIsEditDialogOpen(false);
+      setDialogOpen(false);
       setEditingPost(null);
       setFormData({
         title: "",
@@ -390,25 +392,51 @@ export default function PostsPage() {
         </div>
         <Button
           className="flex items-center gap-2"
-          onClick={() => setIsCreateDialogOpen(true)}
+          onClick={() => { setDialogMode("create"); setDialogOpen(true); }}
         >
           <Plus className="h-4 w-4" />
           {t("post.add")}
         </Button>
-        <PostFormDialog
-          open={isCreateDialogOpen}
-          onOpenChange={setIsCreateDialogOpen}
-          formData={formData}
-          setFormData={setFormData}
-          authors={authors}
-          categories={categories}
-          onSubmit={handleCreatePost}
-          onTitleChange={(title) => {
-            setFormData({ ...formData, title, slug: generateSlug(title) });
-                      setBadTitleWords(findBannedWords(title));
-                    }}
-          mode="create"
-        />
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open);
+            if (!open) {
+              setEditingPost(null);
+              setFormData({
+                title: "", slug: "", summary: "", content: "", status: "active",
+                user_id: 1, media_id: "", post_status: "draft", published_at: "", post_type: "article"
+              });
+            }
+          }}
+        >
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{dialogMode === "create" ? t("post.dialog.createTitle") : t("post.dialog.editTitle")}</DialogTitle>
+              <DialogDescription>{dialogMode === "create" ? t("post.dialog.createDesc") : t("post.dialog.editDesc")}</DialogDescription>
+            </DialogHeader>
+
+            <PostFormDialog
+              formData={formData}
+              setFormData={setFormData}
+              authors={authors}
+              categories={categories}
+              onTitleChange={(title) => {
+                setFormData({ ...formData, title, slug: generateSlug(title) });
+                setBadTitleWords(findBannedWords(title));
+              }}
+              mode={dialogMode}
+              statusHistory={editingPost?.statusHistory}
+            />
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("common.cancel")}</Button>
+              <Button onClick={dialogMode === "create" ? handleCreatePost : handleUpdatePost}>
+                {dialogMode === "create" ? t("post.dialog.createCta") : t("post.dialog.updateCta")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card className="border-0 shadow-none">
@@ -455,21 +483,7 @@ export default function PostsPage() {
         </CardContent>
       </Card>
 
-      {/* Edit Post Dialog */}
-      <PostFormDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        formData={formData}
-        setFormData={setFormData}
-        authors={authors}
-        categories={categories}
-        onSubmit={handleUpdatePost}
-        onTitleChange={(title) =>
-          setFormData({ ...formData, title, slug: generateSlug(title) })
-        }
-        mode="edit"
-        statusHistory={editingPost?.statusHistory}
-      />
+      {/* Single dialog instance above handles both create and edit */}
     </div>
   );
 }

@@ -40,35 +40,33 @@ export class UserService {
       }
     }
 
+    // Validate role_id is provided
+    if (!createUserDto.role_id) {
+      throw new BadRequestException('Role ID is required when creating a user');
+    }
+
+    // Check if role exists
+    const role = await this.roleRepository.findOne({
+      where: { id: createUserDto.role_id }
+    });
+    
+    if (!role) {
+      throw new BadRequestException(`Role with ID ${createUserDto.role_id} not found`);
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     const user = this.userRepository.create({
       ...createUserDto,
       password_hash: hashedPassword,
-      status: (createUserDto.status as any) || Status.ACTIVE, // Use status from DTO or default to ACTIVE
+      status: (createUserDto.status as any) || Status.ACTIVE,
       created_by: 'system',
       modified_by: 'system',
+      roles: [role], // Gán role trực tiếp vào user
     });
 
     const savedUser = await this.userRepository.save(user);
-
-    // Assign role if role_id is provided
-    if (createUserDto.role_id) {
-      const role = await this.roleRepository.findOne({
-        where: { id: createUserDto.role_id }
-      });
-      
-      if (!role) {
-        throw new BadRequestException(`Role with ID ${createUserDto.role_id} not found`);
-      }
-
-      await this.userRepository
-        .createQueryBuilder()
-        .relation(User, 'roles')
-        .of(savedUser)
-        .add(role);
-    }
 
     // Return user with roles
     return this.findOne(savedUser.id);
@@ -128,6 +126,7 @@ export class UserService {
         id: true,
         email: true,
         full_name: true,
+        password_hash: true,
         created_at: true,
         avatar: true,
         phone: true,
@@ -177,7 +176,7 @@ export class UserService {
       user.roles = foundRoles;
     }
 
-    // Update all other fields
+    // Update all other fields (excluding role_ids since we handled it separately)
     Object.assign(user, updateData);
 
     // Save the complete updated user
@@ -233,6 +232,9 @@ export class UserService {
   }
 
   async validatePassword(user: User, password: string): Promise<boolean> {
+    if (!user.password_hash) {
+      return false;
+    }
     return bcrypt.compare(password, user.password_hash);
   }
 
@@ -250,6 +252,8 @@ export class UserService {
         'user.avatar',
         'user.phone',
         'user.status',
+        'role.id',
+        'role.name',
       ])
       .getMany();
 

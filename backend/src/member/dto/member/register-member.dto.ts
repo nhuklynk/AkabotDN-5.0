@@ -47,7 +47,6 @@ export class RegisterMemberDto {
   @ApiProperty({
     description: 'User status',
     enum: Status,
-    default: Status.PENDING,
   })
   @IsOptional()
   @IsEnum(Status)
@@ -127,11 +126,10 @@ export class RegisterMemberDto {
   curriculum_vitae_url?: string;
 
   @ApiProperty({
-    description: 'Role ID to assign (default: member role)',
+    description: 'Role ID to assign (required)',
     example: '550e8400-e29b-41d4-a716-446655440801',
-    required: false,
+    required: true
   })
-  @IsOptional()
   @IsUUID()
-  role_id?: string;
+  role_id: string;
 }

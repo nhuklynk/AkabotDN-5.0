@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { List } from "lucide-react";
+import { useLocale } from "@/hooks/useLocale";
 
 interface TocItem {
   id: string;
@@ -15,6 +16,7 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ content }: TableOfContentsProps) {
+  const { t } = useLocale();
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
 
@@ -71,7 +73,7 @@ export function TableOfContents({ content }: TableOfContentsProps) {
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center gap-2">
           <List className="w-4 h-4" />
-          Mục lục
+          {t("posts.detail.tableOfContents")}
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0">

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import EventFormDialog, { EventFormData } from "./component/event-form-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import EventTable, { EventItem } from "./component/event-table";
 import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
@@ -39,8 +40,8 @@ export default function EventManagementPage() {
   const { t } = useLocale();
   const [events, setEvents] = useState<EventItem[]>(initialEvents);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [editingEvent, setEditingEvent] = useState<EventItem | null>(null);
   const [formData, setFormData] = useState<EventFormData>({
     title: "",
@@ -91,7 +92,8 @@ export default function EventManagementPage() {
       enableCountdown: true,
       status: "active",
     });
-    setIsCreateDialogOpen(true);
+    setDialogMode("create");
+    setDialogOpen(true);
   };
 
   const handleCreate = () => {
@@ -109,7 +111,6 @@ export default function EventManagementPage() {
       },
       ...prev,
     ]);
-    setIsCreateDialogOpen(false);
   };
 
   const openEdit = (e: EventItem) => {
@@ -123,7 +124,8 @@ export default function EventManagementPage() {
       enableCountdown: e.enableCountdown,
       status: e.status,
     });
-    setIsEditDialogOpen(true);
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
   };
 
   const handleUpdate = () => {
@@ -144,7 +146,6 @@ export default function EventManagementPage() {
             }
       )
     );
-    setIsEditDialogOpen(false);
     setEditingEvent(null);
   };
 
@@ -162,14 +163,41 @@ export default function EventManagementPage() {
         <Button className="flex items-center gap-2" onClick={openCreate}>
           <Plus className="h-4 w-4" /> {t("event.add")}
         </Button>
-        <EventFormDialog
-          open={isCreateDialogOpen}
-          onOpenChange={setIsCreateDialogOpen}
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleCreate}
-          mode="create"
-        />
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open);
+            if (!open) {
+              setEditingEvent(null);
+              setFormData({
+                title: "", content: "", location: "", startAt: "", endAt: "",
+                enableCountdown: false, status: "active"
+              });
+            }
+          }}
+        >
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>
+                {dialogMode === "create" ? t("event.dialog.createTitle") : t("event.dialog.editTitle")}
+              </DialogTitle>
+              <DialogDescription>
+                {dialogMode === "create" ? t("event.dialog.createDesc") : t("event.dialog.editDesc")}
+              </DialogDescription>
+            </DialogHeader>
+
+            <EventFormDialog formData={formData} setFormData={setFormData} mode={dialogMode} />
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                {t("common.cancel")}
+              </Button>
+              <Button onClick={dialogMode === "create" ? handleCreate : handleUpdate}>
+                {dialogMode === "create" ? t("event.dialog.createCta") : t("event.dialog.updateCta")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card className="border-0 shadow-none">
@@ -198,14 +226,7 @@ export default function EventManagementPage() {
         </CardContent>
       </Card>
 
-      <EventFormDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={handleUpdate}
-        mode="edit"
-      />
+      {/* Single dialog instance above handles both create and edit */}
     </div>
   );
 }

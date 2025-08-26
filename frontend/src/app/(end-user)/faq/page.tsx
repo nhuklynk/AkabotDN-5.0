@@ -8,6 +8,7 @@ import { useFaqCategories, useFaqs } from "@/hooks/useFaqs";
 import { Faq } from "@/services/end-user/faqService";
 import { formatDate } from "@/utils/dateUtils";
 import { truncateText } from "@/utils/textUtils";
+import { useLocale } from "@/hooks/useLocale";
 
 const icons: any = {
   info: Info,
@@ -28,6 +29,7 @@ const getFaqCount = (): number => {
 };
 
 export default function FAQHomePage() {
+  const { t } = useLocale();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -70,10 +72,10 @@ export default function FAQHomePage() {
   // Loading state
   if (categoriesLoading && !isSearching) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center text-white">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
-          <p>Đang tải câu hỏi thường gặp...</p>
+          <p>{t("faq.loading")}</p>
         </div>
       </div>
     );
@@ -82,14 +84,14 @@ export default function FAQHomePage() {
   // Error state
   if (categoriesError && !isSearching) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-r from-[#0033FF] to-[#977DFF] flex items-center justify-center">
         <div className="text-center text-white">
           <p className="text-red-200 mb-4">{categoriesError}</p>
           <button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all"
           >
-            Thử lại
+            {t("faq.retry")}
           </button>
         </div>
       </div>
@@ -97,18 +99,18 @@ export default function FAQHomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0033FF] via-[#977DFF] to-[#FFCCF2]">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="max-w-4xl mx-auto px-4 py-16 text-center text-white">
-        <h1 className="text-4xl font-bold mb-4">Câu hỏi thường gặp</h1>
-        <p className="text-lg">Thông tin cơ bản về Hiệp hội Dữ liệu Quốc gia</p>
+        <h1 className="text-4xl font-bold mb-4">{t("faq.title")}</h1>
+        <p className="text-lg">{t("faq.description")}</p>
         <form onSubmit={handleSearch} className="mt-6">
           <div className="relative max-w-md mx-auto">
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchInputChange}
-              placeholder="Tìm kiếm câu hỏi..."
+              placeholder={t("faq.searchPlaceholder")}
               className="w-full rounded-full pl-4 pr-12 py-3 shadow-lg text-[#0600AF] border-2 border-white/20 focus:border-white/50 focus:outline-none transition-all"
             />
             <button
@@ -137,14 +139,14 @@ export default function FAQHomePage() {
               }}
               className="text-white/80 hover:text-white underline"
             >
-              Quay lại
+              {t("faq.backToList")}
             </button>
           </div>
 
           {searchLoading ? (
             <div className="text-center text-white">
               <Loader2 className="w-6 h-6 animate-spin mx-auto mb-4" />
-              <p>Đang tìm kiếm...</p>
+              <p>{t("faq.searching")}</p>
             </div>
           ) : searchResults.length > 0 ? (
             <div className="grid gap-4">
@@ -163,7 +165,7 @@ export default function FAQHomePage() {
             </div>
           ) : (
             <div className="text-center text-white">
-              <p>Không tìm thấy kết quả nào cho "{searchTerm}"</p>
+              <p>{t("faq.noResults", { searchTerm })}</p>
             </div>
           )}
         </div>
@@ -179,15 +181,15 @@ export default function FAQHomePage() {
               <Link key={category.id} href={`/faq/${category.id}`}>
                 <Card className="p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer bg-white/95 backdrop-blur-sm border-0 hover:bg-white">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#FFCCF2] to-[#977DFF] rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0033FF] to-[#977DFF] rounded-full flex items-center justify-center">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
                       <h2 className="text-lg font-semibold text-[#0033FF] mb-1 line-clamp-2 min-h-[2.5rem]">
                         {truncateText(category.content, 60)}
                       </h2>
-                      <span className="text-xs text-[#977DFF] font-medium bg-[#FFCCF2]/30 px-2 py-1 rounded-full">
-                        Câu hỏi
+                      <span className="text-xs text-[#977DFF] font-medium bg-blue-100 px-2 py-1 rounded-full">
+                        {t("faq.questionLabel")}
                       </span>
                     </div>
                   </div>

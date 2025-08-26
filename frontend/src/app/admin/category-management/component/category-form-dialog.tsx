@@ -1,69 +1,43 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useLocale } from "@/hooks/useLocale"
 
-type CategoryFormData = {
+export type CategoryFormData = {
   name: string
   slug: string
   description: string
   color: string
   status: string
-  parentId: number | null
+  parentId: string | null
 }
 
-type ParentOption = { id: number; name: string }
+export type ParentOption = { id: string | number; name: string }
 type ColorOption = { value: string; label: string }
 
 type Props = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
   formData: CategoryFormData
   setFormData: React.Dispatch<React.SetStateAction<CategoryFormData>>
   parentCategories: ParentOption[]
   colorOptions: ColorOption[]
-  onSubmit: () => void
   onNameChange: (name: string) => void
   mode: "create" | "edit"
 }
 
 export default function CategoryFormDialog({
-  open,
-  onOpenChange,
   formData,
   setFormData,
   parentCategories,
   colorOptions,
-  onSubmit,
   onNameChange,
   mode,
 }: Props) {
-  const isCreate = mode === "create"
   const { t } = useLocale()
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{isCreate ? t("category.dialog.createTitle") : t("category.dialog.editTitle")}</DialogTitle>
-          <DialogDescription>
-            {isCreate ? t("category.dialog.createDesc") : t("category.dialog.editDesc")}
-          </DialogDescription>
-        </DialogHeader>
-
         <div className="space-y-4">
           <div>
             <Label htmlFor="name">{t("category.form.name")}</Label>
@@ -88,7 +62,7 @@ export default function CategoryFormDialog({
             <Select
               value={formData.parentId?.toString() || "none"}
               onValueChange={(value) =>
-                setFormData((d) => ({ ...d, parentId: value === "none" ? null : Number.parseInt(value) }))
+                setFormData((d) => ({ ...d, parentId: value === "none" ? null : value }))
               }
             >
               <SelectTrigger>
@@ -136,21 +110,14 @@ export default function CategoryFormDialog({
           </div>
           <div>
             <Label htmlFor="description">{t("category.form.description")}</Label>
-            <RichTextEditor
+            <textarea
+              id="description"
+              className="mt-2 w-full min-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               value={formData.description}
-              onChange={(html) => setFormData((d) => ({ ...d, description: html }))}
+              onChange={(e) => setFormData((d) => ({ ...d, description: e.target.value }))}
             />
           </div>
         </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t("common.cancel")}
-          </Button>
-          <Button onClick={onSubmit}>{isCreate ? t("category.dialog.createCta") : t("category.dialog.updateCta")}</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   )
 }
 

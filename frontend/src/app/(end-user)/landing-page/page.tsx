@@ -30,6 +30,7 @@ import { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import { Globe3D } from "@/app/(end-user)/landing-page/components/Globe3D";
+import { useLocale } from "@/hooks/useLocale";
 
 interface Expert {
   id: number;
@@ -46,36 +47,34 @@ export default function LandingPage() {
   const [selectedExpert, setSelectedExpert] = useState<Expert | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const globeRef = useRef<HTMLDivElement>(null);
+  const { t } = useLocale();
 
   const bannerSlides = [
     {
       id: 1,
-      title: "Xây dựng Tương lai Số Việt Nam",
-      subtitle: "Hiệp hội Dữ liệu Quốc gia Việt Nam",
-      description:
-        "Nơi kết nối, chia sẻ và phát triển hệ sinh thái dữ liệu vì một Việt Nam số mạnh mẽ và bền vững.",
+      title: t("landing.banner.slides.0.title"),
+      subtitle: t("landing.banner.slides.0.subtitle"),
+      description: t("landing.banner.slides.0.description"),
       backgroundImage: "/international-data-conference.svg",
-      ctaText: "Khám phá ngay",
+      ctaText: t("landing.banner.slides.0.ctaText"),
       ctaLink: "/digital-product",
     },
     {
       id: 2,
-      title: "Kết nối Chuyên gia Toàn cầu",
-      subtitle: "Mạng lưới Công nghệ Quốc tế",
-      description:
-        "Tham gia cộng đồng chuyên gia công nghệ hàng đầu thế giới và chia sẻ kiến thức, kinh nghiệm.",
+      title: t("landing.banner.slides.1.title"),
+      subtitle: t("landing.banner.slides.1.subtitle"),
+      description: t("landing.banner.slides.1.description"),
       backgroundImage: "/international-data-conference.svg",
-      ctaText: "Tham gia ngay",
+      ctaText: t("landing.banner.slides.1.ctaText"),
       ctaLink: "/members/register",
     },
     {
       id: 3,
-      title: "Đổi mới Sáng tạo",
-      subtitle: "Công nghệ Tiên tiến",
-      description:
-        "Ứng dụng AI, Blockchain và các công nghệ tiên tiến trong quản lý dữ liệu quốc gia.",
+      title: t("landing.banner.slides.2.title"),
+      subtitle: t("landing.banner.slides.2.subtitle"),
+      description: t("landing.banner.slides.2.description"),
       backgroundImage: "/vietnam-ai-assistant.svg",
-      ctaText: "Tìm hiểu thêm",
+      ctaText: t("landing.banner.slides.2.ctaText"),
       ctaLink: "/about-us",
     },
   ];
@@ -154,51 +153,48 @@ export default function LandingPage() {
   const features = [
     {
       icon: <Database className="w-8 h-8 text-[#0033FF]" />,
-      title: "Quản lý Dữ liệu Quốc gia",
-      description:
-        "Xây dựng hệ thống quản lý dữ liệu tập trung, an toàn và hiệu quả",
+      title: t("landing.features.items.0.title"),
+      description: t("landing.features.items.0.description"),
     },
     {
       icon: <Shield className="w-8 h-8 text-[#0033FF]" />,
-      title: "Bảo mật & Tuân thủ",
-      description:
-        "Đảm bảo an toàn thông tin và tuân thủ các quy định pháp luật",
+      title: t("landing.features.items.1.title"),
+      description: t("landing.features.items.1.description"),
     },
     {
       icon: <Globe className="w-8 h-8 text-[#0033FF]" />,
-      title: "Hợp tác Quốc tế",
-      description:
-        "Kết nối và chia sẻ kinh nghiệm với các tổ chức dữ liệu toàn cầu",
+      title: t("landing.features.items.2.title"),
+      description: t("landing.features.items.2.description"),
     },
     {
       icon: <TrendingUp className="w-8 h-8 text-[#0033FF]" />,
-      title: "Đổi mới Sáng tạo",
-      description: "Thúc đẩy ứng dụng công nghệ mới trong quản lý dữ liệu",
+      title: t("landing.features.items.3.title"),
+      description: t("landing.features.items.3.description"),
     },
   ];
 
   const stats = [
     {
-      number: "150+",
-      label: "Thành viên",
+      number: t("landing.stats.items.0.number"),
+      label: t("landing.stats.items.0.label"),
       icon: <Users className="w-6 h-6" />,
       color: "from-blue-500 to-purple-600",
     },
     {
-      number: "200+",
-      label: "Dự án",
+      number: t("landing.stats.items.1.number"),
+      label: t("landing.stats.items.1.label"),
       icon: <Database className="w-6 h-6" />,
       color: "from-green-500 to-blue-500",
     },
     {
-      number: "85+",
-      label: "Đối tác",
+      number: t("landing.stats.items.2.number"),
+      label: t("landing.stats.items.2.label"),
       icon: <Globe className="w-6 h-6" />,
       color: "from-purple-500 to-pink-500",
     },
     {
-      number: "98%",
-      label: "Hài lòng",
+      number: t("landing.stats.items.3.number"),
+      label: t("landing.stats.items.3.label"),
       icon: <Star className="w-6 h-6" />,
       color: "from-yellow-500 to-orange-500",
     },
@@ -206,68 +202,63 @@ export default function LandingPage() {
 
   const missionVision = {
     mission: {
-      title: "Sứ mệnh",
+      title: t("landing.mission.items.mission.title"),
       icon: <Target className="w-8 h-8" />,
-      content:
-        "Xây dựng và phát triển hệ sinh thái dữ liệu quốc gia, kết nối các tổ chức, doanh nghiệp và chuyên gia để tạo ra giá trị bền vững cho xã hội và nền kinh tế số Việt Nam.",
+      content: t("landing.mission.items.mission.content"),
       color: "from-[#0033FF] to-[#4F46E5]",
     },
     vision: {
-      title: "Tầm nhìn",
+      title: t("landing.mission.items.vision.title"),
       icon: <Eye className="w-8 h-8" />,
-      content:
-        "Trở thành tổ chức hàng đầu trong việc thúc đẩy chuyển đổi số quốc gia, định hướng phát triển công nghệ dữ liệu và kết nối Việt Nam với cộng đồng quốc tế.",
+      content: t("landing.mission.items.vision.content"),
       color: "from-[#977DFF] to-[#8B5CF6]",
     },
     values: {
-      title: "Giá trị cốt lõi",
+      title: t("landing.mission.items.values.title"),
       icon: <Heart className="w-8 h-8" />,
-      content:
-        "Đổi mới - Kết nối - Chia sẻ - Phát triển bền vững. Chúng tôi tin vào sức mạnh của dữ liệu và công nghệ để tạo ra những thay đổi tích cực cho cộng đồng.",
-      color: "from-[#FFCCF2] to-[#EC4899]",
+      content: t("landing.mission.items.values.content"),
+      color: "from-[#0033FF] to-[#977DFF]",
     },
   };
 
   const upcomingEvents = [
     {
-      title: "Hội thảo Dữ liệu Du lịch 2025",
-      date: "25/09/2025",
-      location: "Hà Nội",
-      type: "Hội thảo",
+      title: t("landing.events.items.0.title"),
+      date: t("landing.events.items.0.date"),
+      location: t("landing.events.items.0.location"),
+      type: t("landing.events.items.0.type"),
     },
     {
-      title: "Workshop Blockchain & AI",
-      date: "30/09/2025",
-      location: "TP.HCM",
-      type: "Đào tạo",
+      title: t("landing.events.items.1.title"),
+      date: t("landing.events.items.1.date"),
+      location: t("landing.events.items.1.location"),
+      type: t("landing.events.items.1.type"),
     },
     {
-      title: "Triển lãm Công nghệ Dữ liệu",
-      date: "15/10/2025",
-      location: "Đà Nẵng",
-      type: "Triển lãm",
+      title: t("landing.events.items.2.title"),
+      date: t("landing.events.items.2.date"),
+      location: t("landing.events.items.2.location"),
+      type: t("landing.events.items.2.type"),
     },
   ];
 
   const testimonials = [
     {
-      name: "TS. Nguyễn Văn Long",
-      position: "Thứ trưởng Bộ Công an",
-      content:
-        "Hiệp hội đã đóng góp tích cực vào việc xây dựng hệ sinh thái dữ liệu quốc gia.",
+      name: t("landing.testimonials.items.0.name"),
+      position: t("landing.testimonials.items.0.position"),
+      content: t("landing.testimonials.items.0.content"),
       avatar: "/icons/expert-placeholder.svg",
     },
     {
-      name: "Prof. Michael Chen",
-      position: "Chuyên gia Quốc tế",
-      content:
-        "Việt Nam đang đi đúng hướng trong việc phát triển nền tảng dữ liệu số.",
+      name: t("landing.testimonials.items.1.name"),
+      position: t("landing.testimonials.items.1.position"),
+      content: t("landing.testimonials.items.1.content"),
       avatar: "/icons/expert-placeholder.svg",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F2E6EE] via-white to-[#FFCCF2]/20 relative overflow-hidden">
+    <div className="min-h-screen bg-[#FFFFFF] relative overflow-hidden">
       {/* Dynamic Banner Hero Section */}
       <section className="relative h-screen overflow-hidden z-10">
         {/* Slide Container */}
@@ -297,7 +288,7 @@ export default function LandingPage() {
                 <div className="container mx-auto px-4">
                   <div className="max-w-4xl">
                     <div className="space-y-6 animate-fadeInUp">
-                      <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-[#0033FF] border-0 px-6 py-3 text-base animate-pulse">
+                      <Badge className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-[#0033FF] border-0 px-6 py-3 text-base animate-pulse">
                         <Zap className="w-5 h-5 mr-2" />
                         {slide.subtitle}
                       </Badge>
@@ -336,7 +327,7 @@ export default function LandingPage() {
                           variant="outline"
                           className="border-2 border-[#0033FF] text-[#0033FF] hover:bg-[#0033FF] hover:text-white px-10 py-4 text-xl backdrop-blur-sm bg-white/20"
                         >
-                          Tìm hiểu thêm
+                          {t("landing.banner.learnMore")}
                         </Button>
                       </div>
                     </div>
@@ -377,7 +368,7 @@ export default function LandingPage() {
         </div>
 
         {/* Animated Background Elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#FFCCF2]/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-100 rounded-full blur-3xl animate-pulse" />
         <div
           className="absolute bottom-20 right-10 w-96 h-96 bg-[#977DFF]/20 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
@@ -393,10 +384,10 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-[#0033FF] mb-4">
-              Những con số ấn tượng
+              {t("landing.stats.title")}
             </h2>
             <p className="text-xl text-[#0600AF]/70">
-              Thành tựu và sự phát triển của chúng tôi
+              {t("landing.stats.subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -428,10 +419,10 @@ export default function LandingPage() {
             <div className="space-y-12">
               <div className="text-center lg:text-left mb-12">
                 <h2 className="text-4xl lg:text-5xl font-bold text-[#0033FF] mb-4">
-                  Sứ mệnh & Tầm nhìn
+                  {t("landing.mission.title")}
                 </h2>
                 <p className="text-xl text-[#0600AF]/70">
-                  Định hướng phát triển bền vững
+                  {t("landing.mission.subtitle")}
                 </p>
               </div>
 
@@ -575,7 +566,7 @@ export default function LandingPage() {
                   {/* Floating Info Labels */}
                   <div className="absolute top-12 left-12 z-20">
                     <div className="bg-gradient-to-r from-blue-500/80 to-cyan-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold animate-float border border-white/20">
-                      🌐 Kết nối toàn cầu
+                      🌐 {t("landing.mission.labels.globalConnection")}
                     </div>
                   </div>
 
@@ -584,7 +575,7 @@ export default function LandingPage() {
                     style={{ animationDelay: "1s" }}
                   >
                     <div className="bg-gradient-to-r from-purple-500/80 to-violet-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
-                      🔒 An toàn dữ liệu
+                      🔒 {t("landing.mission.labels.dataSecurity")}
                     </div>
                   </div>
 
@@ -593,7 +584,7 @@ export default function LandingPage() {
                     style={{ animationDelay: "2s" }}
                   >
                     <div className="bg-gradient-to-r from-pink-500/80 to-rose-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
-                      🔄 Đồng bộ dữ liệu
+                      🔄 {t("landing.mission.labels.dataSync")}
                     </div>
                   </div>
 
@@ -602,7 +593,7 @@ export default function LandingPage() {
                     style={{ animationDelay: "3s" }}
                   >
                     <div className="bg-gradient-to-r from-emerald-500/80 to-green-500/80 backdrop-blur-sm text-white px-3 py-2 rounded-full shadow-lg text-xs font-semibold border border-white/20">
-                      🤖 Trí tuệ nhân tạo
+                      🤖 {t("landing.mission.labels.ai")}
                     </div>
                   </div>
                 </div>
@@ -617,11 +608,10 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#0033FF] mb-4">
-              Tại sao chọn chúng tôi?
+              {t("landing.features.title")}
             </h2>
             <p className="text-xl text-[#0600AF]/70 max-w-3xl mx-auto">
-              Chúng tôi cam kết mang đến những giải pháp dữ liệu hàng đầu, đáp
-              ứng mọi nhu cầu của doanh nghiệp và tổ chức.
+              {t("landing.features.subtitle")}
             </p>
           </div>
 
@@ -634,7 +624,7 @@ export default function LandingPage() {
                   className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white"
                 >
                   <CardHeader className="text-center pb-4">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#F2E6EE] to-[#FFCCF2] rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
                     </div>
                     <CardTitle className="text-xl text-[#0033FF]">
@@ -687,10 +677,10 @@ export default function LandingPage() {
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4">
                     <h3 className="font-bold text-[#0033FF] mb-2">
-                      Hệ sinh thái dữ liệu Việt Nam
+                      {t("landing.features.video.title")}
                     </h3>
                     <p className="text-[#0600AF]/70 text-sm">
-                      Khám phá công nghệ tiên tiến và mạng lưới dữ liệu quốc gia
+                      {t("landing.features.video.description")}
                     </p>
                   </div>
                 </div>
@@ -699,7 +689,7 @@ export default function LandingPage() {
               {/* Decorative Elements */}
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#977DFF]/20 rounded-full blur-2xl animate-pulse" />
               <div
-                className="absolute -bottom-4 -left-4 w-32 h-32 bg-[#FFCCF2]/20 rounded-full blur-3xl animate-pulse"
+                className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-100 rounded-full blur-3xl animate-pulse"
                 style={{ animationDelay: "1s" }}
               />
             </div>
@@ -754,14 +744,14 @@ export default function LandingPage() {
       </section>
 
       {/* Upcoming Events */}
-      <section className="py-20 bg-gradient-to-r from-[#F2E6EE] to-[#FFCCF2]/30">
+      <section className="py-20 bg-gradient-to-r from-slate-50 to-blue-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#0033FF] mb-4">
-              Sự kiện sắp diễn ra
+              {t("landing.events.title")}
             </h2>
             <p className="text-xl text-[#0600AF]/70">
-              Tham gia các hoạt động và sự kiện của Hiệp hội
+              {t("landing.events.subtitle")}
             </p>
           </div>
 
@@ -773,7 +763,7 @@ export default function LandingPage() {
               >
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <Badge className="bg-gradient-to-r from-[#FFCCF2] to-[#977DFF] text-white border-0">
+                    <Badge className="bg-gradient-to-r from-[#0033FF] to-[#977DFF] text-white border-0">
                       {event.type}
                     </Badge>
                     <Calendar className="w-5 h-5 text-[#977DFF]" />
@@ -794,7 +784,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <Button className="w-full mt-6 bg-gradient-to-r from-[#0033FF] to-[#977DFF] hover:from-[#977DFF] hover:to-[#0033FF] text-white border-0">
-                    Đăng ký tham gia
+                    {t("landing.events.registerButton")}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </CardContent>
@@ -809,10 +799,10 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#0033FF] mb-4">
-              Đánh giá từ chuyên gia
+              {t("landing.testimonials.title")}
             </h2>
             <p className="text-xl text-[#0600AF]/70">
-              Những gì các chuyên gia nói về chúng tôi
+              {t("landing.testimonials.subtitle")}
             </p>
           </div>
 
@@ -863,26 +853,26 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-              Sẵn sàng tham gia cùng chúng tôi?
+              {t("landing.cta.title")}
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Hãy trở thành một phần của cộng đồng dữ liệu hàng đầu Việt Nam
+              {t("landing.cta.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
                 variant="secondary"
-                className="bg-white text-[#0033FF] hover:bg-[#F2E6EE] px-8 py-3 text-lg"
+                className="bg-white text-[#0033FF] hover:bg-blue-50 px-8 py-3 text-lg"
               >
-                Đăng ký thành viên
+                {t("landing.cta.memberButton")}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="bg-white text-[#0033FF] hover:bg-[#F2E6EE] px-8 py-3 text-lg"
+                className="bg-white text-[#0033FF] hover:bg-blue-50 px-8 py-3 text-lg"
               >
-                Liên hệ tư vấn
+                {t("landing.cta.contactButton")}
               </Button>
             </div>
           </div>

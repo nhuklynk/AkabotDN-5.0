@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import CategoryFormDialog from "./component/category-form-dialog";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import type { CategoryFormData } from "./component/category-form-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import CategoryTable from "./component/category-table";
 import {
@@ -16,93 +15,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Plus,
-  Search,
-} from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
-
-// Mock data for categories
-const initialCategories = [
-  {
-    id: 1,
-    name: "Công nghệ",
-    slug: "technology",
-    description: "Tất cả nội dung liên quan đến công nghệ",
-    color: "var(--chart-1)",
-    status: "active",
-    parentId: null,
-    postCount: 45,
-    createdAt: "2024-01-15",
-  },
-  {
-    id: 2,
-    name: "Phát triển web",
-    slug: "web-development",
-    description: "Các chủ đề phát triển web frontend và backend",
-    color: "var(--chart-2)",
-    status: "active",
-    parentId: 1,
-    postCount: 23,
-    createdAt: "2024-01-16",
-  },
-  {
-    id: 3,
-    name: "Phát triển di động",
-    slug: "mobile-development",
-    description: "Phát triển ứng dụng iOS và Android",
-    color: "var(--chart-3)",
-    status: "active",
-    parentId: 1,
-    postCount: 12,
-    createdAt: "2024-01-17",
-  },
-  {
-    id: 4,
-    name: "Thiết kế",
-    slug: "design",
-    description: "Thiết kế UI/UX và nội dung trực quan",
-    color: "var(--chart-4)",
-    status: "active",
-    parentId: null,
-    postCount: 28,
-    createdAt: "2024-01-18",
-  },
-  {
-    id: 5,
-    name: "Thiết kế giao diện",
-    slug: "ui-design",
-    description: "Nguyên tắc và thực hành thiết kế giao diện",
-    color: "var(--chart-5)",
-    status: "active",
-    parentId: 4,
-    postCount: 15,
-    createdAt: "2024-01-19",
-  },
-  {
-    id: 6,
-    name: "Tiếp thị",
-    slug: "marketing",
-    description: "Chiến lược tiếp thị số và quảng bá",
-    color: "var(--chart-6)",
-    status: "inactive",
-    parentId: null,
-    postCount: 8,
-    createdAt: "2024-01-20",
-  },
-];
+import { useCategoriesList } from "@/hooks/admin/category/useCategoriesList";
+import { useCreateCategory } from "@/hooks/admin/category/useCreateCategory";
+import { useDeleteCategory } from "@/hooks/admin/category/useDeleteCategory";
+import { useUpdateCategory } from "@/hooks/admin/category/useUpdateCategory";
 
 type Category = {
-  id: number;
+  id: number | string;
   name: string;
   slug: string;
   description: string;
   color: string;
   status: string;
-  parentId: number | null;
+  parentId: number | string | null;
   postCount: number;
   createdAt: string;
+};
+
+type TableCategory = {
+  id: number | string;
+  name: string;
+  slug: string;
+  description?: string;
+  color: string;
+  status: string;
+  parentId: number | string | null;
+  postCount: number;
+  createdAt?: string;
 };
 
 const colorOptions = [
@@ -118,46 +60,68 @@ const colorOptions = [
 
 export default function CategoriesPage() {
   const { t } = useLocale();
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [formData, setFormData] = useState({
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
+  const [editingCategory, setEditingCategory] = useState<TableCategory | null>(
+    null
+  );
+  const [formData, setFormData] = useState<CategoryFormData>({
     name: "",
     slug: "",
     description: "",
     color: "#6366f1",
     status: "active",
-    parentId: null as number | null,
-  });
-
-  const filteredCategories = categories.filter((category) => {
-    const matchesSearch =
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      filterStatus === "all" || category.status === filterStatus;
-    return matchesSearch && matchesStatus;
+    parentId: null as string | null,
   });
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  const totalPages = Math.max(1, Math.ceil(filteredCategories.length / pageSize));
-  const paginatedCategories = filteredCategories.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
+  const { items, total, loading, setQuery, refetch } = useCategoriesList({
+    initialQuery: { page: currentPage, limit: pageSize },
+  });
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil((total || 0) / pageSize)),
+    [total]
+  );
+  const apiCategories: Category[] = useMemo(
+    () =>
+      items.map((it: any) => ({
+        id: it.id,
+        name: it.name,
+        slug: it.slug,
+        description: it.description ?? "",
+        color: "var(--chart-1)",
+        status: it.status,
+        parentId: it.parentId ?? it.parent_id ?? null,
+        postCount: 0,
+        createdAt: it.createdAt ?? it.created_at ?? "",
+      })),
+    [items]
   );
 
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, filterStatus]);
 
+  useEffect(() => {
+    setQuery({
+      page: currentPage,
+      limit: pageSize,
+      search: searchTerm || undefined,
+      status: filterStatus === "all" ? undefined : filterStatus,
+    });
+  }, [currentPage, pageSize, searchTerm, filterStatus, setQuery]);
+
   // Get parent categories for dropdown
-  const parentCategories = categories.filter((cat) => cat.parentId === null);
+  const parentCategories = apiCategories.filter((cat) => cat.parentId === null);
+  const parentOptions = useMemo(
+    () => parentCategories.map((c) => ({ id: c.id, name: c.name })),
+    [parentCategories]
+  );
 
   // Generate URL-safe slug from Vietnamese name (strip diacritics, convert đ, hyphenate)
   const generateSlug = (name: string) => {
@@ -171,53 +135,68 @@ export default function CategoriesPage() {
       .replace(/(^-|-$)/g, "");
   };
 
-  const handleCreateCategory = () => {
-    const newCategory: Category = {
-      id: Math.max(...categories.map((c) => c.id)) + 1,
-      ...formData,
-      slug: formData.slug || generateSlug(formData.name),
-      postCount: 0,
-      createdAt: new Date().toISOString().split("T")[0],
-    };
-    setCategories([...categories, newCategory]);
-    setFormData({
-      name: "",
-      slug: "",
-      description: "",
-      color: "#6366f1",
-      status: "active",
-      parentId: null,
-    });
-    setIsCreateDialogOpen(false);
+  const { mutate: createCat } = useCreateCategory();
+  const { mutate: updateCat } = useUpdateCategory();
+  const { mutate: deleteCat } = useDeleteCategory();
+
+  const handleCreateCategory = async () => {
+    if (!formData.name.trim()) {
+      alert("Tên danh mục không được để trống");
+      return;
+    }
+
+    try {
+      await createCat({
+        name: formData.name,
+        slug: formData.slug || generateSlug(formData.name),
+        description: formData.description || undefined,
+        parent_id: formData.parentId || undefined,
+      });
+      setDialogOpen(false);
+      setFormData({
+        name: "",
+        slug: "",
+        description: "",
+        color: "#6366f1",
+        status: "active",
+        parentId: null,
+      });
+      refetch();
+    } catch (error) {
+      console.error("Failed to create category:", error);
+      alert("Không thể tạo danh mục. Vui lòng thử lại.");
+    }
   };
 
-  const handleEditCategory = (category: Category) => {
+  const handleEditCategory = (category: TableCategory) => {
     setEditingCategory(category);
     setFormData({
       name: category.name,
       slug: category.slug,
-      description: category.description,
+      description: category.description ?? "",
       color: category.color,
       status: category.status,
-      parentId: category.parentId,
+      parentId: category.parentId !== null ? String(category.parentId) : null,
     });
-    setIsEditDialogOpen(true);
+    setDialogMode("edit");
+    setTimeout(() => setDialogOpen(true), 0);
   };
 
-  const handleUpdateCategory = () => {
-    if (editingCategory) {
-      setCategories(
-        categories.map((category) =>
-          category.id === editingCategory.id
-            ? {
-                ...category,
-                ...formData,
-                slug: formData.slug || generateSlug(formData.name),
-              }
-            : category
-        )
-      );
-      setIsEditDialogOpen(false);
+  const handleUpdateCategory = async () => {
+    if (!editingCategory) return;
+    if (!formData.name.trim()) {
+      alert("Tên danh mục không được để trống");
+      return;
+    }
+
+    try {
+      await updateCat(editingCategory.id, {
+        name: formData.name,
+        slug: formData.slug || generateSlug(formData.name),
+        description: formData.description,
+        parent_id: formData.parentId,
+      });
+      setDialogOpen(false);
       setEditingCategory(null);
       setFormData({
         name: "",
@@ -227,23 +206,23 @@ export default function CategoriesPage() {
         status: "active",
         parentId: null,
       });
+      refetch();
+    } catch (error) {
+      console.error("Failed to update category:", error);
+      alert("Không thể cập nhật danh mục. Vui lòng thử lại.");
     }
   };
 
-  const handleDeleteCategory = (categoryId: number) => {
-    const hasChildren = categories.some((cat) => cat.parentId === categoryId);
-    if (hasChildren) {
-      alert(
-        "Không thể xóa danh mục có danh mục con. Vui lòng xóa hoặc di chuyển danh mục con trước."
-      );
-      return;
-    }
-    setCategories(categories.filter((category) => category.id !== categoryId));
+  const handleDeleteCategory = async (categoryId: number | string) => {
+    await deleteCat(categoryId);
+    refetch();
   };
 
-  const getParentName = (parentId: number | null) => {
+  const getParentName = (parentId: number | string | null) => {
     if (!parentId) return null;
-    const parent = categories.find((cat) => cat.id === parentId);
+    const parent = apiCategories.find(
+      (cat) => String(cat.id) === String(parentId)
+    );
     return parent?.name || null;
   };
 
@@ -254,29 +233,67 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">{t("category.title")}</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            {t("category.title")}
+          </h1>
           <p className="text-muted-foreground">{t("category.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
-          onClick={() => setIsCreateDialogOpen(true)}
+          onClick={() => {
+            setDialogMode("create");
+            setDialogOpen(true);
+          }}
         >
           <Plus className="h-4 w-4" />
           {t("category.add")}
         </Button>
-        <CategoryFormDialog
-          open={isCreateDialogOpen}
-          onOpenChange={setIsCreateDialogOpen}
-          formData={formData}
-          setFormData={setFormData}
-          parentCategories={parentCategories}
-          colorOptions={colorOptions}
-          onSubmit={handleCreateCategory}
-          onNameChange={(name) =>
-            setFormData({ ...formData, name, slug: generateSlug(name) })
-          }
-          mode="create"
-        />
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open);
+            if (!open) {
+              setEditingCategory(null);
+              setFormData({
+                name: "",
+                slug: "",
+                description: "",
+                color: "#6366f1",
+                status: "active",
+                parentId: null,
+              });
+            }
+          }}
+        >
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>
+                {dialogMode === "create" ? t("category.dialog.createTitle") : t("category.dialog.editTitle")}
+              </DialogTitle>
+              <DialogDescription>
+                {dialogMode === "create" ? t("category.dialog.createDesc") : t("category.dialog.editDesc")}
+              </DialogDescription>
+            </DialogHeader>
+
+            <CategoryFormDialog
+              formData={formData}
+              setFormData={setFormData}
+              parentCategories={parentOptions.filter((cat) => String(cat.id) !== String(editingCategory?.id))}
+              colorOptions={colorOptions}
+              onNameChange={(name) => setFormData({ ...formData, name, slug: generateSlug(name) })}
+              mode={dialogMode}
+            />
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                {t("common.cancel")}
+              </Button>
+              <Button onClick={dialogMode === "create" ? handleCreateCategory : handleUpdateCategory}>
+                {dialogMode === "create" ? t("category.dialog.createCta") : t("category.dialog.updateCta")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card className="border-0 shadow-none">
@@ -298,16 +315,21 @@ export default function CategoriesPage() {
               <SelectContent>
                 <SelectItem value="all">{t("category.all")}</SelectItem>
                 <SelectItem value="active">{t("category.active")}</SelectItem>
-                <SelectItem value="inactive">{t("category.inactive")}</SelectItem>
+                <SelectItem value="inactive">
+                  {t("category.inactive")}
+                </SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">
-              {t("category.countSummary", { filtered: filteredCategories.length, total: categories.length })}
+              {t("category.countSummary", {
+                filtered: items.length,
+                total: total,
+              })}
             </div>
           </div>
 
           <CategoryTable
-            items={paginatedCategories}
+            items={apiCategories}
             onEdit={handleEditCategory}
             onDelete={handleDeleteCategory}
             getParentName={getParentName}
@@ -322,21 +344,7 @@ export default function CategoriesPage() {
         </CardContent>
       </Card>
 
-      <CategoryFormDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        formData={formData}
-        setFormData={setFormData}
-        parentCategories={parentCategories.filter(
-          (cat) => cat.id !== editingCategory?.id
-        )}
-        colorOptions={colorOptions}
-        onSubmit={handleUpdateCategory}
-        onNameChange={(name) =>
-          setFormData({ ...formData, name, slug: generateSlug(name) })
-        }
-        mode="edit"
-      />
+      {/* Single dialog instance above handles both create and edit */}
     </div>
   );
 }

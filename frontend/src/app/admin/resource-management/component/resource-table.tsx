@@ -10,7 +10,7 @@ import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Resource = {
-  id: number
+  id: number | string
   name: string
   filename: string
   type: string
@@ -35,7 +35,7 @@ export default function ResourceTable({
   getTypeIcon: (t: string) => React.ReactNode
   getCategoryColor: (c: string) => string
   onEdit: (r: Resource) => void
-  onDelete: (id: number) => void
+  onDelete: (id: number | string) => void
 }) {
   const { t } = useLocale()
   return (
@@ -83,7 +83,7 @@ export default function ResourceTable({
                     <DropdownMenuItem>
                       <Download className="h-4 w-4 mr-2" /> {t("resource.download")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onEdit(resource)}>
+                    <DropdownMenuItem onSelect={() => onEdit(resource)}>
                       <Edit className="h-4 w-4 mr-2" /> {t("common.edit")}
                     </DropdownMenuItem>
                     <DeleteConfirmDialog onConfirm={() => onDelete(resource.id)}>

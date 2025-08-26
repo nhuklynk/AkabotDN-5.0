@@ -17,7 +17,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsEnum(Status)
-  user_status?: Status;
+  status?: Status;
 
   @IsOptional()
   @IsArray()

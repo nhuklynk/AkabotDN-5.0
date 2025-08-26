@@ -10,5 +10,4 @@ export interface UploadOptions {
    * The root directory for saving the file.
    */
   scope?: string;
-  fileName?: string;
 }

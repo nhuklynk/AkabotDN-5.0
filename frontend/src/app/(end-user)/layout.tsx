@@ -16,9 +16,9 @@ export default function EndUserLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F2E6EE] via-[#977DFF] to-[#0033FF]">
+    <div className="min-h-screen bg-white">
       <Header />
-      <main className="bg-white/95 backdrop-blur-sm">{children}</main>
+      <main className="bg-white">{children}</main>
       <Footer />
     </div>
   );
