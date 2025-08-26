@@ -1135,6 +1135,78 @@
       "page": "Page {{current}} / {{total}}"
     }
   },
+  "activities": {
+    "title": "Association Activities",
+    "description": "Stay updated with the latest activities of Vietnam National Data Association and important events in the data field.",
+    "breadcrumb": {
+      "home": "Home",
+      "activities": "Activities"
+    },
+    "loading": "Loading activities...",
+    "retry": "Retry",
+    "noActivities": "No activities available yet.",
+    "noDescription": "No description",
+    "author": "Author",
+    "unknownDate": "Unknown date",
+    "badge": "Activity",
+    "errors": {
+      "fetchFailed": "Unable to load activities data"
+    },
+    "info": {
+      "totalActivities": "Total activities: {{total}}",
+      "showing": "Showing {{start}}-{{end}} of {{total}} activities",
+      "page": "Page {{current}} / {{total}}"
+    }
+  },
+  "events": {
+    "title": "Events",
+    "upcomingEvents": "Upcoming Events",
+    "sectionDescription": "Join exciting events from the Association",
+    "viewAll": "View All",
+    "viewDetails": "View Details",
+    "loading": "Loading events...",
+    "noEvents": "No events available.",
+    "noDescription": "No description",
+    "notFound": "Event not found",
+    "eventNotFound": "Event not found",
+    "eventNotFoundDescription": "The event you are looking for does not exist or has been removed.",
+    "upcoming": "Upcoming",
+    "ongoing": "Ongoing",
+    "past": "Past",
+    "countdown": "Countdown",
+    "moreTags": "more tags",
+    "eventDetails": "Event Details",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "location": "Location",
+    "categories": "Categories",
+    "tags": "Tags",
+    "description": "Event Description",
+    "register": "Register",
+    "registerNow": "Register Now",
+    "joinNow": "Join Now",
+    "eventEnded": "Event Ended",
+    "share": "Share",
+    "save": "Save",
+    "countdownTitle": "Time Remaining",
+    "backToActivities": "Back to Activities",
+    "breadcrumb": {
+      "home": "Home",
+      "activities": "Activities"
+    }
+  },
+  "countdown": {
+    "timeUntilEvent": "Time Until Event",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "expired": "Time's up!",
+    "eventStarted": "Event has started",
+    "startTime": "Start time"
+  },
   "faq": {
     "title": "Frequently Asked Questions",
     "description": "Basic information about Vietnam National Data Association",

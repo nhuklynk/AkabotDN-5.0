@@ -1138,6 +1138,78 @@
       "page": "Trang {{current}} / {{total}}"
     }
   },
+  "activities": {
+    "title": "Hoạt động Hiệp hội",
+    "description": "Cập nhật những hoạt động mới nhất của Hiệp hội Dữ liệu Quốc gia Việt Nam và các sự kiện quan trọng trong lĩnh vực dữ liệu.",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "activities": "Hoạt động"
+    },
+    "loading": "Đang tải hoạt động...",
+    "retry": "Thử lại",
+    "noActivities": "Chưa có hoạt động nào.",
+    "noDescription": "Không có mô tả",
+    "author": "Tác giả",
+    "unknownDate": "Không rõ ngày",
+    "badge": "Hoạt động",
+    "errors": {
+      "fetchFailed": "Không thể tải dữ liệu hoạt động"
+    },
+    "info": {
+      "totalActivities": "Tổng số hoạt động: {{total}}",
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} hoạt động",
+      "page": "Trang {{current}} / {{total}}"
+    }
+  },
+  "events": {
+    "title": "Sự kiện",
+    "upcomingEvents": "Sự kiện sắp tới",
+    "sectionDescription": "Tham gia các sự kiện thú vị của Hiệp hội",
+    "viewAll": "Xem tất cả",
+    "viewDetails": "Xem chi tiết",
+    "loading": "Đang tải sự kiện...",
+    "noEvents": "Chưa có sự kiện nào.",
+    "noDescription": "Không có mô tả",
+    "notFound": "Không tìm thấy sự kiện",
+    "eventNotFound": "Sự kiện không tồn tại",
+    "eventNotFoundDescription": "Sự kiện bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.",
+    "upcoming": "Sắp diễn ra",
+    "ongoing": "Đang diễn ra",
+    "past": "Đã kết thúc",
+    "countdown": "Đếm ngược",
+    "moreTags": "thẻ khác",
+    "eventDetails": "Thông tin sự kiện",
+    "startTime": "Thời gian bắt đầu",
+    "endTime": "Thời gian kết thúc",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "location": "Địa điểm",
+    "categories": "Danh mục",
+    "tags": "Thẻ",
+    "description": "Mô tả sự kiện",
+    "register": "Đăng ký tham gia",
+    "registerNow": "Đăng ký ngay",
+    "joinNow": "Tham gia ngay",
+    "eventEnded": "Sự kiện đã kết thúc",
+    "share": "Chia sẻ",
+    "save": "Lưu",
+    "countdownTitle": "Thời gian còn lại",
+    "backToActivities": "Quay lại Hoạt động",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "activities": "Hoạt động"
+    }
+  },
+  "countdown": {
+    "timeUntilEvent": "Thời gian đến sự kiện",
+    "days": "Ngày",
+    "hours": "Giờ",
+    "minutes": "Phút",
+    "seconds": "Giây",
+    "expired": "Đã hết thời gian!",
+    "eventStarted": "Sự kiện đã bắt đầu",
+    "startTime": "Thời gian bắt đầu"
+  },
   "faq": {
     "title": "Câu hỏi thường gặp",
     "description": "Thông tin cơ bản về Hiệp hội Dữ liệu Quốc gia",
