@@ -6,6 +6,7 @@ import {
   GetObjectCommand,
   HeadBucketCommand,
   HeadObjectCommand,
+  PutBucketPolicyCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -29,27 +30,49 @@ export class StorageService {
   /**
    * Ensure bucket exists, create if it doesn't
    */
-  private async ensureBucketExists(bucketName: string): Promise<void> {
+  async ensureBucketExists(bucketName: string): Promise<void> {
     try {
-      // Check if bucket exists
       await this.s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
-    } catch (error) {
-      // Bucket doesn't exist, create it
-      try {
+      console.log(`Bucket '${bucketName}' exists`);
+    } catch (err: any) {
+      if (err.$metadata?.httpStatusCode === 404) {
+        console.log(`Bucket '${bucketName}' does not exist. Creating new...`);
+
         await this.s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
         console.log(`Bucket '${bucketName}' created successfully`);
-      } catch (createError) {
-        console.error(`Failed to create bucket '${bucketName}':`, createError);
-        throw new BadRequestException(`Failed to create bucket '${bucketName}'`);
+
+        const policy = {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Effect: "Allow",
+              Principal: "*",
+              Action: ["s3:GetObject"],
+              Resource: `arn:aws:s3:::${bucketName}/*`,
+            },
+          ],
+        };
+
+        await this.s3Client.send(
+          new PutBucketPolicyCommand({
+            Bucket: bucketName,
+            Policy: JSON.stringify(policy),
+          })
+        );
+
+        console.log(`Bucket '${bucketName}' is public`);
+      } else {
+        console.error(`Error checking bucket '${bucketName}':`, err);
+        throw new Error(`Cannot check/create bucket '${bucketName}'`);
       }
     }
   }
 
   /**
-   * Get a pre-signed URL for downloading the file with the given ARN
-   * Example: s3:knowledge:example.txt
+   * Get a pre-signed URL for downloading the file with proper filename in content-disposition
+   * This will make the browser use the correct filename when downloading
    */
-  async getDownloadUrl(arn: string, expiresInSeconds = 5 * 60) {
+  async getDownloadUrlWithFilename(arn: string, expiresInSeconds = 5 * 60) {
     const { bucket, objectName } = this.extractArn(arn);
     
     // Ensure bucket exists before proceeding
@@ -57,14 +80,61 @@ export class StorageService {
 
     const key = objectName;
 
+    // Get file metadata to extract filename
+    let fileName = '';
+    let contentType = 'application/octet-stream';
+    
+    try {
+      const headCommand = new HeadObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      });
+      const headResult = await this.s3Client.send(headCommand);
+      
+      fileName = 
+        (headResult as any).Metadata?.['x-file-name'] ||
+        (headResult as any).Metadata?.['file-name'] ||
+        objectName?.split('/').pop() || 
+        key.split('/').pop() || 
+        key;
+
+      contentType = (headResult as any).ContentType || contentType;
+      
+      // Decode filename if it was URL encoded
+      if (fileName) {
+        try {
+          fileName = decodeURIComponent(fileName);
+        } catch (e) {
+          console.warn('Failed to decode filename:', fileName);
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to get file metadata:', err);
+      fileName = key.split('/').pop() || key;
+    }
+
+    // Create download command with response-content-disposition header
     const command = new GetObjectCommand({
       Bucket: bucket,
       Key: key,
+      ResponseContentDisposition: `attachment; filename="${fileName}"; filename*=UTF-8''${encodeURIComponent(fileName)}`,
+      ResponseContentType: contentType,
     });
 
-    return await getSignedUrl(this.s3Client, command, {
+    const downloadUrl = await getSignedUrl(this.s3Client, command, {
       expiresIn: Math.max(expiresInSeconds, 10),
     });
+
+    return {
+      downloadUrl,
+      fileName,
+      contentType,
+      arn,
+      bucket,
+      key,
+      expiresInSeconds,
+      expiresAt: new Date(Date.now() + expiresInSeconds * 1000).toISOString()
+    };
   }
 
   async getFileUrl(arn: string): Promise<string> {
@@ -72,35 +142,11 @@ export class StorageService {
     if (!bucket || !key) throw new NotFoundException('Invalid ARN');
     const expiresIn = this.configService.get<number>('SIGNED_URL_EXPIRES_IN', 300);
     const command = new GetObjectCommand({ Bucket: bucket, Key: key });
-    return await getSignedUrl(this.s3Client, command, { expiresIn });
-  }
-
-  private extractArn(arn: string) {
-    const [service, bucket, objectName] = arn.split(':');
-
-    if (service !== 's3') {
-      throw new BadRequestException(`Invalid service ${service}`);
-    }
-
-    if (!objectName) {
-      throw new BadRequestException(`Invalid object name ${objectName}`);
-    }
-
-    if (!bucket) {
-      throw new BadRequestException(`Invalid bucket name ${bucket}`);
-    }
-
-    return {
-      service,
-      bucket,
-      objectName,
-    };
+    return await getSignedUrl(this.s3Client, command);
   }
 
   /**
    * Get a pre-signed policy for uploading a file to the specified bucket
-   *
-   * @returns A pre-signed policy and the object ARN that will be created
    */
   async getUploadPolicy(
     options: {
@@ -140,50 +186,10 @@ export class StorageService {
   }
 
   /**
-   * Delete multiple files using their ARNs
-   * @param arnList Array of ARNs of the files to delete
-   */
-  async deleteFiles(...arnList: string[]) {
-    // Group by bucket to check existence once per bucket
-    const bucketGroups = new Map<string, string[]>();
-    
-    for (const arn of arnList) {
-      const { bucket, objectName } = this.extractArn(arn);
-      if (!bucketGroups.has(bucket)) {
-        bucketGroups.set(bucket, []);
-      }
-      bucketGroups.get(bucket)!.push(objectName);
-    }
-    
-    // Ensure all buckets exist before proceeding
-    for (const bucket of bucketGroups.keys()) {
-      await this.ensureBucketExists(bucket);
-    }
-    
-    const deletePromises = arnList.map((arn) => {
-      const { bucket, objectName } = this.extractArn(arn);
-
-      const deleteCommand = new DeleteObjectCommand({
-        Bucket: bucket,
-        Key: objectName,
-      });
-
-      return this.s3Client.send(deleteCommand);
-    });
-
-    return Promise.allSettled(deletePromises);
-  }
-
-  /**
    * Upload a file to the specified bucket and scope
-   *
-   * @returns The ARN of the uploaded file
    */
   async uploadFile(
     options: {
-      /**
-       * File buffer data or path to the file to upload.
-       */
       file: Buffer | string;
       fileName: string;
       fileSize?: number;
@@ -227,20 +233,49 @@ export class StorageService {
       },
     });
 
-    // Debug logging
-
+    console.log(`Uploading file to bucket: ${bucket}, key: ${objectName}, size: ${fileBuffer.length} bytes`);
     await this.s3Client.send(command);
+    console.log(`File uploaded successfully to ${bucket}:${objectName}`);
 
     return `s3:${bucket}:${objectName}`;
   }
 
-  private generateUuid(): string {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  /**
+   * Delete multiple files using their ARNs
+   */
+  async deleteFiles(...arnList: string[]) {
+    // Group by bucket to check existence once per bucket
+    const bucketGroups = new Map<string, string[]>();
+    
+    for (const arn of arnList) {
+      const { bucket, objectName } = this.extractArn(arn);
+      if (!bucketGroups.has(bucket)) {
+        bucketGroups.set(bucket, []);
+      }
+      bucketGroups.get(bucket)!.push(objectName);
+    }
+    
+    // Ensure all buckets exist before proceeding
+    for (const bucket of bucketGroups.keys()) {
+      await this.ensureBucketExists(bucket);
+    }
+    
+    const deletePromises = arnList.map((arn) => {
+      const { bucket, objectName } = this.extractArn(arn);
+
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: bucket,
+        Key: objectName,
+      });
+
+      return this.s3Client.send(deleteCommand);
+    });
+
+    return Promise.allSettled(deletePromises);
   }
 
   /**
    * Download file by ARN with direct path
-   * ARN format: s3:bucket:path/to/file (e.g., s3:akabotdn:knowledge/example.txt)
    */
   async downloadFileByArn(arn: string) {
     const [service, bucket, objectPath] = arn.split(':');
@@ -306,5 +341,37 @@ export class StorageService {
       fileName: decodeURIComponent(fileName),
       contentType,
     };
+  }
+
+  /**
+   * Extract ARN components
+   */
+  private extractArn(arn: string) {
+    const [service, bucket, objectName] = arn.split(':');
+
+    if (service !== 's3') {
+      throw new BadRequestException(`Invalid service ${service}`);
+    }
+
+    if (!objectName) {
+      throw new BadRequestException(`Invalid object name ${objectName}`);
+    }
+
+    if (!bucket) {
+      throw new BadRequestException(`Invalid bucket name ${bucket}`);
+    }
+
+    return {
+      service,
+      bucket,
+      objectName,
+    };
+  }
+
+  /**
+   * Generate unique identifier for file names
+   */
+  private generateUuid(): string {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
 }

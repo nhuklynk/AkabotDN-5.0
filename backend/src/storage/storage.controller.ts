@@ -14,7 +14,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiConsumes } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import type { UploadOptions } from './types';
 import { DownloadFileDto } from './dto/download-file.dto';
@@ -28,8 +28,12 @@ export class StorageController {
   @Get('file-url')
   @ApiOperation({ summary: 'Get file URL by ARN' })
   async getFileUrl(@Query('arn') arn: string) {
-    const url = await this.storageService.getFileUrl(arn);
-    return { url };
+    const result = await this.storageService.getFileUrl(arn);
+    return { 
+      success: true,
+      data: result,
+      message: 'File URL generated successfully'
+    };
   }
 
   @Post('upload-policy')
@@ -63,13 +67,6 @@ export class StorageController {
   ) {
     const { bucket, scope } = uploadOptions;
     
-    // Debug logging
-    console.log('Upload request:', {
-      originalFileName: file.originalname,
-      bucket,
-      scope
-    });
-    
     const arn = await this.storageService.uploadFile({
       file: file.buffer,
       bucket,
@@ -94,25 +91,36 @@ export class StorageController {
   }
 
   @Post('download')
-  @ApiOperation({ summary: 'Get download URL for file' })
+  @ApiOperation({ summary: 'Get download URL for file with proper filename' })
   async getDownloadUrl(@Body() downloadUrlDto: DownloadUrlDto) {
     const expiresInSeconds = downloadUrlDto.expiresIn || 5 * 60;
-    const downloadUrl = await this.storageService.getDownloadUrl(downloadUrlDto.arn, expiresInSeconds);
+    const result = await this.storageService.getDownloadUrlWithFilename(downloadUrlDto.arn, expiresInSeconds);
     
     return {
       success: true,
-      data: {
-        arn: downloadUrlDto.arn,
-        downloadUrl,
-        expiresInSeconds,
-        expiresAt: new Date(Date.now() + expiresInSeconds * 1000).toISOString()
-      },
+      data: result,
+      message: 'Download URL generated successfully'
+    };
+  }
+
+  @Get('download/:arn')
+  @ApiOperation({ summary: 'Get download URL for file by ARN with proper filename' })
+  async getDownloadUrlByArn(
+    @Param('arn') arn: string, 
+    @Query('expiresIn') expiresIn?: string
+  ) {
+    const expiresInSeconds = expiresIn ? parseInt(expiresIn, 10) : 5 * 60;
+    const result = await this.storageService.getDownloadUrlWithFilename(arn, expiresInSeconds);
+    
+    return {
+      success: true,
+      data: result,
       message: 'Download URL generated successfully'
     };
   }
 
   @Post('file')
-  @ApiOperation({ summary: 'Download file by ARN' })
+  @ApiOperation({ summary: 'Download file content by ARN' })
   async downloadFileByArn(@Body() downloadFileDto: DownloadFileDto) {
     const result = await this.storageService.downloadFileByArn(downloadFileDto.arn);
     
