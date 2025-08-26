@@ -126,9 +126,7 @@ export class PostService {
       post.tags = await this.tagRepository.findBy({ id: In(tagIds) });
     }
 
-    if (
-      updatePostDto.status === Status.PUBLISHED
-    ) {
+    if (updatePostDto.status === Status.PUBLISHED) {
       post.published_at = new Date();
     }
 
@@ -222,6 +220,7 @@ export class PostService {
       date_to,
       category,
       tag,
+      type,
     } = query;
     const skip = (page - 1) * limit;
 
@@ -252,6 +251,10 @@ export class PostService {
 
     if (date_to) {
       queryBuilder.andWhere('post.created_at <= :date_to', { date_to });
+    }
+
+    if (type) {
+      queryBuilder.andWhere('post.post_type = :type', { type });
     }
 
     queryBuilder.skip(skip).take(limit).orderBy('post.created_at', 'DESC');

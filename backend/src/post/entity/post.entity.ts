@@ -56,4 +56,12 @@ export class Post extends BaseAuditEntity {
 
   @Column({ nullable: true, name: 'media_id' })
   media_id?: string;
+
+  @Column({
+    type: 'enum',
+    enum: PostType,
+    default: PostType.MEMBER_ACTIVITY,
+    name: 'post_type',
+  })
+  post_type: PostType;
 }

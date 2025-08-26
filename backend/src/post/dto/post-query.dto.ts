@@ -128,4 +128,13 @@ export class PostQueryDto {
   @IsOptional()
   @IsString()
   date_to?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Filter posts by type. Valid values: member_activity, association_activity, digital_product.',
+    example: 'digital_product',
+  })
+  @IsOptional()
+  @IsString()
+  type?: string;
 }
