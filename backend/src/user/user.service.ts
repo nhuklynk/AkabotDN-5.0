@@ -63,16 +63,10 @@ export class UserService {
       status: (createUserDto.status as any) || Status.ACTIVE,
       created_by: 'system',
       modified_by: 'system',
+      roles: [role], // Gán role trực tiếp vào user
     });
 
     const savedUser = await this.userRepository.save(user);
-
-    // Assign role (role is guaranteed to exist at this point)
-    await this.userRepository
-      .createQueryBuilder()
-      .relation(User, 'roles')
-      .of(savedUser)
-      .add(role);
 
     // Return user with roles
     return this.findOne(savedUser.id);
@@ -182,7 +176,7 @@ export class UserService {
       user.roles = foundRoles;
     }
 
-    // Update all other fields
+    // Update all other fields (excluding role_ids since we handled it separately)
     Object.assign(user, updateData);
 
     // Save the complete updated user
@@ -258,6 +252,8 @@ export class UserService {
         'user.avatar',
         'user.phone',
         'user.status',
+        'role.id',
+        'role.name',
       ])
       .getMany();
 
