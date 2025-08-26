@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostService } from './post.service';
-import { CreatePostFormdataDto } from './dto/create-post.dto';
+import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
 import { PostResponseDto } from './dto/post-response.dto';
 import { PostQueryDto } from './dto/post-query.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';

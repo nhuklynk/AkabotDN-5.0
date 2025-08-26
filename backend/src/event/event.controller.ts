@@ -78,12 +78,12 @@ export class EventController {
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
   @ApiQuery({ name: 'title', required: false, description: 'Filter by title (partial match)' })
   @ApiQuery({ name: 'location', required: false, description: 'Filter by location (partial match)' })
-  @ApiQuery({ name: 'public_status', required: false, description: 'Filter by publication status' })
   @ApiQuery({ name: 'start_date', required: false, description: 'Filter events from this date (ISO 8601)' })
   @ApiQuery({ name: 'end_date', required: false, description: 'Filter events to this date (ISO 8601)' })
   @ApiQuery({ name: 'tag_id', required: false, description: 'Filter by tag ID' })
   @ApiQuery({ name: 'category_id', required: false, description: 'Filter by category ID' })
   @ApiQuery({ name: 'countdown_enabled', required: false, description: 'Filter by countdown enabled' })
+  @ApiQuery({ name: 'status', required: false, description: 'Filter by status' })
   async findAll(@Query() query: EventQueryDto): Promise<PaginatedData<EventResponseDto>> {
     return this.eventService.findAll(query);
   }

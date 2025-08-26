@@ -203,7 +203,7 @@ export class EventService {
       limit = 10, 
       title, 
       location, 
-      public_status, 
+      status, 
       start_date, 
       end_date,
       tag_id,
@@ -227,8 +227,8 @@ export class EventService {
       queryBuilder.andWhere('LOWER(event.location) LIKE LOWER(:location)', { location: `%${location}%` });
     }
   
-    if (public_status) {
-      queryBuilder.andWhere('event.status = :status', { status: public_status });
+    if (status) {
+      queryBuilder.andWhere('event.status = :status', { status });
     }
   
     if (start_date && end_date) {

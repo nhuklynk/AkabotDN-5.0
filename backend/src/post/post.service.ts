@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { Post, PostStatus } from './entity/post.entity';
+import { Post } from './entity/post.entity';
 import { PostResponseDto } from './dto/post-response.dto';
 import { plainToClass } from 'class-transformer';
 import { Category } from 'src/category/entity/category.entity';
@@ -16,7 +16,7 @@ import { MediaType } from 'src/media/entity/media.entity';
 import { Status } from 'src/config/base-audit.entity';
 import { Tag } from 'src/tag/entity/tag.entity';
 import { UserService } from 'src/user/user.service';
-import { CreatePostFormdataDto } from './dto/create-post.dto';
+import { CreatePostFormdataDto } from './dto/create-post-formdata.dto';
 import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
 import { PostViewService } from 'src/post-view/post-view.service';
 
@@ -64,7 +64,7 @@ export class PostService {
       content: createPostDto.content,
       slug: createPostDto.slug,
       summary: createPostDto.summary,
-      post_status: createPostDto.post_status,
+      status: createPostDto.status,
       user: user,
       published_at: createPostDto.published_at
         ? new Date(createPostDto.published_at)
@@ -82,7 +82,7 @@ export class PostService {
       post.tags = tags;
     }
 
-    if (createPostDto.post_status === PostStatus.PUBLISHED) {
+    if (createPostDto.status === Status.ACTIVE) {
       post.published_at = new Date();
     }
 
@@ -127,8 +127,7 @@ export class PostService {
     }
 
     if (
-      updatePostDto.post_status === PostStatus.PUBLISHED &&
-      post.post_status !== PostStatus.PUBLISHED
+      updatePostDto.status === Status.PUBLISHED
     ) {
       post.published_at = new Date();
     }
@@ -233,7 +232,7 @@ export class PostService {
       .leftJoinAndSelect('post.tags', 'tags');
 
     if (status) {
-      queryBuilder.andWhere('post.post_status = :status', { status });
+      queryBuilder.andWhere('post.status = :status', { status });
     }
 
     if (search) {

@@ -7,7 +7,7 @@ import {
   Min,
   Max,
 } from 'class-validator';
-import { PostStatus, PostType } from '../entity/post.entity';
+import { Status } from 'src/config/base-audit.entity';
 import { Type } from 'class-transformer';
 
 export class PostQueryDto {
@@ -42,20 +42,17 @@ export class PostQueryDto {
   @ApiPropertyOptional({
     description:
       'Filter posts by publication status. Only returns posts with the specified status.',
-    enum: PostStatus,
-    example: PostStatus.PUBLISHED,
+    enum: Status,
+    example: Status.ACTIVE,
     examples: {
-      draft: { value: PostStatus.DRAFT, summary: 'Draft posts only' },
-      published: {
-        value: PostStatus.PUBLISHED,
-        summary: 'Published posts only',
-      },
-      archived: { value: PostStatus.ARCHIVED, summary: 'Archived posts only' },
+      draft: { value: Status.DRAFT, summary: 'Draft posts only' },
+      published: { value: Status.PUBLISHED, summary: 'Published posts only' },
+      archived: { value: Status.ARCHIVED, summary: 'Archived posts only' },
     },
   })
   @IsOptional()
-  @IsEnum(PostStatus)
-  status?: PostStatus;
+  @IsEnum(Status)
+  status?: Status;
 
   @ApiPropertyOptional({
     description:
@@ -70,30 +67,6 @@ export class PostQueryDto {
   @IsOptional()
   @IsString()
   category?: string;
-
-  @ApiPropertyOptional({
-    description:
-      'Filter posts by type. Only returns posts with the specified type.',
-    enum: PostType,
-    example: PostType.MEMBER_ACTIVITY,
-    examples: {
-      member_activity: {
-        value: PostType.MEMBER_ACTIVITY,
-        summary: 'Member activity posts only',
-      },
-      association_activity: {
-        value: PostType.ASSOCIATION_ACTIVITY,
-        summary: 'Association activity posts only',
-      },
-      digital_product: {
-        value: PostType.DIGITAL_PRODUCT,
-        summary: 'Digital product posts only',
-      },
-    },
-  })
-  @IsOptional()
-  @IsEnum(PostType)
-  type?: PostType;
 
   @ApiPropertyOptional({
     description:
