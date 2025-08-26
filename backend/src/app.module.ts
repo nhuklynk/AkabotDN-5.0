@@ -48,10 +48,12 @@ import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
   controllers: [AppController, SwaggerExportController],
   providers: [
     AppService,
+    AuditSubscriber,
     {
       provide: APP_GUARD,
       useClass: GlobalJwtAuthGuard,
     },
-  , AuditSubscriber],
+  ],
 })
 export class AppModule {}
+

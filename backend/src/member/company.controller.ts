@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Request,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/company/create-company.dto';
@@ -22,6 +23,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('companies')
 @ApiTags('Company')
@@ -43,6 +45,40 @@ export class CompanyController {
     return this.companyService.create(createCompanyDto);
   }
 
+  @Get('test-auth')
+  @ApiOperation({ summary: 'Test authentication - requires valid access token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Authentication successful',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+        timestamp: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            email: { type: 'string' },
+            role: { type: 'string' }
+          }
+        }
+      }
+    }
+  })
+  async testAuth(@Request() req): Promise<any> {
+    return {
+      message: 'Authentication successful!',
+      timestamp: new Date().toISOString(),
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        role: req.user.role
+      }
+    };
+  }
+
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all companies' })
   @ApiResponse({

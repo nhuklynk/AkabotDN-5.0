@@ -25,13 +25,12 @@ export class AuthController {
   async register(
     @Body(ValidationPipe) registerDto: RegisterDto,
     @Res({ passthrough: true }) res: ExpressResponse,
-  ): Promise<AuthResponseDto> {
+  ): Promise<Omit<AuthResponseDto, 'refresh_token'>> {
     const result = await this.authService.register(registerDto);
     
-    // Set cookies for frontend
-    this.setAuthCookies(res, result.access_token, result.refresh_token);
+    const refreshToken = await this.authService.generateRefreshTokenForUser(registerDto.email);
+    this.setAuthCookies(res, result.access_token, refreshToken);
     
-    // Return full response with tokens for Postman testing
     return result;
   }
 
@@ -41,13 +40,12 @@ export class AuthController {
   async login(
     @Body(ValidationPipe) loginDto: LoginDto,
     @Res({ passthrough: true }) res: ExpressResponse,
-  ): Promise<AuthResponseDto> {
+  ): Promise<Omit<AuthResponseDto, 'refresh_token'>> {
     const result = await this.authService.login(loginDto);
     
-    // Set cookies for frontend
-    this.setAuthCookies(res, result.access_token, result.refresh_token);
+    const refreshToken = await this.authService.generateRefreshTokenForUser(loginDto.email);
+    this.setAuthCookies(res, result.access_token, refreshToken);
     
-    // Return full response with tokens for Postman testing
     return result;
   }
 
@@ -57,32 +55,28 @@ export class AuthController {
   async refresh(
     @Request() req,
     @Res({ passthrough: true }) res: ExpressResponse,
-  ): Promise<AuthResponseDto> {
-    // Try to get refresh token from cookies first
+  ): Promise<Omit<AuthResponseDto, 'refresh_token'>> {
     let refreshToken = req.cookies?.refresh_token;
     
-    // If not in cookies, try from request body (for Postman)
     if (!refreshToken && req.body?.refresh_token) {
       refreshToken = req.body.refresh_token;
     }
     
     if (!refreshToken) {
-      throw new Error('Refresh token not found in cookies or request body');
+      throw new Error('Refresh token not found');
     }
     
     const result = await this.authService.refresh({ refresh_token: refreshToken });
     
-    // Set new cookies for frontend
-    this.setAuthCookies(res, result.access_token, result.refresh_token);
+    const newRefreshToken = await this.authService.generateRefreshTokenForUser(result.user.email);
+    this.setAuthCookies(res, result.access_token, newRefreshToken);
     
-    // Return full response with tokens for Postman testing
     return result;
   }
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@Res({ passthrough: true }) res: ExpressResponse): Promise<{ message: string }> {
-    // Clear cookies
     this.clearAuthCookies(res);
     
     return { message: 'Logged out successfully' };
@@ -94,21 +88,19 @@ export class AuthController {
   }
 
   private setAuthCookies(res: ExpressResponse, accessToken: string, refreshToken: string): void {
-    // Access token cookie (short-lived, HTTP-only)
     res.cookie('access_token', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      maxAge: 15 * 60 * 1000,
       path: '/',
     });
 
-    // Refresh token cookie (longer-lived, HTTP-only)
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/',
     });
   }

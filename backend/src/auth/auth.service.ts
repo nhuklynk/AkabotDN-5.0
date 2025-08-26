@@ -14,7 +14,7 @@ import { RegisterDto } from './dto/register.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
-import { User } from '../user/entities/user.entity';
+import { User } from '../user/entity/user.entity';
 import { jwtConfig } from '../config/jwt.config';
 
 @Injectable()
@@ -27,10 +27,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
+  async register(registerDto: RegisterDto): Promise<Omit<AuthResponseDto, 'refresh_token'>> {
     try {
       const userResponse = await this.userService.create(registerDto);
-      const user = await this.userService.findOne(userResponse.userId);
+      const user = await this.userService.findOne(userResponse.id);
       
       if (!user) {
         throw new NotFoundException('User not found after registration');
@@ -39,16 +39,15 @@ export class AuthService {
       const accessToken = this.generateAccessToken(user);
       const refreshToken = this.generateRefreshToken(user);
 
-      this.logger.log(`User registered successfully: ${userResponse.email}`);
+      this.logger.log(`User registered: ${userResponse.email}`);
 
       return {
         access_token: accessToken,
-        refresh_token: refreshToken,
         user: {
-          id: userResponse.userId,
-          username: userResponse.fullName,
+          id: userResponse.id,
+          username: userResponse.full_name,
           email: userResponse.email,
-          role: userResponse.roles?.[0]?.roleName || 'user',
+          role: userResponse.roles?.[0]?.name || 'user',
         },
       };
     } catch (error) {
@@ -57,7 +56,7 @@ export class AuthService {
     }
   }
 
-  async login(loginDto: LoginDto): Promise<AuthResponseDto> {
+  async login(loginDto: LoginDto): Promise<Omit<AuthResponseDto, 'refresh_token'>> {
     try {
       const user = await this.validateUser(loginDto.email, loginDto.password);
       
@@ -68,16 +67,15 @@ export class AuthService {
       const accessToken = this.generateAccessToken(user);
       const refreshToken = this.generateRefreshToken(user);
 
-      this.logger.log(`User logged in successfully: ${user.email}`);
+      this.logger.log(`User logged in: ${user.email}`);
 
       return {
         access_token: accessToken,
-        refresh_token: refreshToken,
         user: {
-          id: user.userId,
-          username: user.fullName,
+          id: user.id,
+          username: user.full_name,
           email: user.email,
-          role: user.roles?.[0]?.roleName || 'user',
+          role: user.roles?.[0]?.name || 'user',
         },
       };
     } catch (error) {
@@ -86,37 +84,32 @@ export class AuthService {
     }
   }
 
-  async refresh(refreshTokenDto: RefreshTokenDto): Promise<AuthResponseDto> {
+  async refresh(refreshTokenDto: RefreshTokenDto): Promise<Omit<AuthResponseDto, 'refresh_token'>> {
     try {
       const { refresh_token } = refreshTokenDto;
 
-      // Verify refresh token
       const payload = this.jwtService.verify(refresh_token, {
         secret: jwtConfig.secret,
       }) as JwtPayloadDto;
 
-      // Check if it's a refresh token
       if (payload.type !== 'refresh') {
         throw new UnauthorizedException('Invalid token type');
       }
 
-      // Get user
       const user = await this.userService.findOne(payload.sub);
       
-      // Generate new tokens
       const newAccessToken = this.generateAccessToken(user);
       const newRefreshToken = this.generateRefreshToken(user);
 
-      this.logger.log(`Tokens refreshed successfully for user: ${user.email}`);
+      this.logger.log(`Tokens refreshed for user: ${user.email}`);
 
       return {
         access_token: newAccessToken,
-        refresh_token: newRefreshToken,
         user: {
-          id: user.userId,
-          username: user.fullName,
+          id: user.id,
+          username: user.full_name,
           email: user.email,
-          role: user.roles?.[0]?.roleName || 'user',
+          role: user.roles?.[0]?.name || 'user',
         },
       };
     } catch (error) {
@@ -150,12 +143,12 @@ export class AuthService {
     try {
       const user = await this.userService.findOne(userId);
       return {
-        id: user.userId,
-        username: user.fullName,
+        id: user.id,
+        username: user.full_name,
         email: user.email,
-        role: user.roles?.[0]?.roleName || 'user',
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        role: user.roles?.[0]?.name || 'user',
+        createdAt: user.created_at,
+        updatedAt: user.updated_at,
       };
     } catch (error) {
       this.logger.error(`Get profile failed: ${error.message}`);
@@ -163,12 +156,25 @@ export class AuthService {
     }
   }
 
+  async generateRefreshTokenForUser(email: string): Promise<string> {
+    try {
+      const user = await this.userService.findByEmail(email);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return this.generateRefreshToken(user);
+    } catch (error) {
+      this.logger.error(`Failed to generate refresh token: ${error.message}`);
+      throw error;
+    }
+  }
+
   private generateAccessToken(user: User | any): string {
     const payload: JwtPayloadDto = {
-      sub: user.userId,
+      sub: user.id,
       email: user.email,
-      username: user.fullName,
-      role: user.roles?.[0]?.roleName || 'user',
+      username: user.full_name,
+      role: user.roles?.[0]?.name || 'user',
       type: 'access',
     };
 
@@ -179,10 +185,10 @@ export class AuthService {
 
   private generateRefreshToken(user: User | any): string {
     const payload: JwtPayloadDto = {
-      sub: user.userId,
+      sub: user.id,
       email: user.email,
-      username: user.fullName,
-      role: user.roles?.[0]?.roleName || 'user',
+      username: user.full_name,
+      role: user.roles?.[0]?.name || 'user',
       type: 'refresh',
     };
 

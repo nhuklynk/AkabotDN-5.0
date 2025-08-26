@@ -12,7 +12,7 @@ export class RegisterDto {
 
   @IsNotEmpty()
   @IsString()
-  fullName: string;
+  full_name: string;
 
   @IsOptional()
   @IsString()
