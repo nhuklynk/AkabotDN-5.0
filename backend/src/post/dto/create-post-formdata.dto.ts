@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsUUID, IsEnum, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { PostStatus } from '../entity/post.entity';
+import { Status } from 'src/config/base-audit.entity';
 
 export class CreatePostFormdataDto {
   @ApiProperty({
@@ -13,15 +13,7 @@ export class CreatePostFormdataDto {
   title: string;
 
   @ApiProperty({
-    description: 'Post content',
-    example: 'This is the main content of the post...',
-    minLength: 1
-  })
-  @IsString()
-  content: string;
-
-  @ApiProperty({
-    description: 'Post slug',
+    description: 'Post slug (URL-friendly version of title)',
     example: 'getting-started-with-nestjs',
     minLength: 1,
     maxLength: 255
@@ -30,15 +22,23 @@ export class CreatePostFormdataDto {
   slug: string;
 
   @ApiProperty({
+    description: 'Post content',
+    example: 'This is the main content of the post...',
+    minLength: 1
+  })
+  @IsString()
+  content: string;
+
+  @ApiProperty({
     description: 'Post status',
-    enum: PostStatus,
-    example: PostStatus.DRAFT,
+    enum: Status,
+    example: Status.DRAFT,
     required: false,
-    default: PostStatus.DRAFT
+    default: Status.DRAFT
   })
   @IsOptional()
-  @IsEnum(PostStatus)
-  post_status?: PostStatus;
+  @IsEnum(Status)
+  status?: Status;
 
   @ApiProperty({
     description: 'Post summary',
@@ -62,7 +62,7 @@ export class CreatePostFormdataDto {
   @ApiProperty({
     description: 'Category IDs (comma-separated string)',
     example: '123e4567-e89b-12d3-a456-426614174000,987fcdeb-51a2-43d1-b789-123456789abc',
-    required: false
+    required: true
   })
   @IsOptional()
   @IsString()

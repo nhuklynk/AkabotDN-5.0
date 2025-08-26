@@ -2,6 +2,7 @@ import { IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 import { EventStatus } from '../entity/event.entity';
+import { Status } from 'src/config/base-audit.entity';
 
 export class EventQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({
@@ -22,12 +23,12 @@ export class EventQueryDto extends PaginationQueryDto {
 
   @ApiPropertyOptional({
     description: 'Filter by publication status',
-    enum: EventStatus,
-    example: EventStatus.PUBLISHED
+    enum: Status,
+    example: Status.ACTIVE
   })
   @IsOptional()
-  @IsEnum(EventStatus)
-  public_status?: EventStatus;
+  @IsEnum(Status)
+  status?: Status;
 
   @ApiPropertyOptional({
     description: 'Filter events starting from this date',
