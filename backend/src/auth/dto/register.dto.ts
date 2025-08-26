@@ -22,7 +22,7 @@ export class RegisterDto {
   @IsString()
   phone?: string;
 
-  @IsOptional()
-  @IsArray()
-  roleIds?: string[]; // Array of role IDs to assign
+  @IsNotEmpty()
+  @IsString()
+  role_id: string; // Required role ID to assign
 }
