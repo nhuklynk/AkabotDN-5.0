@@ -4,25 +4,17 @@ import {
   ManyToOne,
   JoinColumn,
   ManyToMany,
-  OneToMany,
   JoinTable,
 } from 'typeorm';
 import { User } from '../../user/entity/user.entity';
 import { Category } from '../../category/entity/category.entity';
 import { Tag } from '../../tag/entity/tag.entity';
-import { Event } from '../../event/entity/event.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
-
-export enum PostStatus {
-  DRAFT = 'draft',
-  PUBLISHED = 'published',
-  ARCHIVED = 'archived',
-  SCHEDULED = 'scheduled',
-}
 
 export enum PostType {
   MEMBER_ACTIVITY = 'MEMBER_ACTIVITY',
   ASSOCIATION_ACTIVITY = 'ASSOCIATION_ACTIVITY',
+  DIGITAL_PRODUCT = 'DIGITAL_PRODUCT',
 }
 
 @Entity('posts')
@@ -35,14 +27,6 @@ export class Post extends BaseAuditEntity {
 
   @Column({ type: 'text', name: 'content' })
   content: string;
-
-  @Column({
-    type: 'enum',
-    enum: PostStatus,
-    default: PostStatus.DRAFT,
-    name: 'post_status'
-  })
-  post_status: PostStatus;
 
   @Column({ nullable: true, name: 'summary' })
   summary?: string;

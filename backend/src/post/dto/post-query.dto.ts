@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsNumber, IsString, IsEnum, Min, Max } from 'class-validator';
-import { PostStatus } from '../entity/post.entity';
+import { Status } from 'src/config/base-audit.entity';
 import { Type } from 'class-transformer';
 
 export class PostQueryDto {
@@ -32,17 +32,17 @@ export class PostQueryDto {
 
   @ApiPropertyOptional({
     description: 'Filter posts by publication status. Only returns posts with the specified status.',
-    enum: PostStatus,
-    example: PostStatus.PUBLISHED,
+    enum: Status,
+    example: Status.ACTIVE,
     examples: {
-      draft: { value: PostStatus.DRAFT, summary: 'Draft posts only' },
-      published: { value: PostStatus.PUBLISHED, summary: 'Published posts only' },
-      archived: { value: PostStatus.ARCHIVED, summary: 'Archived posts only' }
+      draft: { value: Status.DRAFT, summary: 'Draft posts only' },
+      published: { value: Status.PUBLISHED, summary: 'Published posts only' },
+      archived: { value: Status.ARCHIVED, summary: 'Archived posts only' }
     }
   })
   @IsOptional()
-  @IsEnum(PostStatus)
-  status?: PostStatus;
+  @IsEnum(Status)
+  status?: Status;
 
   @ApiPropertyOptional({
     description: 'Filter posts by category slug. Only returns posts that belong to the specified category.',
