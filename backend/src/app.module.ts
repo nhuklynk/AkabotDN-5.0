@@ -49,10 +49,10 @@ import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
   providers: [
     AppService,
     AuditSubscriber,
-    {
-      provide: APP_GUARD,
-      useClass: GlobalJwtAuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: GlobalJwtAuthGuard,
+    // },
   ],
 })
 export class AppModule {}

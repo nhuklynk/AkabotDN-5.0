@@ -3,14 +3,16 @@ import type { UserListItem } from "./getAllUser";
 
 export type UpdateUserPayload = Partial<{
   full_name: string;
-  email: string;
-  password: string;
-  phone: string;
   avatar: string;
-  status: string;
+  phone: string;
+  user_status: string;
+  role_ids: string[];
 }>;
 
-export async function updateUser(userId: string | number, payload: UpdateUserPayload): Promise<UserListItem> {
+export async function updateUser(
+  userId: string | number,
+  payload: UpdateUserPayload
+): Promise<UserListItem> {
   return apiClient.patch(`/users/${userId}`, payload);
 }
 

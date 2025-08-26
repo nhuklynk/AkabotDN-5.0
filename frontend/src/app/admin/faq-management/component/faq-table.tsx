@@ -16,10 +16,10 @@ export default function FaqTable({ items, onEdit, onDelete }: { items: Faq[]; on
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("faq.table.question")}</TableHead>
-            <TableHead>{t("faq.table.category")}</TableHead>
-            <TableHead>{t("faq.table.createdAt")}</TableHead>
-            <TableHead className="w-[90px]">{t("faq.table.actions")}</TableHead>
+            <TableHead>{t("faqManagement.table.question")}</TableHead>
+            <TableHead>{t("faqManagement.table.category")}</TableHead>
+            <TableHead>{t("faqManagement.table.createdAt")}</TableHead>
+            <TableHead className="w-[90px]">{t("faqManagement.table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -27,7 +27,7 @@ export default function FaqTable({ items, onEdit, onDelete }: { items: Faq[]; on
             <TableRow key={f.id}>
               <TableCell className="font-medium">{f.question}</TableCell>
               <TableCell>{f.category}</TableCell>
-              <TableCell>{f.createdAt.split("-").reverse().join("/")}</TableCell>
+              <TableCell>{new Date(f.createdAt).toLocaleDateString('vi-VN')}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,6 +13,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Plus, Search } from "lucide-react";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
+import { useFaqs } from "@/hooks/useFaqs";
+import faqService, { type Faq as ApiFaq } from "@/services/end-user/faqService";
 
 type Faq = {
   id: number;
@@ -22,30 +24,20 @@ type Faq = {
   createdAt: string;
 };
 
-const initialFaqs: Faq[] = [
-  {
-    id: 1,
-    question: "Làm thế nào để tạo tài khoản?",
-    answer: "Nhấn Đăng ký và điền thông tin.",
-    category: "Tài khoản",
-    createdAt: "2024-02-01",
-  },
-  {
-    id: 2,
-    question: "Quên mật khẩu thì sao?",
-    answer: "Dùng chức năng Quên mật khẩu để đặt lại.",
-    category: "Tài khoản",
-    createdAt: "2024-02-05",
-  },
-];
-
 export default function FaqManagementPage() {
   const { t } = useLocale();
-  const [faqs, setFaqs] = useState<Faq[]>(initialFaqs);
+  const { faqs: apiFaqs, pagination, fetchFaqs, setCurrentPage, searchFaqs, refreshFaqs } = useFaqs({ initialLimit: 10 });
+  const faqs: Faq[] = useMemo(() => (apiFaqs || []).map((f: ApiFaq) => ({
+    id: (f.id as unknown as number),
+    question: f.content,
+    answer: f.content,
+    category: "Chung",
+    createdAt: (f.created_at || "").toString(),
+  })), [apiFaqs]);
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
-  const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
+  const [editingFaq, setEditingFaq] = useState<ApiFaq | null>(null);
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
@@ -58,76 +50,64 @@ export default function FaqManagementPage() {
     )
   );
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const paginatedFaqs = filtered.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  // Pagination driven by server
+  const currentPage = pagination.currentPage || 1;
+  const totalPages = Math.max(1, pagination.totalPages || 1);
+  const paginatedFaqs = filtered;
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm]);
+    if (searchTerm) {
+      searchFaqs(searchTerm);
+    } else {
+      fetchFaqs(1, 10);
+    }
+  }, [searchTerm, fetchFaqs, searchFaqs]);
 
-  const handleCreate = () => {
-    const newFaq: Faq = {
-      id: Math.max(...faqs.map((f) => f.id)) + 1,
-      question: formData.question,
-      answer: formData.answer,
-      category: formData.category,
-      createdAt: new Date().toISOString().split("T")[0],
-    };
-    setFaqs([newFaq, ...faqs]);
+  const handleCreate = async () => {
+    await faqService.createFaq({ content: formData.question });
     setFormData({ question: "", answer: "", category: "Chung" });
     setDialogOpen(false);
+    refreshFaqs();
   };
 
   const handleEdit = (faq: Faq) => {
-    setEditingFaq(faq);
+    const api = (apiFaqs || []).find((f) => String(f.id) === String(faq.id)) || null;
+    setEditingFaq(api);
     setFormData({
       question: faq.question,
-      answer: faq.answer,
+      answer: api?.content || "",
       category: faq.category,
     });
     setDialogMode("edit");
     setTimeout(() => setDialogOpen(true), 0);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!editingFaq) return;
-    setFaqs(
-      faqs.map((f) =>
-        f.id === editingFaq.id
-          ? {
-              ...f,
-              question: formData.question,
-              answer: formData.answer,
-              category: formData.category,
-            }
-          : f
-      )
-    );
+    await faqService.updateFaq(editingFaq.id, { content: formData.question });
     setDialogOpen(false);
     setEditingFaq(null);
     setFormData({ question: "", answer: "", category: "Chung" });
+    refreshFaqs();
   };
 
-  const handleDelete = (id: number) => setFaqs(faqs.filter((f) => f.id !== id));
+  const handleDelete = async (id: number) => {
+    await faqService.deleteFaq(String(id));
+    refreshFaqs();
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="p-6 pt-0 pb-0">
-          <h1 className="text-3xl font-bold text-foreground">{t("faq.title")}</h1>
-          <p className="text-muted-foreground">{t("faq.subtitle")}</p>
+          <h1 className="text-3xl font-bold text-foreground">{t("faqManagement.title")}</h1>
+          <p className="text-muted-foreground">{t("faqManagement.subtitle")}</p>
         </div>
         <Button
           className="flex items-center gap-2"
           onClick={() => { setDialogMode("create"); setDialogOpen(true); }}
         >
-          <Plus className="h-4 w-4" /> {t("faq.add")}
+          <Plus className="h-4 w-4" /> {t("faqManagement.add")}
         </Button>
       </div>
 
@@ -137,14 +117,14 @@ export default function FaqManagementPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={t("faq.searchPlaceholder")}
+                placeholder={t("faqManagement.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {t("faq.countSummary", { filtered: filtered.length, total: faqs.length })}
+              {t("faqManagement.countSummary", { filtered: filtered.length, total: faqs.length })}
             </div>
           </div>
 
@@ -157,7 +137,7 @@ export default function FaqManagementPage() {
             className="mt-4"
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={(p) => setCurrentPage(p)}
           />
         </CardContent>
       </Card>
@@ -174,8 +154,8 @@ export default function FaqManagementPage() {
       >
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{dialogMode === "create" ? t("faq.dialog.createTitle") : t("faq.dialog.editTitle")}</DialogTitle>
-            <DialogDescription>{dialogMode === "create" ? t("faq.dialog.createDesc") : t("faq.dialog.editDesc")}</DialogDescription>
+            <DialogTitle>{dialogMode === "create" ? t("faqManagement.dialog.createTitle") : t("faqManagement.dialog.editTitle")}</DialogTitle>
+            <DialogDescription>{dialogMode === "create" ? t("faqManagement.dialog.createDesc") : t("faqManagement.dialog.editDesc")}</DialogDescription>
           </DialogHeader>
 
           <FaqFormDialog data={formData} setData={setFormData} mode={dialogMode} />
@@ -183,7 +163,7 @@ export default function FaqManagementPage() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("common.cancel")}</Button>
             <Button onClick={dialogMode === "create" ? handleCreate : handleUpdate}>
-              {dialogMode === "create" ? t("faq.dialog.createCta") : t("faq.dialog.updateCta")}
+              {dialogMode === "create" ? t("faqManagement.dialog.createCta") : t("faqManagement.dialog.updateCta")}
             </Button>
           </DialogFooter>
         </DialogContent>

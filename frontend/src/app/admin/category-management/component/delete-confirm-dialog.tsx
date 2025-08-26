@@ -10,6 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
@@ -30,21 +31,24 @@ export default function DeleteConfirmDialog({
 }: Props) {
   const { t } = useLocale()
   const [open, setOpen] = React.useState(false)
-  const trigger = React.cloneElement(children, {
-    onSelect: (e: any) => {
-      if (e?.preventDefault) e.preventDefault()
-      setOpen(true)
-    },
-    onClick: (e: any) => {
-      // Fallback for non-Menu triggers
-      if (children.props?.onClick) children.props.onClick(e)
-      if (!e?.defaultPrevented) setOpen(true)
-    },
-  })
+  
+  const handleConfirm = async () => {
+    try {
+      await onConfirm()
+      setOpen(false)
+    } catch (e) {
+      console.error(e)
+      // Don't close dialog on error
+    }
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      {trigger}
+      <AlertDialogTrigger asChild>
+        <div onClick={() => setOpen(true)}>
+          {children}
+        </div>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title || t("common.areYouSure")}</AlertDialogTitle>
@@ -53,10 +57,7 @@ export default function DeleteConfirmDialog({
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>{t("common.cancel")}</AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => {
-              setOpen(false)
-              try { void onConfirm() } catch (e) { console.error(e) }
-            }}
+            onClick={handleConfirm}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {confirmLabel || t("common.delete")}

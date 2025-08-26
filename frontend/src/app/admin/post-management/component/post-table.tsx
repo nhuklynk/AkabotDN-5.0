@@ -10,7 +10,7 @@ import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Post = {
-  id: number
+  id: string | number
   title: string
   excerpt: string
   author: string
@@ -43,7 +43,7 @@ export default function PostTable({
   getStatusColor: (status: string) => string
   formatDate: (d: string | null) => string
   onEdit: (p: Post) => void
-  onDelete: (id: number) => void
+  onDelete: (id: string | number) => void
 }) {
   const { t } = useLocale()
   return (

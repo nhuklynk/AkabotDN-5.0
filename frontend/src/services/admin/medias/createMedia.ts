@@ -8,16 +8,29 @@ export type CreateMediaPayload = {
   status?: string;
 };
 
-export async function createMedia(payload: CreateMediaPayload): Promise<MediaDetail> {
-  const form = new FormData();
-  form.append("file", payload.file);
-  if (payload.file_name) form.append("file_name", payload.file_name);
-  if (payload.media_type) form.append("media_type", payload.media_type);
-  if (payload.status) form.append("status", payload.status);
-  const res = await apiClient.post<MediaDetail>("/media", form);
-  return res as unknown as MediaDetail;
+export async function createMedia(
+  payload: CreateMediaPayload
+): Promise<MediaDetail> {
+  const uploadForm = new FormData();
+  uploadForm.append("file", payload.file);
+  uploadForm.append("bucket", "public");
+  uploadForm.append("scope", "media");
+  const uploadRes: any = await apiClient.post("/storage/upload", uploadForm, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  const uploaded = uploadRes?.data ?? uploadRes;
+
+  const fileName = payload.file_name || uploaded?.fileName;
+  const body = {
+    file_path: uploaded?.arn || uploaded?.fileName,
+    file_name: fileName,
+    mime_type: uploaded?.contentType,
+    file_size: uploaded?.fileSize,
+    media_type: payload.media_type,
+    status: payload.status,
+  } as any;
+
+  return apiClient.post("/media", body) as unknown as MediaDetail;
 }
 
 export default createMedia;
-
-

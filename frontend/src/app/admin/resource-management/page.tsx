@@ -11,23 +11,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import ResourceTable from "./component/resource-table";
 import {
   Select,
@@ -37,36 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Plus,
   Search,
-  Edit,
-  Trash2,
-  MoreHorizontal,
   FileText,
   ImageIcon,
   Video,
   Music,
   Archive,
-  Download,
-  Eye,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Pagination } from "@/components/pagination-component";
 import { useLocale } from "@/hooks/useLocale";
 import { useMediaList } from "@/hooks/admin/media/useMediaList";
@@ -305,14 +268,14 @@ export default function ResourcesPage() {
             </div>
             <Select value={filterType} onValueChange={setFilterType}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by type" />
+                <SelectValue placeholder={t("resource.filterByType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="post">Post</SelectItem>
-                <SelectItem value="event">Event</SelectItem>
-                <SelectItem value="member">Member</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="all">{t("resource.all")}</SelectItem>
+                <SelectItem value="post">{t("resource.types.post")}</SelectItem>
+                <SelectItem value="event">{t("resource.types.event")}</SelectItem>
+                <SelectItem value="member">{t("resource.types.member")}</SelectItem>
+                <SelectItem value="other">{t("resource.types.other")}</SelectItem>
               </SelectContent>
             </Select>
             <div className="text-sm text-muted-foreground">

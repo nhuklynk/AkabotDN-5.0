@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,73 +12,19 @@ import { useLocale } from "@/hooks/useLocale";
 
 import { Plus, Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import useUsers from "@/hooks/admin/user/useUsers";
+import type { UserListItem } from "@/services/admin/users/getAllUser";
+// using role union via hook
 
-// Mock data for users
-const initialUsers = [
-  {
-    id: 1,
-    full_name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "0900000001",
-    status: "active",
-    created_at: "2024-01-15",
-  },
-  {
-    id: 2,
-    full_name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "0900000002",
-    status: "active",
-    created_at: "2024-01-20",
-  },
-  {
-    id: 3,
-    full_name: "Bob Johnson",
-    email: "bob.johnson@example.com",
-    phone: "0900000003",
-    status: "inactive",
-    created_at: "2024-02-01",
-  },
-  {
-    id: 4,
-    full_name: "Alice Brown",
-    email: "alice.brown@example.com",
-    phone: "0900000004",
-    status: "active",
-    created_at: "2024-02-10",
-  },
-  {
-    id: 5,
-    full_name: "Nguyen Member",
-    email: "member@example.com",
-    phone: "0900000005",
-    status: "active",
-    created_at: "2024-03-02",
-  },
-  {
-    id: 6,
-    full_name: "Tran Expert",
-    email: "expert@example.com",
-    phone: "0900000006",
-    status: "active",
-    created_at: "2024-03-05",
-  },
-];
+// Data is fetched via useUsers hook
 
-type User = {
-  id: number;
-  full_name: string;
-  email: string;
-  phone?: string;
-  status: string;
-  created_at: string;
-};
+type User = UserListItem;
 
 export default function UsersPage() {
   const { t } = useLocale();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const { items, total, page, limit, setQuery, fetchUsers, create, update, remove, loading, setRoleIds } = useUsers({ initialQuery: { page: 1, limit: 10 } });
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
@@ -87,45 +33,74 @@ export default function UsersPage() {
     full_name: string;
     email: string;
     phone?: string;
+    avatar?: string;
     status: string;
+    password?: string;
+    role_id?: string;
   }>({
     full_name: "",
     email: "",
     phone: "",
+    avatar: "",
     status: "active",
+    password: "",
+    role_id: "",
   });
 
-  const filteredUsers = users
-    .filter(
+  const ROLE_MEMBER_ID = "550e8400-e29b-41d4-a716-446655440004";
+  const ROLE_EXPERT_ID = "550e8400-e29b-41d4-a716-446655440002";
+  const isMembersExpertsTab = tab === "members-experts";
+
+  const baseItems = items;
+
+  // Server-side filtering is applied via query. Local filter keeps UX responsive
+  const filteredUsers = useMemo(() => {
+    const activeOnly = baseItems.filter((u) => u.status === "active");
+    if (!searchTerm) return activeOnly;
+    return activeOnly.filter(
       (user) =>
         user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter(() => true);
+    );
+  }, [baseItems, items, searchTerm]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  const pageSize = limit;
+  const totalCount = total || 0;
+  const totalPages = Math.max(1, Math.ceil((totalCount) / (pageSize || 10)));
+  const paginatedUsers = isMembersExpertsTab
+    ? filteredUsers.slice((currentPage - 1) * (pageSize || 10), currentPage * (pageSize || 10))
+    : filteredUsers;
 
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  const handleCreateUser = () => {
-    const newUser: User = {
-      id: Math.max(...users.map((u) => u.id)) + 1,
+  useEffect(() => {
+    setQuery((q) => ({ ...q, page: currentPage, limit: pageSize, search: searchTerm || undefined, status: "active" }));
+  }, [currentPage, pageSize, searchTerm, setQuery]);
+
+  // Switch between all users and role-based union via hook
+  useEffect(() => {
+    if (isMembersExpertsTab) {
+      setRoleIds([ROLE_MEMBER_ID, ROLE_EXPERT_ID]);
+    } else {
+      setRoleIds([]);
+    }
+  }, [isMembersExpertsTab, setRoleIds]);
+
+  const handleCreateUser = async () => {
+    await create({
       full_name: formData.full_name,
       email: formData.email,
+      password: formData.password || "",
       phone: formData.phone,
       status: formData.status,
-      created_at: new Date().toISOString().split("T")[0],
-    };
-    setUsers([...users, newUser]);
-    setFormData({ full_name: "", email: "", phone: "", status: "active" });
+      role_id: formData.role_id || "",
+    });
+    setFormData({ full_name: "", email: "", phone: "", avatar: "", status: "active", password: "", role_id: "" });
+    setDialogOpen(false);
+    // data auto refreshes via hook
   };
 
   const handleEditUser = (user: User) => {
@@ -134,29 +109,31 @@ export default function UsersPage() {
       full_name: user.full_name,
       email: user.email,
       phone: user.phone || "",
+      avatar: user.avatar || "",
       status: user.status,
     });
     setDialogMode("edit");
     setTimeout(() => setDialogOpen(true), 0);
   };
 
-  const handleUpdateUser = () => {
+  const handleUpdateUser = async () => {
     if (editingUser) {
-      setUsers(
-        users.map((user) =>
-          user.id === editingUser.id
-            ? { ...user, ...formData, created_at: user.created_at }
-            : user
-        )
-      );
+      await update(editingUser.id, {
+        full_name: formData.full_name,
+        phone: formData.phone,
+        avatar: formData.avatar,
+        user_status: formData.status,
+      });
       setEditingUser(null);
       setFormData({ full_name: "", email: "", phone: "", status: "active" });
       setDialogOpen(false);
+      // data auto refreshes via hook
     }
   };
 
-  const handleDeleteUser = (userId: number) => {
-    setUsers(users.filter((user) => user.id !== userId));
+  const handleDeleteUser = async (userId: number | string) => {
+    await remove(userId);
+    // data auto refreshes via hook
   };
 
   const getRoleColor = (role: string) => {
@@ -201,7 +178,7 @@ export default function UsersPage() {
             setDialogOpen(open);
             if (!open) {
               setEditingUser(null);
-              setFormData({ full_name: "", email: "", phone: "", status: "active" });
+              setFormData({ full_name: "", email: "", phone: "", avatar: "", status: "active", password: "", role_id: "" });
             }
           }}
         >
@@ -238,7 +215,7 @@ export default function UsersPage() {
             <div className="text-sm text-muted-foreground">
               {t("user.countSummary", {
                 filtered: filteredUsers.length,
-                total: users.length,
+                total: totalCount,
               })}
             </div>
           </div>
