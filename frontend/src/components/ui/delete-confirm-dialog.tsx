@@ -18,7 +18,7 @@ type Props = {
   title?: string
   description?: string
   confirmLabel?: string
-  onConfirm: () => void
+  onConfirm: () => void | Promise<any>
   children: React.ReactNode
 }
 
@@ -40,7 +40,7 @@ export default function DeleteConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+          <AlertDialogAction onClick={async () => { try { await onConfirm(); } catch (e) { console.error(e); } }} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
             {confirmLabel || t("common.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>

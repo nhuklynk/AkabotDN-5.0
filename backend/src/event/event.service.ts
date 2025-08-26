@@ -4,17 +4,20 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, Between, MoreThanOrEqual, LessThanOrEqual, In } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { Event } from './entity/event.entity';
 import { Tag } from '../tag/entity/tag.entity';
 import { Category } from '../category/entity/category.entity';
-import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto } from './dto/update-event.dto';
+import { CreateEventFormdataDto } from './dto/create-event.dto';
+import { UpdateEventFormdataDto } from './dto/update-event.dto';
 import { EventQueryDto } from './dto/event-query.dto';
 import { EventResponseDto } from './dto/event-response.dto';
 import { PaginatedData } from '../common/interfaces/api-response.interface';
 import { Status } from '../config/base-audit.entity';
 import { plainToClass } from 'class-transformer';
+import { StorageService } from 'src/storage';
+import { MediaService } from 'src/media/media.service';
+import { MediaType } from 'src/media/entity/media.entity';
 
 @Injectable()
 export class EventService {
@@ -25,52 +28,173 @@ export class EventService {
     private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    private readonly storageService: StorageService,
+    private readonly mediaService: MediaService,
   ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<EventResponseDto> {
-    // Check if slug already exists
+  async create(
+    createEventDto: CreateEventFormdataDto,
+    thumbnailFile?: Express.Multer.File,
+  ): Promise<EventResponseDto> {
     const existingEvent = await this.eventRepository.findOne({
-      where: { slug: createEventDto.slug }
+      where: { slug: createEventDto.slug },
     });
-
+  
     if (existingEvent) {
-      throw new BadRequestException(`Event with slug '${createEventDto.slug}' already exists`);
+      throw new BadRequestException(
+        `Event with slug '${createEventDto.slug}' already exists`,
+      );
     }
 
-    // Create event instance
+    const categoryIds = createEventDto.category_ids
+      ? this.normalizeIds(createEventDto.category_ids)
+      : [];
+    const tagIds = createEventDto.tag_ids
+      ? this.normalizeIds(createEventDto.tag_ids)
+      : [];
+  
+    const countdownEnabled =
+      typeof createEventDto.countdown_enabled === 'string'
+        ? createEventDto.countdown_enabled === 'true'
+        : Boolean(createEventDto.countdown_enabled);
+  
+    let thumbnailUrlId: string | undefined = undefined;
+    if (thumbnailFile) {
+      thumbnailUrlId = await this.handleThumbnailUpload(thumbnailFile);
+    }
+  
     const event = this.eventRepository.create({
       title: createEventDto.title,
       slug: createEventDto.slug,
       description: createEventDto.description,
       location: createEventDto.location,
-      start_time: createEventDto.start_time,
-      end_time: createEventDto.end_time,
-      thumbnail_url_id: createEventDto.thumbnail_url_id,
-      countdown_enabled: createEventDto.countdown_enabled || false,
-      public_status: createEventDto.public_status,
-      status: Status.ACTIVE,
+      start_time: new Date(createEventDto.start_time),
+      end_time: createEventDto.end_time
+        ? new Date(createEventDto.end_time)
+        : undefined,
+      countdown_enabled: countdownEnabled,
+      thumbnail_url_id: thumbnailUrlId,
     });
-
-    // Handle tags
-    if (createEventDto.tag_ids && createEventDto.tag_ids.length > 0) {
-      const tags = await this.tagRepository.findBy({ 
-        id: In(createEventDto.tag_ids),
-        status: Status.ACTIVE 
+  
+    if (categoryIds.length) {
+      event.categories = await this.categoryRepository.findBy({
+        id: In(categoryIds),
       });
-      event.tags = tags;
     }
-
-    // Handle categories
-    if (createEventDto.category_ids && createEventDto.category_ids.length > 0) {
-      const categories = await this.categoryRepository.findBy({ 
-        id: In(createEventDto.category_ids),
-        status: Status.ACTIVE 
-      });
-      event.categories = categories;
+    if (tagIds.length) {
+      event.tags = await this.tagRepository.findBy({ id: In(tagIds) });
     }
-
+  
     const savedEvent = await this.eventRepository.save(event);
-    return plainToClass(EventResponseDto, savedEvent, { excludeExtraneousValues: true });
+  
+    return plainToClass(EventResponseDto, savedEvent, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    });
+  }
+  
+  private normalizeIds(ids?: string): string[] {
+    if (!ids) return [];
+    return ids.split(',').map((id) => id.trim()).filter((id) => id);
+  }
+
+  async update(
+    id: string,
+    updateEventDto: UpdateEventFormdataDto,
+    thumbnailFile?: Express.Multer.File,
+  ): Promise<EventResponseDto> {
+    const event = await this.eventRepository.findOne({
+      where: { id, status: Status.ACTIVE },
+      relations: ['tags', 'categories'],
+    });
+  
+    if (!event) {
+      throw new NotFoundException(`Event with ID ${id} not found`);
+    }
+  
+    let thumbnailUrlId = event.thumbnail_url_id; 
+    if (thumbnailFile) {
+      thumbnailUrlId =
+        (await this.handleThumbnailUpload(thumbnailFile)) ??
+        event.thumbnail_url_id;
+    } else if (updateEventDto.thumbnail !== undefined) {
+      thumbnailUrlId = updateEventDto.thumbnail || event.thumbnail_url_id;
+    }
+  
+    if (updateEventDto.tag_ids !== undefined && updateEventDto.tag_ids !== null) {
+      const tagIds = this.normalizeIds(updateEventDto.tag_ids);
+      
+      if (tagIds.length > 0) {
+        const foundTags = await this.tagRepository.findBy({ 
+          id: In(tagIds),
+          status: Status.ACTIVE 
+        });
+        event.tags = foundTags;
+      }
+    }
+  
+    if (updateEventDto.category_ids !== undefined && updateEventDto.category_ids !== null) {
+      const categoryIds = this.normalizeIds(updateEventDto.category_ids);
+      
+      if (categoryIds.length > 0) {
+        const foundCategories = await this.categoryRepository.findBy({ 
+          id: In(categoryIds),
+          status: Status.ACTIVE 
+        });
+        event.categories = foundCategories;
+      }
+    }
+  
+    Object.assign(event, {
+      ...updateEventDto,
+      start_time: updateEventDto.start_time
+        ? new Date(updateEventDto.start_time)
+        : event.start_time,
+      end_time: updateEventDto.end_time
+        ? new Date(updateEventDto.end_time)
+        : event.end_time,
+      countdown_enabled:
+        updateEventDto.countdown_enabled !== undefined
+          ? updateEventDto.countdown_enabled === 'true' ||
+            updateEventDto.countdown_enabled === '1'
+          : event.countdown_enabled,
+      thumbnail_url_id: thumbnailUrlId,
+    });
+  
+    const updatedEvent = await this.eventRepository.save(event);
+  
+    return plainToClass(EventResponseDto, updatedEvent, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    });
+  }  
+  
+  private async handleThumbnailUpload(
+    file: Express.Multer.File,
+  ): Promise<string | undefined> {
+    try {
+      const uploadResult = await this.storageService.uploadFile({
+        file: file.buffer,
+        fileName: file.originalname,
+        contentType: file.mimetype,
+        fileSize: file.size,
+        bucket: 'events',
+        scope: 'thumbnails',
+      });
+  
+      const mediaRecord = await this.mediaService.create({
+        file_name: file.originalname,
+        file_path: uploadResult,
+        file_size: file.size,
+        mime_type: file.mimetype,
+        media_type: MediaType.EVENT,
+      });
+  
+      return mediaRecord.id;
+    } catch (error) {
+      console.error('Thumbnail upload failed:', error);
+      return undefined;
+    }
   }
 
   async findAll(queryDto: EventQueryDto): Promise<PaginatedData<EventResponseDto>> {
@@ -95,7 +219,6 @@ export class EventService {
       .leftJoinAndSelect('event.categories', 'category')
       .where('event.status = :status', { status: Status.ACTIVE });
   
-    // Apply filters
     if (title) {
       queryBuilder.andWhere('LOWER(event.title) LIKE LOWER(:title)', { title: `%${title}%` });
     }
@@ -131,7 +254,6 @@ export class EventService {
       queryBuilder.andWhere('event.countdown_enabled = :countdown_enabled', { countdown_enabled });
     }
   
-    // Add pagination and ordering
     queryBuilder
       .orderBy('event.start_time', 'DESC')
       .skip(skip)
@@ -141,7 +263,10 @@ export class EventService {
     const totalPages = Math.ceil(total / limit);
   
     return {
-      items: items.map(item => plainToClass(EventResponseDto, item, { excludeExtraneousValues: true })),
+      items: items.map(item => plainToClass(EventResponseDto, item, { 
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+      })),
       total,
       page,
       limit,
@@ -159,66 +284,12 @@ export class EventService {
       throw new NotFoundException(`Event with ID ${id} not found`);
     }
 
-    return plainToClass(EventResponseDto, event, { excludeExtraneousValues: true });
-  }
-
-  async update(id: string, updateEventDto: UpdateEventDto): Promise<EventResponseDto> {
-    const event = await this.eventRepository.findOne({
-      where: { id, status: Status.ACTIVE },
-      relations: ['tags', 'categories'],
+    return plainToClass(EventResponseDto, event, { 
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
     });
-
-    if (!event) {
-      throw new NotFoundException(`Event with ID ${id} not found`);
-    }
-
-    // Check if slug is being updated and already exists
-    if (updateEventDto.slug && updateEventDto.slug !== event.slug) {
-      const existingEvent = await this.eventRepository.findOne({
-        where: { slug: updateEventDto.slug }
-      });
-
-      if (existingEvent && existingEvent.id !== id) {
-        throw new BadRequestException(`Event with slug '${updateEventDto.slug}' already exists`);
-      }
-    }
-
-    // Handle tags
-    if (updateEventDto.tag_ids !== undefined) {
-      if (updateEventDto.tag_ids.length > 0) {
-        const tags = await this.tagRepository.findBy({ 
-          id: In(updateEventDto.tag_ids),
-          status: Status.ACTIVE 
-        });
-        event.tags = tags;
-      } else {
-        event.tags = [];
-      }
-    }
-
-    // Handle categories
-    if (updateEventDto.category_ids !== undefined) {
-      if (updateEventDto.category_ids.length > 0) {
-        const categories = await this.categoryRepository.findBy({ 
-          id: In(updateEventDto.category_ids),
-          status: Status.ACTIVE 
-        });
-        event.categories = categories;
-      } else {
-        event.categories = [];
-      }
-    }
-
-    // Extract only fields that exist in Event entity for update
-    const { tag_ids, category_ids, ...eventUpdateData } = updateEventDto;
-    
-    // Update the event with only valid entity fields
-    await this.eventRepository.update(id, eventUpdateData);
-    
-    // Save the event with updated relations
-    const updatedEvent = await this.eventRepository.save(event);
-    return plainToClass(EventResponseDto, updatedEvent, { excludeExtraneousValues: true });
   }
+
 
   async remove(id: string): Promise<void> {
     const event = await this.eventRepository.findOne({

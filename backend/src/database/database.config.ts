@@ -13,9 +13,10 @@ export const databaseConfig: TypeOrmModuleOptions = {
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
   synchronize: true,
   logging: process.env.NODE_ENV === 'development' ? 'all' : ['error', 'warn'],
-  ssl: process.env.DB_SSL === 'true' 
-    ? { rejectUnauthorized: process.env.NODE_ENV === 'production' }
-    : false,
+  ssl:
+    process.env.DB_SSL === 'true'
+      ? { rejectUnauthorized: process.env.NODE_ENV === 'production' }
+      : false,
   extra: {
     connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT || '10'),
     idleTimeoutMillis: parseInt(process.env.DB_IDLE_TIMEOUT || '30000'),

@@ -8,6 +8,8 @@ import {
   Delete,
   Query,
   HttpStatus,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,13 +21,17 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
+  ApiConsumes,
+  ApiBody,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { EventService } from './event.service';
-import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto } from './dto/update-event.dto';
+
 import { EventQueryDto } from './dto/event-query.dto';
 import { EventResponseDto } from './dto/event-response.dto';
-import { ApiResponse as IApiResponse, PaginatedApiResponse } from '../common/interfaces/api-response.interface';
+import { PaginatedData } from '../common/interfaces/api-response.interface';
+import { CreateEventFormdataDto } from './dto/create-event.dto';
+import { UpdateEventFormdataDto } from './dto/update-event.dto';
 
 @ApiTags('events')
 @Controller('events')
@@ -33,12 +39,18 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @ApiOperation({
-    summary: 'Create a new event',
-    description: 'Creates a new event with the provided data. The slug must be unique across all events. Tags and categories can be assigned using their UUIDs.',
+    summary: 'Create a new event with form data',
+    description: 'Creates a new event with form data support for file upload. The slug must be unique across all events. Tags and categories can be assigned using comma-separated UUIDs.',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: CreateEventFormdataDto,
+    description: 'Event data including title, slug, description, location, dates, and thumbnail image upload',
   })
   @ApiCreatedResponse({
-    description: 'Event created successfully',
+    description: 'Event created successfully with uploaded thumbnail',
     type: EventResponseDto,
   })
   @ApiBadRequestResponse({
@@ -47,17 +59,11 @@ export class EventController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  async create(@Body() createEventDto: CreateEventDto): Promise<IApiResponse<EventResponseDto>> {
-    const data = await this.eventService.create(createEventDto);
-    return {
-      success: true,
-      statusCode: HttpStatus.CREATED,
-      message: 'Event created successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/events',
-    };
+  async createWithFormData(
+    @Body() createEventDto: CreateEventFormdataDto,
+    @UploadedFile() thumbnail?: Express.Multer.File,
+  ): Promise<EventResponseDto> {
+    return this.eventService.create(createEventDto, thumbnail);
   }
 
   @Get()
@@ -78,17 +84,8 @@ export class EventController {
   @ApiQuery({ name: 'tag_id', required: false, description: 'Filter by tag ID' })
   @ApiQuery({ name: 'category_id', required: false, description: 'Filter by category ID' })
   @ApiQuery({ name: 'countdown_enabled', required: false, description: 'Filter by countdown enabled' })
-  async findAll(@Query() query: EventQueryDto): Promise<PaginatedApiResponse<EventResponseDto>> {
-    const data = await this.eventService.findAll(query);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Events retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: '/api/events',
-    };
+  async findAll(@Query() query: EventQueryDto): Promise<PaginatedData<EventResponseDto>> {
+    return this.eventService.findAll(query);
   }
 
   @Get(':id')
@@ -108,28 +105,25 @@ export class EventController {
   @ApiNotFoundResponse({
     description: 'Event not found',
   })
-  async findOne(@Param('id') id: string): Promise<IApiResponse<EventResponseDto>> {
-    const data = await this.eventService.findOne(id);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Event retrieved successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: `/api/events/${id}`,
-    };
+  async findOne(@Param('id') id: string): Promise<EventResponseDto> {
+    return this.eventService.findOne(id);
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @ApiOperation({
-    summary: 'Update an event',
-    description: 'Update a specific event by its UUID. Tags and categories can be updated by providing their UUIDs.',
+    summary: 'Update an event with form data',
+    description: 'Update a specific event with form data support for file upload. Tags and categories can be updated by providing comma-separated UUIDs.',
   })
   @ApiParam({
     name: 'id',
     description: 'Event UUID',
     example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: UpdateEventFormdataDto,
+    description: 'Event update data including optional thumbnail image upload',
   })
   @ApiOkResponse({
     description: 'Event updated successfully',
@@ -141,20 +135,12 @@ export class EventController {
   @ApiBadRequestResponse({
     description: 'Invalid input data or slug already exists',
   })
-  async update(
+  async updateWithFormData(
     @Param('id') id: string,
-    @Body() updateEventDto: UpdateEventDto,
-  ): Promise<IApiResponse<EventResponseDto>> {
-    const data = await this.eventService.update(id, updateEventDto);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Event updated successfully',
-      data,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: `/api/events/${id}`,
-    };
+    @Body() updateEventDto: UpdateEventFormdataDto,
+    @UploadedFile() thumbnail?: Express.Multer.File,
+  ): Promise<EventResponseDto> {
+    return this.eventService.update(id, updateEventDto, thumbnail);
   }
 
   @Delete(':id')
@@ -173,16 +159,7 @@ export class EventController {
   @ApiNotFoundResponse({
     description: 'Event not found',
   })
-  async remove(@Param('id') id: string): Promise<IApiResponse<null>> {
-    await this.eventService.remove(id);
-    return {
-      success: true,
-      statusCode: HttpStatus.OK,
-      message: 'Event deleted successfully',
-      data: null,
-      errors: null,
-      timestamp: new Date().toISOString(),
-      path: `/api/events/${id}`,
-    };
+  async remove(@Param('id') id: string): Promise<void> {
+    return this.eventService.remove(id);
   }
 }
