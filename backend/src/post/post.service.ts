@@ -18,6 +18,7 @@ import { Tag } from 'src/tag/entity/tag.entity';
 import { UserService } from 'src/user/user.service';
 import { CreatePostFormdataDto } from './dto/create-post.dto';
 import { UpdatePostFormdataDto } from './dto/update-post-formdata.dto';
+import { PostViewService } from 'src/post-view/post-view.service';
 
 @Injectable()
 export class PostService {
@@ -31,6 +32,7 @@ export class PostService {
     private storageService: StorageService,
     private mediaService: MediaService,
     private userService: UserService,
+    private postViewService: PostViewService,
   ) {}
 
   private normalizeIds(ids?: string): string[] | undefined {
@@ -143,6 +145,7 @@ export class PostService {
       relations: ['user', 'categories', 'tags'],
     });
     if (!post) throw new NotFoundException(`Post with ID ${id} not found`);
+    const postView = await this.postViewService.create({ post_id: id });
     return plainToClass(PostResponseDto, post, { excludeExtraneousValues: true });
   }
 
