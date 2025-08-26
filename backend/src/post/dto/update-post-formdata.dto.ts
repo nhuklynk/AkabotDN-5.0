@@ -72,14 +72,6 @@ export class UpdatePostFormdataDto {
   featured_image?: any;
 
   @ApiProperty({
-    description: 'Post media ID',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    required: false
-  })
-  @IsOptional()
-  media_id?: string;
-
-  @ApiProperty({
     description: 'Post published at',
     example: '2024-01-01T00:00:00.000Z',
     required: false

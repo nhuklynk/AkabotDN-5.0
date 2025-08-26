@@ -9,11 +9,14 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PartnerService } from './partner.service';
-import { CreatePartnerDto } from './dto/create-partner.dto';
+import { CreatePartnerFormDataDto } from './dto/create-partner-formdata.dto';
 import { PartnerResponseDto } from './dto/partner-response.dto';
-import { UpdatePartnerDto } from './dto/update-partner.dto';
+import { UpdatePartnerFormDataDto } from './dto/update-partner-formdata.dto';
 import { PartnerQueryDto } from './dto/partner-query.dto';
 import { PaginatedData } from '../common/interfaces/api-response.interface';
 
@@ -24,6 +27,7 @@ import {
   ApiParam,
   ApiBody,
   ApiQuery,
+  ApiConsumes,
 } from '@nestjs/swagger';
 
 @Controller('partners')
@@ -31,12 +35,28 @@ import {
 export class PartnerController {
   constructor(private readonly partnerService: PartnerService) {}
 
-  @Post()
+  @Post('form-data')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Create a new partner' })
-  @ApiResponse({ status: 201, description: 'Partner created successfully', type: PartnerResponseDto })
-  async create(@Body() createPartnerDto: CreatePartnerDto): Promise<PartnerResponseDto> {
-    return this.partnerService.create(createPartnerDto);
+  @UseInterceptors(FileInterceptor('logo'))
+  @ApiOperation({ 
+    summary: 'Create a new partner with form data and file upload',
+    description: 'Create a new partner using form data. Supports logo file upload along with other partner details.'
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Partner information with optional logo file upload',
+    type: CreatePartnerFormDataDto,
+  })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Partner created successfully with uploaded logo', 
+    type: PartnerResponseDto 
+  })
+  async createWithFormData(
+    @Body() createPartnerFormDataDto: CreatePartnerFormDataDto,
+    @UploadedFile() logo?: Express.Multer.File,
+  ): Promise<PartnerResponseDto> {
+    return this.partnerService.createWithFormData(createPartnerFormDataDto, logo);
   }
 
   @Get()
@@ -64,9 +84,34 @@ export class PartnerController {
   @ApiResponse({ status: 200, description: 'Partner updated successfully', type: PartnerResponseDto })
   async update(
     @Param('id') id: string,
-    @Body() updatePartnerDto: UpdatePartnerDto,
+    @Body() updatePartnerDto: UpdatePartnerFormDataDto,
   ): Promise<PartnerResponseDto> {
     return this.partnerService.update(id, updatePartnerDto);
+  }
+
+  @Patch(':id/form-data')
+  @UseInterceptors(FileInterceptor('logo'))
+  @ApiOperation({ 
+    summary: 'Update partner with form data and optional file upload',
+    description: 'Update an existing partner using form data. Supports logo file upload along with other partner details.'
+  })
+  @ApiParam({ name: 'id', description: 'Partner ID' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Partner information to update with optional logo file upload',
+    type: UpdatePartnerFormDataDto,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Partner updated successfully with optional new logo', 
+    type: PartnerResponseDto 
+  })
+  async updateWithFormData(
+    @Param('id') id: string,
+    @Body() updatePartnerFormDataDto: UpdatePartnerFormDataDto,
+    @UploadedFile() logo?: Express.Multer.File,
+  ): Promise<PartnerResponseDto> {
+    return this.partnerService.updateWithFormData(id, updatePartnerFormDataDto, logo);
   }
 
   @Delete(':id')
