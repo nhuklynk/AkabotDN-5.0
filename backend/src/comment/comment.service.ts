@@ -27,12 +27,12 @@ export class CommentService {
     });
     
     const savedComment = await this.commentRepository.save(comment);
-    return this.findOne(savedComment.id);
+    return plainToClass(CommentResponseDto, savedComment, { excludeExtraneousValues: true });
   }
 
   async findPaginated(skip: number, take: number): Promise<[CommentResponseDto[], number]> {
     const [comments, total] = await this.commentRepository.findAndCount({
-      relations: ['post', 'author'],
+      relations: ['author'],
       skip,
       take,
       order: { created_at: 'DESC' },
@@ -48,61 +48,53 @@ export class CommentService {
   async findFilteredAndPaginated(query: CommentQueryDto): Promise<[CommentResponseDto[], number]> {
     const { page = 1, limit = 10, post_id, parent_id, user_id, search, date_from, date_to, root_only } = query;
     const skip = (page - 1) * limit;
-
-    // Build query builder for search functionality
+  
     const queryBuilder = this.commentRepository
       .createQueryBuilder('comment')
-      .leftJoinAndSelect('comment.post', 'post')
       .leftJoinAndSelect('comment.author', 'author');
-
-    // Add where conditions
-    if (post_id) {
-      queryBuilder.andWhere('post.id = :post_id', { post_id });
-    }
-
+  
     if (parent_id) {
-      queryBuilder.andWhere('comment.parent.id = :parent_id', { parent_id });
+      queryBuilder.andWhere('comment.parent_id = :parent_id', { parent_id });
     }
-
+  
     if (user_id) {
       queryBuilder.andWhere('author.id = :user_id', { user_id });
     }
-
+  
     if (search) {
-      queryBuilder.andWhere('comment.content ILIKE :search', { search: `%${search}%` });
+      queryBuilder.andWhere('LOWER(comment.content) LIKE LOWER(:search)', { search: `%${search}%` });
     }
-
+  
     if (date_from) {
       queryBuilder.andWhere('comment.created_at >= :date_from', { date_from });
     }
-
+  
     if (date_to) {
       queryBuilder.andWhere('comment.created_at <= :date_to', { date_to });
     }
-
+  
     if (root_only) {
       queryBuilder.andWhere('comment.parent IS NULL');
     }
-
-    // Add pagination and ordering
+  
     queryBuilder
       .skip(skip)
       .take(limit)
       .orderBy('comment.created_at', 'DESC');
-
+  
     const [comments, total] = await queryBuilder.getManyAndCount();
-
-    const commentDtos = comments.map(comment => 
+  
+    const commentDtos = comments.map(comment =>
       plainToClass(CommentResponseDto, comment, { excludeExtraneousValues: true })
     );
-
+  
     return [commentDtos, total];
-  }
+  }  
 
   async findOne(id: string): Promise<CommentResponseDto> {
     const comment = await this.commentRepository.findOne({
       where: { id: id },
-      relations: ['post', 'author'],
+      relations: ['author'],
     });
 
     if (!comment) {
@@ -121,8 +113,8 @@ export class CommentService {
       throw new NotFoundException(`Comment with ID ${id} not found`);
     }
 
-    await this.commentRepository.update(id, updateCommentDto);
-    return this.findOne(id);
+    const updatedComment = await this.commentRepository.update(id, updateCommentDto);
+    return plainToClass(CommentResponseDto, updatedComment, { excludeExtraneousValues: true });
   }
 
   async remove(id: string): Promise<void> {
@@ -139,7 +131,7 @@ export class CommentService {
   async findByPost(post_id: string): Promise<CommentResponseDto[]> {
     const comments = await this.commentRepository.find({
       where: { comment_type_id: post_id },
-      relations: ['post', 'author'],
+      relations: ['author'],
       order: { created_at: 'DESC' },
     });
     return comments.map(comment => plainToClass(CommentResponseDto, comment, { excludeExtraneousValues: true }));
@@ -151,7 +143,7 @@ export class CommentService {
         comment_type_id: post_id,
         parent: IsNull()
       },
-      relations: ['post', 'author'],
+      relations: ['author'],
       order: { created_at: 'DESC' },
     });
     return comments.map(comment => plainToClass(CommentResponseDto, comment, { excludeExtraneousValues: true }));
@@ -160,7 +152,7 @@ export class CommentService {
   async findReplies(comment_id: string): Promise<CommentResponseDto[]> {
     const comments = await this.commentRepository.find({
       where: { parent: { id: comment_id } },
-      relations: ['post', 'author'],
+      relations: ['author'],
       order: { created_at: 'ASC' },
     });
     return comments.map(comment => plainToClass(CommentResponseDto, comment, { excludeExtraneousValues: true }));

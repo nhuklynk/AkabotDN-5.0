@@ -16,16 +16,16 @@ import RichTextEditor from "@/components/ui/rich-text-editor"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useLocale } from "@/hooks/useLocale"
 
-type CategoryFormData = {
+export type CategoryFormData = {
   name: string
   slug: string
   description: string
   color: string
   status: string
-  parentId: number | null
+  parentId: string | number | null
 }
 
-type ParentOption = { id: number; name: string }
+export type ParentOption = { id: string | number; name: string }
 type ColorOption = { value: string; label: string }
 
 type Props = {
@@ -88,7 +88,7 @@ export default function CategoryFormDialog({
             <Select
               value={formData.parentId?.toString() || "none"}
               onValueChange={(value) =>
-                setFormData((d) => ({ ...d, parentId: value === "none" ? null : Number.parseInt(value) }))
+                setFormData((d) => ({ ...d, parentId: value === "none" ? null : value }))
               }
             >
               <SelectTrigger>

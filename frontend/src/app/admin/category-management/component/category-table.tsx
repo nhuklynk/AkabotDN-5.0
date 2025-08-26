@@ -9,15 +9,15 @@ import DeleteConfirmDialog from "./delete-confirm-dialog"
 import { useLocale } from "@/hooks/useLocale"
 
 type Category = {
-  id: number
+  id: number | string
   name: string
   slug: string
-  description: string
+  description?: string
   color: string
   status: string
-  parentId: number | null
+  parentId: number | string | null
   postCount: number
-  createdAt: string
+  createdAt?: string
 }
 
 export default function CategoryTable({
@@ -29,8 +29,8 @@ export default function CategoryTable({
 }: {
   items: Category[]
   onEdit: (category: Category) => void
-  onDelete: (id: number) => void
-  getParentName: (parentId: number | null) => string | null
+  onDelete: (id: number | string) => void
+  getParentName: (parentId: number | string | null) => string | null
   getStatusColor: (status: string) => string
 }) {
   const { t } = useLocale()

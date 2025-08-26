@@ -22,7 +22,7 @@ export class Category extends BaseAuditEntity {
 
   @ManyToOne(() => Category, (category) => category.id, { nullable: true })
   @JoinColumn({ name: 'parent_id' })
-  parent: Category;
+  parent: Category | null;
 
   @ManyToMany(() => Post, (post) => post.categories)
   posts: Post[];

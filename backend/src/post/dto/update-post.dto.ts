@@ -79,4 +79,13 @@ export class UpdatePostDto {
   @IsOptional()
   @IsUUID()
   media_id?: string;
+
+  @ApiProperty({
+    description: 'User ID',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    required: false
+  })
+  @IsOptional()
+  @IsUUID()
+  user_id?: string;
 }

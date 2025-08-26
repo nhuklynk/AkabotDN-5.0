@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, Like } from 'typeorm';
 import { Post, PostStatus } from './entity/post.entity';
@@ -15,6 +15,7 @@ import { MediaType } from 'src/media/entity/media.entity';
 import { Status } from 'src/config/base-audit.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Tag } from 'src/tag/entity/tag.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class PostService {
@@ -27,9 +28,16 @@ export class PostService {
     private tagRepository: Repository<Tag>,
     private storageService: StorageService,
     private mediaService: MediaService,
+    private userService: UserService,
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<PostResponseDto> {
+
+    const user = await this.userService.findOne(createPostDto.user_id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     const existingPost = await this.postRepository.findOne({
       where: { slug: createPostDto.slug },
     });
@@ -39,8 +47,7 @@ export class PostService {
     }
 
     const post = this.postRepository.create({
-      ...createPostDto,
-      // user: { id: createPostDto.user_id },
+      ...createPostDto
     });
 
     if (createPostDto.category_ids?.length) {
@@ -58,7 +65,7 @@ export class PostService {
     }
 
     const savedPost = await this.postRepository.save(post);
-    return this.findOne(savedPost.id);
+    return plainToClass(PostResponseDto, savedPost, { excludeExtraneousValues: true });
   }
 
   async createWithFormdata(createPostFormdataDto: CreatePostFormdataDto, featuredImage?: any): Promise<PostResponseDto> {
@@ -78,6 +85,7 @@ export class PostService {
       tag_ids: createPostFormdataDto.tag_ids ? 
         createPostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
         undefined,
+      user_id: createPostFormdataDto.user_id,
     };
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
@@ -187,6 +195,11 @@ export class PostService {
   }
 
   async update(id: string, updatePostFormdataDto: UpdatePostFormdataDto): Promise<PostResponseDto> {
+    const user = await this.userService.findOne(updatePostFormdataDto.user_id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     const post = await this.postRepository.findOne({
       where: { id: id },
       relations: ['categories', 'tags'],
@@ -210,6 +223,7 @@ export class PostService {
       tag_ids: updatePostFormdataDto.tag_ids ? 
         updatePostFormdataDto.tag_ids.split(',').map(id => id.trim()) : 
         undefined,
+      user_id: updatePostFormdataDto.user_id,
     };
 
     // Set published date if status is being changed to published
@@ -217,8 +231,8 @@ export class PostService {
       updatePostDto.published_at = new Date();
     }
 
-    await this.postRepository.update(id, updatePostDto);
-    return this.findOne(id);
+    const updatedPost = await this.postRepository.update(id, updatePostDto);
+    return plainToClass(PostResponseDto, updatedPost, { excludeExtraneousValues: true });
   }
 
   async remove(id: string): Promise<void> {

@@ -10,9 +10,10 @@ import { Comment } from '../comment/entity/comment.entity';
 import { CommonModule } from '../common/common.module';
 import { StorageModule } from 'src/storage';
 import { MediaModule } from 'src/media/media.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule, StorageModule, MediaModule],
+  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule, StorageModule, MediaModule, UserModule],
   controllers: [PostController],
   providers: [PostService],
   exports: [PostService],
