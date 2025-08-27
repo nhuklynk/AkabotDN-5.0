@@ -90,32 +90,6 @@ export class FaqService {
   }
 
   async remove(id: string): Promise<void> {
-    const faq = await this.faqRepository.findOne({
-      where: { id: id },
-    });
-
-    if (!faq) {
-      throw new NotFoundException(`FAQ with ID ${id} not found`);
-    }
-
-    try {
-      await this.faqRepository.remove(faq);
-    } catch (error) {
-      if (error.message && error.message.includes('foreign key constraint')) {
-        const children = await this.faqRepository.find({
-          where: { parent: { id: id } },
-        });
-
-        if (children.length > 0) {
-          for (const child of children) {
-            await this.faqRepository.remove(child);
-          }
-        }
-
-        await this.faqRepository.remove(faq);
-      } else {
-        throw error;
-      }
-    }
+    await this.faqRepository.delete(id);
   }
 }

@@ -33,6 +33,7 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger';
 import { MediaQueryDto } from './dto/media-query.dto';
+import { MediaByTypeQueryDto } from './dto/media-by-type-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
 
 // Helper function to validate UUID
@@ -47,10 +48,31 @@ export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all media files' })
+  @ApiOperation({ 
+    summary: 'Get all media files',
+    description: 'Retrieve a paginated list of all media files with optional search functionality. Supports pagination with page and limit parameters, and allows searching by media properties.'
+  })
+  @ApiQuery({ 
+    name: 'page', 
+    required: false, 
+    type: Number, 
+    description: 'Page number for pagination (default: 1)' 
+  })
+  @ApiQuery({ 
+    name: 'limit', 
+    required: false, 
+    type: Number, 
+    description: 'Number of items per page (default: 10)' 
+  })
+  @ApiQuery({ 
+    name: 'search', 
+    required: false, 
+    type: String, 
+    description: 'Search term to filter media files' 
+  })
   @ApiResponse({
     status: 200,
-    description: 'List of all media files',
+    description: 'Paginated list of media files with metadata including total count, current page, and total pages',
     type: [MediaResponseDto],
   })
   async findAll(@Query() query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
@@ -81,16 +103,34 @@ export class MediaController {
   }
 
   @Get('type/:type')
-  @ApiOperation({ summary: 'Get media by type' })
-  @ApiParam({ name: 'type', description: 'Media type' })
+  @ApiOperation({ 
+    summary: 'Get media by type',
+    description: 'Retrieve a paginated list of media files filtered by type with optional search functionality. Supports pagination with page and limit parameters, and allows searching by media properties.'
+  })
+  @ApiParam({ name: 'type', description: 'Media type (post, event, member, other)' })
+  @ApiQuery({ 
+    name: 'page', 
+    required: false, 
+    type: Number, 
+    description: 'Page number for pagination (default: 1)' 
+  })
+  @ApiQuery({ 
+    name: 'limit', 
+    required: false, 
+    type: Number, 
+    description: 'Number of items per page (default: 10)' 
+  })
   @ApiResponse({
     status: 200,
-    description: 'List of media files by type',
+    description: 'Paginated list of media files filtered by type with metadata including total count, current page, and total pages',
     type: [MediaResponseDto],
   })
-  async findByType(@Param('type') type: MediaType): Promise<MediaResponseDto[]> {
-    return this.mediaService.findByType(type);
-  }
+      async findByType(
+      @Param('type') type: MediaType,
+      @Query() query: MediaByTypeQueryDto
+    ): Promise<PaginatedData<MediaResponseDto>> {
+      return this.mediaService.findByType(type, query);
+    }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Media, MediaType } from './entity/media.entity';
@@ -12,6 +16,7 @@ import { StorageService } from 'src/storage';
 import * as path from 'path';
 import { CreateMediaFormDataDto } from './dto/create-media-formdata.dto';
 import { UpdateMediaFormDataDto } from './dto/update-media-formdata.dto';
+import { MediaByTypeQueryDto } from './dto/media-by-type-query.dto';
 
 @Injectable()
 export class MediaService {
@@ -21,16 +26,18 @@ export class MediaService {
     private storageService: StorageService,
   ) {}
 
-  async findAll(query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
+  async findAll(
+    query: MediaQueryDto,
+  ): Promise<PaginatedData<MediaResponseDto>> {
     const { page = 1, limit = 10, search } = query;
     const skip = (page - 1) * limit;
-  
+
     const queryBuilder = this.mediaRepository
       .createQueryBuilder('media')
       .orderBy('media.created_at', 'DESC')
       .skip(skip)
       .take(limit);
-  
+
     // Search ignoring case
     if (search) {
       queryBuilder.andWhere(
@@ -38,19 +45,19 @@ export class MediaService {
         { search: `%${search}%` },
       );
     }
-  
+
     const [items, total] = await queryBuilder.getManyAndCount();
     const totalPages = Math.ceil(total / limit);
-  
+
     return {
-      items: items.map(m => plainToClass(MediaResponseDto, m, { excludeExtraneousValues: true })),
+      items: await this.mapMediaToResponseDtos(items),
       total,
       page,
       limit,
       totalPages,
     };
   }
-  
+
   async findOne(id: string): Promise<MediaResponseDto> {
     const media = await this.mediaRepository.findOne({
       where: { id: id },
@@ -60,34 +67,52 @@ export class MediaService {
       throw new NotFoundException(`Media with ID ${id} not found`);
     }
 
-    return plainToClass(MediaResponseDto, media, { excludeExtraneousValues: true });
+    return await this.mapMediaToResponseDto(media);
   }
 
-  async findByType(media_type: MediaType): Promise<MediaResponseDto[]> {
-    const media = await this.mediaRepository.find({
-      where: { media_type: media_type },
-    });
-    return media.map(media => plainToClass(MediaResponseDto, media, { excludeExtraneousValues: true }));
-  }
+  async findByType(
+    media_type: MediaType,
+    query?: MediaByTypeQueryDto,
+  ): Promise<PaginatedData<MediaResponseDto>> {
+    const { page = 1, limit = 10 } = query || {};
+    const skip = (page - 1) * limit;
 
+    const queryBuilder = this.mediaRepository
+      .createQueryBuilder('media')
+      .where('media.media_type = :media_type', { media_type })
+      .orderBy('media.created_at', 'DESC')
+      .skip(skip)
+      .take(limit);
+
+    const [items, total] = await queryBuilder.getManyAndCount();
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      items: await this.mapMediaToResponseDtos(items),
+      total,
+      page,
+      limit,
+      totalPages,
+    };
+  }
 
   async create(createMediaDto: CreateMediaDto): Promise<MediaResponseDto> {
     const media = this.mediaRepository.create({
-      ...createMediaDto
+      ...createMediaDto,
     });
 
     const savedMedia = await this.mediaRepository.save(media);
-    return plainToClass(MediaResponseDto, savedMedia, { excludeExtraneousValues: true });
+    return await this.mapMediaToResponseDto(savedMedia);
   }
 
   async createFromFormData(
     file: Express.Multer.File,
-    createMediaFormDataDto: CreateMediaFormDataDto
+    createMediaFormDataDto: CreateMediaFormDataDto,
   ): Promise<MediaResponseDto> {
     if (!file) {
       throw new BadRequestException('No file provided');
     }
-  
+
     const allowedMimeTypes = [
       'image/jpeg',
       'image/png',
@@ -103,11 +128,11 @@ export class MediaService {
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
-  
+
     if (!allowedMimeTypes.includes(file.mimetype)) {
       throw new BadRequestException(`File type "${file.mimetype}" not allowed`);
     }
-  
+
     try {
       const uploadResult = await this.storageService.uploadFile({
         file: file.buffer,
@@ -123,20 +148,18 @@ export class MediaService {
         file_size: file.size,
         media_type: createMediaFormDataDto.media_type,
       });
-  
+
       const savedMedia = await this.mediaRepository.save(media);
-      return plainToClass(MediaResponseDto, savedMedia, {
-        excludeExtraneousValues: true,
-      });
+      return await this.mapMediaToResponseDto(savedMedia);
     } catch (error) {
       throw new BadRequestException(`Failed to upload file: ${error.message}`);
     }
-  }  
+  }
 
   async updateFromFormData(
     id: string,
     file: Express.Multer.File | undefined,
-    updateMediaFormDataDto: UpdateMediaFormDataDto
+    updateMediaFormDataDto: UpdateMediaFormDataDto,
   ): Promise<MediaResponseDto> {
     const media = await this.mediaRepository.findOne({
       where: { id: id },
@@ -166,7 +189,9 @@ export class MediaService {
       ];
 
       if (!allowedMimeTypes.includes(file.mimetype)) {
-        throw new BadRequestException(`File type "${file.mimetype}" not allowed`);
+        throw new BadRequestException(
+          `File type "${file.mimetype}" not allowed`,
+        );
       }
 
       try {
@@ -184,7 +209,9 @@ export class MediaService {
           file_size: file.size,
         };
       } catch (error) {
-        throw new BadRequestException(`Failed to upload file: ${error.message}`);
+        throw new BadRequestException(
+          `Failed to upload file: ${error.message}`,
+        );
       }
     }
 
@@ -201,11 +228,10 @@ export class MediaService {
     const media = await this.mediaRepository.findOne({
       where: { id: id },
     });
-
-    if (media) {
-      media.status = Status.INACTIVE;
-      await this.mediaRepository.save(media);
-    }
+    await this.mediaRepository.delete(id);
+    // if (media) {
+    //   await this.storageService.deleteSingleFile(media.file_path);
+    // }
   }
 
   async download(id: string) {
@@ -218,5 +244,51 @@ export class MediaService {
     }
 
     return this.storageService.getDownloadUrlWithFilename(media.file_path);
+  }
+
+  /**
+   * Get media URL from file path using storage service
+   */
+  private async getMediaUrl(filePath?: string): Promise<string | undefined> {
+    if (!filePath || filePath.trim() === '') {
+      return undefined;
+    }
+    
+    try {
+      return await this.storageService.getFileUrl(filePath);
+    } catch (error) {
+      console.error('Error getting media URL for filePath:', filePath, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Map single media to response DTO with media URL
+   */
+  private async mapMediaToResponseDto(media: any): Promise<MediaResponseDto> {
+    const mediaDto = plainToClass(MediaResponseDto, media, { 
+      excludeExtraneousValues: true 
+    });
+    
+    // Get media URL from file_path
+    if (media.file_path && media.file_path.trim() !== '') {
+      mediaDto.media_url = await this.getMediaUrl(media.file_path);
+    }
+    
+    return mediaDto;
+  }
+
+  /**
+   * Map media array to response DTOs with media URLs
+   */
+  private async mapMediaToResponseDtos(medias: any[]): Promise<MediaResponseDto[]> {
+    const mediaDtos: MediaResponseDto[] = [];
+    
+    for (const media of medias) {
+      const mediaDto = await this.mapMediaToResponseDto(media);
+      mediaDtos.push(mediaDto);
+    }
+    
+    return mediaDtos;
   }
 }

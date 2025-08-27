@@ -259,13 +259,7 @@ export class CategoryService {
   }
 
   async remove(id: string): Promise<void> {
-    const category = await this.categoryRepository.findOne({
-      where: { id: id },
-    });
-    if (category) {
-      category.status = Status.INACTIVE;
-      await this.categoryRepository.save(category);
-    }
+    await this.categoryRepository.delete(id);
   }
 
   async findRootCategories(): Promise<CategoryResponseDto[]> {

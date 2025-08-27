@@ -113,24 +113,6 @@ export class PostQueryDto {
 
   @ApiPropertyOptional({
     description:
-      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
-    example: '2024-01-01',
-  })
-  @IsOptional()
-  @IsString()
-  date_from?: string;
-
-  @ApiPropertyOptional({
-    description:
-      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
-    example: '2024-12-31',
-  })
-  @IsOptional()
-  @IsString()
-  date_to?: string;
-
-  @ApiPropertyOptional({
-    description:
       'Filter posts by type. Valid values: member_activity, association_activity, digital_product.',
     example: 'digital_product',
   })
@@ -167,24 +149,6 @@ export class TagPostQueryDto {
   @Min(1)
   @Max(100)
   limit?: number = 10;
-
-  @ApiPropertyOptional({
-    description:
-      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
-    example: '2024-01-01',
-  })
-  @IsOptional()
-  @IsString()
-  date_from?: string;
-
-  @ApiPropertyOptional({
-    description:
-      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
-    example: '2024-12-31',
-  })
-  @IsOptional()
-  @IsString()
-  date_to?: string;
 }
 
 export class CategoryPostQueryDto {
@@ -215,22 +179,4 @@ export class CategoryPostQueryDto {
   @Min(1)
   @Max(100)
   limit?: number = 10;
-
-  @ApiPropertyOptional({
-    description:
-      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
-    example: '2024-01-01',
-  })
-  @IsOptional()
-  @IsString()
-  date_from?: string;
-
-  @ApiPropertyOptional({
-    description:
-      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
-    example: '2024-12-31',
-  })
-  @IsOptional()
-  @IsString()
-  date_to?: string;
 }

@@ -95,10 +95,7 @@ export class EventService {
   
     const savedEvent = await this.eventRepository.save(event);
   
-    return plainToClass(EventResponseDto, savedEvent, {
-      excludeExtraneousValues: true,
-      enableImplicitConversion: true,
-    });
+    return await this.mapEventToResponseDto(savedEvent);
   }
   
   private normalizeIds(ids?: string): string[] {
@@ -171,10 +168,7 @@ export class EventService {
   
     const updatedEvent = await this.eventRepository.save(event);
   
-    return plainToClass(EventResponseDto, updatedEvent, {
-      excludeExtraneousValues: true,
-      enableImplicitConversion: true,
-    });
+    return await this.mapEventToResponseDto(updatedEvent);
   }  
   
   private async handleThumbnailUpload(
@@ -271,10 +265,7 @@ export class EventService {
     const totalPages = Math.ceil(total / limit);
   
     return {
-      items: items.map(item => plainToClass(EventResponseDto, item, { 
-        excludeExtraneousValues: true,
-        enableImplicitConversion: true,
-      })),
+      items: await this.mapEventsToResponseDtos(items),
       total,
       page,
       limit,
@@ -282,7 +273,7 @@ export class EventService {
     };
   }  
 
-  async findOne(id: string): Promise<EventResponseDto> {
+    async findOne(id: string): Promise<EventResponseDto> {
     const event = await this.eventRepository.findOne({
       where: { id, status: Status.ACTIVE },
       relations: ['tags', 'categories'],
@@ -292,10 +283,7 @@ export class EventService {
       throw new NotFoundException(`Event with ID ${id} not found`);
     }
 
-    return plainToClass(EventResponseDto, event, { 
-      excludeExtraneousValues: true,
-      enableImplicitConversion: true,
-    });
+    return await this.mapEventToResponseDto(event);
   }
 
   async findByTagId(tagId: string, queryDto?: TagEventQueryDto): Promise<PaginatedData<EventResponseDto>> {
@@ -335,10 +323,7 @@ export class EventService {
     const totalPages = Math.ceil(total / limit);
   
     return {
-      items: items.map(item => plainToClass(EventResponseDto, item, { 
-        excludeExtraneousValues: true,
-        enableImplicitConversion: true,
-      })),
+      items: await this.mapEventsToResponseDtos(items),
       total,
       page,
       limit,
@@ -383,10 +368,7 @@ export class EventService {
     const totalPages = Math.ceil(total / limit);
   
     return {
-      items: items.map(item => plainToClass(EventResponseDto, item, { 
-        excludeExtraneousValues: true,
-        enableImplicitConversion: true,
-      })),
+      items: await this.mapEventsToResponseDtos(items),
       total,
       page,
       limit,
@@ -604,5 +586,51 @@ export class EventService {
         percentage: percentage
       };
     });
+  }
+
+  /**
+   * Get media URL from media ID using storage service
+   */
+  private async getMediaUrl(mediaId?: string): Promise<string | undefined> {
+    if (!mediaId || mediaId.trim() === '') {
+      return undefined;
+    }
+    
+    try {
+      return await this.storageService.getFileUrl(mediaId);
+    } catch (error) {
+      console.error('Error getting media URL for mediaId:', mediaId, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Map single event to response DTO with thumbnail URL
+   */
+  private async mapEventToResponseDto(event: any): Promise<EventResponseDto> {
+    const eventDto = plainToClass(EventResponseDto, event, { 
+      excludeExtraneousValues: true 
+    });
+    
+    // Get thumbnail URL if thumbnail_url_id is valid
+    if (event.thumbnail_url_id && event.thumbnail_url_id.trim() !== '') {
+      eventDto.thumbnail_url = await this.getMediaUrl(event.thumbnail_url_id);
+    }
+    
+    return eventDto;
+  }
+
+  /**
+   * Map events to response DTOs with thumbnail URLs
+   */
+  private async mapEventsToResponseDtos(events: any[]): Promise<EventResponseDto[]> {
+    const eventDtos: EventResponseDto[] = [];
+    
+    for (const event of events) {
+      const eventDto = await this.mapEventToResponseDto(event);
+      eventDtos.push(eventDto);
+    }
+    
+    return eventDtos;
   }
 }
