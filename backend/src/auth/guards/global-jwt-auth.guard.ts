@@ -1,10 +1,19 @@
-import { Injectable, ExecutionContext, CanActivate, UnauthorizedException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  ExecutionContext,
+  CanActivate,
+  UnauthorizedException,
+  Logger,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { apiKeyConfig } from '../../config/api-key.config';
 
 @Injectable()
-export class GlobalJwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
+export class GlobalJwtAuthGuard
+  extends AuthGuard('jwt')
+  implements CanActivate
+{
   private readonly logger = new Logger(GlobalJwtAuthGuard.name);
 
   constructor(private reflector: Reflector) {
@@ -14,7 +23,7 @@ export class GlobalJwtAuthGuard extends AuthGuard('jwt') implements CanActivate 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const route = `${request.method} ${request.url}`;
-    
+
     this.logger.log(`GlobalJwtAuthGuard checking route: ${route}`);
 
     // Check if route is marked as public
@@ -29,10 +38,10 @@ export class GlobalJwtAuthGuard extends AuthGuard('jwt') implements CanActivate 
     }
 
     // Check if route is marked as internal access (API key)
-    const isInternalAccess = this.reflector.getAllAndOverride<boolean>('internalAccess', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const isInternalAccess = this.reflector.getAllAndOverride<boolean>(
+      'internalAccess',
+      [context.getHandler(), context.getClass()],
+    );
 
     if (isInternalAccess) {
       this.logger.log(`Route ${route} requires internal access`);
@@ -41,16 +50,19 @@ export class GlobalJwtAuthGuard extends AuthGuard('jwt') implements CanActivate 
 
     // Apply JWT authentication for protected routes
     this.logger.log(`Route ${route} requires JWT authentication`);
-    
+
     // Check if token exists before calling JWT strategy
     const token = this.extractTokenFromRequest(request);
     if (!token) {
       this.logger.error(`Route ${route}: No token found`);
       throw new UnauthorizedException('Access token is required');
     }
-    
+
     this.logger.log(`Route ${route}: Token found, length: ${token.length}`);
     const result = await super.canActivate(context);
+
+    const currentRequest = context.switchToHttp().getRequest();
+
     return result as boolean;
   }
 
@@ -59,7 +71,9 @@ export class GlobalJwtAuthGuard extends AuthGuard('jwt') implements CanActivate 
     const apiKey = request.headers[apiKeyConfig.headerName];
 
     if (!apiKey) {
-      throw new UnauthorizedException(`${apiKeyConfig.headerName} header is required for internal access`);
+      throw new UnauthorizedException(
+        `${apiKeyConfig.headerName} header is required for internal access`,
+      );
     }
 
     // Validate API key
@@ -86,5 +100,3 @@ export class GlobalJwtAuthGuard extends AuthGuard('jwt') implements CanActivate 
     return null;
   }
 }
-
-

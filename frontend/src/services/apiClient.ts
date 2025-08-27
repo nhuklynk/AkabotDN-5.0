@@ -1,92 +1,162 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from "axios";
+"use client";
 
-// Simple retry counter on request config
-declare module "axios" {
-	interface AxiosRequestConfig {
-		_retryCount?: number;
-	}
-	interface InternalAxiosRequestConfig<D = any> extends AxiosRequestConfig {
-		_retryCount?: number;
-	}
+import axios from "axios";
+
+export const apiUrl =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
+
+export const sseApiUrl = process.env.NEXT_PUBLIC_API_SSE_BASE_URL || apiUrl;
+
+export const apiClient = axios.create({
+  baseURL: apiUrl,
+  timeout: 60000,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Auth event handlers that embedders can register (e.g., chat-widget)
+export type ApiAuthHandlers = {
+  onUnauthorized?: (request?: any, error?: any) => boolean | void;
+  onSessionExpired?: () => void;
+};
+
+let authHandlers: ApiAuthHandlers = {};
+
+export function setApiAuthHandlers(handlers: Partial<ApiAuthHandlers>) {
+  authHandlers = { ...authHandlers, ...handlers };
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-const LOGIN_PATH = "/login";
+let isRefreshing = false;
+let refreshSubscribers: (() => void)[] = [];
 
-const apiClient: AxiosInstance = axios.create({
-	baseURL: API_BASE,
-	timeout: 10000,
-});
-
-const getToken = (): string | null => {
-	if (typeof window === "undefined") return null;
-	try {
-		return localStorage.getItem("token");
-	} catch {
-		return null;
-	}
+const onRefreshed = () => {
+  refreshSubscribers.forEach((callback) => callback());
+  refreshSubscribers = [];
 };
 
-const setToken = (token: string): void => {
-	if (typeof window === "undefined") return;
-	try {
-		localStorage.setItem("token", token);
-	} catch {
-		// ignore
-	}
+const refreshAccessToken = async () => {
+  try {
+    await axios.post(
+      "/auth/refresh",
+      {},
+      {
+        baseURL: apiUrl,
+        withCredentials: true,
+      }
+    );
+    onRefreshed();
+  } catch (error) {
+    console.error("Refresh token expired or invalid", error);
+    throw error;
+  } finally {
+    isRefreshing = false;
+  }
 };
 
-// Attach JSON headers and Authorization token
-apiClient.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-	const headers = (config.headers ?? {}) as any;
-	if (!("Accept" in headers)) headers["Accept"] = "application/json";
-	if (!("Content-Type" in headers) && !(config.data instanceof FormData)) {
-		headers["Content-Type"] = "application/json";
-	}
-	// Do not attach token for refresh endpoint
-	const isRefresh = typeof config.url === "string" && config.url.includes("/auth/refresh");
-	if (!isRefresh) {
-		const token = getToken();
-		if (token) headers["Authorization"] = `Bearer ${token}`;
-	}
-	config.headers = headers;
-	return config;
-});
-
-// Helper: refresh access token (assuming cookie-based refresh or server returns new token)
-const refreshAccessToken = async (): Promise<string> => {
-	const res = await axios.post(`${API_BASE}/auth/refresh`, {}, { withCredentials: true });
-	const newToken: string | undefined = res.data?.accessToken || res.data?.token;
-	if (!newToken) throw new Error("No access token in refresh response");
-	setToken(newToken);
-	return newToken;
-};
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    // Handle request error
+    return Promise.reject(error);
+  }
+);
 
 apiClient.interceptors.response.use(
-	(response: AxiosResponse) => response.data,
-	async (error: AxiosError) => {
-		const status = error.response?.status;
-		const originalRequest = error.config as InternalAxiosRequestConfig | undefined;
+  (response) => {
+    localStorage.setItem("last_request_success", new Date().toISOString());
+    return response.data; // Return response.data so useLogin can access it directly
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    const is401 = error.response?.status === 401;
 
-		if (status === 401 && originalRequest) {
-			originalRequest._retryCount = (originalRequest._retryCount ?? 0) + 1;
-			if (originalRequest._retryCount <= 3) {
-				try {
-					const newToken = await refreshAccessToken();
-					const h = (originalRequest.headers ?? {}) as any;
-					h["Authorization"] = `Bearer ${newToken}`;
-					originalRequest.headers = h;
-					return apiClient(originalRequest);
-				} catch {
-					if (typeof window !== "undefined") window.location.href = LOGIN_PATH;
-					return Promise.reject(error);
-				}
-			}
-			// exceeded retry attempts
-			if (typeof window !== "undefined") window.location.href = LOGIN_PATH;
-		}
-		return Promise.reject(error);
-	}
+    // Don't retry for auth endpoints to avoid infinite loops
+    if (originalRequest.url?.includes("/auth/")) {
+      return Promise.reject(error);
+    }
+
+    if (originalRequest.params?.__x_no_retry__) {
+      return Promise.reject(error);
+    }
+
+    if (is401) {
+      try {
+        const handled = authHandlers.onUnauthorized?.(originalRequest, error);
+        if (handled) {
+          return Promise.reject(error);
+        }
+      } catch (ignored) {
+        // Ignore error
+      }
+    }
+
+    if (is401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          refreshSubscribers.push(() => resolve(apiClient(originalRequest)));
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+
+        await refreshAccessToken();
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        // Only logout if refresh token fails
+        await handleLogout();
+        return Promise.reject(refreshError);
+      }
+    }
+
+    if (is401 && originalRequest._retry) {
+      // Don't auto logout on second 401, let the component handle it
+      return Promise.reject(error);
+    }
+
+    return Promise.reject(error);
+  }
 );
+
+export async function handleLogout(url?: string) {
+  try {
+    localStorage.removeItem("last_request_success");
+    await axios.post(
+      `/auth/logout?redirect=${url ? encodeURIComponent(url) : ""}`,
+      {},
+      {
+        baseURL: apiUrl,
+        withCredentials: true,
+      }
+    );
+  } catch (error) {
+    // console.log(error);
+  }
+
+  if (typeof window !== "undefined" && window.self !== window.top) {
+    try {
+      authHandlers.onSessionExpired?.();
+    } catch (ignored) {
+      // console.log(ignored);
+    }
+    return;
+  }
+
+  const redirectUrl = window.location.href;
+  window.location.href = `/login?redirect=${encodeURIComponent(redirectUrl)}`;
+}
 
 export default apiClient;

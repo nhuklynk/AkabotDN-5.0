@@ -9,6 +9,7 @@ import {
   HttpStatus,
   ValidationPipe,
   Res,
+  Logger,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto, RefreshTokenDto, AuthResponseDto } from './dto';
@@ -17,6 +18,8 @@ import type { Response as ExpressResponse } from 'express';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+  
   constructor(private readonly authService: AuthService) {}
 
   @Public()
@@ -76,10 +79,31 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@Res({ passthrough: true }) res: ExpressResponse): Promise<{ message: string }> {
-    this.clearAuthCookies(res);
-    
-    return { message: 'Logged out successfully' };
+  async logout(
+    @Request() req,
+    @Res({ passthrough: true }) res: ExpressResponse,
+  ): Promise<{ message: string; success: boolean }> {
+    try {
+      // Log logout attempt
+      this.logger.log(`User logout attempt from IP: ${req.ip}`);
+      
+      // Clear cookies
+      this.clearAuthCookies(res);
+      
+      // Return success response
+      return { 
+        message: 'Logged out successfully', 
+        success: true 
+      };
+    } catch (error) {
+      this.logger.error(`Logout failed: ${error.message}`);
+      // Even if there's an error, still clear cookies
+      this.clearAuthCookies(res);
+      return { 
+        message: 'Logged out successfully', 
+        success: true 
+      };
+    }
   }
 
   @Get('profile')
@@ -88,21 +112,27 @@ export class AuthController {
   }
 
   private setAuthCookies(res: ExpressResponse, accessToken: string, refreshToken: string): void {
+    this.logger.log(`Setting auth cookies - access_token: ${accessToken.substring(0, 20)}...`);
+    
     res.cookie('access_token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax', // Changed from 'strict' to 'lax' for cross-origin
       maxAge: 15 * 60 * 1000,
       path: '/',
+      domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost', // Add domain for localhost
     });
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax', // Changed from 'strict' to 'lax' for cross-origin
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/',
+      domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost', // Add domain for localhost
     });
+    
+    this.logger.log(`Auth cookies set successfully`);
   }
 
   private clearAuthCookies(res: ExpressResponse): void {
