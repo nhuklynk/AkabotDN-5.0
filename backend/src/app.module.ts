@@ -24,6 +24,7 @@ import { SubscriptionModule } from './subscription/subscription.module';
 import { SwaggerExportController } from './config/swagger-export.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { GlobalJwtAuthGuard } from './auth/guards/global-jwt-auth.guard';
     ExecutiveBoardModule,
     StorageModule,
     SubscriptionModule,
+    EmailModule,
   ],
   controllers: [AppController, SwaggerExportController],
   providers: [
