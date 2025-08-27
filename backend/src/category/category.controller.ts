@@ -24,6 +24,7 @@ import {
   ApiBody,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -47,20 +48,8 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 201,
-    description:
-      'Category created successfully. Returns the newly created category with all its details including generated ID and timestamps.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 201 },
-        message: { type: 'string', example: 'Resource created successfully' },
-        data: { $ref: '#/components/schemas/CategoryResponseDto' },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories' },
-      },
-    },
+    description: 'Category created successfully',
+    type: CategoryResponseDto,
   })
   @SwaggerApiResponse({
     status: 400,
@@ -78,6 +67,7 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary: 'Search and filter categories with pagination',
@@ -135,48 +125,7 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 200,
-    description:
-      'Filtered and paginated list of categories retrieved successfully. Returns only categories that match the specified filters along with pagination metadata.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'Request processed successfully' },
-        data: {
-          type: 'object',
-          properties: {
-            items: {
-              type: 'array',
-              items: { $ref: '#/components/schemas/CategoryResponseDto' },
-            },
-            total: {
-              type: 'number',
-              example: 25,
-              description: 'Total number of categories matching the filters',
-            },
-            page: {
-              type: 'number',
-              example: 1,
-              description: 'Current page number',
-            },
-            limit: {
-              type: 'number',
-              example: 10,
-              description: 'Number of items per page',
-            },
-            totalPages: {
-              type: 'number',
-              example: 3,
-              description: 'Total number of pages for the filtered results',
-            },
-          },
-        },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories/search' },
-      },
-    },
+    description: 'Filtered and paginated list of categories retrieved successfully',
   })
   async searchAndFilter(@Query() query: CategoryQueryDto) {
     const paginationOptions =
@@ -192,6 +141,7 @@ export class CategoryController {
     );
   }
 
+  @Public()
   @Get('root')
   @ApiOperation({
     summary: 'Get root categories (categories without parent)',
@@ -200,23 +150,8 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 200,
-    description:
-      'List of root categories retrieved successfully. Returns only categories that do not have a parent category.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'Request processed successfully' },
-        data: {
-          type: 'array',
-          items: { $ref: '#/components/schemas/CategoryResponseDto' },
-        },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories/root' },
-      },
-    },
+    description: 'List of root categories retrieved successfully',
+    type: [CategoryResponseDto],
   })
   async findRootCategories(): Promise<CategoryResponseDto[]> {
     return this.categoryService.findRootCategories();
@@ -235,20 +170,8 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 200,
-    description:
-      'Category found and retrieved successfully. Returns the complete category information including parent and child relationships.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'Request processed successfully' },
-        data: { $ref: '#/components/schemas/CategoryResponseDto' },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories/slug/technology' },
-      },
-    },
+    description: 'Category found and retrieved successfully',
+    type: CategoryResponseDto,
   })
   @SwaggerApiResponse({
     status: 404,
@@ -259,6 +182,7 @@ export class CategoryController {
     return this.categoryService.findBySlug(slug);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary: 'Get category by ID',
@@ -271,20 +195,8 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 200,
-    description:
-      'Category found and retrieved successfully. Returns the complete category information including parent and child relationships.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'Request processed successfully' },
-        data: { $ref: '#/components/schemas/CategoryResponseDto' },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories/123' },
-      },
-    },
+    description: 'Category found and retrieved successfully',
+    type: CategoryResponseDto,
   })
   @SwaggerApiResponse({
     status: 404,
@@ -312,20 +224,8 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 200,
-    description:
-      'Category updated successfully. Returns the updated category with all current information.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'Request processed successfully' },
-        data: { $ref: '#/components/schemas/CategoryResponseDto' },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories/123' },
-      },
-    },
+    description: 'Category updated successfully',
+    type: CategoryResponseDto,
   })
   @SwaggerApiResponse({
     status: 404,
@@ -357,20 +257,7 @@ export class CategoryController {
   })
   @SwaggerApiResponse({
     status: 204,
-    description:
-      'Category deleted successfully. No content is returned as the category has been permanently removed.',
-    schema: {
-      type: 'object',
-      properties: {
-        success: { type: 'boolean', example: true },
-        statusCode: { type: 'number', example: 204 },
-        message: { type: 'string', example: 'Resource deleted successfully' },
-        data: { type: 'null', example: null },
-        errors: { type: 'null', example: null },
-        timestamp: { type: 'string', example: '2025-08-22T11:25:00.000Z' },
-        path: { type: 'string', example: '/api/categories/123' },
-      },
-    },
+    description: 'Category deleted successfully',
   })
   @SwaggerApiResponse({
     status: 404,

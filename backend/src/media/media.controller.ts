@@ -35,6 +35,7 @@ import {
 import { MediaQueryDto } from './dto/media-query.dto';
 import { MediaByTypeQueryDto } from './dto/media-by-type-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 // Helper function to validate UUID
 function validateUUID(uuid: string): boolean {
@@ -47,6 +48,7 @@ function validateUUID(uuid: string): boolean {
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ 
     summary: 'Get all media files',
@@ -79,6 +81,7 @@ export class MediaController {
     return this.mediaService.findAll(query);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get media by ID' })
   @ApiParam({ name: 'id', description: 'Media ID (UUID)' })
@@ -102,6 +105,7 @@ export class MediaController {
     return this.mediaService.findOne(id);
   }
 
+  @Public()
   @Get('type/:type')
   @ApiOperation({ 
     summary: 'Get media by type',
@@ -245,6 +249,7 @@ export class MediaController {
     return this.mediaService.remove(id);
   }
 
+  @Public()
   @Get('download/:id')
   @ApiOperation({ summary: 'Download media by ID' })
   @ApiParam({ name: 'id', description: 'Media ID (UUID)' })

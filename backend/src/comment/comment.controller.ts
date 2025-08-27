@@ -32,6 +32,7 @@ import {
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
 import { CommentType } from './entity/comment.entity';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('comments')
 @ApiTags('comments')
@@ -65,6 +66,7 @@ export class CommentController {
     return this.commentService.create(createCommentDto);
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary: 'Advanced search and filter comments with pagination',
@@ -164,10 +166,11 @@ export class CommentController {
     );
   }
 
-  @Get('type/:comment_type/id/:comment_type_id/nested')
+  @Public()
+  @Get('type/:comment_type/id/:comment_type_id')
   @ApiOperation({
-    summary: 'Get nested comments tree by type and ID',
-    description: 'Retrieves all comments for a specific content in a nested tree structure where replies are contained within their parent comments. This provides a hierarchical view of the comment thread.'
+    summary: 'Get comments tree by type and ID (Using CommentResponseDto)',
+    description: 'Retrieves all comments for a specific content in a tree structure using the enhanced CommentResponseDto that includes all comment fields and nested replies.'
   })
   @ApiParam({
     name: 'comment_type',
@@ -180,16 +183,17 @@ export class CommentController {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiOkResponse({
-    description: 'Nested comment tree for the specified type and ID retrieved successfully. Each root comment contains its replies in a hierarchical structure.',
-    type: [NestedCommentResponseDto]
+    description: 'Comment tree for the specified type and ID retrieved successfully. Each root comment contains its replies in a hierarchical structure with full comment details.',
+    type: [CommentResponseDto]
   })
-  async findNestedCommentsByTypeAndId(
+  async findTreeCommentsByTypeAndId(
     @Param('comment_type') comment_type: CommentType,
     @Param('comment_type_id') comment_type_id: string
-  ): Promise<NestedCommentResponseDto[]> {
-    return this.commentService.findByCommentTypeAndId(comment_type, comment_type_id);
+  ): Promise<CommentResponseDto[]> {
+    return this.commentService.findTreeByCommentTypeAndId(comment_type, comment_type_id);
   }
 
+  @Public()
   @Get(':id/replies')
   @ApiOperation({
     summary: 'Get replies to a comment',
@@ -210,7 +214,8 @@ export class CommentController {
   async findReplies(@Param('id') id: string): Promise<CommentResponseDto[]> {
     return this.commentService.findReplies(id);
   }
-
+  
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary: 'Get comment by ID',
