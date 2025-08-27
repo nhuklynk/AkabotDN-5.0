@@ -137,14 +137,7 @@ export class CommentService {
   }
 
   async remove(id: string): Promise<void> {
-    const comment = await this.commentRepository.findOne({
-      where: { id: id },
-    });
-
-    if (comment) {
-      comment.status = Status.INACTIVE;
-      await this.commentRepository.save(comment);
-    }
+    await this.commentRepository.delete(id);
   }
 
   async findReplies(comment_id: string): Promise<CommentResponseDto[]> {

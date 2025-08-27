@@ -147,20 +147,6 @@ export class PostController {
     description:
       'Filter posts by type. Valid values: member_activity, association_activity, digital_product.',
   })
-  @ApiQuery({
-    name: 'date_from',
-    required: false,
-    type: String,
-    description:
-      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
-  })
-  @ApiQuery({
-    name: 'date_to',
-    required: false,
-    type: String,
-    description:
-      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
-  })
   @ApiResponse({
     status: 200,
     description:
@@ -287,8 +273,6 @@ export class PostController {
   })
   @ApiQuery({ name: 'page', required: false, description: 'Page number (default: 1)' })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
-  @ApiQuery({ name: 'date_from', required: false, description: 'Filter posts from this date (YYYY-MM-DD)' })
-  @ApiQuery({ name: 'date_to', required: false, description: 'Filter posts to this date (YYYY-MM-DD)' })
   @ApiOkResponse({
     description: 'Posts retrieved successfully',
   })
@@ -314,8 +298,6 @@ export class PostController {
   })
   @ApiQuery({ name: 'page', required: false, description: 'Page number (default: 1)' })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
-  @ApiQuery({ name: 'date_from', required: false, description: 'Filter posts from this date (YYYY-MM-DD)' })
-  @ApiQuery({ name: 'date_to', required: false, description: 'Filter posts to this date (YYYY-MM-DD)' })
   @ApiOkResponse({
     description: 'Posts retrieved successfully',
   })

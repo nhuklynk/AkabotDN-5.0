@@ -74,7 +74,7 @@ export class PartnerService {
 
     const partner = this.partnerRepository.create(partnerData);
     const savedPartner = await this.partnerRepository.save(partner);
-    return plainToClass(PartnerResponseDto, savedPartner, { excludeExtraneousValues: true });
+    return await this.mapPartnerToResponseDto(savedPartner);
   }
 
   async searchAndPaginate(query: PartnerQueryDto): Promise<PaginatedData<PartnerResponseDto>> {
@@ -100,9 +100,7 @@ export class PartnerService {
   
     const [partners, total] = await qb.getManyAndCount();
   
-    const responseDtos = partners.map(p =>
-      plainToClass(PartnerResponseDto, p, { excludeExtraneousValues: true })
-    );
+    const responseDtos = await this.mapPartnersToResponseDtos(partners);
   
     return this.paginationService.createPaginatedResponse(
       responseDtos,
@@ -121,7 +119,7 @@ export class PartnerService {
       throw new NotFoundException(`Partner with ID ${id} not found`);
     }
 
-    return plainToClass(PartnerResponseDto, partner, { excludeExtraneousValues: true });
+    return await this.mapPartnerToResponseDto(partner);
   }
 
   async update(id: string, updatePartnerDto: UpdatePartnerFormDataDto): Promise<PartnerResponseDto> {
@@ -148,7 +146,7 @@ export class PartnerService {
       where: { id: id },
     });
 
-    return plainToClass(PartnerResponseDto, updatedPartner, { excludeExtraneousValues: true });
+    return await this.mapPartnerToResponseDto(updatedPartner);
   }
 
   async updateWithFormData(
@@ -212,7 +210,7 @@ export class PartnerService {
       where: { id: id },
     });
 
-    return plainToClass(PartnerResponseDto, updatedPartner, { excludeExtraneousValues: true });
+    return await this.mapPartnerToResponseDto(updatedPartner);
   }
 
   async remove(id: string): Promise<void> {
@@ -231,6 +229,52 @@ export class PartnerService {
     const partners = await this.partnerRepository.find({
       where: { partner_type: PartnerType.GOLD },
     });
-    return partners.map(partner => plainToClass(PartnerResponseDto, partner, { excludeExtraneousValues: true }));
+    return await this.mapPartnersToResponseDtos(partners);
+  }
+
+  /**
+   * Get logo URL from logo path using storage service
+   */
+  private async getLogoUrl(logoPath?: string): Promise<string | undefined> {
+    if (!logoPath || logoPath.trim() === '') {
+      return undefined;
+    }
+    
+    try {
+      return await this.storageService.getFileUrl(logoPath);
+    } catch (error) {
+      console.error('Error getting logo URL for path:', logoPath, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Map single partner to response DTO with logo URL
+   */
+  private async mapPartnerToResponseDto(partner: any): Promise<PartnerResponseDto> {
+    const partnerDto = plainToClass(PartnerResponseDto, partner, { 
+      excludeExtraneousValues: true 
+    });
+    
+    // Get logo URL from logo path
+    if (partner.logo && partner.logo.trim() !== '') {
+      partnerDto.logo_url = await this.getLogoUrl(partner.logo);
+    }
+    
+    return partnerDto;
+  }
+
+  /**
+   * Map partners to response DTOs with logo URLs
+   */
+  private async mapPartnersToResponseDtos(partners: any[]): Promise<PartnerResponseDto[]> {
+    const partnerDtos: PartnerResponseDto[] = [];
+    
+    for (const partner of partners) {
+      const partnerDto = await this.mapPartnerToResponseDto(partner);
+      partnerDtos.push(partnerDto);
+    }
+    
+    return partnerDtos;
   }
 }

@@ -93,19 +93,24 @@ export class PostService {
       post.tags = tags;
     }
 
-    if (createPostDto.status === Status.ACTIVE) {
-      post.published_at = new Date();
-    }
-
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
-      post.media_id = media.id;
+      post.media_id = media.file_path;
     }
 
     const savedPost = await this.postRepository.save(post);
-    return plainToClass(PostResponseDto, savedPost, {
-      excludeExtraneousValues: true,
-    });
+    
+    const postWithRelations = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.categories', 'categories')
+      .leftJoinAndSelect('post.tags', 'tags')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
+      .where('post.id = :id', { id: savedPost.id })
+      .getOne();
+    
+    return await this.mapPostToResponseDto(postWithRelations);
   }
 
   async update(
@@ -137,13 +142,9 @@ export class PostService {
       post.tags = await this.tagRepository.findBy({ id: In(tagIds) });
     }
 
-    if (updatePostDto.status === Status.PUBLISHED) {
-      post.published_at = new Date();
-    }
-
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
-      post.media_id = media.id;
+      post.media_id = media.file_path;
     }
 
     if (updatePostDto.post_type) {
@@ -158,9 +159,20 @@ export class PostService {
     });
 
     const updatedPost = await this.postRepository.save(post);
-    return plainToClass(PostResponseDto, updatedPost, {
-      excludeExtraneousValues: true,
-    });
+    
+    // Query the updated post with all relations including media
+    const postWithRelations = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.categories', 'categories')
+      .leftJoinAndSelect('post.tags', 'tags')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
+      .where('post.id = :id', { id: updatedPost.id })
+      .where('post.status != :status', { status: Status.INACTIVE })
+      .getOne();
+    
+    return await this.mapPostToResponseDto(postWithRelations);
   }
 
   async remove(id: string): Promise<void> {
@@ -172,26 +184,36 @@ export class PostService {
   }
 
   async findOne(id: string): Promise<PostResponseDto> {
-    const post = await this.postRepository.findOne({
-      where: { id },
-      relations: ['user', 'categories', 'tags'],
-    });
+    const post = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.categories', 'categories')
+      .leftJoinAndSelect('post.tags', 'tags')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
+      .where('post.id = :id', { id })
+      .where('post.status != :status', { status: Status.INACTIVE })
+      .getOne();
+
     if (!post) throw new NotFoundException(`Post with ID ${id} not found`);
     const postView = await this.postViewService.create({ post_id: id });
-    return plainToClass(PostResponseDto, post, {
-      excludeExtraneousValues: true,
-    });
+    return await this.mapPostToResponseDto(post);
   }
 
   async findBySlug(slug: string): Promise<PostResponseDto> {
-    const post = await this.postRepository.findOne({
-      where: { slug },
-      relations: ['user', 'categories', 'tags'],
-    });
+    const post = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .leftJoinAndSelect('post.categories', 'categories')
+      .leftJoinAndSelect('post.tags', 'tags')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
+      .where('post.slug = :slug', { slug })
+      .where('post.status != :status', { status: Status.INACTIVE })
+      .getOne();
+
     if (!post) throw new NotFoundException(`Post with slug ${slug} not found`);
-    return plainToClass(PostResponseDto, post, {
-      excludeExtraneousValues: true,
-    });
+    return await this.mapPostToResponseDto(post);
   }
 
   async findByCategory(category_id: string): Promise<PostResponseDto[]> {
@@ -200,12 +222,13 @@ export class PostService {
       .leftJoinAndSelect('post.categories', 'category')
       .leftJoinAndSelect('post.user', 'user')
       .leftJoinAndSelect('post.tags', 'tags')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
       .where('category.id = :category_id', { category_id })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getMany();
 
-    return posts.map((post) =>
-      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
-    );
+    return await this.mapPostsToResponseDtos(posts);
   }
 
   async findByTag(tag_id: string): Promise<PostResponseDto[]> {
@@ -214,55 +237,43 @@ export class PostService {
       .leftJoinAndSelect('post.tags', 'tag')
       .leftJoinAndSelect('post.user', 'user')
       .leftJoinAndSelect('post.categories', 'categories')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
       .where('tag.id = :tag_id', { tag_id })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getMany();
 
-    return posts.map((post) =>
-      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
-    );
+    return await this.mapPostsToResponseDtos(posts);
   }
 
   async findByTagId(tagId: string, queryDto?: TagPostQueryDto): Promise<PaginatedData<PostResponseDto>> {
     const { 
       page = 1, 
-      limit = 10,  
-      date_from, 
-      date_to 
+      limit = 10
     } = queryDto || {};
     
     const skip = (page - 1) * limit;
   
-    const queryBuilder = this.postRepository
+        const queryBuilder = this.postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.tags', 'tag')
       .leftJoinAndSelect('post.categories', 'categories')
       .leftJoinAndSelect('post.user', 'user')
-      .where('post.status = :status', { status: Status.ACTIVE })
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
+      .where('post.status != :status', { status: Status.INACTIVE })
       .andWhere('tag.id = :tagId', { tagId });
-  
-    if (date_from && date_to) {
-      queryBuilder.andWhere('post.created_at BETWEEN :date_from AND :date_to', {
-        date_from,
-        date_to,
-      });
-    } else if (date_from) {
-      queryBuilder.andWhere('post.created_at >= :date_from', { date_from });
-    } else if (date_to) {
-      queryBuilder.andWhere('post.created_at <= :date_to', { date_to });
-    }
-  
+
     queryBuilder
       .orderBy('post.created_at', 'DESC')
       .skip(skip)
       .take(limit);
-  
+
     const [items, total] = await queryBuilder.getManyAndCount();
     const totalPages = Math.ceil(total / limit);
-  
+
     return {
-      items: items.map(item => plainToClass(PostResponseDto, item, { 
-        excludeExtraneousValues: true,
-      })),
+      items: await this.mapPostsToResponseDtos(items),
       total,
       page,
       limit,
@@ -274,43 +285,30 @@ export class PostService {
     const { 
       page = 1, 
       limit = 10, 
-      date_from, 
-      date_to 
     } = queryDto || {};
     
     const skip = (page - 1) * limit;
   
-    const queryBuilder = this.postRepository
+        const queryBuilder = this.postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.tags', 'tags')
       .leftJoinAndSelect('post.categories', 'category')
       .leftJoinAndSelect('post.user', 'user')
-      .where('post.status = :status', { status: Status.ACTIVE })
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path'])
+      .where('post.status != :status', { status: Status.INACTIVE })
       .andWhere('category.id = :categoryId', { categoryId });
-  
-    if (date_from && date_to) {
-      queryBuilder.andWhere('post.created_at BETWEEN :date_from AND :date_to', {
-        date_from,
-        date_to,
-      });
-    } else if (date_from) {
-      queryBuilder.andWhere('post.created_at >= :date_from', { date_from });
-    } else if (date_to) {
-      queryBuilder.andWhere('post.created_at <= :date_to', { date_to });
-    }
-  
+
     queryBuilder
       .orderBy('post.created_at', 'DESC')
       .skip(skip)
       .take(limit);
-  
+
     const [items, total] = await queryBuilder.getManyAndCount();
     const totalPages = Math.ceil(total / limit);
-  
+
     return {
-      items: items.map(item => plainToClass(PostResponseDto, item, { 
-        excludeExtraneousValues: true,
-      })),
+      items: await this.mapPostsToResponseDtos(items),
       total,
       page,
       limit,
@@ -327,8 +325,6 @@ export class PostService {
       status,
       search,
       author_id,
-      date_from,
-      date_to,
       category,
       tag,
       type,
@@ -339,7 +335,9 @@ export class PostService {
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user')
       .leftJoinAndSelect('post.categories', 'categories')
-      .leftJoinAndSelect('post.tags', 'tags');
+      .leftJoinAndSelect('post.tags', 'tags')
+      .leftJoin('media', 'media', 'media.id::text = post.media_id')
+      .addSelect(['media.file_path']);
 
     if (status) {
       queryBuilder.andWhere('post.status = :status', { status });
@@ -354,14 +352,6 @@ export class PostService {
 
     if (author_id) {
       queryBuilder.andWhere('user.id = :author_id', { author_id });
-    }
-
-    if (date_from) {
-      queryBuilder.andWhere('post.created_at >= :date_from', { date_from });
-    }
-
-    if (date_to) {
-      queryBuilder.andWhere('post.created_at <= :date_to', { date_to });
     }
 
     if (type) {
@@ -386,9 +376,7 @@ export class PostService {
       );
     }
 
-    const postDtos = filteredPosts.map((post) =>
-      plainToClass(PostResponseDto, post, { excludeExtraneousValues: true }),
-    );
+    const postDtos = await this.mapPostsToResponseDtos(filteredPosts);
 
     return [postDtos, total];
   }
@@ -408,7 +396,6 @@ export class PostService {
       where: { status: Status.PUBLISHED }
     });
 
-    // Posts in last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const postsLast7Days = await this.postRepository.count({
@@ -417,7 +404,6 @@ export class PostService {
       }
     });
 
-    // Posts in last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const postsLast30Days = await this.postRepository.count({
@@ -533,7 +519,6 @@ export class PostService {
   async getPostTypeDetailedStatistics(postType: PostType): Promise<PostTypeDetailedStatisticsDto> {
     const totalAllPosts = await this.postRepository.count();
     
-    // Basic counts for this post type
     const totalPosts = await this.postRepository.count({
       where: { post_type: postType }
     });
@@ -552,7 +537,6 @@ export class PostService {
       }
     });
 
-    // Posts in last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const postsLast7Days = await this.postRepository.count({
@@ -562,7 +546,6 @@ export class PostService {
       }
     });
 
-    // Posts in last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const postsLast30Days = await this.postRepository.count({
@@ -572,7 +555,6 @@ export class PostService {
       }
     });
 
-    // Monthly breakdown for current year
     const currentYear = new Date().getFullYear();
     const monthlyStats = await this.postRepository
       .createQueryBuilder('post')
@@ -631,5 +613,51 @@ export class PostService {
       file_size: file.size,
       media_type: MediaType.POST,
     });
+  }
+
+  /**
+   * Get media URL from file path using storage service
+   */
+  private async getMediaUrl(mediaId?: string): Promise<string | undefined> {
+    if (!mediaId || mediaId.trim() === '') {
+      return undefined;
+    }
+    
+    try {
+      return await this.storageService.getFileUrl(mediaId);
+    } catch (error) {
+      console.error('Error getting media URL for mediaId:', mediaId, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Map single post to response DTO with media URL
+   */
+  private async mapPostToResponseDto(post: any): Promise<PostResponseDto> {
+    const postDto = plainToClass(PostResponseDto, post, { 
+      excludeExtraneousValues: true 
+    });
+    
+    // Get media URL if file path exists and media_id is valid
+    if (post.media_id && post.media_id.trim() !== '') {
+      postDto.media_url = await this.getMediaUrl(post.media_id);
+    }
+    
+    return postDto;
+  }
+
+  /**
+   * Map posts to response DTOs with media URLs
+   */
+  private async mapPostsToResponseDtos(posts: any[]): Promise<PostResponseDto[]> {
+    const postDtos: PostResponseDto[] = [];
+    
+    for (const post of posts) {
+      const postDto = await this.mapPostToResponseDto(post);
+      postDtos.push(postDto);
+    }
+    
+    return postDtos;
   }
 }
