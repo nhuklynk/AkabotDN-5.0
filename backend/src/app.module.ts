@@ -55,11 +55,10 @@ import { EmailModule } from './email/email.module';
   providers: [
     AppService,
     AuditSubscriber,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: GlobalJwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: GlobalJwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
-
