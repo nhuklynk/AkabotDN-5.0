@@ -193,7 +193,6 @@ export class EventService {
         fileName: file.originalname,
         contentType: file.mimetype,
         fileSize: file.size,
-        bucket: 'events',
         scope: 'thumbnails',
       });
 

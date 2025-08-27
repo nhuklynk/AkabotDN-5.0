@@ -5,7 +5,6 @@ export interface StorageOptions {
 }
 
 export interface UploadOptions {
-  bucket: string;
   /**
    * The root directory for saving the file.
    */

@@ -598,7 +598,6 @@ export class PostService {
 
   async uploadFeaturedImage(file: Express.Multer.File) {
     const filePath = await this.storageService.uploadFile({
-      bucket: 'akabotdn',
       file: file.buffer,
       fileName: file.originalname,
       fileSize: file.size,

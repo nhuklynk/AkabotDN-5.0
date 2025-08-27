@@ -14,15 +14,14 @@ import type { StorageOptions } from './types';
     {
       provide: AWS_S3_CLIENT,
       useFactory: (configService: ConfigService) => {
-        const s3Config = configService.get('storage.s3');
         return new S3Client({
-          region: s3Config.region,
+          region: configService.get('AWS_REGION', 'us-east-1'),
           credentials: {
-            accessKeyId: s3Config.accessKeyId,
-            secretAccessKey: s3Config.secretAccessKey,
+            accessKeyId: configService.get('AWS_ACCESS_KEY_ID', 'test'),
+            secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY', 'test'),
           },
-          endpoint: s3Config.endpoint,
-          forcePathStyle: s3Config.forcePathStyle,
+          endpoint: configService.get('AWS_S3_ENDPOINT', 'http://localhost:9000'),
+          forcePathStyle: configService.get('AWS_S3_FORCE_PATH_STYLE', 'true') === 'true',
         });
       },
       inject: [ConfigService],
@@ -30,9 +29,9 @@ import type { StorageOptions } from './types';
     {
       provide: STORAGE_OPTIONS,
       useFactory: (configService: ConfigService): StorageOptions => ({
-        maxSizeInMb: configService.get('storage.upload.maxSizeInMb', 10),
-        defaultBucket: configService.get('storage.s3.defaultBucket', 'akabotdn'),
-        allowedMimeTypes: configService.get('storage.upload.allowedMimeTypes', []),
+        maxSizeInMb: configService.get('storage.maxSizeInMb', 10),
+        defaultBucket: configService.get('storage.defaultBucket', 'akabotdn'),
+        allowedMimeTypes: configService.get('storage.allowedMimeTypes', []),
       }),
       inject: [ConfigService],
     },

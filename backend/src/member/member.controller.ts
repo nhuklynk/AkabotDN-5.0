@@ -252,7 +252,7 @@ export class MemberController {
     status: 404,
     description: 'Member not found',
   })
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id') id: string): Promise<{success: boolean, message: string }> {
     if (!validateUUID(id)) {
       throw new BadRequestException('Invalid UUID format for member ID');
     }

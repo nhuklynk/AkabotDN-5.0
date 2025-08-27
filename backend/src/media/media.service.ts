@@ -141,7 +141,6 @@ export class MediaService {
         fileName: file.originalname,
         fileSize: file.size,
         contentType: file.mimetype,
-        bucket: 'media',
         scope: 'uploads',
       });
 
@@ -202,7 +201,6 @@ export class MediaService {
         const uploadResult = await this.storageService.uploadFile({
           file: file.buffer,
           fileName: file.originalname,
-          bucket: 'media',
           scope: 'uploads',
         });
 

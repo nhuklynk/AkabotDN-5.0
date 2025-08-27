@@ -44,7 +44,6 @@ export class PartnerService {
           fileName: logoFile.originalname,
           contentType: logoFile.mimetype,
           fileSize: logoFile.size,
-          bucket: 'partners',
           scope: 'logos', 
         });
 
@@ -155,7 +154,6 @@ export class PartnerService {
           fileName: logoFile.originalname,
           contentType: logoFile.mimetype,
           fileSize: logoFile.size,
-          bucket: 'partners',
           scope: 'logos',
         });
 

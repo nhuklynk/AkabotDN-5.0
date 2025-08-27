@@ -88,6 +88,7 @@ export class PostController {
 
   @Public()
   @Get()
+  @Public()
   @ApiOperation({
     summary: 'Advanced search and filter posts with pagination',
     description:
