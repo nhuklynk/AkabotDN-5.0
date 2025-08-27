@@ -3,7 +3,8 @@
 import axios from "axios";
 
 export const apiUrl =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://54.179.191.75:8000/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "https://wufnl0mz6b.execute-api.ap-southeast-1.amazonaws.com/api";
 
 export const sseApiUrl = process.env.NEXT_PUBLIC_API_SSE_BASE_URL || apiUrl;
 
