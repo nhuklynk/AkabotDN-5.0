@@ -13,6 +13,7 @@
       "userAll": "Quản lý tất cả người dùng",
       "userMembersExperts": "Quản lý hội viên, chuyên gia",
       "resourceManagement": "Quản lý tài nguyên",
+      "partnerManagement": "Quản lý đối tác",
       "categoryManagement": "Quản lý danh mục",
       "postManagement": "Quản lý bài viết",
       "eventManagement": "Quản lý sự kiện, hoạt động",
@@ -307,6 +308,53 @@
       "editDesc": "Cập nhật thông tin và metadata của tài nguyên.",
       "createCta": "Thêm tài nguyên",
       "updateCta": "Cập nhật tài nguyên"
+    }
+  },
+  "partner": {
+    "title": "Quản lý đối tác",
+    "subtitle": "Quản lý các đối tác kinh doanh và hợp tác.",
+    "add": "Thêm đối tác",
+    "searchPlaceholder": "Tìm kiếm đối tác...",
+    "filterByType": "Lọc theo loại",
+    "all": "Tất cả",
+    "types": {
+      "strategic": "Chiến lược",
+      "gold": "Vàng",
+      "silver": "Bạc",
+      "bronze": "Đồng",
+      "associate": "Liên kết"
+    },
+    "countSummary": "{{filtered}} / {{total}} đối tác",
+    "table": {
+      "logo": "Logo",
+      "name": "Tên",
+      "description": "Mô tả",
+      "website": "Website",
+      "partnerType": "Loại",
+      "sortOrder": "Thứ tự",
+      "createdAt": "Tạo lúc",
+      "actions": "Thao tác"
+    },
+    "form": {
+      "name": "Tên đối tác",
+      "namePlaceholder": "Nhập tên đối tác",
+      "description": "Mô tả",
+      "descriptionPlaceholder": "Nhập mô tả đối tác",
+      "logo": "Logo",
+      "website": "Website",
+      "websitePlaceholder": "https://example.com",
+      "partnerType": "Loại đối tác",
+      "selectPartnerType": "Chọn loại đối tác",
+      "sortOrder": "Thứ tự sắp xếp",
+      "sortOrderPlaceholder": "Nhập thứ tự sắp xếp"
+    },
+    "dialog": {
+      "createTitle": "Thêm đối tác mới",
+      "editTitle": "Chỉnh sửa đối tác",
+      "createDesc": "Thêm đối tác kinh doanh mới.",
+      "editDesc": "Cập nhật thông tin đối tác.",
+      "createCta": "Thêm đối tác",
+      "updateCta": "Cập nhật đối tác"
     }
   },
   "user": {

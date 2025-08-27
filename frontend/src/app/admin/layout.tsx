@@ -18,6 +18,7 @@ import {
   ChevronRight,
   HelpCircle,
   CalendarDays,
+  Handshake,
 } from "lucide-react";
 import {
   Breadcrumb,
@@ -84,6 +85,11 @@ export default function AdminLayout({
         name: t("admin.nav.resourceManagement"),
         href: "/admin/resource-management",
         icon: FolderOpen,
+      },
+      {
+        name: t("admin.nav.partnerManagement"),
+        href: "/admin/partner-management",
+        icon: Handshake,
       },
       {
         name: t("admin.nav.categoryManagement"),

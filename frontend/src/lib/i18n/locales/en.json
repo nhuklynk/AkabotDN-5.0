@@ -13,6 +13,7 @@
       "userAll": "Manage all users",
       "userMembersExperts": "Manage members & experts",
       "resourceManagement": "Resource Management",
+      "partnerManagement": "Partner Management",
       "categoryManagement": "Category Management",
       "postManagement": "Post Management",
       "eventManagement": "Event Management",
@@ -304,6 +305,53 @@
       "editDesc": "Update resource information and metadata.",
       "createCta": "Add resource",
       "updateCta": "Update resource"
+    }
+  },
+  "partner": {
+    "title": "Partner Management",
+    "subtitle": "Manage business partners and collaborations.",
+    "add": "Add partner",
+    "searchPlaceholder": "Search partners...",
+    "filterByType": "Filter by type",
+    "all": "All",
+    "types": {
+      "strategic": "Strategic",
+      "gold": "Gold",
+      "silver": "Silver", 
+      "bronze": "Bronze",
+      "associate": "Associate"
+    },
+    "countSummary": "{{filtered}} / {{total}} partners",
+    "table": {
+      "logo": "Logo",
+      "name": "Name",
+      "description": "Description",
+      "website": "Website",
+      "partnerType": "Type",
+      "sortOrder": "Order",
+      "createdAt": "Created",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Partner name",
+      "namePlaceholder": "Enter partner name",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter partner description",
+      "logo": "Logo",
+      "website": "Website",
+      "websitePlaceholder": "https://example.com",
+      "partnerType": "Partner type",
+      "selectPartnerType": "Select partner type",
+      "sortOrder": "Sort order",
+      "sortOrderPlaceholder": "Enter sort order"
+    },
+    "dialog": {
+      "createTitle": "Add new partner",
+      "editTitle": "Edit partner",
+      "createDesc": "Add a new business partner.",
+      "editDesc": "Update partner information.",
+      "createCta": "Add partner",
+      "updateCta": "Update partner"
     }
   },
   "user": {

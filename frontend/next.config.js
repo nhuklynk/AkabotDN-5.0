@@ -34,7 +34,15 @@ const nextConfig = {
         port: "9000",
         pathname: "/**",
       },
+      // External domains
+      {
+        protocol: "https",
+        hostname: "example.com",
+        pathname: "/**",
+      },
     ],
+    // Completely disable image optimization for development to avoid MinIO signed URL issues
+    unoptimized: true,
   },
 };
 
