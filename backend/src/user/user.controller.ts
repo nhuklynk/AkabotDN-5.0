@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/user/create-user.dto';
@@ -21,7 +22,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { Public } from '../auth/decorators/public.decorator';
+import type { Request as ExpressRequest } from 'express';
 
 @ApiTags('users')
 @Controller('users')
@@ -53,6 +54,19 @@ export class UserController {
   })
   async findAll(): Promise<UserResponseDto[]> {
     return this.userService.findAll();
+  }
+
+  @Get('profile/me')
+  @ApiOperation({ summary: 'Get current authenticated user profile' })
+  @ApiResponse({
+    status: 200,
+    description: 'Current user profile',
+    type: UserResponseDto,
+  })
+  getMe(
+    @Request() req: ExpressRequest & { user: { id: string } }
+  ): Promise<UserResponseDto> {
+    return this.userService.findMe(req.user.id);
   }
 
   @Get('by-role/:roleId')

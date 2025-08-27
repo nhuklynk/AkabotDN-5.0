@@ -2,7 +2,6 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import {
@@ -15,22 +14,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-} from "@/features/auth/authSlice";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 type Role = "admin" | "editor" | "user";
 
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { mutate: login, loading, error } = useLogin();
 
   const redirectByRole = (role: Role) => {
     switch (role) {
@@ -45,26 +39,14 @@ function LoginForm() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    dispatch(loginStart());
     try {
-      // Mock auth: accept any non-empty email/pass; choose role by domain for demo
-      if (!email || !password)
-        throw new Error("Vui lòng nhập đầy đủ thông tin");
-      const role: Role = email.endsWith("@admin.com")
-        ? "admin"
-        : email.endsWith("@editor.com")
-        ? "editor"
-        : "user";
-      const user = { id: 1, name: email.split("@")[0], email, role } as any;
-      const token = "mock-token";
-      dispatch(loginSuccess({ user, token }));
+      if (!email || !password) throw new Error("Vui lòng nhập đầy đủ thông tin");
+      const res = await login({ email, password });
       const next = params.get("next");
-      router.replace(next || redirectByRole(role));
+      router.replace(next || redirectByRole((res.user.role as Role) || "user"));
     } catch (err: any) {
-      dispatch(loginFailure(err.message || "Đăng nhập thất bại"));
-    } finally {
-      setSubmitting(false);
+      // noop: hook already dispatches failure; local alert for UX
+      alert(err?.message || "Đăng nhập thất bại");
     }
   };
 
@@ -147,8 +129,11 @@ function LoginForm() {
               </Link>
             </div>
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Đang đăng nhập..." : "Đăng nhập"}
+          {error ? (
+            <p className="text-sm text-red-600">{error}</p>
+          ) : null}
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>
           <p className="text-sm text-muted-foreground text-center">
             Chưa có tài khoản?{" "}
