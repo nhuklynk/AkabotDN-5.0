@@ -171,17 +171,16 @@ export class StorageService {
   async getUploadPolicy(
     options: {
       expiresInSeconds?: number;
-    } & UploadOptions,
+    } & Omit<UploadOptions, 'bucket'>,
   ) {
     if (!options) {
       throw new BadRequestException('Upload options are required');
     }
     
-    const { bucket, scope, expiresInSeconds = 60 * 60 } = options;
+    const { scope, expiresInSeconds = 60 * 60 } = options;
     
-    if (!bucket) {
-      throw new BadRequestException('Bucket is required');
-    }
+    // Sử dụng default bucket từ config
+    const bucket = this.storageOptions.defaultBucket;
     
     // Ensure bucket exists before proceeding
     await this.ensureBucketExists(bucket);
@@ -214,16 +213,18 @@ export class StorageService {
       fileName: string;
       fileSize?: number;
       contentType?: string;
-    } & UploadOptions,
+    } & Omit<UploadOptions, 'bucket'>,
   ) {
     const {
-      bucket,
       scope,
       file,
       fileName,
       fileSize,
       contentType = 'application/octet-stream',
     } = options;
+    
+    // Sử dụng default bucket từ config
+    const bucket = this.storageOptions.defaultBucket;
     
     // Ensure bucket exists before proceeding
     await this.ensureBucketExists(bucket);

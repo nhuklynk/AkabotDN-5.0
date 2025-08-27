@@ -43,6 +43,7 @@ import {
   PostTypeDetailedStatisticsDto
 } from './dto/post-statistics.dto';
 import { PostType } from './entity/post.entity';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -86,6 +87,7 @@ export class PostController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({
     summary: 'Advanced search and filter posts with pagination',
     description:

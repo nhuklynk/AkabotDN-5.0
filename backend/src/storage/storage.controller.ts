@@ -37,9 +37,9 @@ export class StorageController {
   }
 
   @Post('upload-policy')
-  @ApiOperation({ summary: 'Get upload policy for direct S3 upload' })
+  @ApiOperation({ summary: 'Get upload policy for direct S3 upload (uses default bucket from config)' })
   async getUploadPolicy(
-    @Body() options: UploadOptions & { expiresInSeconds?: number },
+    @Body() options: Omit<UploadOptions, 'bucket'> & { expiresInSeconds?: number },
   ) {
     const result = await this.storageService.getUploadPolicy(options);
     return {
@@ -50,7 +50,7 @@ export class StorageController {
   }
 
   @Post('upload')
-  @ApiOperation({ summary: 'Upload file directly to storage' })
+  @ApiOperation({ summary: 'Upload file directly to storage (uses default bucket from config)' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
@@ -62,13 +62,12 @@ export class StorageController {
       }),
     )
     file: Express.Multer.File,
-    @Body() uploadOptions: UploadOptions,
+    @Body() uploadOptions: Omit<UploadOptions, 'bucket'>,
   ) {
-    const { bucket, scope } = uploadOptions;
+    const { scope } = uploadOptions;
 
     const arn = await this.storageService.uploadFile({
       file: file.buffer,
-      bucket,
       scope,
       fileName: file.originalname,
       fileSize: file.size,
@@ -79,7 +78,7 @@ export class StorageController {
       success: true,
       data: {
         arn,
-        bucket,
+        bucket: this.storageService['storageOptions'].defaultBucket,
         scope,
         fileName: file.originalname,
         fileSize: file.size,
