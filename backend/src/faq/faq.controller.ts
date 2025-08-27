@@ -25,8 +25,9 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
-@ApiTags('faqs') 
+@ApiTags('faqs')
 @Controller('faqs')
 export class FaqController {
   constructor(private readonly faqService: FaqService) {}
@@ -39,6 +40,7 @@ export class FaqController {
     return this.faqService.create(createFaqDto);
   }
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all FAQs with search and pagination' })
   @ApiQuery({ name: 'search', required: false, description: 'Search term for FAQ content' })
@@ -49,6 +51,7 @@ export class FaqController {
     return this.faqService.searchAndPaginate(query);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get FAQ by ID' })
   @ApiParam({ name: 'id', description: 'FAQ ID' })

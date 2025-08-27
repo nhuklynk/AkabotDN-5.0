@@ -30,6 +30,7 @@ import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('tags')
 @Controller('tags')
@@ -63,6 +64,7 @@ export class TagController {
     return this.tagService.create(createTagDto);
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary: 'Advanced search and filter tags with pagination',
@@ -150,6 +152,7 @@ export class TagController {
     );
   }
 
+  @Public()
   @Get('slug/:slug')
   @ApiOperation({
     summary: 'Get tag by slug',
@@ -174,6 +177,7 @@ export class TagController {
     return this.tagService.findBySlug(slug);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary: 'Get tag by ID',

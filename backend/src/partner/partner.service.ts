@@ -122,33 +122,6 @@ export class PartnerService {
     return await this.mapPartnerToResponseDto(partner);
   }
 
-  async update(id: string, updatePartnerDto: UpdatePartnerFormDataDto): Promise<PartnerResponseDto> {
-    const partner = await this.partnerRepository.findOne({
-      where: { id: id },
-    });
-
-    if (!partner) {
-      throw new NotFoundException(`Partner with ID ${id} not found`);
-    }
-
-    if (updatePartnerDto.name && updatePartnerDto.name !== partner.name) {
-      const existingPartner = await this.partnerRepository.findOne({
-        where: { name: updatePartnerDto.name },
-      });
-
-      if (existingPartner) {
-        throw new ConflictException('Partner with this name already exists');
-      }
-    }
-
-    await this.partnerRepository.update(id, updatePartnerDto);
-    const updatedPartner = await this.partnerRepository.findOne({
-      where: { id: id },
-    });
-
-    return await this.mapPartnerToResponseDto(updatedPartner);
-  }
-
   async updateWithFormData(
     id: string,
     updatePartnerFormDataDto: UpdatePartnerFormDataDto,

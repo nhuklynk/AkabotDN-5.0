@@ -5,8 +5,4 @@ export class UpdateFaqDto {
   @IsOptional()
   @IsString()
   content?: string;
-
-  @IsOptional()
-  @IsUUID()
-  parent_id?: string;
 }

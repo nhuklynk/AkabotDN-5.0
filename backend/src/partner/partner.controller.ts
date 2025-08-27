@@ -29,6 +29,7 @@ import {
   ApiQuery,
   ApiConsumes,
 } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('partners')
 @ApiTags('partners')
@@ -59,6 +60,7 @@ export class PartnerController {
     return this.partnerService.createWithFormData(createPartnerFormDataDto, logo);
   }
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all partners with search and pagination' })
   @ApiQuery({ name: 'search', required: false, description: 'Search term for partner name or description' })
@@ -70,6 +72,7 @@ export class PartnerController {
     return this.partnerService.searchAndPaginate(query);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get partner by ID' })
   @ApiParam({ name: 'id', description: 'Partner ID' })
@@ -79,17 +82,6 @@ export class PartnerController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update partner by ID' })
-  @ApiParam({ name: 'id', description: 'Partner ID' })
-  @ApiResponse({ status: 200, description: 'Partner updated successfully', type: PartnerResponseDto })
-  async update(
-    @Param('id') id: string,
-    @Body() updatePartnerDto: UpdatePartnerFormDataDto,
-  ): Promise<PartnerResponseDto> {
-    return this.partnerService.update(id, updatePartnerDto);
-  }
-
-  @Patch(':id/form-data')
   @UseInterceptors(FileInterceptor('logo'))
   @ApiOperation({ 
     summary: 'Update partner with form data and optional file upload',

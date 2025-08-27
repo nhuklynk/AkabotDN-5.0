@@ -39,6 +39,7 @@ import {
   EventCategoryStatisticsDto,
   EventTagStatisticsDto
 } from './dto/event-statistics.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('events')
 @Controller('events')
@@ -73,6 +74,7 @@ export class EventController {
     return this.eventService.create(createEventDto, thumbnail);
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary: 'Get all events',
@@ -95,6 +97,7 @@ export class EventController {
     return this.eventService.findAll(query);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary: 'Get an event by ID',
@@ -116,6 +119,7 @@ export class EventController {
     return this.eventService.findOne(id);
   }
 
+  @Public()
   @Get('tag/:tagId')
   @ApiOperation({
     summary: 'Get events by tag ID',
@@ -144,6 +148,7 @@ export class EventController {
     return this.eventService.findByTagId(tagId, query);
   }
 
+  @Public()
   @Get('category/:categoryId')
   @ApiOperation({
     summary: 'Get events by category ID',
