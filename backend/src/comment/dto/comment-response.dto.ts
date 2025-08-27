@@ -1,0 +1,41 @@
+import { Expose, Type } from 'class-transformer';
+import { Status } from '../../config/base-audit.entity';
+
+export class CommentResponseDto {
+  @Expose()
+  id: string;
+
+  @Expose()
+  content: string;
+
+  @Expose()
+  status: Status;
+
+  @Expose()
+  created_at: Date;
+
+  @Expose()
+  modified_at: Date;
+
+  @Expose()
+  created_by: string;
+
+  @Expose()
+  modified_by: string;
+
+  @Expose()
+  @Type(() => Object)
+  post?: any;
+
+  @Expose()
+  @Type(() => Object)
+  parent?: any;
+
+  @Expose()
+  @Type(() => Array)
+  replies?: any[];
+
+  constructor(partial: Partial<CommentResponseDto>) {
+    Object.assign(this, partial);
+  }
+}

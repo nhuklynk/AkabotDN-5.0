@@ -1,0 +1,22 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostService } from './post.service';
+import { Post } from './entity/post.entity';
+import { Category } from '../category/entity/category.entity';
+import { PostController } from './post.controller';
+import { Tag } from 'src/tag/entity/tag.entity';
+import { User } from '../user/entity/user.entity';
+import { Comment } from '../comment/entity/comment.entity';
+import { CommonModule } from '../common/common.module';
+import { StorageModule } from 'src/storage';
+import { MediaModule } from 'src/media/media.module';
+import { UserModule } from 'src/user/user.module';
+import { PostViewModule } from 'src/post-view/post-view.module';
+
+@Module({
+  imports: [TypeOrmModule.forFeature([Post, Category, Tag, User, Comment]), CommonModule, StorageModule, MediaModule, UserModule, PostViewModule],
+  controllers: [PostController],
+  providers: [PostService],
+  exports: [PostService],
+})
+export class PostModule {}

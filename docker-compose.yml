@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=app
+      - POSTGRES_DB=app
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - TAILWIND_MODE=watch
+      # Uncomment and adjust if your frontend needs to call the backend by service name
+      # - NEXT_PUBLIC_API_BASE_URL=http://backend:4000
+    command: sh -c "npm ci && npm run dev -- -H 0.0.0.0"
+    depends_on:
+      - backend
+
+  backend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=app
+      - DB_PASSWORD=app
+      - DB_NAME=app
+      - DB_SSL=false
+      - DATABASE_URL=postgres://app:app@postgres:5432/app
+    command: sh -c "npm ci && npm run start:dev"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  frontend_node_modules:
+  backend_node_modules:
+  db_data:
+
+
