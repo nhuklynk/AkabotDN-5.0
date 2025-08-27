@@ -118,6 +118,10 @@ export class UserService {
     return plainToClass(UserResponseDto, user);
   }
 
+  async findMe(id: string): Promise<UserResponseDto> {
+    return this.findOne(id);
+  }
+
   async findByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email: email },

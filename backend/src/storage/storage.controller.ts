@@ -167,44 +167,13 @@ export class StorageController {
         throw new BadRequestException(`ARN must be a string, got: ${typeof body.arn}`);
       }
 
+      // Gọi service để xóa file và xử lý logic
+      const result = await this.storageService.deleteSingleFile(body.arn);
+      
       return {
         success: true,
-        data: {
-          arn: body.arn,
-        },
+        data: result,
         message: 'File deleted successfully' 
-      };
-    } catch (error: any) {
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-      
-      throw new BadRequestException(`Failed to delete file: ${error.message || 'Unknown error'}`);
-    }
-  }
-
-  @Delete('file/delete-query')
-  @ApiOperation({ summary: 'Delete single file by ARN (query parameter)' })
-  async deleteFileQuery(@Query('arn') arn: string) {
-    try {
-      if (!arn) {
-        throw new BadRequestException('ARN is required in query parameter');
-      }
-      
-      if (typeof arn !== 'string') {
-        throw new BadRequestException(`ARN must be a string, got: ${typeof arn}`);
-      }
-      
-      const results = await this.storageService.deleteFiles(arn);
-      
-      return {
-        success: true,
-        data: {
-          arn,
-          results,
-          deleted: results[0]?.status === 'fulfilled',
-        },
-        message: results[0]?.status === 'fulfilled' ? 'File deleted successfully' : 'Failed to delete file'
       };
     } catch (error: any) {
       if (error instanceof BadRequestException) {

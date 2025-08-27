@@ -137,13 +137,15 @@ export class MediaService {
       const uploadResult = await this.storageService.uploadFile({
         file: file.buffer,
         fileName: file.originalname,
+        fileSize: file.size,
+        contentType: file.mimetype,
         bucket: 'media',
         scope: 'uploads',
       });
 
       const media = this.mediaRepository.create({
         file_name: file.originalname,
-        file_path: uploadResult || file.originalname,
+        file_path: uploadResult,
         mime_type: file.mimetype,
         file_size: file.size,
         media_type: createMediaFormDataDto.media_type,

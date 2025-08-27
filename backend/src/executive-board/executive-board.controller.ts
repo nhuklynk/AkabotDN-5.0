@@ -16,6 +16,7 @@ import { CreateExecutiveBoardDto } from './dto/create-executive-board.dto';
 import { UpdateExecutiveBoardDto } from './dto/update-executive-board.dto';
 import { ExecutiveBoardResponseDto } from './dto/executive-board-response.dto';
 import { ExecutiveBoardQueryDto } from './dto/executive-board-query.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('executive-board')
 @Controller('executive-board')
@@ -46,6 +47,7 @@ export class ExecutiveBoardController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ 
     summary: 'Get executive board list',
     description: 'Get all executive board members with optional filters'

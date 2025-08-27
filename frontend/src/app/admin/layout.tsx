@@ -35,6 +35,7 @@ import { RootState } from "@/store";
 import { filterNavigation, RoleKey } from "@/lib/rbac";
 import { useLocale } from "@/hooks/useLocale";
 import { clearStuckOverlays } from "@/lib/dialog-utils";
+import { useProfile } from "@/hooks/auth/useProfile";
 
 type NavItem = {
   name: string;
@@ -50,6 +51,13 @@ export default function AdminLayout({
 }) {
   const { t } = useLocale();
   const userRole = (useSelector((s: RootState) => s.auth.user?.role) || "guest") as RoleKey;
+  const { data: profile } = useProfile();
+  const apiRole = React.useMemo(() => {
+    const r = (profile?.roles?.[0]?.name || "").toString().toLowerCase();
+    const allowed: RoleKey[] = ["admin", "moderator", "member", "expert", "guest"];
+    return (allowed.includes(r as RoleKey) ? (r as RoleKey) : undefined);
+  }, [profile]);
+  const effectiveRole = apiRole || userRole;
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const toggleGroup = (key: string) => setOpenGroups((p) => ({ ...p, [key]: !p[key] }));
   const searchParams = useSearchParams();
@@ -202,7 +210,7 @@ export default function AdminLayout({
 
           {/* Navigation */}
           <nav className="flex-1 space-y-2 p-4">
-            {filterNavigation(navigation, userRole).map((item) => {
+            {filterNavigation(navigation, effectiveRole).map((item) => {
               const isActive = pathname === item.href;
               if (item.children && !sidebarCollapsed) {
                 const open = openGroups[item.href] ?? true;
