@@ -51,3 +51,63 @@ export function filterNavigation<T extends { href: string }>(
   const rules = roleToAllowedRoutes[role] || roleToAllowedRoutes.guest;
   return items.filter((i) => rules.some((r) => i.href === r));
 }
+
+// ---------- Role helpers (CSR-friendly) ----------
+
+export function normalizeRole(input?: string | null): RoleKey {
+  const v = (input || "").toString().toLowerCase();
+  const allowed: RoleKey[] = ["admin", "moderator", "member", "expert", "guest"];
+  return (allowed.includes(v as RoleKey) ? (v as RoleKey) : "guest");
+}
+
+export function roleFromProfile(profile?: { roles?: { name?: string }[] } | null): RoleKey {
+  const name = profile?.roles?.[0]?.name;
+  return normalizeRole(name);
+}
+
+export function pickEffectiveRole(profileRole?: RoleKey, reduxRole?: RoleKey): RoleKey {
+  return (profileRole && profileRole !== "guest") ? profileRole : (reduxRole || "guest");
+}
+
+// Optional: fallback from localStorage token (if app stores one)
+type JwtPayload = { role?: string } & Record<string, unknown>;
+
+function base64UrlDecode(input: string): string {
+  const base64 = input.replace(/-/g, "+").replace(/_/g, "/");
+  try {
+    return decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+  } catch {
+    return "";
+  }
+}
+
+export function decodeJwt(token: string): JwtPayload | null {
+  if (!token || token.split(".").length < 2) return null;
+  const payloadPart = token.split(".")[1];
+  const json = base64UrlDecode(payloadPart);
+  try {
+    return JSON.parse(json) as JwtPayload;
+  } catch {
+    return null;
+  }
+}
+
+export function roleFromToken(token?: string | null): RoleKey {
+  const payload = token ? decodeJwt(token) : null;
+  return normalizeRole(payload?.role as string | undefined);
+}
+
+export function getCurrentRoleFromClientStorage(): RoleKey {
+  if (typeof window === "undefined") return "guest";
+  try {
+    const token = localStorage.getItem("token");
+    return roleFromToken(token);
+  } catch {
+    return "guest";
+  }
+}

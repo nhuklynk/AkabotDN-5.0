@@ -18,6 +18,10 @@ import {
   ChevronRight,
   HelpCircle,
   CalendarDays,
+  ChevronDown,
+  User,
+  Settings,
+  LogOut,
 } from "lucide-react";
 import {
   Breadcrumb,
@@ -35,6 +39,11 @@ import { RootState } from "@/store";
 import { filterNavigation, RoleKey } from "@/lib/rbac";
 import { useLocale } from "@/hooks/useLocale";
 import { clearStuckOverlays } from "@/lib/dialog-utils";
+import { useProfile } from "@/hooks/auth/useProfile";
+import { useDispatch } from "react-redux";
+import { logout } from "@/features/auth/authSlice";
+import LogoutButton from "@/components/LogoutButton";
+import { useLogout } from "@/hooks/auth/useLogout";
 
 type NavItem = {
   name: string;
@@ -49,9 +58,64 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const { t } = useLocale();
-  const userRole = (useSelector((s: RootState) => s.auth.user?.role) || "guest") as RoleKey;
+  const dispatch = useDispatch();
+  const userRole = (useSelector((s: RootState) => s.auth.user?.role) ||
+    "guest") as RoleKey;
+  const {
+    data: profile,
+    error: profileError,
+    isLoading: profileLoading,
+  } = useProfile();
+
+  const logoutMutation = useLogout();
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileDropdownOpen &&
+        !(event.target as Element).closest(".profile-dropdown")
+      ) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && profileDropdownOpen) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [profileDropdownOpen]);
+
+  // Get role from profile API - this is the source of truth
+  const effectiveRole = React.useMemo(() => {
+    if (profile?.roles && profile.roles.length > 0) {
+      const roleName = profile.roles[0].name?.toLowerCase();
+      const allowed: RoleKey[] = [
+        "admin",
+        "moderator",
+        "member",
+        "expert",
+        "guest",
+      ];
+      if (allowed.includes(roleName as RoleKey)) {
+        return roleName as RoleKey;
+      }
+    }
+    // Fallback to Redux role if profile doesn't have roles
+    return userRole;
+  }, [profile, userRole]);
+
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
-  const toggleGroup = (key: string) => setOpenGroups((p) => ({ ...p, [key]: !p[key] }));
+  const toggleGroup = (key: string) =>
+    setOpenGroups((p) => ({ ...p, [key]: !p[key] }));
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -69,7 +133,10 @@ export default function AdminLayout({
         icon: Users,
         children: [
           { name: t("admin.nav.userAll"), href: "/admin/user-management" },
-          { name: t("admin.nav.userMembersExperts"), href: "/admin/user-management?tab=members-experts" },
+          {
+            name: t("admin.nav.userMembersExperts"),
+            href: "/admin/user-management?tab=members-experts",
+          },
         ],
       },
       {
@@ -168,7 +235,12 @@ export default function AdminLayout({
               sidebarCollapsed ? "lg:justify-center" : "justify-between"
             )}
           >
-            <div className={cn("flex items-center gap-2", sidebarCollapsed && "lg:gap-0")}> 
+            <div
+              className={cn(
+                "flex items-center gap-2",
+                sidebarCollapsed && "lg:gap-0"
+              )}
+            >
               <div className="h-8 w-8 rounded  flex items-center justify-center overflow-hidden">
                 <img
                   src="/icons/logo.png"
@@ -202,19 +274,29 @@ export default function AdminLayout({
 
           {/* Navigation */}
           <nav className="flex-1 space-y-2 p-4">
-            {filterNavigation(navigation, userRole).map((item) => {
+            {filterNavigation(navigation, effectiveRole).map((item) => {
               const isActive = pathname === item.href;
               if (item.children && !sidebarCollapsed) {
                 const open = openGroups[item.href] ?? true;
                 const isChildActive = (childHref: string) => {
                   if (!mounted) return false;
-                  const isMembersExperts = childHref.includes("members-experts");
+                  const isMembersExperts =
+                    childHref.includes("members-experts");
                   const tab = searchParams?.get("tab");
-                  if (isMembersExperts) return tab === "members-experts" && pathname === "/admin/user-management";
+                  if (isMembersExperts)
+                    return (
+                      tab === "members-experts" &&
+                      pathname === "/admin/user-management"
+                    );
                   // default child (all users) active when not members-experts
-                  return pathname === "/admin/user-management" && tab !== "members-experts";
+                  return (
+                    pathname === "/admin/user-management" &&
+                    tab !== "members-experts"
+                  );
                 };
-                const hasActiveChild = item.children.some((c) => isChildActive(c.href));
+                const hasActiveChild = item.children.some((c) =>
+                  isChildActive(c.href)
+                );
                 return (
                   <div key={item.name} className="space-y-1">
                     <button
@@ -227,9 +309,21 @@ export default function AdminLayout({
                       )}
                       onClick={() => toggleGroup(item.href)}
                     >
-                      {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
-                      <span className="flex-1 text-left" suppressHydrationWarning>{item.name}</span>
-                      <ChevronRight className={cn("h-4 w-4 transition-transform", open && "rotate-90")} />
+                      {item.icon && (
+                        <item.icon className="h-5 w-5 flex-shrink-0" />
+                      )}
+                      <span
+                        className="flex-1 text-left"
+                        suppressHydrationWarning
+                      >
+                        {item.name}
+                      </span>
+                      <ChevronRight
+                        className={cn(
+                          "h-4 w-4 transition-transform",
+                          open && "rotate-90"
+                        )}
+                      />
                     </button>
                     {open && (
                       <div className="ml-9 mt-1 space-y-1">
@@ -239,7 +333,8 @@ export default function AdminLayout({
                             href={child.href}
                             className={cn(
                               "block rounded-md px-3 py-1.5 text-sm text-sidebar-foreground hover:bg-sidebar-primary/80 hover:text-sidebar-primary-foreground transition-colors",
-                              isChildActive(child.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                              isChildActive(child.href) &&
+                                "bg-sidebar-accent text-sidebar-accent-foreground"
                             )}
                             onClick={() => setSidebarOpen(false)}
                           >
@@ -253,7 +348,10 @@ export default function AdminLayout({
               }
               if (item.children && sidebarCollapsed) {
                 const tab = mounted ? searchParams?.get("tab") : null;
-                const hasActiveChild = mounted && (pathname === "/admin/user-management" && (tab === "members-experts" || tab === null));
+                const hasActiveChild =
+                  mounted &&
+                  pathname === "/admin/user-management" &&
+                  (tab === "members-experts" || tab === null);
                 return (
                   <div key={item.name} className="relative group">
                     <Link
@@ -271,7 +369,12 @@ export default function AdminLayout({
                     </Link>
                     <div className="absolute left-full top-0 ml-3 hidden group-hover:block z-50">
                       <div className="min-w-[200px] rounded-md border border-border bg-popover p-2 shadow-lg">
-                        <div className="px-2 pb-2 text-xs font-medium text-muted-foreground" suppressHydrationWarning>{item.name}</div>
+                        <div
+                          className="px-2 pb-2 text-xs font-medium text-muted-foreground"
+                          suppressHydrationWarning
+                        >
+                          {item.name}
+                        </div>
                         <div className="space-y-1">
                           {item.children.map((child) => (
                             <Link
@@ -279,7 +382,12 @@ export default function AdminLayout({
                               href={child.href}
                               className={cn(
                                 "block rounded-md px-3 py-1.5 text-sm text-sidebar-foreground hover:bg-sidebar-primary/80 hover:text-sidebar-primary-foreground",
-                                mounted && (child.href.includes("members-experts") ? tab === "members-experts" : tab !== "members-experts") && pathname === "/admin/user-management" && "bg-sidebar-accent text-sidebar-accent-foreground"
+                                mounted &&
+                                  (child.href.includes("members-experts")
+                                    ? tab === "members-experts"
+                                    : tab !== "members-experts") &&
+                                  pathname === "/admin/user-management" &&
+                                  "bg-sidebar-accent text-sidebar-accent-foreground"
                               )}
                               onClick={() => setSidebarOpen(false)}
                             >
@@ -310,11 +418,16 @@ export default function AdminLayout({
                 >
                   {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
                   {!sidebarCollapsed && (
-                    <span className="lg:block" suppressHydrationWarning>{item.name}</span>
+                    <span className="lg:block" suppressHydrationWarning>
+                      {item.name}
+                    </span>
                   )}
 
                   {sidebarCollapsed && (
-                    <div className="absolute left-full ml-6 px-3 py-2 bg-popover text-popover-foreground text-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 hidden lg:block border border-border" suppressHydrationWarning>
+                    <div
+                      className="absolute left-full ml-6 px-3 py-2 bg-popover text-popover-foreground text-sm rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 hidden lg:block border border-border"
+                      suppressHydrationWarning
+                    >
                       {item.name}
                     </div>
                   )}
@@ -376,7 +489,117 @@ export default function AdminLayout({
               </Breadcrumb>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            {/* User Profile Info with Dropdown */}
+            {profileLoading ? (
+              <div className="flex items-center gap-3 px-3 py-2 bg-muted rounded-lg">
+                <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+                <div className="hidden md:block space-y-1">
+                  <div className="h-4 w-24 bg-muted animate-pulse rounded" />
+                  <div className="h-3 w-32 bg-muted animate-pulse rounded" />
+                </div>
+              </div>
+            ) : profile && profile.full_name ? (
+              <div className="relative profile-dropdown">
+                <button
+                  onClick={() => {
+                    console.log("Profile button clicked!");
+                    setProfileDropdownOpen(!profileDropdownOpen);
+                  }}
+                  className="relative p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+                >
+                  <img
+                    src={profile.avatar || "/icons/avatar-default.svg"}
+                    alt={profile.full_name || "User avatar"}
+                    className="w-6 h-6 rounded-full object-cover border border-white shadow-sm hover:shadow-md transition-shadow"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = "none";
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div class="w-6 h-6 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center shadow-sm">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="m 8 1 c -1.65625 0 -3 1.34375 -3 3 s 1.34375 3 3 3 s 3 -1.34375 3 -3 s -1.34375 -3 -3 -3 z m -1.5 7 c -2.492188 0 -4.5 2.007812 -4.5 4.5 v 0.5 c 0 1.109375 0.890625 2 2 2 h 8 c 1.109375 0 2 -0.890625 2 -2 v -0.5 c 0 -2.492188 -2.007812 -4.5 -4.5 -4.5 z m 0 0" fill="#6b7280"/>
+                            </svg>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                </button>
+
+                {profileDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-3 w-72 bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 mb-4">
+                        {profile.avatar ? (
+                          <img
+                            src={profile.avatar}
+                            alt={profile.full_name}
+                            className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-lg"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center shadow-lg">
+                            <User className="w-8 h-8 text-gray-500" />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-lg font-bold text-gray-900 truncate">
+                            {profile.full_name}
+                          </p>
+                          <p className="text-sm text-gray-600 truncate">
+                            {profile.email}
+                          </p>
+                          {profile.roles && profile.roles.length > 0 && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <div className="px-2 py-1 bg-blue-100 rounded-full">
+                                <p className="text-xs text-blue-700 font-semibold capitalize">
+                                  {profile.roles[0].name}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="border-t border-gray-100 my-4"></div>
+                      <button
+                        onClick={() => {
+                          logoutMutation.mutate();
+                          setProfileDropdownOpen(false);
+                        }}
+                        disabled={logoutMutation.isPending}
+                        className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 group disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
+                          {logoutMutation.isPending ? (
+                            <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <LogOut className="h-4 w-4" />
+                          )}
+                        </div>
+                        <span>
+                          {logoutMutation.isPending
+                            ? "Đang đăng xuất..."
+                            : "Đăng xuất"}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+            {/* Debug Profile Info */}
+            {(() => {
+              console.log("🔍 Debug Profile:", {
+                profile,
+                profileLoading,
+                profileError,
+              });
+              return null;
+            })()}
+
             <LanguageSwitcher compact />
             {/* Hidden emergency button to clear stuck overlays */}
             <button

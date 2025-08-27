@@ -298,6 +298,24 @@ export class StorageService {
     return Promise.allSettled(deletePromises);
   }
 
+  async deleteSingleFile(arn: string) {
+    try {
+      const results = await this.deleteFiles(arn);
+      
+      if (results[0]?.status === 'rejected') {
+        throw new Error(`Failed to delete file: ${results[0].reason}`);
+      }
+
+      return {
+        arn,
+        deleted: true,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      throw new Error(`Error deleting file: ${error.message}`);
+    }
+  }
+
   /**
    * Download file by ARN with direct path
    */

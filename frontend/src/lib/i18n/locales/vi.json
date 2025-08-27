@@ -609,10 +609,26 @@
         "sunday": "Chủ Nhật: Nghỉ"
       }
     },
-    "quickContact": {
-      "title": "Liên hệ nhanh",
-      "call": "Gọi điện ngay",
-      "email": "Gửi email"
+    "newsletter": {
+      "title": "Đăng ký nhận tin",
+      "email": "Email",
+      "fullName": "Họ và tên",
+      "phone": "Số điện thoại",
+      "content": "Tin nhắn",
+      "emailPlaceholder": "john@example.com",
+      "fullNamePlaceholder": "Nguyễn Văn A",
+      "phonePlaceholder": "0123456789",
+      "contentPlaceholder": "Nhập tin nhắn hoặc thông tin bổ sung",
+      "subscribeButton": "Đăng ký nhận tin",
+      "errors": {
+        "fullNameRequired": "Họ và tên là bắt buộc",
+        "fullNameMinLength": "Họ và tên phải có ít nhất 2 ký tự",
+        "phoneRequired": "Số điện thoại là bắt buộc",
+        "phoneInvalid": "Số điện thoại chỉ được chứa số",
+        "phoneMinLength": "Số điện thoại phải có ít nhất 10 ký tự",
+        "emailRequired": "Email là bắt buộc",
+        "emailInvalid": "Vui lòng nhập email hợp lệ"
+      }
     },
     "map": {
       "title": "Vị trí văn phòng",
