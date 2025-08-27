@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { PartnerType } from '../entity/partner.entity';
 
 export class PartnerResponseDto {
@@ -9,13 +9,23 @@ export class PartnerResponseDto {
   name: string;
 
   @Expose()
-  logo: string;
+  description?: string;
 
   @Expose()
-  website: string;
+  logo?: string;
+
+  @Expose()
+  @Transform(({ value }) => value || null)
+  logo_url?: string | null;
+
+  @Expose()
+  website?: string;
 
   @Expose()
   partner_type: PartnerType;
+
+  @Expose()
+  sort_order: number;
 
   @Expose()
   created_at: Date;
@@ -28,6 +38,9 @@ export class PartnerResponseDto {
 
   @Expose()
   modified_by: string;
+
+  @Expose()
+  status: string;
 
   constructor(partial: Partial<PartnerResponseDto>) {
     Object.assign(this, partial);

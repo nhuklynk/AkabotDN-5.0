@@ -1,5 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { Status } from '../../config/base-audit.entity';
+import { UserResponseDto } from 'src/user/dto/user/user-response.dto';
+import { CommentType } from '../entity/comment.entity';
 
 export class CommentResponseDto {
   @Expose()
@@ -7,6 +9,12 @@ export class CommentResponseDto {
 
   @Expose()
   content: string;
+
+  @Expose()
+  comment_type: CommentType;
+
+  @Expose()
+  comment_type_id: string;
 
   @Expose()
   status: Status;
@@ -28,14 +36,15 @@ export class CommentResponseDto {
   post?: any;
 
   @Expose()
-  @Type(() => Object)
-  parent?: any;
+  @Type(() => CommentResponseDto)
+  replies: CommentResponseDto[];
 
   @Expose()
-  @Type(() => Array)
-  replies?: any[];
+  @Type(() => UserResponseDto)
+  author?: UserResponseDto;
 
   constructor(partial: Partial<CommentResponseDto>) {
     Object.assign(this, partial);
+    this.replies = this.replies || [];
   }
 }

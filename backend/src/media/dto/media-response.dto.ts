@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Type, Transform } from 'class-transformer';
 import { MediaType } from '../entity/media.entity';
 
 export class MediaResponseDto {
@@ -10,6 +10,10 @@ export class MediaResponseDto {
 
   @Expose()
   file_path: string;
+
+  @Expose()
+  @Transform(({ value }) => value || null)
+  media_url?: string | null;
 
   @Expose()
   mime_type: string;

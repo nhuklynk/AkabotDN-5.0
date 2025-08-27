@@ -30,7 +30,7 @@ export class CategoryQueryDto extends PaginationQueryDto {
 
   @ApiPropertyOptional({
     description: 'Filter by status',
-    enum: ['active', 'inactive', 'deleted', 'draft', 'published', 'archived'],
+    enum: ['active', 'inactive', 'draft', 'published', 'archived'],
     example: 'active',
   })
   @IsOptional()

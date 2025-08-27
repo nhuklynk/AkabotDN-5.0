@@ -18,9 +18,9 @@ export class Tag extends BaseAuditEntity {
   @Column({ nullable: true, name: 'description' })
   description?: string;
 
-  @ManyToMany(() => Post, (post) => post.tags)
+  @ManyToMany(() => Post, (post) => post.tags, { nullable: true, onDelete: 'CASCADE' })
   posts: Post[];
 
-  @ManyToMany(() => Event, (event) => event.tags)
+  @ManyToMany(() => Event, (event) => event.tags, { nullable: true, onDelete: 'CASCADE' })
   events: Event[];
 }

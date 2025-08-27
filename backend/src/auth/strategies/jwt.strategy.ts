@@ -13,17 +13,25 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
           const authHeader = request?.headers?.authorization;
+          
           if (authHeader && authHeader.startsWith('Bearer ')) {
-            return authHeader.substring(7);
+            const token = authHeader.substring(7);
+            return token;
           }
+          this.logger.log(`JWT Strategy - No token in Authorization header`);
           return null;
         },
         (request) => {
           const allowCookieAuth = String(request?.headers?.['x-use-cookie-auth'] || '').toLowerCase() === 'true';
+          
           if (!allowCookieAuth) {
+            this.logger.log(`JWT Strategy - Cookie auth not allowed`);
             return null;
           }
-          return request?.cookies?.access_token;
+          
+          const cookieToken = request?.cookies?.access_token;
+          this.logger.log(`JWT Strategy - Cookie token:`, cookieToken ? `${cookieToken.substring(0, 20)}...` : 'null');
+          return cookieToken;
         },
       ]),
       ignoreExpiration: false,
@@ -33,21 +41,36 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(request: any, payload: JwtPayloadDto) {
-    if (!payload.sub || !payload.email) {
-      throw new UnauthorizedException('Invalid token payload');
-    }
-
-    if (payload.type !== 'access') {
-      throw new UnauthorizedException('Invalid token type');
-    }
-
-    this.logger.log(`Token validated for user: ${payload.email}`);
+    this.logger.log(`JWT Strategy - validate() called`);
+    this.logger.log(`JWT Strategy - Request headers:`, request?.headers);
+    this.logger.log(`JWT Strategy - Request cookies:`, request?.cookies);
+    this.logger.log(`JWT Strategy - Payload received:`, payload);
     
-    return {
-      id: payload.sub,
-      email: payload.email,
-      username: payload.username,
-      role: payload.role || 'unknown',
-    };
+    try {
+      if (!payload.sub || !payload.email) {
+        this.logger.error(`JWT Strategy - Invalid payload: missing sub or email`);
+        throw new UnauthorizedException('Invalid token payload');
+      }
+
+      if (payload.type !== 'access') {
+        this.logger.error(`JWT Strategy - Invalid token type: ${payload.type}`);
+        throw new UnauthorizedException('Invalid token type');
+      }
+
+      this.logger.log(`JWT Strategy - Token validated for user: ${payload.email}`);
+      
+      const userData = {
+        id: payload.sub,
+        email: payload.email,
+        username: payload.username,
+        role: payload.role || 'unknown',
+      };
+      
+      this.logger.log(`JWT Strategy - Returning user data:`, userData);
+      return userData;
+    } catch (error) {
+      this.logger.error(`JWT Strategy - Error in validate():`, error.message);
+      throw error;
+    }
   }
 }

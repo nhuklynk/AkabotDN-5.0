@@ -26,26 +26,23 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, loading, error } = useLogin();
 
-  const redirectByRole = (role: Role) => {
-    switch (role) {
-      case "admin":
-        return "/admin/user-management";
-      case "editor":
-        return "/admin/post-management";
-      default:
-        return "/admin";
-    }
-  };
-
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (!email || !password) throw new Error("Vui lòng nhập đầy đủ thông tin");
+      if (!email || !password)
+        throw new Error("Vui lòng nhập đầy đủ thông tin");
+      
       const res = await login({ email, password });
+      console.log('Login successful:', res);
+      
+      // After successful login, redirect to admin page
       const next = params.get("next");
-      router.replace(next || redirectByRole((res.user.role as Role) || "user"));
+      const redirectPath = next || "/admin";
+      console.log('Redirecting to:', redirectPath);
+      
+      router.replace(redirectPath);
     } catch (err: any) {
-      // noop: hook already dispatches failure; local alert for UX
+      console.error('Login error:', err);
       alert(err?.message || "Đăng nhập thất bại");
     }
   };
@@ -129,9 +126,7 @@ function LoginForm() {
               </Link>
             </div>
           </div>
-          {error ? (
-            <p className="text-sm text-red-600">{error}</p>
-          ) : null}
+          {error ? <p className="text-sm text-red-600">{error}</p> : null}
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>

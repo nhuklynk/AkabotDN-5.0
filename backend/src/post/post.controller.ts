@@ -86,6 +86,7 @@ export class PostController {
     return this.postService.create(createPostFormdataDto, featuredImage);
   }
 
+  @Public()
   @Get()
   @Public()
   @ApiOperation({
@@ -149,20 +150,6 @@ export class PostController {
     description:
       'Filter posts by type. Valid values: member_activity, association_activity, digital_product.',
   })
-  @ApiQuery({
-    name: 'date_from',
-    required: false,
-    type: String,
-    description:
-      'Filter posts by creation date range (start date). Format: YYYY-MM-DD',
-  })
-  @ApiQuery({
-    name: 'date_to',
-    required: false,
-    type: String,
-    description:
-      'Filter posts by creation date range (end date). Format: YYYY-MM-DD',
-  })
   @ApiResponse({
     status: 200,
     description:
@@ -222,6 +209,7 @@ export class PostController {
     );
   }
 
+  @Public()
   @Get('slug/:slug')
   @ApiOperation({
     summary: 'Get post by slug',
@@ -250,6 +238,7 @@ export class PostController {
     return this.postService.findBySlug(slug);
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary: 'Get post by ID',
@@ -277,6 +266,7 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
+  @Public()
   @Get('tag/:tagId')
   @ApiOperation({
     summary: 'Get posts by tag ID',
@@ -289,8 +279,6 @@ export class PostController {
   })
   @ApiQuery({ name: 'page', required: false, description: 'Page number (default: 1)' })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
-  @ApiQuery({ name: 'date_from', required: false, description: 'Filter posts from this date (YYYY-MM-DD)' })
-  @ApiQuery({ name: 'date_to', required: false, description: 'Filter posts to this date (YYYY-MM-DD)' })
   @ApiOkResponse({
     description: 'Posts retrieved successfully',
   })
@@ -304,6 +292,7 @@ export class PostController {
     return this.postService.findByTagId(tagId, query);
   }
 
+  @Public()
   @Get('category/:categoryId')
   @ApiOperation({
     summary: 'Get posts by category ID',
@@ -316,8 +305,6 @@ export class PostController {
   })
   @ApiQuery({ name: 'page', required: false, description: 'Page number (default: 1)' })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page (default: 10)' })
-  @ApiQuery({ name: 'date_from', required: false, description: 'Filter posts from this date (YYYY-MM-DD)' })
-  @ApiQuery({ name: 'date_to', required: false, description: 'Filter posts to this date (YYYY-MM-DD)' })
   @ApiOkResponse({
     description: 'Posts retrieved successfully',
   })
@@ -399,6 +386,7 @@ export class PostController {
     return this.postService.remove(id);
   }
 
+  @Public()
   @Get('statistics/overview')
   @ApiOperation({
     summary: 'Get general post statistics',
@@ -415,6 +403,7 @@ export class PostController {
     return this.postService.getPostStatistics();
   }
 
+  @Public()
   @Get('statistics/by-type')
   @ApiOperation({
     summary: 'Get post statistics by type',
@@ -431,6 +420,7 @@ export class PostController {
     return this.postService.getPostTypeStatistics();
   }
 
+  @Public()
   @Get('statistics/by-type/:postType')
   @ApiOperation({
     summary: 'Get detailed statistics for a specific post type',
@@ -462,6 +452,7 @@ export class PostController {
     return this.postService.getPostTypeDetailedStatistics(postType);
   }
 
+  @Public()
   @Get('statistics/by-author')
   @ApiOperation({
     summary: 'Get post statistics by author',
@@ -488,6 +479,7 @@ export class PostController {
     return this.postService.getPostAuthorStatistics(authorLimit);
   }
 
+  @Public()
   @Get('statistics/monthly')
   @ApiOperation({
     summary: 'Get monthly post statistics',

@@ -26,12 +26,14 @@ import { UpdatePostViewDto } from './dto/update-post-view.dto';
 import { PostViewQueryDto } from './dto/post-view-query.dto';
 import { PostViewResponseDto, PostViewStatisticsDto } from './dto/post-view-response.dto';
 import { ApiResponse as IApiResponse, PaginatedApiResponse, PaginatedData } from '../common/interfaces/api-response.interface';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('post-views')
 @Controller('post-views')
 export class PostViewController {
   constructor(private readonly postViewService: PostViewService) {}
 
+  @Public()
   @Post()
   @ApiOperation({
     summary: 'Create a new post view',
@@ -52,6 +54,7 @@ export class PostViewController {
     return data;
   }
 
+  @Public()
   @Get()
   @ApiOperation({
     summary: 'Get all post views',
@@ -70,6 +73,7 @@ export class PostViewController {
     return data;
   }
 
+  @Public()
   @Get('statistics')
   @ApiOperation({
     summary: 'Get post view statistics',
@@ -87,6 +91,7 @@ export class PostViewController {
     return data;
   }
 
+  @Public()
   @Get('statistics/total')
   @ApiOperation({
     summary: 'Get total view count',
@@ -107,6 +112,7 @@ export class PostViewController {
     return { total };
   }
 
+  @Public()
   @Get('statistics/by-date')
   @ApiOperation({
     summary: 'Get views by date range',
@@ -128,6 +134,7 @@ export class PostViewController {
     return data;
   }
 
+  @Public()
   @Get('statistics/top-posts')
   @ApiOperation({
     summary: 'Get top viewed posts',
@@ -149,6 +156,7 @@ export class PostViewController {
     return data;
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({
     summary: 'Get a post view by ID',
@@ -171,6 +179,7 @@ export class PostViewController {
     return data;
   }
 
+  @Public()
   @Patch(':id')
   @ApiOperation({
     summary: 'Update a post view',

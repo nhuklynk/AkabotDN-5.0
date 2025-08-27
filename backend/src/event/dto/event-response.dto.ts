@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Type, Transform } from 'class-transformer';
 import { TagResponseDto } from 'src/tag/dto/tag-response.dto';
 import { CategoryResponseDto } from 'src/category/dto/category-response.dto';
 
@@ -63,6 +63,15 @@ export class EventResponseDto {
   })
   @Expose()
   thumbnail_url_id: string | null;
+
+  @ApiProperty({
+    description: 'Thumbnail URL',
+    example: 'https://signed-url.com/thumbnail.jpg?expires=...',
+    nullable: true,
+  })
+  @Expose()
+  @Transform(({ value }) => value || null)
+  thumbnail_url?: string | null;
 
   @ApiProperty({
     description: 'Whether countdown is enabled',

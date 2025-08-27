@@ -33,7 +33,11 @@ import {
   ApiConsumes,
 } from '@nestjs/swagger';
 import { MediaQueryDto } from './dto/media-query.dto';
+import { MediaByTypeQueryDto } from './dto/media-by-type-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { MediaStatisticsDto } from './dto/media-statistics.dto';
+import { MediaContentStatisticsDto } from './dto/media-content-statistics.dto';
 
 // Helper function to validate UUID
 function validateUUID(uuid: string): boolean {
@@ -46,17 +50,70 @@ function validateUUID(uuid: string): boolean {
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
+  @Public()
   @Get()
-  @ApiOperation({ summary: 'Get all media files' })
+  @ApiOperation({ 
+    summary: 'Get all media files',
+    description: 'Retrieve a paginated list of all media files with optional search functionality. Supports pagination with page and limit parameters, and allows searching by media properties.'
+  })
+  @ApiQuery({ 
+    name: 'page', 
+    required: false, 
+    type: Number, 
+    description: 'Page number for pagination (default: 1)' 
+  })
+  @ApiQuery({ 
+    name: 'limit', 
+    required: false, 
+    type: Number, 
+    description: 'Number of items per page (default: 10)' 
+  })
+  @ApiQuery({ 
+    name: 'search', 
+    required: false, 
+    type: String, 
+    description: 'Search term to filter media files' 
+  })
   @ApiResponse({
     status: 200,
-    description: 'List of all media files',
+    description: 'Paginated list of media files with metadata including total count, current page, and total pages',
     type: [MediaResponseDto],
   })
   async findAll(@Query() query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
     return this.mediaService.findAll(query);
   }
 
+  @Public()
+  @Get('statistics')
+  @ApiOperation({ 
+    summary: 'Get media statistics by type',
+    description: 'Retrieve statistics showing the count of media files for each media type (post, event, member, other, document_video, document_image) along with the total count.'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Media statistics retrieved successfully',
+    type: MediaStatisticsDto,
+  })
+  async getStatistics(): Promise<MediaStatisticsDto> {
+    return this.mediaService.getStatistics();
+  }
+
+  @Public()
+  @Get('content-statistics')
+  @ApiOperation({ 
+    summary: 'Get media content statistics',
+    description: 'Retrieve statistics grouped by content type: images (all image mime types), videos (all video mime types), and events (event media type). Returns both raw counts and formatted display strings.'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Media content statistics retrieved successfully',
+    type: MediaContentStatisticsDto,
+  })
+  async getContentStatistics(): Promise<MediaContentStatisticsDto> {
+    return this.mediaService.getContentStatistics();
+  }
+
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get media by ID' })
   @ApiParam({ name: 'id', description: 'Media ID (UUID)' })
@@ -80,17 +137,36 @@ export class MediaController {
     return this.mediaService.findOne(id);
   }
 
+  @Public()
   @Get('type/:type')
-  @ApiOperation({ summary: 'Get media by type' })
-  @ApiParam({ name: 'type', description: 'Media type' })
+  @ApiOperation({ 
+    summary: 'Get media by type',
+    description: 'Retrieve a paginated list of media files filtered by type with optional search functionality. Supports pagination with page and limit parameters, and allows searching by media properties.'
+  })
+  @ApiParam({ name: 'type', description: 'Media type (post, event, member, other)' })
+  @ApiQuery({ 
+    name: 'page', 
+    required: false, 
+    type: Number, 
+    description: 'Page number for pagination (default: 1)' 
+  })
+  @ApiQuery({ 
+    name: 'limit', 
+    required: false, 
+    type: Number, 
+    description: 'Number of items per page (default: 10)' 
+  })
   @ApiResponse({
     status: 200,
-    description: 'List of media files by type',
+    description: 'Paginated list of media files filtered by type with metadata including total count, current page, and total pages',
     type: [MediaResponseDto],
   })
-  async findByType(@Param('type') type: MediaType): Promise<MediaResponseDto[]> {
-    return this.mediaService.findByType(type);
-  }
+      async findByType(
+      @Param('type') type: MediaType,
+      @Query() query: MediaByTypeQueryDto
+    ): Promise<PaginatedData<MediaResponseDto>> {
+      return this.mediaService.findByType(type, query);
+    }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -108,7 +184,7 @@ export class MediaController {
         },
         media_type: {
           type: 'string',
-          enum: ['post', 'event', 'member', 'other'],
+          enum: Object.values(MediaType),
           description: 'Media type classification',
         }
       },
@@ -128,7 +204,7 @@ export class MediaController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
+          new MaxFileSizeValidator({ maxSize: 1000 * 1024 * 1024 }),
         ],
         fileIsRequired: true,
       }),
@@ -205,6 +281,7 @@ export class MediaController {
     return this.mediaService.remove(id);
   }
 
+  @Public()
   @Get('download/:id')
   @ApiOperation({ summary: 'Download media by ID' })
   @ApiParam({ name: 'id', description: 'Media ID (UUID)' })

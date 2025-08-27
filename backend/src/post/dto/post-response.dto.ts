@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Type, Transform } from 'class-transformer';
 import { Status } from '../../config/base-audit.entity';
 import { TagResponseDto } from '../../tag/dto/tag-response.dto';
 import { UserResponseDto } from 'src/user/dto/user/user-response.dto';
@@ -52,6 +52,10 @@ export class PostResponseDto {
 
   @Expose()
   media_id?: string;
+
+  @Expose()
+  @Transform(({ value }) => value || null)
+  media_url?: string | null;
 
   @Expose()
   created_by: string;

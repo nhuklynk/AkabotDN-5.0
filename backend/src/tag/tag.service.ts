@@ -202,13 +202,6 @@ export class TagService {
   }
 
   async remove(id: string): Promise<void> {
-    const tag = await this.tagRepository.findOne({
-      where: { id: id },
-    });
-
-    if (tag) {
-      tag.status = Status.INACTIVE;
-      await this.tagRepository.save(tag);
-    }
+    await this.tagRepository.delete(id);
   }
 }

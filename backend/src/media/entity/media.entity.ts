@@ -6,7 +6,6 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from '../../user/entity/user.entity';
-import { Post } from '../../post/entity/post.entity';
 import { BaseAuditEntity } from '../../config/base-audit.entity';
 
 export enum MediaType {
