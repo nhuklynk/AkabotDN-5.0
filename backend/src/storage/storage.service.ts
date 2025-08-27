@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   CreateBucketCommand,
@@ -6,14 +6,42 @@ import {
   GetObjectCommand,
   HeadBucketCommand,
   HeadObjectCommand,
+  PutBucketPolicyCommand,
   PutObjectCommand,
   S3Client,
+  ListObjectsV2Command,
+  CopyObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { AWS_S3_CLIENT, STORAGE_OPTIONS } from './constants';
 import * as fs from 'fs';
 import type { StorageOptions, UploadOptions } from './types';
+
+export interface FileInfo {
+  arn: string;
+  bucket: string;
+  key: string;
+  fileName: string;
+  contentType: string;
+  fileSize: number;
+  downloadUrl: any;
+}
+
+export interface FileItem {
+  key: string;
+  fileName: string;
+  size: number;
+  lastModified: Date | undefined;
+  etag: string | undefined;
+  arn: string;
+}
+
+export interface FolderItem {
+  prefix: string;
+  folderName: string;
+  arn: string;
+}
 
 // ARN: [service]:[bucket]:[objectName], e.g. s3:knowledge:example.txt
 @Injectable()
@@ -29,27 +57,42 @@ export class StorageService {
   /**
    * Ensure bucket exists, create if it doesn't
    */
-  private async ensureBucketExists(bucketName: string): Promise<void> {
+  async ensureBucketExists(bucketName: string): Promise<void> {
     try {
-      // Check if bucket exists
       await this.s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
-    } catch (error) {
-      // Bucket doesn't exist, create it
-      try {
+    } catch (err: any) {
+      if (err.$metadata?.httpStatusCode === 404) {
         await this.s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
-        console.log(`Bucket '${bucketName}' created successfully`);
-      } catch (createError) {
-        console.error(`Failed to create bucket '${bucketName}':`, createError);
-        throw new BadRequestException(`Failed to create bucket '${bucketName}'`);
+
+        const policy = {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Effect: "Allow",
+              Principal: "*",
+              Action: ["s3:GetObject"],
+              Resource: `arn:aws:s3:::${bucketName}/*`,
+            },
+          ],
+        };
+
+        await this.s3Client.send(
+          new PutBucketPolicyCommand({
+            Bucket: bucketName,
+            Policy: JSON.stringify(policy),
+          })
+        );
+      } else {
+        throw new Error(`Cannot check/create bucket '${bucketName}'`);
       }
     }
   }
 
   /**
-   * Get a pre-signed URL for downloading the file with the given ARN
-   * Example: s3:knowledge:example.txt
+   * Get a pre-signed URL for downloading the file with proper filename in content-disposition
+   * This will make the browser use the correct filename when downloading
    */
-  async getDownloadUrl(arn: string, expiresInSeconds = 5 * 60) {
+  async getDownloadUrlWithFilename(arn: string, expiresInSeconds = 5 * 60) {
     const { bucket, objectName } = this.extractArn(arn);
     
     // Ensure bucket exists before proceeding
@@ -57,42 +100,73 @@ export class StorageService {
 
     const key = objectName;
 
+    // Get file metadata to extract filename
+    let fileName = '';
+    let contentType = 'application/octet-stream';
+    
+    try {
+      const headCommand = new HeadObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      });
+      const headResult = await this.s3Client.send(headCommand);
+      
+      fileName = 
+        (headResult as any).Metadata?.['x-file-name'] ||
+        (headResult as any).Metadata?.['file-name'] ||
+        objectName?.split('/').pop() || 
+        key.split('/').pop() || 
+        key;
+
+      contentType = (headResult as any).ContentType || contentType;
+      
+      // Decode filename if it was URL encoded
+      if (fileName) {
+        try {
+          fileName = decodeURIComponent(fileName);
+        } catch (e) {
+          // If decoding fails, use as is
+        }
+      }
+    } catch (err) {
+      // Use fallback values
+      fileName = key.split('/').pop() || key;
+    }
+
+    // Create download command with response-content-disposition header
     const command = new GetObjectCommand({
       Bucket: bucket,
       Key: key,
+      ResponseContentDisposition: `attachment; filename="${fileName}"; filename*=UTF-8''${encodeURIComponent(fileName)}`,
+      ResponseContentType: contentType,
     });
 
-    return await getSignedUrl(this.s3Client, command, {
+    const downloadUrl = await getSignedUrl(this.s3Client, command, {
       expiresIn: Math.max(expiresInSeconds, 10),
     });
-  }
-
-  private extractArn(arn: string) {
-    const [service, bucket, objectName] = arn.split(':');
-
-    if (service !== 's3') {
-      throw new BadRequestException(`Invalid service ${service}`);
-    }
-
-    if (!objectName) {
-      throw new BadRequestException(`Invalid object name ${objectName}`);
-    }
-
-    if (!bucket) {
-      throw new BadRequestException(`Invalid bucket name ${bucket}`);
-    }
 
     return {
-      service,
+      downloadUrl,
+      fileName,
+      contentType,
+      arn,
       bucket,
-      objectName,
+      key,
+      expiresInSeconds,
+      expiresAt: new Date(Date.now() + expiresInSeconds * 1000).toISOString()
     };
+  }
+
+  async getFileUrl(arn: string): Promise<string> {
+    const [s3, bucket, key] = arn.split(':');
+    if (!bucket || !key) throw new NotFoundException('Invalid ARN');
+    const expiresIn = this.configService.get<number>('SIGNED_URL_EXPIRES_IN', 300);
+    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+    return await getSignedUrl(this.s3Client, command);
   }
 
   /**
    * Get a pre-signed policy for uploading a file to the specified bucket
-   *
-   * @returns A pre-signed policy and the object ARN that will be created
    */
   async getUploadPolicy(
     options: {
@@ -132,50 +206,10 @@ export class StorageService {
   }
 
   /**
-   * Delete multiple files using their ARNs
-   * @param arnList Array of ARNs of the files to delete
-   */
-  async deleteFiles(...arnList: string[]) {
-    // Group by bucket to check existence once per bucket
-    const bucketGroups = new Map<string, string[]>();
-    
-    for (const arn of arnList) {
-      const { bucket, objectName } = this.extractArn(arn);
-      if (!bucketGroups.has(bucket)) {
-        bucketGroups.set(bucket, []);
-      }
-      bucketGroups.get(bucket)!.push(objectName);
-    }
-    
-    // Ensure all buckets exist before proceeding
-    for (const bucket of bucketGroups.keys()) {
-      await this.ensureBucketExists(bucket);
-    }
-    
-    const deletePromises = arnList.map((arn) => {
-      const { bucket, objectName } = this.extractArn(arn);
-
-      const deleteCommand = new DeleteObjectCommand({
-        Bucket: bucket,
-        Key: objectName,
-      });
-
-      return this.s3Client.send(deleteCommand);
-    });
-
-    return Promise.allSettled(deletePromises);
-  }
-
-  /**
    * Upload a file to the specified bucket and scope
-   *
-   * @returns The ARN of the uploaded file
    */
   async uploadFile(
     options: {
-      /**
-       * File buffer data or path to the file to upload.
-       */
       file: Buffer | string;
       fileName: string;
       fileSize?: number;
@@ -219,20 +253,53 @@ export class StorageService {
       },
     });
 
-    // Debug logging
-
     await this.s3Client.send(command);
 
     return `s3:${bucket}:${objectName}`;
   }
 
-  private generateUuid(): string {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  /**
+   * Delete multiple files using their ARNs
+   */
+  async deleteFiles(...arnList: string[]) {
+    
+    // Group by bucket to check existence once per bucket
+    const bucketGroups = new Map<string, string[]>();
+    
+    for (const arn of arnList) {
+      try {
+        const { bucket, objectName } = this.extractArn(arn);
+        
+        if (!bucketGroups.has(bucket)) {
+          bucketGroups.set(bucket, []);
+        }
+        bucketGroups.get(bucket)!.push(objectName);
+      } catch (error) {
+        throw error;
+      }
+    }
+    
+    // Ensure all buckets exist before proceeding
+    for (const bucket of bucketGroups.keys()) {
+      await this.ensureBucketExists(bucket);
+    }
+    
+    const deletePromises = arnList.map((arn) => {
+      const { bucket, objectName } = this.extractArn(arn);
+
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: bucket,
+        Key: objectName,
+      });
+
+      return this.s3Client.send(deleteCommand);
+    });
+
+    return Promise.allSettled(deletePromises);
   }
 
   /**
    * Download file by ARN with direct path
-   * ARN format: s3:bucket:path/to/file (e.g., s3:akabotdn:knowledge/example.txt)
    */
   async downloadFileByArn(arn: string) {
     const [service, bucket, objectPath] = arn.split(':');
@@ -298,5 +365,114 @@ export class StorageService {
       fileName: decodeURIComponent(fileName),
       contentType,
     };
+  }
+
+  /**
+   * Export multiple files as a ZIP archive
+   */
+  async exportFilesAsZip(arnList: string[], zipFileName?: string): Promise<Buffer> {
+    // Import JSZip dynamically to avoid build issues
+    const JSZip = require('jszip');
+    const zip = new JSZip();
+    
+    for (const arn of arnList) {
+      try {
+        const { bucket, objectName } = this.extractArn(arn);
+        await this.ensureBucketExists(bucket);
+
+        // Get file content
+        const getCommand = new GetObjectCommand({
+          Bucket: bucket,
+          Key: objectName,
+        });
+        const result = await this.s3Client.send(getCommand);
+
+        if (!result.Body) {
+          throw new BadRequestException(`Could not get file content for ARN: ${arn}`);
+        }
+
+        // Get file metadata for filename
+        const headCommand = new HeadObjectCommand({
+          Bucket: bucket,
+          Key: objectName,
+        });
+        const headResult = await this.s3Client.send(headCommand);
+        
+        const fileName = 
+          (headResult as any).Metadata?.['x-file-name'] ||
+          (headResult as any).Metadata?.['file-name'] ||
+          objectName.split('/').pop() || 
+          objectName;
+
+        // Convert stream to buffer
+        const streamToBuffer = (stream: any) =>
+          new Promise<Buffer>((resolve, reject) => {
+            const chunks: Buffer[] = [];
+            stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+            stream.on('end', () => resolve(Buffer.concat(chunks)));
+            stream.on('error', reject);
+          });
+
+        const fileBuffer = await streamToBuffer(result.Body);
+        
+        // Add file to ZIP with proper filename
+        zip.file(decodeURIComponent(fileName), fileBuffer);
+        
+      } catch (error) {
+        throw new BadRequestException(`Error processing file ${arn}: ${error.message}`);
+      }
+    }
+
+    // Generate ZIP as buffer
+    const zipBuffer = await zip.generateAsync({ 
+      type: 'nodebuffer',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 6 }
+    });
+
+    return zipBuffer;
+  }
+
+  /**
+   * Extract ARN components
+   */
+  private extractArn(arn: string) {
+    
+    if (!arn || typeof arn !== 'string') {
+      throw new BadRequestException(`Invalid ARN: ${arn}`);
+    }
+    
+    const parts = arn.split(':');
+    
+    if (parts.length !== 3) {
+      throw new BadRequestException(`Invalid ARN format. Expected format: s3:bucket:path, got: ${arn} with ${parts.length} parts`);
+    }
+    
+    const [service, bucket, objectName] = parts;
+    
+    if (service !== 's3') {
+      throw new BadRequestException(`Invalid service: ${service}. Expected: s3`);
+    }
+
+    if (!bucket || bucket.trim() === '') {
+      throw new BadRequestException(`Invalid bucket name: ${bucket}`);
+    }
+
+    if (!objectName || objectName.trim() === '') {
+      throw new BadRequestException(`Invalid object name: ${objectName}`);
+    }
+
+    return {
+      service,
+      bucket,
+      objectName,
+    };
+  }
+
+  /**
+   * Generate unique identifier for file names
+   */
+  private generateUuid(): string {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
 }

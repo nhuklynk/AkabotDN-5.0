@@ -1,9 +1,9 @@
 import { Expose, Type } from 'class-transformer';
-import { PostStatus } from '../entity/post.entity';
 import { Status } from '../../config/base-audit.entity';
 import { TagResponseDto } from '../../tag/dto/tag-response.dto';
 import { UserResponseDto } from 'src/user/dto/user/user-response.dto';
 import { CategoryResponseDto } from 'src/category/dto/category-response.dto';
+import { PostType } from '../entity/post.entity';
 
 export class PostResponseDto {
 
@@ -21,16 +21,13 @@ export class PostResponseDto {
   content: string;
 
   @Expose()
-  post_status: PostStatus;
+  status: Status;
 
   @Expose()
   summary: string;
 
   @Expose()
   published_at: Date;
-
-  @Expose()
-  status: Status;
 
   @Expose()
   created_at: Date;
@@ -45,6 +42,9 @@ export class PostResponseDto {
   @Expose()
   @Type(() => CategoryResponseDto)
   categories: CategoryResponseDto[];
+
+  @Expose()
+  post_type: PostType;
 
   @Expose()
   @Type(() => TagResponseDto)

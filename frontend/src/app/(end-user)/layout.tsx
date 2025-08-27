@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { Header } from "@/layouts/header";
 import { Footer } from "@/layouts/footer";
+import { ToastProvider } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
   title: "Hiệp hội Dữ liệu Quốc gia Việt Nam",
@@ -16,10 +17,12 @@ export default function EndUserLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main className="bg-white">{children}</main>
-      <Footer />
-    </div>
+    <ToastProvider>
+      <div className="min-h-screen bg-white">
+        <Header />
+        <main className="bg-white">{children}</main>
+        <Footer />
+      </div>
+    </ToastProvider>
   );
 }

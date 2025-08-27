@@ -609,10 +609,26 @@
         "sunday": "Chủ Nhật: Nghỉ"
       }
     },
-    "quickContact": {
-      "title": "Liên hệ nhanh",
-      "call": "Gọi điện ngay",
-      "email": "Gửi email"
+    "newsletter": {
+      "title": "Đăng ký nhận tin",
+      "email": "Email",
+      "fullName": "Họ và tên",
+      "phone": "Số điện thoại",
+      "content": "Tin nhắn",
+      "emailPlaceholder": "john@example.com",
+      "fullNamePlaceholder": "Nguyễn Văn A",
+      "phonePlaceholder": "0123456789",
+      "contentPlaceholder": "Nhập tin nhắn hoặc thông tin bổ sung",
+      "subscribeButton": "Đăng ký nhận tin",
+      "errors": {
+        "fullNameRequired": "Họ và tên là bắt buộc",
+        "fullNameMinLength": "Họ và tên phải có ít nhất 2 ký tự",
+        "phoneRequired": "Số điện thoại là bắt buộc",
+        "phoneInvalid": "Số điện thoại chỉ được chứa số",
+        "phoneMinLength": "Số điện thoại phải có ít nhất 10 ký tự",
+        "emailRequired": "Email là bắt buộc",
+        "emailInvalid": "Vui lòng nhập email hợp lệ"
+      }
     },
     "map": {
       "title": "Vị trí văn phòng",
@@ -643,49 +659,120 @@
       "charter": "Điều lệ NDA"
     },
     "about": {
+      "stats": {
+        "title": "Hiệp hội Dữ liệu Quốc gia - Thành tích nổi bật",
+        "subtitle": "Chính thức ra mắt ngày 22/3/2025 tại Hội trường Bộ Công an",
+        "members": "Hội viên",
+        "fields": "Lĩnh vực hoạt động",
+        "partners": "Đối tác uy tín"
+      },
       "mission": {
         "title": "Sứ mệnh",
-        "content": "Kết nối các cơ quan quản lý, doanh nghiệp, tổ chức trong lĩnh vực dữ liệu và khoa học công nghệ. Xây dựng các hoạt động thiết thực nhằm lan tỏa tri thức, kết nối cộng đồng, thúc đẩy phát triển hệ sinh thái dữ liệu Việt Nam trong kỷ nguyên số."
+        "content1": "Hiệp hội Dữ liệu quốc gia là tổ chức xã hội - nghề nghiệp của các tổ chức, công dân Việt Nam hoạt động trong lĩnh vực dữ liệu, nhằm mục đích tập hợp, đoàn kết hội viên, bảo vệ quyền, lợi ích hợp pháp của hội viên.",
+        "content2": "Tiên phong đưa Nghị quyết số 57-NQ/TW về đột phá khoa học, công nghệ, đổi mới sáng tạo và chuyển đổi số quốc gia vào cuộc sống.",
+        "content3": "Trở thành \"Ngôi nhà chung của các Hiệp sĩ số\", đưa Việt Nam trở thành quốc gia số với dữ liệu \"đúng - đủ - sạch - sống\"."
       },
-      "vision": {
-        "title": "Tầm nhìn",
-        "content": "Trở thành tổ chức hàng đầu trong việc kiến thiết hệ sinh thái dữ liệu Việt Nam, góp phần xây dựng nền kinh tế số phát triển bền vững và nâng cao năng lực cạnh tranh quốc gia trong thời đại công nghệ 4.0."
+      "tasks": {
+        "title": "Nhiệm vụ trọng tâm",
+        "legal": "Tham gia đóng góp ý kiến vào các văn bản quy phạm pháp luật về dữ liệu",
+        "data": "Xây dựng, phát triển, khai thác dữ liệu quốc gia (4 trụ cột: con người, vị trí, hoạt động, sản phẩm)",
+        "technology": "Làm chủ công nghệ AI, Big Data, Blockchain, Cloud Computing",
+        "promotion": "Phối hợp tuyên truyền chính sách và pháp luật về dữ liệu",
+        "support": "Hỗ trợ các cơ quan chức năng khi được yêu cầu"
       },
-      "coreValues": {
-        "title": "Giá trị cốt lõi",
-        "items": {
-          "transparency": {
-            "title": "Minh bạch",
-            "content": "Đảm bảo tính minh bạch trong mọi hoạt động và quy trình xử lý dữ liệu"
-          },
-          "innovation": {
-            "title": "Đổi mới",
-            "content": "Tiên phong trong việc ứng dụng công nghệ và phương pháp mới"
-          },
-          "cooperation": {
-            "title": "Hợp tác",
-            "content": "Xây dựng mối quan hệ đối tác bền vững và hiệu quả"
-          }
+      "development": {
+        "title": "Định hướng phát triển theo chỉ đạo của Tổng Bí thư Tô Lâm",
+        "market": {
+          "title": "Phát triển thị trường dữ liệu",
+          "content": "Xây dựng thị trường dữ liệu quốc gia, triển khai sàn dữ liệu phục vụ nghiên cứu, phát triển khởi nghiệp, đổi mới sáng tạo."
+        },
+        "ai": {
+          "title": "Xây dựng nền tảng AI mở",
+          "content": "Giúp doanh nghiệp dễ dàng tiếp cận ứng dụng AI, đặc biệt là AI Việt Nam."
+        },
+        "education": {
+          "title": "Phổ cập hiểu biết dữ liệu",
+          "content": "Nâng cao nhận thức, kiến thức và kỹ năng về dữ liệu cho toàn xã hội."
+        },
+        "competition": {
+          "title": "Tổ chức cuộc thi sáng tạo",
+          "content": "Tạo sân chơi phát huy tối đa tiềm năng con người trong lĩnh vực khoa học, công nghệ."
+        },
+        "autonomy": {
+          "title": "Tự chủ công nghệ dữ liệu",
+          "content": "Tạo cơ chế để các sản phẩm \"Make in Viet Nam\" cạnh tranh công bằng trên thị trường."
+        },
+        "infrastructure": {
+          "title": "Xây dựng hạ tầng dữ liệu",
+          "content": "Hỗ trợ xây dựng hạ tầng dữ liệu tiên tiến, bao gồm trung tâm dữ liệu Nhà nước và tư nhân."
+        },
+        "cooperation": {
+          "title": "Hợp tác quốc tế",
+          "content": "Tăng cường hợp tác, học hỏi kinh nghiệm, thu hút nguồn lực và tham gia sáng kiến toàn cầu."
+        },
+        "security": {
+          "title": "Bảo mật dữ liệu",
+          "content": "Xây dựng hệ thống bảo vệ sản phẩm, tiêu chuẩn bảo mật dữ liệu, hình thành ngành công nghiệp bảo vệ dữ liệu."
         }
+      },
+      "leadership": {
+        "title": "Ban Thường vụ Hiệp hội Dữ liệu Quốc gia (2025-2030)",
+        "chairman": {
+          "title": "CHỦ TỊCH",
+          "name": "Đại tướng Lương Tam Quang",
+          "position": "Bộ trưởng Bộ Công an"
+        },
+        "viceChairmanPermanent": {
+          "title": "PHÓ CHỦ TỊCH THƯỜNG TRỰC",
+          "name": "Thượng tướng Nguyễn Văn Long",
+          "position": "Thứ trưởng Bộ Công an"
+        },
+        "viceChairmen": {
+          "title": "PHÓ CHỦ TỊCH",
+          "nguyen_ngoc_cuong": {
+            "name": "Thiếu tướng Nguyễn Ngọc Cương",
+            "position": "Giám đốc Trung tâm Dữ liệu quốc gia, Bộ Công an"
+          },
+          "tran_minh_son": {
+            "name": "Ông Trần Minh Sơn",
+            "position": "Phó Chủ tịch Tập đoàn Mặt trời (Sungroup)"
+          },
+          "nguyen_thieu_nam": {
+            "name": "Ông Nguyễn Thiều Nam",
+            "position": "Phó Tổng Giám đốc Tập đoàn Masan"
+          },
+          "truong_gia_binh": {
+            "name": "PGS.TS Trương Gia Bình",
+            "position": "Chủ tịch Công ty Cổ phần FPT"
+          }
+        },
+        "secretaryGeneral": {
+          "title": "TỔNG THƯ KÝ",
+          "name": "Thiếu tá Đào Đức Triệu",
+          "position1": "Giám đốc Trung tâm Sáng tạo, khai thác dữ liệu",
+          "position2": "Trung tâm Dữ liệu quốc gia, Bộ Công an"
+        },
+        "organizationChart": "Sơ đồ tổ chức Ban Thường vụ"
       },
       "history": {
         "title": "Lịch sử hình thành",
-        "items": {
-          "founding": {
-            "year": "2024",
-            "title": "Thành lập Hiệp hội",
-            "content": "Hiệp hội Dữ liệu Quốc gia Việt Nam được thành lập với sự tham gia của các cơ quan, tổ chức hàng đầu trong lĩnh vực dữ liệu và công nghệ thông tin."
-          },
-          "expansion": {
-            "year": "2025",
-            "title": "Mở rộng hoạt động",
-            "content": "Triển khai các chương trình hợp tác quốc tế, xây dựng các sản phẩm dữ liệu tiên phong và tổ chức các sự kiện chuyên ngành quy mô lớn."
-          }
+        "establishment": {
+          "title": "Quyết định thành lập",
+          "content": "Hiệp hội Dữ liệu Quốc gia được thành lập theo Quyết định số 10/QĐ-BNV của Bộ Nội vụ, nhằm kết nối các cơ quan quản lý, doanh nghiệp, tổ chức và cá nhân hoạt động trong lĩnh vực dữ liệu."
+        },
+        "launch": {
+          "title": "Lễ ra mắt chính thức",
+          "content": "Tại Hội trường Bộ Công an (30 Trần Bình Trọng, Hà Nội), Hiệp hội Dữ liệu Quốc gia (National Data Association - NDA) đã chính thức ra mắt, đánh dấu bước khởi đầu quan trọng trong việc xây dựng hệ sinh thái dữ liệu vững mạnh cho Việt Nam."
+        },
+        "firstTerm": {
+          "title": "Nhiệm kỳ đầu tiên",
+          "content": "Hiệp hội hướng tới xây dựng một hệ sinh thái dữ liệu vững mạnh, góp phần thúc đẩy phát triển kinh tế số và gia tăng giá trị dữ liệu trong nền kinh tế quốc dân."
         }
       }
     },
     "executive": {
       "title": "Sơ đồ tổ chức Ban Chấp hành",
+      "organizationChart": "Sơ đồ cơ cấu tổ chức các Ban chuyên môn",
       "chairman": {
         "title": "CHỦ TỊCH HIỆP HỘI",
         "name": "Trung tướng Nguyễn Văn Long"
@@ -757,14 +844,15 @@
     },
     "charter": {
       "title": "Điều lệ Hiệp hội Dữ liệu Quốc gia Việt Nam",
+      "subtitle": "Trải nghiệm đọc tài liệu hiện đại với công nghệ lật trang 3D",
       "preview": {
         "title": "Trang đầu Điều lệ"
       },
       "info": {
-        "title": "Thông tin Điều lệ",
-        "document": "Điều lệ Hiệp hội Dữ liệu Quốc gia Việt Nam",
-        "issueDate": "15/03/2024",
-        "pages": "24 trang",
+        "title": "Thông tin tài liệu",
+        "document": "Điều lệ NDA",
+        "issueDate": "09/05/2025",
+        "pages": "21 trang",
         "format": "PDF",
         "fields": {
           "name": "Tên tài liệu:",
@@ -776,19 +864,120 @@
       "content": {
         "title": "Nội dung chính",
         "chapters": {
-          "general": "• Chương I: Những quy định chung",
-          "objectives": "• Chương II: Mục tiêu, nhiệm vụ và quyền hạn",
-          "members": "• Chương III: Thành viên Hiệp hội",
-          "structure": "• Chương IV: Cơ cấu tổ chức",
-          "finance": "• Chương V: Tài chính và tài sản",
-          "relations": "• Chương VI: Quan hệ với các tổ chức khác",
-          "others": "• Chương VII: Những quy định khác"
+          "general": "Chương I: QUY ĐỊNH CHUNG",
+          "responsibilities": "Chương II: QUYỀN, NGHĨA VỤ, TRÁCH NHIỆM CỦA HIỆP HỘI",
+          "members": "Chương III: HỘI VIÊN",
+          "rewards": "Chương VI: KHEN THƯỞNG, KỶ LUẬT",
+          "implementation": "Chương VII: ĐIỀU KHOẢN THI HÀNH"
         }
       },
       "download": {
-        "button": "Tải xuống Điều lệ đầy đủ (PDF)",
-        "info": "Kích thước: 2.4 MB • Cập nhật: 15/03/2024"
+        "button": "Tải xuống PDF",
+        "info": "File PDF đầy đủ với tất cả các chương và điều khoản chi tiết"
+      },
+      "stats": {
+        "members": "Hội viên",
+        "fields": "Lĩnh vực hoạt động",
+        "partners": "Đối tác uy tín"
+      },
+      "mission": {
+        "title": "Sứ mệnh",
+        "content1": "Hiệp hội Dữ liệu quốc gia là tổ chức xã hội - nghề nghiệp của các tổ chức, công dân Việt Nam hoạt động trong lĩnh vực dữ liệu, nhằm mục đích tập hợp, đoàn kết hội viên, bảo vệ quyền, lợi ích hợp pháp của hội viên.",
+        "content2": "Tiên phong đưa Nghị quyết số 57-NQ/TW về đột phá khoa học, công nghệ, đổi mới sáng tạo và chuyển đổi số quốc gia vào cuộc sống.",
+        "content3": "Trở thành \"Ngôi nhà chung của các Hiệp sĩ số\", đưa Việt Nam trở thành quốc gia số với dữ liệu \"đúng - đủ - sạch - sống\"."
+      },
+      "tasks": {
+        "title": "Nhiệm vụ trọng tâm",
+        "legal": "Tham gia đóng góp ý kiến vào các văn bản quy phạm pháp luật về dữ liệu",
+        "data": "Xây dựng, phát triển, khai thác dữ liệu quốc gia (4 trụ cột: con người, vị trí, hoạt động, sản phẩm)",
+        "technology": "Làm chủ công nghệ AI, Big Data, Blockchain, Cloud Computing",
+        "promotion": "Phối hợp tuyên truyền chính sách và pháp luật về dữ liệu",
+        "support": "Hỗ trợ các cơ quan chức năng khi được yêu cầu"
+      },
+      "development": {
+        "title": "Định hướng phát triển theo chỉ đạo của Tổng Bí thư Tô Lâm",
+        "market": {
+          "title": "Phát triển thị trường dữ liệu",
+          "content": "Xây dựng thị trường dữ liệu quốc gia, triển khai sàn dữ liệu phục vụ nghiên cứu, phát triển khởi nghiệp, đổi mới sáng tạo."
+        },
+        "ai": {
+          "title": "Xây dựng nền tảng AI mở",
+          "content": "Giúp doanh nghiệp dễ dàng tiếp cận ứng dụng AI, đặc biệt là AI Việt Nam."
+        },
+        "education": {
+          "title": "Phổ cập hiểu biết dữ liệu",
+          "content": "Nâng cao nhận thức, kiến thức và kỹ năng về dữ liệu cho toàn xã hội."
+        },
+        "competition": {
+          "title": "Tổ chức cuộc thi sáng tạo",
+          "content": "Tạo sân chơi phát huy tối đa tiềm năng con người trong lĩnh vực khoa học, công nghệ."
+        },
+        "autonomy": {
+          "title": "Tự chủ công nghệ dữ liệu",
+          "content": "Tạo cơ chế để các sản phẩm \"Make in Viet Nam\" cạnh tranh công bằng trên thị trường."
+        },
+        "infrastructure": {
+          "title": "Xây dựng hạ tầng dữ liệu",
+          "content": "Hỗ trợ xây dựng hạ tầng dữ liệu tiên tiến, bao gồm trung tâm dữ liệu Nhà nước và tư nhân."
+        },
+        "cooperation": {
+          "title": "Hợp tác quốc tế",
+          "content": "Tăng cường hợp tác, học hỏi kinh nghiệm, thu hút nguồn lực và tham gia sáng kiến toàn cầu."
+        },
+        "security": {
+          "title": "Bảo mật dữ liệu",
+          "content": "Xây dựng hệ thống bảo vệ sản phẩm, tiêu chuẩn bảo mật dữ liệu, hình thành ngành công nghiệp bảo vệ dữ liệu."
+        }
+      },
+      "leadership": {
+        "title": "Ban Thường vụ Hiệp hội Dữ liệu Quốc gia (2025-2030)",
+        "chairman": "Đại tướng Lương Tam Quang - Bộ trưởng Bộ Công an",
+        "viceChairmanPermanent": "Thượng tướng Nguyễn Văn Long - Thứ trưởng Bộ Công an",
+        "secretaryGeneral": "Thiếu tá Đào Đức Triệu - Giám đốc Trung tâm Sáng tạo, khai thác dữ liệu"
+      },
+      "formation": {
+        "title": "Lịch sử hình thành",
+        "decision": {
+          "title": "Quyết định thành lập",
+          "content": "Hiệp hội Dữ liệu Quốc gia được thành lập theo Quyết định số 10/QĐ-BNV của Bộ Nội vụ, nhằm kết nối các cơ quan quản lý, doanh nghiệp, tổ chức và cá nhân hoạt động trong lĩnh vực dữ liệu."
+        },
+        "launch": {
+          "title": "Lễ ra mắt chính thức",
+          "content": "Tại Hội trường Bộ Công an (30 Trần Bình Trọng, Hà Nội), Hiệp hội Dữ liệu Quốc gia (National Data Association - NDA) đã chính thức ra mắt, đánh dấu bước khởi đầu quan trọng trong việc xây dựng hệ sinh thái dữ liệu vững mạnh cho Việt Nam."
+        },
+        "term": {
+          "title": "Nhiệm kỳ đầu tiên",
+          "content": "Hiệp hội hướng tới xây dựng một hệ sinh thái dữ liệu vững mạnh, góp phần thúc đẩy phát triển kinh tế số và gia tăng giá trị dữ liệu trong nền kinh tế quốc dân."
+        }
       }
+    },
+    "flipbook": {
+      "title": "Điều lệ Hiệp hội Dữ liệu Quốc gia",
+      "controls": {
+        "zoomIn": "Phóng to",
+        "zoomOut": "Thu nhỏ",
+        "reset": "Đặt lại",
+        "fullscreen": "Toàn màn hình",
+        "exitFullscreen": "Thoát toàn màn hình"
+      },
+      "navigation": {
+        "previousPage": "Trang trước",
+        "nextPage": "Trang sau",
+        "goTo": "Đi tới:",
+        "pageOf": "/"
+      },
+      "instructions": {
+        "title": "Hướng dẫn sử dụng FlipBook",
+        "click": "• Nhấp vào trang để lật trang tiếp theo",
+        "arrows": "• Sử dụng mũi tên trái/phải để điều hướng",
+        "space": "• Nhấn phím Space để lật trang",
+        "zoom": "• Sử dụng nút zoom để phóng to/thu nhỏ",
+        "fullscreen": "• Nhấn nút toàn màn hình để xem tốt hơn",
+        "indicators": "• Nhấp vào chấm tròn để chuyển nhanh đến trang",
+        "escape": "• Nhấn Esc để thoát chế độ toàn màn hình"
+      },
+      "loading": "Đang tải tài liệu...",
+      "error": "Lỗi khi tải tài liệu. Vui lòng thử lại."
     }
   },
   "members": {
@@ -941,6 +1130,101 @@
         "title": "Chia sẻ bài viết"
       }
     }
+  },
+  "digitalProducts": {
+    "title": "Sản phẩm số",
+    "description": "Khám phá các giải pháp công nghệ tiên tiến của Hiệp hội Dữ liệu Quốc gia Việt Nam, góp phần thúc đẩy chuyển đổi số.",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "products": "Sản phẩm số"
+    },
+    "loading": "Đang tải sản phẩm số...",
+    "retry": "Thử lại",
+    "noProducts": "Chưa có sản phẩm số nào.",
+    "noDescription": "Không có mô tả",
+    "author": "Tác giả",
+    "unknownDate": "Không rõ ngày",
+    "badge": "Sản phẩm số",
+    "errors": {
+      "fetchFailed": "Không thể tải dữ liệu sản phẩm số"
+    },
+    "info": {
+      "totalProducts": "Tổng số sản phẩm: {{total}}",
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} sản phẩm",
+      "page": "Trang {{current}} / {{total}}"
+    }
+  },
+  "activities": {
+    "title": "Hoạt động Hiệp hội",
+    "description": "Cập nhật những hoạt động mới nhất của Hiệp hội Dữ liệu Quốc gia Việt Nam và các sự kiện quan trọng trong lĩnh vực dữ liệu.",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "activities": "Hoạt động"
+    },
+    "loading": "Đang tải hoạt động...",
+    "retry": "Thử lại",
+    "noActivities": "Chưa có hoạt động nào.",
+    "noDescription": "Không có mô tả",
+    "author": "Tác giả",
+    "unknownDate": "Không rõ ngày",
+    "badge": "Hoạt động",
+    "errors": {
+      "fetchFailed": "Không thể tải dữ liệu hoạt động"
+    },
+    "info": {
+      "totalActivities": "Tổng số hoạt động: {{total}}",
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} hoạt động",
+      "page": "Trang {{current}} / {{total}}"
+    }
+  },
+  "events": {
+    "title": "Sự kiện",
+    "upcomingEvents": "Sự kiện sắp tới",
+    "sectionDescription": "Tham gia các sự kiện thú vị của Hiệp hội",
+    "viewAll": "Xem tất cả",
+    "viewDetails": "Xem chi tiết",
+    "loading": "Đang tải sự kiện...",
+    "noEvents": "Chưa có sự kiện nào.",
+    "noDescription": "Không có mô tả",
+    "notFound": "Không tìm thấy sự kiện",
+    "eventNotFound": "Sự kiện không tồn tại",
+    "eventNotFoundDescription": "Sự kiện bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.",
+    "upcoming": "Sắp diễn ra",
+    "ongoing": "Đang diễn ra",
+    "past": "Đã kết thúc",
+    "countdown": "Đếm ngược",
+    "moreTags": "thẻ khác",
+    "eventDetails": "Thông tin sự kiện",
+    "startTime": "Thời gian bắt đầu",
+    "endTime": "Thời gian kết thúc",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "location": "Địa điểm",
+    "categories": "Danh mục",
+    "tags": "Thẻ",
+    "description": "Mô tả sự kiện",
+    "register": "Đăng ký tham gia",
+    "registerNow": "Đăng ký ngay",
+    "joinNow": "Tham gia ngay",
+    "eventEnded": "Sự kiện đã kết thúc",
+    "share": "Chia sẻ",
+    "save": "Lưu",
+    "countdownTitle": "Thời gian còn lại",
+    "backToActivities": "Quay lại Hoạt động",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "activities": "Hoạt động"
+    }
+  },
+  "countdown": {
+    "timeUntilEvent": "Thời gian đến sự kiện",
+    "days": "Ngày",
+    "hours": "Giờ",
+    "minutes": "Phút",
+    "seconds": "Giây",
+    "expired": "Đã hết thời gian!",
+    "eventStarted": "Sự kiện đã bắt đầu",
+    "startTime": "Thời gian bắt đầu"
   },
   "faq": {
     "title": "Câu hỏi thường gặp",

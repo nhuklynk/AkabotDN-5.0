@@ -2,6 +2,7 @@ import { IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 import { EventStatus } from '../entity/event.entity';
+import { Status } from 'src/config/base-audit.entity';
 
 export class EventQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({
@@ -22,12 +23,12 @@ export class EventQueryDto extends PaginationQueryDto {
 
   @ApiPropertyOptional({
     description: 'Filter by publication status',
-    enum: EventStatus,
-    example: EventStatus.PUBLISHED
+    enum: Status,
+    example: Status.ACTIVE
   })
   @IsOptional()
-  @IsEnum(EventStatus)
-  public_status?: EventStatus;
+  @IsEnum(Status)
+  status?: Status;
 
   @ApiPropertyOptional({
     description: 'Filter events starting from this date',
@@ -67,4 +68,40 @@ export class EventQueryDto extends PaginationQueryDto {
   })
   @IsOptional()
   countdown_enabled?: boolean;
+}
+
+export class TagEventQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    description: 'Filter events starting from this date',
+    example: '2024-12-01T00:00:00.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  start_date?: string;
+
+  @ApiPropertyOptional({
+    description: 'Filter events starting before this date',
+    example: '2024-12-31T23:59:59.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  end_date?: string;
+}
+
+export class CategoryEventQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    description: 'Filter events starting from this date',
+    example: '2024-12-01T00:00:00.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  start_date?: string;
+
+  @ApiPropertyOptional({
+    description: 'Filter events starting before this date',
+    example: '2024-12-31T23:59:59.000Z'
+  })
+  @IsOptional()
+  @IsDateString()
+  end_date?: string;
 }

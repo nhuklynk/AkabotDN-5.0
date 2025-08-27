@@ -48,11 +48,12 @@ export default function RootLayout({
         >
           <AppProviders>{children}</AppProviders>
         </Suspense>
-        <Script
+        <script
           src="https://nextdev.akabot.io/chat-widget/bootstrap.js"
-          strategy="afterInteractive"
-          data-widget="eyJ3aWRnZXRJZCI6IjJhMDVmZGNjLTM2ZTgtNDU0Zi05MTAzLWY0NTMyNjg2M2FmNiIsInRlbmFudElkIjoiZGRlOTNiNDAtZDFiYS00MDI5LTg5NmMtNDc3ZTg4MWI1YmI3In0"
-        />
+          data-widget="eyJ3aWRnZXRJZCI6ImE4MzFiM2M5MGEwZjQ2NDlhNTViM2U5MDM1NmZmMWY5IiwidGVuYW50SWQiOiJkZGU5M2I0MC1kMWJhLTQwMjktODk2Yy00NzdlODgxYjViYjcifQ"
+          async
+          defer
+        ></script>
       </body>
     </html>
   );
