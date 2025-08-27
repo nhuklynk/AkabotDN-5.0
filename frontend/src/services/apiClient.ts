@@ -3,7 +3,7 @@
 import axios from "axios";
 
 export const apiUrl =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://54.179.191.75:8000/api";
 
 export const sseApiUrl = process.env.NEXT_PUBLIC_API_SSE_BASE_URL || apiUrl;
 
@@ -109,11 +109,10 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-
         await refreshAccessToken();
-        
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         return apiClient(originalRequest);
       } catch (refreshError) {
         // Only logout if refresh token fails
