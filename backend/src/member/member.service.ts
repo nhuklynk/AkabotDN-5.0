@@ -233,7 +233,7 @@ export class MemberService {
     return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<{success: boolean, message: string }> {
     const member = await this.memberRepository.findOne({
       where: { id: id },
       relations: ['user', 'company'],
@@ -243,6 +243,16 @@ export class MemberService {
       throw new NotFoundException(`Member with ID ${id} not found`);
     }
 
-    await this.memberRepository.remove(member);
+    member.status = Status.INACTIVE;
+    await this.memberRepository.save(member);
+
+    if (member.user) {
+      await this.userService.remove(member.user.id);
+    }
+
+    return {
+      success: true,
+      message: 'Member deactivated successfully',
+    };
   }
 }
