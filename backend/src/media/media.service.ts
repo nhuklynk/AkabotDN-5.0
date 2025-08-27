@@ -231,9 +231,9 @@ export class MediaService {
       where: { id: id },
     });
     await this.mediaRepository.delete(id);
-    // if (media) {
-    //   await this.storageService.deleteSingleFile(media.file_path);
-    // }
+    if (media) {
+      await this.storageService.deleteSingleFile(media.file_path);
+    }
   }
 
   async download(id: string) {

@@ -93,10 +93,6 @@ export class PostService {
       post.tags = tags;
     }
 
-    if (createPostDto.status === Status.ACTIVE) {
-      post.published_at = new Date();
-    }
-
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
       post.media_id = media.file_path;
@@ -104,7 +100,6 @@ export class PostService {
 
     const savedPost = await this.postRepository.save(post);
     
-    // Query the saved post with all relations including media
     const postWithRelations = await this.postRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.user', 'user')
@@ -147,10 +142,6 @@ export class PostService {
       post.tags = await this.tagRepository.findBy({ id: In(tagIds) });
     }
 
-    if (updatePostDto.status === Status.PUBLISHED) {
-      post.published_at = new Date();
-    }
-
     if (featuredImage) {
       const media = await this.uploadFeaturedImage(featuredImage);
       post.media_id = media.file_path;
@@ -178,6 +169,7 @@ export class PostService {
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
       .where('post.id = :id', { id: updatedPost.id })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getOne();
     
     return await this.mapPostToResponseDto(postWithRelations);
@@ -200,6 +192,7 @@ export class PostService {
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
       .where('post.id = :id', { id })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getOne();
 
     if (!post) throw new NotFoundException(`Post with ID ${id} not found`);
@@ -216,6 +209,7 @@ export class PostService {
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
       .where('post.slug = :slug', { slug })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getOne();
 
     if (!post) throw new NotFoundException(`Post with slug ${slug} not found`);
@@ -231,6 +225,7 @@ export class PostService {
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
       .where('category.id = :category_id', { category_id })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getMany();
 
     return await this.mapPostsToResponseDtos(posts);
@@ -245,6 +240,7 @@ export class PostService {
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
       .where('tag.id = :tag_id', { tag_id })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .getMany();
 
     return await this.mapPostsToResponseDtos(posts);
@@ -265,7 +261,7 @@ export class PostService {
       .leftJoinAndSelect('post.user', 'user')
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
-      .where('post.status = :status', { status: Status.ACTIVE })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .andWhere('tag.id = :tagId', { tagId });
 
     queryBuilder
@@ -300,7 +296,7 @@ export class PostService {
       .leftJoinAndSelect('post.user', 'user')
       .leftJoin('media', 'media', 'media.id::text = post.media_id')
       .addSelect(['media.file_path'])
-      .where('post.status = :status', { status: Status.ACTIVE })
+      .where('post.status != :status', { status: Status.INACTIVE })
       .andWhere('category.id = :categoryId', { categoryId });
 
     queryBuilder
@@ -400,7 +396,6 @@ export class PostService {
       where: { status: Status.PUBLISHED }
     });
 
-    // Posts in last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const postsLast7Days = await this.postRepository.count({
@@ -409,7 +404,6 @@ export class PostService {
       }
     });
 
-    // Posts in last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const postsLast30Days = await this.postRepository.count({
@@ -525,7 +519,6 @@ export class PostService {
   async getPostTypeDetailedStatistics(postType: PostType): Promise<PostTypeDetailedStatisticsDto> {
     const totalAllPosts = await this.postRepository.count();
     
-    // Basic counts for this post type
     const totalPosts = await this.postRepository.count({
       where: { post_type: postType }
     });
@@ -544,7 +537,6 @@ export class PostService {
       }
     });
 
-    // Posts in last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const postsLast7Days = await this.postRepository.count({
@@ -554,7 +546,6 @@ export class PostService {
       }
     });
 
-    // Posts in last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const postsLast30Days = await this.postRepository.count({
@@ -564,7 +555,6 @@ export class PostService {
       }
     });
 
-    // Monthly breakdown for current year
     const currentYear = new Date().getFullYear();
     const monthlyStats = await this.postRepository
       .createQueryBuilder('post')

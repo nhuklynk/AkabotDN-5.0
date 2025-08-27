@@ -38,7 +38,7 @@ export class CategoryService {
    */
   private async getChildrenForCategory(parentId: string): Promise<CategoryResponseDto[]> {
     const children = await this.categoryRepository.find({
-      where: { parent: { id: parentId } },
+      where: { parent: { id: parentId }, status: Status.ACTIVE },
       relations: ['parent'],
       order: { created_at: 'DESC' },
     });
@@ -108,6 +108,7 @@ export class CategoryService {
       take,
       relations: ['parent'],
       order: { created_at: 'DESC' },
+      where: { status: Status.ACTIVE },
     });
 
     const categoryDtos: CategoryResponseDto[] = [];
@@ -135,7 +136,8 @@ export class CategoryService {
 
     const queryBuilder = this.categoryRepository
       .createQueryBuilder('category')
-      .leftJoinAndSelect('category.parent', 'parent');
+      .leftJoinAndSelect('category.parent', 'parent')
+      .where('category.status = :status');
 
     if (name) {
       queryBuilder.andWhere('LOWER(category.name) LIKE LOWER(:name)', {
