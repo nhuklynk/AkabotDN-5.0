@@ -30,6 +30,12 @@
     "preview": "Preview",
     "view": "View",
     "viewLive": "View live",
+    "retry": "Retry",
+    "browserNotSupported": "Your browser does not support the video player.",
+    "downloadFile": "Download file",
+    "cannotDisplayFileType": "Cannot display this file type",
+    "openInNewTab": "Open file in new tab",
+    "mediaFile": "Media file",
     "status": {
       "active": "Active",
       "inactive": "Inactive"
@@ -366,7 +372,40 @@
         },
         "documents": {
           "title": "Documents",
-          "desc": "Resources and reports"
+          "desc": "Resources and reports",
+          "page": {
+            "title": "Documents & Resources",
+            "subtitle": "Discover our rich multimedia collection",
+            "description": "Access our comprehensive library of documents, images, videos, and resources carefully curated to support your research and learning.",
+            "loadingStatistics": "Loading statistics...",
+            "errorLoadingStatistics": "Error loading statistics",
+            "noMediaFound": "No matching documents found",
+            "loadingImages": "Loading images...",
+            "loadingVideos": "Loading videos...",
+            "errorLoadingImages": "Error loading images",
+            "errorLoadingVideos": "Error loading videos",
+            "imagesSection": "Images",
+            "videosSection": "Videos",
+            "uploadedOn": "Uploaded on",
+            "fileSize": "File size",
+            "views": "views",
+            "imageModal": "Image",
+            "videoModal": "Video",
+            "pagination": {
+              "previous": "Previous",
+              "next": "Next",
+              "page": "Page",
+              "of": "of",
+              "showing": "Showing",
+              "to": "to",
+              "results": "results"
+            },
+            "statistics": {
+              "images": "Images",
+              "videos": "Videos",
+              "events": "Events"
+            }
+          }
         }
       },
       "members": {

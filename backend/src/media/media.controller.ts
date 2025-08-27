@@ -36,6 +36,8 @@ import { MediaQueryDto } from './dto/media-query.dto';
 import { MediaByTypeQueryDto } from './dto/media-by-type-query.dto';
 import { PaginatedData } from 'src/common/interfaces/api-response.interface';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { MediaStatisticsDto } from './dto/media-statistics.dto';
+import { MediaContentStatisticsDto } from './dto/media-content-statistics.dto';
 
 // Helper function to validate UUID
 function validateUUID(uuid: string): boolean {
@@ -79,6 +81,36 @@ export class MediaController {
   })
   async findAll(@Query() query: MediaQueryDto): Promise<PaginatedData<MediaResponseDto>> {
     return this.mediaService.findAll(query);
+  }
+
+  @Public()
+  @Get('statistics')
+  @ApiOperation({ 
+    summary: 'Get media statistics by type',
+    description: 'Retrieve statistics showing the count of media files for each media type (post, event, member, other, document_video, document_image) along with the total count.'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Media statistics retrieved successfully',
+    type: MediaStatisticsDto,
+  })
+  async getStatistics(): Promise<MediaStatisticsDto> {
+    return this.mediaService.getStatistics();
+  }
+
+  @Public()
+  @Get('content-statistics')
+  @ApiOperation({ 
+    summary: 'Get media content statistics',
+    description: 'Retrieve statistics grouped by content type: images (all image mime types), videos (all video mime types), and events (event media type). Returns both raw counts and formatted display strings.'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Media content statistics retrieved successfully',
+    type: MediaContentStatisticsDto,
+  })
+  async getContentStatistics(): Promise<MediaContentStatisticsDto> {
+    return this.mediaService.getContentStatistics();
   }
 
   @Public()
@@ -152,7 +184,7 @@ export class MediaController {
         },
         media_type: {
           type: 'string',
-          enum: ['post', 'event', 'member', 'other'],
+          enum: Object.values(MediaType),
           description: 'Media type classification',
         }
       },
@@ -172,7 +204,7 @@ export class MediaController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
+          new MaxFileSizeValidator({ maxSize: 1000 * 1024 * 1024 }),
         ],
         fileIsRequired: true,
       }),
