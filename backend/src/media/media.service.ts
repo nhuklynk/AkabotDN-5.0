@@ -17,6 +17,8 @@ import * as path from 'path';
 import { CreateMediaFormDataDto } from './dto/create-media-formdata.dto';
 import { UpdateMediaFormDataDto } from './dto/update-media-formdata.dto';
 import { MediaByTypeQueryDto } from './dto/media-by-type-query.dto';
+import { MediaStatisticsDto, MediaStatisticsItemDto } from './dto/media-statistics.dto';
+import { MediaContentStatisticsDto, MediaContentStatisticsItemDto } from './dto/media-content-statistics.dto';
 
 @Injectable()
 export class MediaService {
@@ -292,5 +294,112 @@ export class MediaService {
     }
     
     return mediaDtos;
+  }
+
+  /**
+   * Get statistics of media count by type
+   */
+  async getStatistics(): Promise<MediaStatisticsDto> {
+    // Get actual counts from database
+    const statistics = await this.mediaRepository
+      .createQueryBuilder('media')
+      .select('media.media_type', 'media_type')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('media.media_type')
+      .getRawMany();
+
+    // Create a map of actual counts
+    const countsMap = new Map<MediaType, number>();
+    statistics.forEach(stat => {
+      countsMap.set(stat.media_type, parseInt(stat.count));
+    });
+
+    // Initialize all media types with count 0, then update with actual counts
+    const allMediaTypes = Object.values(MediaType);
+    const statisticsItems: MediaStatisticsItemDto[] = allMediaTypes.map(mediaType => ({
+      media_type: mediaType,
+      count: countsMap.get(mediaType) || 0,
+    }));
+
+    const total = statisticsItems.reduce((sum, item) => sum + item.count, 0);
+
+    return {
+      statistics: statisticsItems,
+      total,
+    };
+  }
+
+  /**
+   * Get content statistics grouped by media content type (images, videos, events)
+   */
+  async getContentStatistics(): Promise<MediaContentStatisticsDto> {
+    try {
+      // Count images (by mime type)
+      const imageCount = await this.mediaRepository
+        .createQueryBuilder('media')
+        .where('media.mime_type LIKE :imageType', { imageType: 'image/%' })
+        .getCount();
+
+      // Count videos (by mime type)
+      const videoCount = await this.mediaRepository
+        .createQueryBuilder('media')
+        .where('media.mime_type LIKE :videoType', { videoType: 'video/%' })
+        .getCount();
+
+      // Count events (by media type)
+      const eventCount = await this.mediaRepository
+        .createQueryBuilder('media')
+        .where('media.media_type = :eventType', { eventType: MediaType.EVENT })
+        .getCount();
+
+      // Helper function to format numbers
+      const formatCount = (count: number): string => {
+        if (count >= 1000) {
+          const thousands = Math.floor(count / 1000);
+          const remainder = count % 1000;
+          if (remainder === 0) {
+            return `${thousands.toLocaleString()}k`;
+          } else {
+            return `${thousands.toLocaleString()},${remainder.toString().padStart(3, '0').slice(0, 1)}00+`;
+          }
+        }
+        return count.toString();
+      };
+
+      const statistics: MediaContentStatisticsItemDto[] = [
+        {
+          type: 'images' as 'images',
+          label: 'header.dropdown.products.documents.page.statistics.images',
+          count: imageCount,
+          formatted_count: formatCount(imageCount),
+        },
+        {
+          type: 'videos' as 'videos',
+          label: 'header.dropdown.products.documents.page.statistics.videos', 
+          count: videoCount,
+          formatted_count: formatCount(videoCount),
+        },
+        {
+          type: 'events' as 'events',
+          label: 'header.dropdown.products.documents.page.statistics.events',
+          count: eventCount,
+          formatted_count: formatCount(eventCount),
+        },
+      ];
+
+      console.log('Media content statistics:', {
+        imageCount,
+        videoCount, 
+        eventCount,
+        statistics
+      });
+
+      return {
+        statistics,
+      };
+    } catch (error) {
+      console.error('Error in getContentStatistics:', error);
+      throw new BadRequestException(`Failed to fetch content statistics: ${error.message}`);
+    }
   }
 }

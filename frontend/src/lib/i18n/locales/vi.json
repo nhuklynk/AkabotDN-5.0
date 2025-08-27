@@ -30,6 +30,12 @@
     "preview": "Xem trước",
     "view": "Xem",
     "viewLive": "Xem trực tiếp",
+    "retry": "Thử lại",
+    "browserNotSupported": "Trình duyệt của bạn không hỗ trợ video player.",
+    "downloadFile": "Tải file xuống",
+    "cannotDisplayFileType": "Không thể hiển thị loại file này",
+    "openInNewTab": "Mở file trong tab mới",
+    "mediaFile": "File media",
     "status": {
       "active": "Hoạt động",
       "inactive": "Ngưng hoạt động"
@@ -369,7 +375,40 @@
         },
         "documents": {
           "title": "Tư liệu",
-          "desc": "Tài liệu và báo cáo"
+          "desc": "Tài liệu và báo cáo",
+          "page": {
+            "title": "Tư liệu & Tài nguyên",
+            "subtitle": "Khám phá bộ sưu tập đa phương tiện phong phú của chúng tôi",
+            "description": "Truy cập thư viện toàn diện các tài liệu, hình ảnh, video và tài nguyên được tuyển chọn cẩn thận để hỗ trợ nghiên cứu và học tập của bạn.",
+            "loadingStatistics": "Đang tải thống kê...",
+            "errorLoadingStatistics": "Lỗi khi tải thống kê",
+            "noMediaFound": "Không tìm thấy tài liệu phù hợp",
+            "loadingImages": "Đang tải hình ảnh...",
+            "loadingVideos": "Đang tải video...",
+            "errorLoadingImages": "Lỗi khi tải hình ảnh",
+            "errorLoadingVideos": "Lỗi khi tải video",
+            "imagesSection": "Hình ảnh",
+            "videosSection": "Video",
+            "uploadedOn": "Tải lên vào",
+            "fileSize": "Kích thước file",
+            "views": "lượt xem",
+            "imageModal": "Hình ảnh",
+            "videoModal": "Video",
+            "pagination": {
+              "previous": "Trước",
+              "next": "Tiếp",
+              "page": "Trang",
+              "of": "của",
+              "showing": "Hiển thị",
+              "to": "đến",
+              "results": "kết quả"
+            },
+            "statistics": {
+              "images": "Hình ảnh",
+              "videos": "Video", 
+              "events": "Sự kiện"
+            }
+          }
         }
       },
       "members": {
